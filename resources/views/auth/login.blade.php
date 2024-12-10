@@ -19,8 +19,8 @@
                 </div>
                 <div class="col-lg-7 align-self-center form-section">
                     <div class="form-inner">
-                        <a href="{{ route('/') }}" class="logo">
-                            <img src="{{ asset('storage/' . $info->logo_home) }}" alt="logo">
+                        <a href="{{ route('countries') }}" class="logo">
+                            <img src="" alt="logo">
                         </a>
                         <h3>Sign Into Your Account</h3>
                         <form method="POST" action="{{ route('login') }}">

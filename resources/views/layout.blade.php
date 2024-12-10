@@ -551,6 +551,37 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            .hotlines-section {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .hotline-column {
+                padding: 1rem 0;
+            }
+
+            .hotline-title {
+                font-size: 1.5rem;
+                text-align: center;
+            }
+
+            .hotline-info {
+                text-align: center;
+            }
+
+            .divider {
+                width: 100%;
+                height: 1px;
+                margin: 1rem 0;
+            }
+
+            .consult-button {
+                display: block;
+                margin: 0 auto;
+                width: 100%;
+                max-width: 300px;
+            }
+
             .countries-container .row {
                 flex-wrap: wrap;
             }
@@ -691,50 +722,87 @@
         }
 
         /* Hotline Section */
-        .hotline-section {
+        .hotlines-section {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            background-color: #fff;
-            padding: 40px 20px;
+            justify-content: space-between;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .hotline-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
+        .hotline-column {
+            flex: 1;
+            padding: 1rem;
         }
 
-        .hotline-box {
-            border: 2px solid #ccc;
-            padding: 20px;
-            border-radius: 10px;
-            width: 300px;
-            text-align: center;
-        }
-
-        .hotline-box .title {
-            font-size: 20px;
+        .hotline-title {
+            font-size: 2rem;
             font-weight: bold;
+            margin-bottom: 1.5rem;
         }
 
-        .hotline-box .hotline-number {
-            font-size: 18px;
+        .hotline-title.job-seekers {
+            color: #ff0000;
+        }
+
+        .hotline-title.employers {
+            color: #00ffff;
+        }
+
+        .hotline-info {
+            margin-bottom: 1rem;
+        }
+
+        .hotline-label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .hotline-label.job-seekers {
+            color: #ff0000;
+        }
+
+        .hotline-label.employers {
+            color: #00ffff;
+        }
+
+        .hotline-number {
+            font-size: 1.2rem;
             font-weight: bold;
-            color: #333;
+            display: block;
+            margin-bottom: 1rem;
         }
 
-        .hotline-box .btn {
-            margin-top: 10px;
-            padding: 10px 20px;
-            border: 1px solid #000;
-            background: none;
+        .hotline-number.job-seekers {
+            color: #ff0000;
+        }
+
+        .hotline-number.employers {
+            color: #00ffff;
+        }
+
+        .consult-button {
+            padding: 0.5rem 1rem;
+            border: 2px solid;
+            background: transparent;
             cursor: pointer;
+            font-size: 1rem;
         }
 
-        .hotline-box .btn:hover {
-            background-color: #f0f0f0;
+        .consult-button.job-seekers {
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+
+        .consult-button.employers {
+            border-color: #00ffff;
+            color: #00ffff;
+        }
+
+        .divider {
+            width: 1px;
+            background-color: #ccc;
+            margin: 0 2rem;
         }
 
         /* Responsive Styles */
@@ -779,7 +847,7 @@
         <nav class="nav">
             <ul>
                 <li><a href="#">Trang chủ</a></li>
-                <li><a href="{{ route('countries') }}">Việc làm</a></li>
+                <li><a href="{{ route('site.countries') }}">Việc làm</a></li>
                 <li><a href="#">Du học nghề</a></li>
                 <li><a href="#">Xuất khẩu lao động</a></li>
                 <li><a href="#">Tin tức</a></li>

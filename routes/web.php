@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CountryController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -15,11 +16,12 @@ Route::get('/', function () {
 Auth::routes();
 
 
-Route::get('/countries', [SiteController::class, 'countries'])->name('countries');
+Route::get('/danh-sach-cac-quoc-gia', [SiteController::class, 'countries'])->name('site.countries');
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::resource('countries', CountryController::class);
 });
 
