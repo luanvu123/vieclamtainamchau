@@ -148,6 +148,12 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                                     alt="Google" width="20" height="20"> Quốc gia
                                             </a>
                                         </li>
+                                         <li class="{{ Request::is('categories*') ? 'active' : '' }}">
+                                            <a href="{{ route('categories.index') }}">
+                                                <img src="{{ asset('backend_admin/images/8673763_ic_fluent_slide_size_filled_icon.svg') }}"
+                                                    alt="Google" width="20" height="20"> Thể loại
+                                            </a>
+                                        </li>
 
                                     </ul>
                                 </li>

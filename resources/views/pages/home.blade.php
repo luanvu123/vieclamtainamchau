@@ -9,35 +9,16 @@
         </div>
     </section>
 
-    <section class="stats">
+  <section class="stats">
+    @foreach($categories as $category)
         <div class="stat-item">
-            <img src="{{ asset('frontend/img/send-symbol-svgrepo-com.png') }}" alt="Icon">
-            <p>2000+ việc</p>
+            <img src="{{ $category->image ? asset('storage/' . $category->image) : asset('frontend/img/default-category.png') }}"
+                 alt="{{ $category->name }}">
+            <p>{{ $category->name }}</p>
         </div>
-        <div class="stat-item">
-            <img src="{{ asset('frontend/img/send-symbol-svgrepo-com.png') }}" alt="Icon">
-            <p>2000+ việc</p>
-        </div>
-        <div class="stat-item">
-            <img src="{{ asset('frontend/img/send-symbol-svgrepo-com.png') }}" alt="Icon">
-            <p>2000+ việc</p>
-        </div>
-        <div class="stat-item">
-            <img src="{{ asset('frontend/img/worker-running-with-a-briefcase-in-one-hand-svgrepo-com.png') }}"
-                alt="Icon">
-            <p>2000+ việc</p>
-        </div>
-        <div class="stat-item">
-            <img src="{{ asset('frontend/img/send-symbol-svgrepo-com.png') }}" alt="Icon">
-            <p>2000+ việc</p>
-        </div>
-        <div class="stat-item">
-            <img src="{{ asset('frontend/img/worker-running-with-a-briefcase-in-one-hand-svgrepo-com.png') }}"
-                alt="Icon">
-            <p>2000+ việc</p>
-        </div>
-        <!-- Add more stat items -->
-    </section>
+    @endforeach
+</section>
+
 
     <section class="job-categories">
         <h2>DU HỌC NGHỀ</h2>

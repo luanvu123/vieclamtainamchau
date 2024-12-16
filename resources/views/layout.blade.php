@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Job Portal</title>
     <style>
         * {
@@ -85,20 +86,34 @@
             gap: 2rem;
         }
 
-        .auth-group {
+        /* Base styles */
+        .auth-section {
             display: flex;
-            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+        }
+        .auth-logged-in {
+            display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .auth-label {
-            font-size: 0.9rem;
-            color: #ffffff;
-            font-weight: 500;
+        .auth-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
         }
 
-        .auth-buttons {
+        .auth-name {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .auth-actions {
             display: flex;
             gap: 0.5rem;
         }
@@ -110,22 +125,23 @@
             cursor: pointer;
             font-size: 0.9rem;
             transition: all 0.2s;
+            color: #f0f0f0;
         }
 
-        .auth-btn.login {
-            background: #fff;
-            border: 1px solid #ff0000;
-            color: #ff0000;
+        .auth-btn.profile {
+            background: #007bff;
+            color: #fff;
         }
 
-        .auth-btn.register {
-            background: #ff0000;
-            color: white;
+        .auth-btn.logout {
+            background: #dc3545;
+            color: #fff;
         }
 
+        /* Hover effect */
         .auth-btn:hover {
             opacity: 0.9;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
 
         @media (max-width: 1200px) {
@@ -551,6 +567,21 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            .auth-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .auth-logged-in {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .auth-name,
+            .auth-actions {
+                margin-top: 0.5rem;
+            }
+
             .hotlines-section {
                 flex-direction: column;
                 padding: 1rem;
@@ -616,24 +647,7 @@
                 width: 100%;
             }
 
-            .auth-section {
-                flex-direction: column;
-                width: 100%;
-            }
 
-            .auth-group {
-                width: 100%;
-            }
-
-            .auth-buttons {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .auth-btn {
-                flex: 1;
-                text-align: center;
-            }
 
             .your-location {
                 width: 100%;
@@ -827,21 +841,42 @@
                     </select>
                 </div>
                 <div class="auth-section">
-                    <div class="auth-group candidate">
-                        <span class="auth-label">Người tìm việc</span>
-                        <div class="auth-buttons">
-                            <button class="auth-btn login">Đăng nhập</button>
-                            <button class="auth-btn register">Đăng ký</button>
+                    @if (Auth::guard('candidate')->check())
+                        @php
+                            $candidate = Auth::guard('candidate')->user();
+                            $avatar = $candidate->avatar ?? asset('frontend/img/avatar.png');
+                        @endphp
+                        <div class="auth-logged-in">
+                            <img src="{{ $avatar }}" alt="Avatar" class="auth-avatar">
+                            <span class="auth-name">{{ $candidate->name }}</span>
+                            <div class="auth-actions">
+                                <a href="{{ route('candidate.profile.edit') }}" class="auth-btn profile">Hồ sơ</a>
+                                <form action="{{ route('candidate.logout') }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    <button type="submit" class="auth-btn logout">Đăng xuất</button>
+                                </form>
+                            </div>
+
                         </div>
-                    </div>
-                    <div class="auth-group employer">
-                        <span class="auth-label">Nhà tuyển dụng</span>
-                        <div class="auth-buttons">
-                            <button class="auth-btn login">Đăng nhập</button>
-                            <button class="auth-btn register">Đăng ký</button>
+                    @else
+                        <div class="auth-group candidate">
+                            <span class="auth-label">Người tìm việc</span>
+                            <div class="auth-buttons">
+                                <a href="{{ route('candidate.login') }}" class="auth-btn login">Đăng nhập</a>
+                                <a href="{{ route('candidate.register') }}" class="auth-btn register">Đăng ký</a>
+                            </div>
                         </div>
-                    </div>
+
+                        <div class="auth-group employer">
+                            <span class="auth-label">Nhà tuyển dụng</span>
+                            <div class="auth-buttons">
+                                <a href="{{ route('employer.login') }}" class="auth-btn login">Đăng nhập</a>
+                                <a href="{{ route('employer.register') }}" class="auth-btn register">Đăng ký</a>
+                            </div>
+                        </div>
+                    @endif
                 </div>
+
             </div>
         </div>
         <nav class="nav">
