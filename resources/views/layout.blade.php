@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
     <title>Job Portal</title>
     <style>
         * {
@@ -94,6 +96,7 @@
             gap: 1rem;
             padding: 1rem;
         }
+
         .auth-logged-in {
             display: flex;
             align-items: center;
@@ -856,7 +859,22 @@
                                     <button type="submit" class="auth-btn logout">Đăng xuất</button>
                                 </form>
                             </div>
-
+                        </div>
+                    @elseif (Auth::guard('employer')->check())
+                        @php
+                            $employer = Auth::guard('employer')->user();
+                            $avatar = $employer->avatar ?? asset('frontend/img/employer-avatar.png'); // Avatar mặc định cho nhà tuyển dụng
+                        @endphp
+                        <div class="auth-logged-in">
+                            <img src="{{ $avatar }}" alt="Avatar" class="auth-avatar">
+                            <span class="auth-name">{{ $employer->name }}</span>
+                            <div class="auth-actions">
+                                <a href="{{ route('employer.dashboard') }}" class="auth-btn dashboard">Trang quản lý</a>
+                                <form action="{{ route('employer.logout') }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    <button type="submit" class="auth-btn logout">Đăng xuất</button>
+                                </form>
+                            </div>
                         </div>
                     @else
                         <div class="auth-group candidate">
@@ -876,6 +894,7 @@
                         </div>
                     @endif
                 </div>
+
 
             </div>
         </div>
@@ -989,6 +1008,20 @@
                 });
             }
         });
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
+    <script>
+        new MultiSelectTag('countries') // id
+        new MultiSelectTag('categories')
+    </script>
+    <script src="{{ asset('backend_admin/ckeditor/ckeditor.js') }}"></script>
+    <script>
+        CKEDITOR.replace('summary2');
+        CKEDITOR.replace('summary3');
+        CKEDITOR.replace('summary1');
+        CKEDITOR.replace('summary4');
+        CKEDITOR.replace('summary5');
+        CKEDITOR.replace('description');
     </script>
 </body>
 

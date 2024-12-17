@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Employer extends Model
+class Employer extends Authenticatable
 {
-    use HasFactory;
+    use Notifiable;
 
     /**
      * The table associated with the model.
@@ -101,5 +101,9 @@ class Employer extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+     public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'employer_category');
     }
 }

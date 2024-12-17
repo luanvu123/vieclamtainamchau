@@ -9,15 +9,15 @@
         </div>
     </section>
 
-  <section class="stats">
-    @foreach($categories as $category)
-        <div class="stat-item">
-            <img src="{{ $category->image ? asset('storage/' . $category->image) : asset('frontend/img/default-category.png') }}"
-                 alt="{{ $category->name }}">
-            <p>{{ $category->name }}</p>
-        </div>
-    @endforeach
-</section>
+    <section class="stats">
+        @foreach ($categories as $category)
+            <div class="stat-item">
+                <img src="{{ $category->image ? asset('storage/' . $category->image) : asset('frontend/img/default-category.png') }}"
+                    alt="{{ $category->name }}">
+                <p>{{ $category->name }}</p>
+            </div>
+        @endforeach
+    </section>
 
 
     <section class="job-categories">

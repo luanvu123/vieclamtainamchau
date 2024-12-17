@@ -19,5 +19,9 @@ class Category extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function jobPostings()
+    {
+        return $this->belongsToMany(JobPosting::class, 'category_job_posting');
+    }
 }
 

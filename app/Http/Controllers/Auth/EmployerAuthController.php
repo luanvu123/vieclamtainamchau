@@ -73,10 +73,4 @@ class EmployerAuthController extends Controller
 
         return redirect()->route('employer.login');
     }
-
-    public function dashboard()
-    {
-        $employer = Auth::guard('employer')->user();
-        return view('employer.dashboard', compact('employer'));
-    }
 }

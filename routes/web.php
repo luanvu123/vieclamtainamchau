@@ -19,6 +19,8 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [SiteController::class, 'index'])->name('/');
+Route::get('/job', [SiteController::class, 'job'])->name('job');
+
 
 Auth::routes();
 
@@ -65,10 +67,11 @@ Route::prefix('employer')->name('employer.')->group(function () {
     Route::post('logout', [EmployerAuthController::class, 'logout'])->name('logout');
 
     // Protected routes with 'auth:employer' middleware
-    Route::get('dashboard', [EmployerAuthController::class, 'dashboard'])
+    Route::get('dashboard', [EmployerProfileController::class, 'dashboard'])
         ->middleware('auth:employer')
         ->name('dashboard');
-
+  Route::get('job-posting/create', [EmployerProfileController::class, 'getCreateJobPosting'])->name('job-posting.create.form');
+    Route::post('job-posting/create', [EmployerProfileController::class, 'createJobPosting'])->name('job-posting.create');
     Route::get('/profile/edit', [EmployerProfileController::class, 'edit'])
         ->middleware('auth:employer')
         ->name('profile.edit');

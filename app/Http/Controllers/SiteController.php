@@ -19,4 +19,8 @@ class SiteController extends Controller
         $categories = Category::where('status', 'active')->get();
         return view('pages.home', compact('categories'));
     }
+     public function job()
+    {
+        return view('pages.job');
+    }
 }

@@ -219,7 +219,7 @@ input[type="checkbox"] {
                 <div class="form-group">
                     <label for="email"><i class="fas fa-envelope"></i> Email</label>
                     <input type="email" class="form-control" id="email" name="email"
-                        value="{{ old('email', $candidate->email) }}" required>
+                        value="{{ old('email', $candidate->email) }}" readonly>
                 </div>
 
                 <div class="form-group">
@@ -227,6 +227,7 @@ input[type="checkbox"] {
                     <input type="text" class="form-control" id="phone" name="phone"
                         value="{{ old('phone', $candidate->phone) }}">
                 </div>
+
 
                 <div class="form-group">
                     <label for="dob"><i class="fas fa-birthday-cake"></i> Ngày sinh</label>

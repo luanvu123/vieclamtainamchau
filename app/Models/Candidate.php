@@ -62,5 +62,9 @@ class Candidate extends Authenticatable
         'email_verified_at' => 'datetime',
         'dob' => 'date',
     ];
+     public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'candidate_category');
+    }
 }
 

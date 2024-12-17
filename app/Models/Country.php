@@ -9,4 +9,8 @@ class Country extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'slug', 'image', 'status'];
+     public function jobPostings()
+    {
+        return $this->belongsToMany(JobPosting::class, 'country_job_posting');
+    }
 }
