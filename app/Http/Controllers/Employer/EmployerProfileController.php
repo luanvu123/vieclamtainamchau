@@ -34,6 +34,7 @@ class EmployerProfileController extends Controller
             'categories.*' => 'exists:categories,id',
             'genres' => 'nullable|array',
             'genres.*' => 'exists:genres,id',
+            'business_license' => 'nullable|file|mimes:doc,docx,pdf|max:10240',
         ]);
 
         // Lấy employer đang đăng nhập
@@ -56,7 +57,10 @@ class EmployerProfileController extends Controller
         if ($request->has('genres')) {
             $employer->genres()->sync($request->genres);
         }
-
+        if ($request->hasFile('business_license')) {
+            $businessLicensePath = $request->file('business_license')->store('business_licenses', 'public'); // Lưu vào thư mục storage/app/public/business_licenses
+            $employer->update(['business_license' => $businessLicensePath]);
+        }
         return redirect()->back()->with('success', 'Thông tin công ty đã được cập nhật.');
     }
 

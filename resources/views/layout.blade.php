@@ -16,6 +16,38 @@
             font-family: Arial, sans-serif;
         }
 
+        .avatar-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            /* Kích thước vùng chứa avatar */
+            height: 80px;
+            border-radius: 50%;
+            /* Bo tròn để tạo hình tròn */
+            overflow: hidden;
+            /* Ẩn phần thừa của hình ảnh */
+            background-color: #f3f3f3;
+            /* Màu nền mặc định nếu không có avatar */
+            border: 2px solid #ddd;
+            /* Đường viền nhẹ */
+        }
+
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Đảm bảo ảnh luôn được hiển thị đầy đủ */
+        }
+
+        .avatar-container svg {
+            width: 50%;
+            /* Kích thước SVG nhỏ hơn vùng chứa */
+            height: 50%;
+            color: #aaa;
+            /* Màu sắc SVG */
+        }
+
         /* Header */
         .header-top {
             background-image: url('{{ asset('frontend/img/hochiminhcity.png') }}');
@@ -738,6 +770,557 @@
             margin-top: 5px;
         }
 
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #fff;
+            padding: 20px;
+            border-right: 1px solid #eee;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+            color: #ff0000;
+        }
+
+        .menu-section {
+            margin: 15px 0;
+        }
+
+        .menu-title {
+            font-weight: bold;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .add-campaign-btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .campaign-select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 200px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .campaign-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .campaign-cell {
+            padding: 15px;
+            border-right: 1px solid #eee;
+        }
+
+        .campaign-cell:last-child {
+            border-right: none;
+        }
+
+        .campaign-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .campaign-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.toggle-slider {
+            background-color: #ff0000;
+        }
+
+        input:checked+.toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .stat {
+            color: #0066ff;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .action-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 4px;
+        }
+
+        .primary-btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+        }
+
+        .outline-btn {
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            background: white;
+        }
+
+        .main-content {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .main-content .form-label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .main-content .form-control,
+        .main-content .form-select,
+        .main-content .search-field {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .main-content .form-control:focus,
+        .main-content .form-select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+        }
+
+        .main-content textarea {
+            resize: none;
+        }
+
+        .main-content .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .main-content .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .text-danger {
+            font-size: 12px;
+            color: red;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .add-campaign-btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .campaign-select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 200px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .campaign-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .campaign-cell {
+            padding: 15px;
+            border-right: 1px solid #eee;
+        }
+
+        .campaign-cell:last-child {
+            border-right: none;
+        }
+
+        .campaign-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .campaign-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.toggle-slider {
+            background-color: #ff0000;
+        }
+
+        input:checked+.toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .stat {
+            color: #0066ff;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .action-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 4px;
+        }
+
+        .primary-btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+        }
+
+        .outline-btn {
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            background: white;
+        }
+
+        @media (max-width: 1200px) {
+            .campaign-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .campaign-cell {
+                border-bottom: 1px solid #eee;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+
+            .search-section {
+                flex-direction: column;
+            }
+
+            .campaign-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .campaign-cell {
+                border-right: none;
+            }
+        }
+
+        .post-button {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 150px;
+        }
+
+        .job-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .job-table th {
+            text-align: left;
+            padding: 12px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .job-table td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .export-btn {
+            color: #ff0000;
+            border: 1px solid #ff0000;
+            background: white;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .page-btn {
+            padding: 5px 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background: #ff0000;
+            color: white;
+            border-color: #ff0000;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+
+            .filters {
+                flex-wrap: wrap;
+            }
+
+            .job-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        select[multiple] {
+            height: auto;
+        }
+
+        .mb-3 {
+            margin-bottom: 16px;
+        }
+
+        .mb-4 {
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 1200px) {
+            .campaign-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .campaign-cell {
+                border-bottom: 1px solid #eee;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+
+            .search-section {
+                flex-direction: column;
+            }
+
+            .campaign-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .campaign-cell {
+                border-right: none;
+            }
+        }
+
         /* Hotline Section */
         .hotlines-section {
             display: flex;
@@ -773,6 +1356,176 @@
         .hotline-label {
             display: block;
             margin-bottom: 0.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            color: #ff0000;
+            border-bottom: 2px solid #ff0000;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            background: #6c5ce7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .upload-btn {
+            color: #ff0000;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .upload-note {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .add-phone {
+            color: #ff0000;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-block;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        .update-btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .update-btn:hover {
+            background: #e60000;
+        }
+
+        .login-alert {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .business-license {
+            margin-top: 30px;
+        }
+
+        .upload-file {
+            border: 1px dashed #ddd;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .upload-file button {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .license-note {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #00bcd4;
+        }
+
+        .license-note ul {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .license-note li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .license-note li:before {
+            content: "✓";
+            color: #00bcd4;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .avatar-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
 
         .hotline-label.job-seekers {
@@ -845,12 +1598,12 @@
                 </div>
                 <div class="auth-section">
                     @if (Auth::guard('candidate')->check())
-                        @php
-                            $candidate = Auth::guard('candidate')->user();
-                            $avatar = $candidate->avatar ?? asset('frontend/img/avatar.png');
-                        @endphp
+                        <div class="avatar-container">
+                            <img src="{{ asset('storage/' . Auth::guard('candidate')->user()->avatar_candidate) ?? asset('storage/avatar/avatar-default.jpg') }}"
+                                alt="Avatar" onerror="this.src='{{ asset('storage/avatar/avatar-default.jpg') }}'"
+                                alt="{{ Auth::guard('candidate')->user()->fullname_candidate }}">
+                        </div>
                         <div class="auth-logged-in">
-                            <img src="{{ $avatar }}" alt="Avatar" class="auth-avatar">
                             <span class="auth-name">{{ $candidate->name }}</span>
                             <div class="auth-actions">
                                 <a href="{{ route('candidate.profile.edit') }}" class="auth-btn profile">Hồ sơ</a>
@@ -861,12 +1614,12 @@
                             </div>
                         </div>
                     @elseif (Auth::guard('employer')->check())
-                        @php
-                            $employer = Auth::guard('employer')->user();
-                            $avatar = $employer->avatar ?? asset('frontend/img/employer-avatar.png'); // Avatar mặc định cho nhà tuyển dụng
-                        @endphp
+                        <div class="avatar-container">
+                            <img src="{{ asset('storage/' . Auth::guard('employer')->user()->avatar) ?? asset('storage/avatar/avatar-default.jpg') }}"
+                                alt="Avatar" onerror="this.src='{{ asset('storage/avatar/avatar-default.jpg') }}'"
+                                alt="{{ Auth::guard('employer')->user()->name }}">
+                        </div>
                         <div class="auth-logged-in">
-                            <img src="{{ $avatar }}" alt="Avatar" class="auth-avatar">
                             <span class="auth-name">{{ $employer->name }}</span>
                             <div class="auth-actions">
                                 <a href="{{ route('employer.profile.edit') }}" class="auth-btn dashboard">Trang quản
@@ -1024,14 +1777,11 @@
     <script>
         new MultiSelectTag('countries') // id
     </script>
-      <script>
-
+    <script>
         new MultiSelectTag('genres')
     </script>
-      <script>
-
+    <script>
         new MultiSelectTag('categories')
-
     </script>
     <script src="{{ asset('backend_admin/ckeditor/ckeditor.js') }}"></script>
     <script>

@@ -102,13 +102,12 @@ class Employer extends Authenticatable
     {
         return $this->belongsTo(User::class);
     }
-     public function categories()
+    public function categories()
     {
         return $this->belongsToMany(Category::class, 'employer_category');
     }
     public function genres()
-{
-    return $this->belongsToMany(Genre::class, 'employer_genre');
-}
-
+    {
+        return $this->belongsToMany(Genre::class, 'employer_genre');
+    }
 }

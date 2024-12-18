@@ -1,338 +1,203 @@
  @extends('layout')
  @section('content')
-     <style>
-
-
-         .container {
-             max-width: 800px;
-             margin: 0 auto;
-             background: white;
-             padding: 30px;
-             border-radius: 8px;
-             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-         }
-
-         h1 {
-             font-size: 24px;
-             margin-bottom: 30px;
-             color: #333;
-         }
-
-         .tabs {
-             display: flex;
-             border-bottom: 1px solid #ddd;
-             margin-bottom: 30px;
-         }
-
-         .tab {
-             padding: 10px 20px;
-             cursor: pointer;
-             border-bottom: 2px solid transparent;
-         }
-
-         .tab.active {
-             color: #ff0000;
-             border-bottom: 2px solid #ff0000;
-         }
-
-         .form-section {
-             margin-bottom: 30px;
-         }
-
-         .form-section h2 {
-             font-size: 18px;
-             margin-bottom: 20px;
-             color: #333;
-         }
-
-         .form-group {
-             margin-bottom: 20px;
-         }
-
-         .form-group label {
-             display: block;
-             margin-bottom: 8px;
-             color: #555;
-         }
-
-         .form-group input,
-         .form-group select,
-         .form-group textarea {
-             width: 100%;
-             padding: 10px;
-             border: 1px solid #ddd;
-             border-radius: 4px;
-             font-size: 14px;
-         }
-
-         .avatar-section {
-             display: flex;
-             align-items: center;
-             gap: 20px;
-             margin-bottom: 30px;
-         }
-
-         .avatar {
-             width: 100px;
-             height: 100px;
-             background: #6c5ce7;
-             border-radius: 50%;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             color: white;
-         }
-
-         .upload-btn {
-             color: #ff0000;
-             text-decoration: underline;
-             cursor: pointer;
-         }
-
-         .upload-note {
-             font-size: 12px;
-             color: #666;
-         }
-
-         .add-phone {
-             color: #ff0000;
-             text-decoration: none;
-             font-size: 14px;
-             display: inline-block;
-             margin-top: 8px;
-             cursor: pointer;
-         }
-
-         .update-btn {
-             background: #ff0000;
-             color: white;
-             border: none;
-             padding: 12px 24px;
-             border-radius: 4px;
-             cursor: pointer;
-             font-size: 14px;
-         }
-
-         .update-btn:hover {
-             background: #e60000;
-         }
-
-         .login-alert {
-             margin-top: 30px;
-             padding: 20px;
-             background: #f8f9fa;
-             border-radius: 4px;
-         }
-
-         .radio-group {
-             display: flex;
-             gap: 20px;
-         }
-
-         .radio-item {
-             display: flex;
-             align-items: center;
-             gap: 8px;
-         }
-
-         .business-license {
-             margin-top: 30px;
-         }
-
-         .upload-file {
-             border: 1px dashed #ddd;
-             padding: 20px;
-             border-radius: 4px;
-             margin-top: 10px;
-         }
-
-         .upload-file button {
-             background: white;
-             border: 1px solid #ddd;
-             padding: 8px 16px;
-             border-radius: 4px;
-             cursor: pointer;
-         }
-
-         .license-note {
-             margin-top: 20px;
-             font-size: 14px;
-             color: #00bcd4;
-         }
-
-         .license-note ul {
-             list-style: none;
-             margin-top: 10px;
-         }
-
-         .license-note li {
-             display: flex;
-             align-items: center;
-             gap: 8px;
-             margin-bottom: 6px;
-         }
-
-         .license-note li:before {
-             content: "✓";
-             color: #00bcd4;
-         }
-
-         @media (max-width: 768px) {
-             .container {
-                 padding: 20px;
-             }
-
-             .avatar-section {
-                 flex-direction: column;
-                 align-items: flex-start;
-             }
-         }
-     </style>
-
      <div class="container">
-         <h1>Tài khoản nhà tuyển dụng</h1>
+         <div class="sidebar">
+             <div class="menu-title">Quản lý đăng tuyển dụng</div>
+             <div class="menu-section">
 
-         <div class="tabs">
-             <div class="tab active" data-tab="account">Thông tin tài khoản</div>
-             <div class="tab" data-tab="company">Thông tin công ty</div>
+                 <a href="{{ route('employer.job-posting.create.form') }}" class="menu-item">
+                     <i>+</i>
+                     <span>Tạo tin tuyển dụng</span>
+                 </a>
+                 <a href="#" class="menu-item">
+                     <i>📋</i>
+                     <span>Quản lý tin đăng</span>
+                 </a>
+                 <a href="#" class="menu-item">
+                     <i>📊</i>
+                     <span>Chiến dịch tuyển dụng</span>
+                 </a>
+             </div>
+
+             <div class="menu-section">
+                 <div class="menu-title">Quản lý ứng viên</div>
+                 <a href="#" class="menu-item">
+                     <i>👥</i>
+                     <span>Hồ sơ ứng tuyển</span>
+                 </a>
+                 <a href="#" class="menu-item">
+                     <i>📄</i>
+                     <span>Quản lý thẻ</span>
+                 </a>
+                 <a href="#" class="menu-item">
+                     <i>❤️</i>
+                     <span>Hồ sơ đã lưu</span>
+                 </a>
+                 <a href="#" class="menu-item">
+                     <i>🔍</i>
+                     <span>Tìm ứng viên mới</span>
+                 </a>
+             </div>
          </div>
-         <div class="tab-content" id="accountTab">
-             <form action="{{ route('employer.profile.updateInfo') }}" method="POST" enctype="multipart/form-data">
-                 @csrf
-                 <div class="form-section">
-                     <h2>Thông tin đăng nhập</h2>
+         <div class="main-content">
+             <h1>Tài khoản nhà tuyển dụng</h1>
 
-                     <div class="avatar-section">
-                         <div class="avatar">
-                             @if ($employer->avatar)
-                                 <img src="{{ asset('storage/' . $employer->avatar) }}" alt="Avatar">
-                             @else
-                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor">
-                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                     <circle cx="12" cy="7" r="4"></circle>
-                                 </svg>
-                             @endif
+             <div class="tabs">
+                 <div class="tab active" data-tab="account">Thông tin tài khoản</div>
+                 <div class="tab" data-tab="company">Thông tin công ty</div>
+             </div>
+             <div class="tab-content" id="accountTab">
+                 <form action="{{ route('employer.profile.updateInfo') }}" method="POST" enctype="multipart/form-data">
+                     @csrf
+                     <div class="form-section">
+                         <h2>Thông tin đăng nhập</h2>
+
+                         <div class="avatar-section">
+                             <div class="avatar-container">
+                                 @if ($employer->avatar)
+                                     <img src="{{ asset('storage/' . $employer->avatar) }}" alt="Avatar">
+                                 @else
+                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                         <circle cx="12" cy="7" r="4"></circle>
+                                     </svg>
+                                 @endif
+                             </div>
+
+                             <input type="file" name="avatar" class="upload-btn">
                          </div>
-                         <input type="file" name="avatar" class="upload-btn">
+
+                         <div class="form-group">
+                             <label>Họ và tên</label>
+                             <input type="text" name="name" value="{{ old('name', $employer->name) }}" required>
+                         </div>
+
+                         <div class="form-group">
+                             <label>Số điện thoại</label>
+                             <input type="tel" name="phone" value="{{ old('phone', $employer->phone) }}">
+                         </div>
+
+                         <div class="form-group">
+                             <label>Địa chỉ liên hệ</label>
+                             <textarea name="address" rows="3">{{ old('address', $employer->address) }}</textarea>
+                         </div>
+
+                         <div class="form-group">
+                             <label>Mật khẩu mới</label>
+                             <input type="password" name="password">
+                         </div>
+
+                         <div class="form-group">
+                             <label>Xác nhận mật khẩu</label>
+                             <input type="password" name="password_confirmation">
+                         </div>
+
+                         <button class="update-btn" type="submit">Cập nhật</button>
                      </div>
+                 </form>
+             </div>
 
-                     <div class="form-group">
-                         <label>Họ và tên</label>
-                         <input type="text" name="name" value="{{ old('name', $employer->name) }}" required>
-                     </div>
+             <div class="tab-content" id="companyTab" style="display: none;">
+                 <form action="{{ route('employer.updateCompany') }}" method="POST" enctype="multipart/form-data">
+                     @csrf
+                     @method('PUT')
+                     <div class="form-section">
+                         <h2>Thông tin công ty</h2>
 
-                     <div class="form-group">
-                         <label>Số điện thoại</label>
-                         <input type="tel" name="phone" value="{{ old('phone', $employer->phone) }}">
-                     </div>
+                         <div class="form-group">
+                             <label>Mã số thuế</label>
+                             <input type="text" name="mst" value="{{ old('mst', $employer->mst) }}">
+                         </div>
 
-                     <div class="form-group">
-                         <label>Địa chỉ liên hệ</label>
-                         <textarea name="address" rows="3">{{ old('address', $employer->address) }}</textarea>
-                     </div>
+                         <div class="form-group">
+                             <label>Tên công ty</label>
+                             <input type="text" name="company_name" placeholder="Tên công ty"
+                                 value="{{ old('company_name', $employer->company_name) }}">
+                         </div>
 
-                     <div class="form-group">
-                         <label>Mật khẩu mới</label>
-                         <input type="password" name="password">
-                     </div>
-
-                     <div class="form-group">
-                         <label>Xác nhận mật khẩu</label>
-                         <input type="password" name="password_confirmation">
-                     </div>
-
-                     <button class="update-btn" type="submit">Cập nhật</button>
-                 </div>
-             </form>
-         </div>
-
-         <div class="tab-content" id="companyTab" style="display: none;">
-             <form action="{{ route('employer.updateCompany') }}" method="POST">
-                 @csrf
-                 @method('PUT')
-                 <div class="form-section">
-                     <h2>Thông tin công ty</h2>
-
-                     <div class="form-group">
-                         <label>Mã số thuế</label>
-                         <input type="text" name="mst" value="{{ old('mst', $employer->mst) }}">
-                     </div>
-
-                     <div class="form-group">
-                         <label>Tên công ty</label>
-                         <input type="text" name="company_name" placeholder="Tên công ty"
-                             value="{{ old('company_name', $employer->company_name) }}">
-                     </div>
-
-                     <div class="form-group">
-                         <label>Quy mô nhân sự</label>
-                         <select name="scale">
-                             <option value="">Chọn</option>
-                             <option value="Dưới 50 người"
-                                 {{ old('scale', $employer->scale) == 'Dưới 50 người' ? 'selected' : '' }}>Dưới 50 người
-                             </option>
-                             <option value="50-100 người"
-                                 {{ old('scale', $employer->scale) == '50-100 người' ? 'selected' : '' }}>50-100 người
-                             </option>
-                             <option value="100-500 người"
-                                 {{ old('scale', $employer->scale) == '100-500 người' ? 'selected' : '' }}>100-500 người
-                             </option>
-                             <option value="Trên 500 người"
-                                 {{ old('scale', $employer->scale) == 'Trên 500 người' ? 'selected' : '' }}>Trên 500 người
-                             </option>
-                         </select>
-                     </div>
-
-                     <div class="form-group">
-                         <label>Bản đồ</label>
-                         <input type="text" name="map" placeholder="Đường dẫn Google Map"
-                             value="{{ old('map', $employer->map) }}">
-                     </div>
-
-                     <div class="form-group">
-                         <label>Lĩnh vực hoạt động</label>
-                         <select name="categories[]" id="categories" multiple>
-                             @foreach ($categories as $category)
-                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
-                             @endforeach
-                         </select>
-                     </div>
-
-                     <div class="form-group">
-                         <label>Danh mục</label>
-                         <select name="genres[]" id="genres"class="form-select" multiple>
-                             @foreach ($genres as $genre)
-                                 <option value="{{ $genre->id }}"
-                                     {{ in_array($genre->id, $employer->genres->pluck('id')->toArray()) ? 'selected' : '' }}>
-                                     {{ $genre->name }}
+                         <div class="form-group">
+                             <label>Quy mô nhân sự</label>
+                             <select name="scale">
+                                 <option value="">Chọn</option>
+                                 <option value="Dưới 50 người"
+                                     {{ old('scale', $employer->scale) == 'Dưới 50 người' ? 'selected' : '' }}>Dưới 50 người
                                  </option>
-                             @endforeach
-                         </select>
-                     </div>
-                     <div class="business-license">
-                         <h2>Giấy phép kinh doanh</h2>
-                         <p>Để chứng thực tài khoản Quý khách đang sử dụng trên Việc Làm 24h, vui lòng đăng tải giấy phép
-                             đăng
-                             ký
-                             kinh doanh.</p>
-
-                         <div class="upload-file">
-                             <button>Tải file</button>
-                             <span>(Dạng file: docx, .doc, .pdf đăng tương = 10 MB)</span>
+                                 <option value="50-100 người"
+                                     {{ old('scale', $employer->scale) == '50-100 người' ? 'selected' : '' }}>50-100 người
+                                 </option>
+                                 <option value="100-500 người"
+                                     {{ old('scale', $employer->scale) == '100-500 người' ? 'selected' : '' }}>100-500
+                                     người
+                                 </option>
+                                 <option value="Trên 500 người"
+                                     {{ old('scale', $employer->scale) == 'Trên 500 người' ? 'selected' : '' }}>Trên 500
+                                     người
+                                 </option>
+                             </select>
                          </div>
 
-                         <div class="license-note">
-                             <h3>Giấy phép kinh doanh hợp lệ</h3>
-                             <ul>
-                                 <li>Có dấu giáp lai của cơ quan có thẩm quyền.</li>
-                                 <li>Trường hợp giấy phép kinh doanh là bản photo thì phải có dấu công chứng.</li>
-                             </ul>
+                         <div class="form-group">
+                             <label>Bản đồ</label>
+                             <input type="text" name="map" placeholder="Đường dẫn Google Map"
+                                 value="{{ old('map', $employer->map) }}">
                          </div>
-                         <button class="update-btn">Cập nhật</button>
+
+                         <div class="form-group">
+                             <label>Lĩnh vực hoạt động</label>
+                             <select id="categories" name="categories[]" multiple>
+                                 @foreach ($categories as $category)
+                                     <option value="{{ $category->id }}"
+                                         {{ in_array($category->id, $employer->categories->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                         {{ $category->name }}
+                                     </option>
+                                 @endforeach
+                             </select>
+                         </div>
+
+                         <div class="form-group">
+                             <label>Danh mục</label>
+                             <select name="genres[]" id="genres"class="form-select" multiple>
+                                 @foreach ($genres as $genre)
+                                     <option value="{{ $genre->id }}"
+                                         {{ in_array($genre->id, $employer->genres->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                         {{ $genre->name }}
+                                     </option>
+                                 @endforeach
+                             </select>
+                         </div>
+                         <div class="business-license">
+                             <h2>Giấy phép kinh doanh</h2>
+                             <p>Để chứng thực tài khoản Quý khách đang sử dụng trên Việc Làm 24h, vui lòng đăng tải giấy
+                                 phép đăng ký kinh doanh.</p>
+
+                             <div class="upload-file">
+                                 <label for="business_license" class="form-label">Tải lên giấy phép kinh doanh</label>
+                                 <input type="file" name="business_license" id="business_license"
+                                     class="form-control">
+                                 <span>(Dạng file: .docx, .doc, .pdf, kích thước tối đa 10 MB)</span>
+                                 @if ($employer->business_license)
+                                     <p>Giấy phép hiện tại:
+                                         <a href="{{ asset('storage/' . $employer->business_license) }}" target="_blank">
+                                             Xem tệp
+                                         </a>
+                                     </p>
+                                 @endif
+
+                             </div>
+
+                             <div class="license-note">
+                                 <h3>Giấy phép kinh doanh hợp lệ</h3>
+                                 <ul>
+                                     <li>Có dấu giáp lai của cơ quan có thẩm quyền.</li>
+                                     <li>Trường hợp giấy phép kinh doanh là bản photo thì phải có dấu công chứng.</li>
+                                 </ul>
+                             </div>
+                         </div>
+
+                         <button class="update-btn" type="submit">Cập nhật</button>
                      </div>
-                 </div>
-             </form>
+                 </form>
+             </div>
          </div>
      </div>
 
