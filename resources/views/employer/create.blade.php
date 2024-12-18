@@ -527,10 +527,10 @@
                          @enderror
                      </div>
 
+
                      <button type="submit" class="btn btn-primary">Lưu bài đăng</button>
                  </form>
              </div>
-
          </div>
      </div>
 

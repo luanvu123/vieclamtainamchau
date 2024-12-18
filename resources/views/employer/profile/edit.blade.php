@@ -1,17 +1,7 @@
  @extends('layout')
  @section('content')
      <style>
-         * {
-             margin: 0;
-             padding: 0;
-             box-sizing: border-box;
-             font-family: system-ui, -apple-system, sans-serif;
-         }
 
-         body {
-             background: #f5f5f5;
-             padding: 20px;
-         }
 
          .container {
              max-width: 800px;
@@ -198,6 +188,7 @@
              }
          }
      </style>
+
      <div class="container">
          <h1>Tài khoản nhà tuyển dụng</h1>
 
@@ -257,82 +248,91 @@
          </div>
 
          <div class="tab-content" id="companyTab" style="display: none;">
-             <div class="form-section">
-                 <h2>Thông tin công ty</h2>
+             <form action="{{ route('employer.updateCompany') }}" method="POST">
+                 @csrf
+                 @method('PUT')
+                 <div class="form-section">
+                     <h2>Thông tin công ty</h2>
 
-                 <div class="form-group">
-                     <label>Mã số thuế</label>
-                     <input type="text">
+                     <div class="form-group">
+                         <label>Mã số thuế</label>
+                         <input type="text" name="mst" value="{{ old('mst', $employer->mst) }}">
+                     </div>
+
+                     <div class="form-group">
+                         <label>Tên công ty</label>
+                         <input type="text" name="company_name" placeholder="Tên công ty"
+                             value="{{ old('company_name', $employer->company_name) }}">
+                     </div>
+
+                     <div class="form-group">
+                         <label>Quy mô nhân sự</label>
+                         <select name="scale">
+                             <option value="">Chọn</option>
+                             <option value="Dưới 50 người"
+                                 {{ old('scale', $employer->scale) == 'Dưới 50 người' ? 'selected' : '' }}>Dưới 50 người
+                             </option>
+                             <option value="50-100 người"
+                                 {{ old('scale', $employer->scale) == '50-100 người' ? 'selected' : '' }}>50-100 người
+                             </option>
+                             <option value="100-500 người"
+                                 {{ old('scale', $employer->scale) == '100-500 người' ? 'selected' : '' }}>100-500 người
+                             </option>
+                             <option value="Trên 500 người"
+                                 {{ old('scale', $employer->scale) == 'Trên 500 người' ? 'selected' : '' }}>Trên 500 người
+                             </option>
+                         </select>
+                     </div>
+
+                     <div class="form-group">
+                         <label>Bản đồ</label>
+                         <input type="text" name="map" placeholder="Đường dẫn Google Map"
+                             value="{{ old('map', $employer->map) }}">
+                     </div>
+
+                     <div class="form-group">
+                         <label>Lĩnh vực hoạt động</label>
+                         <select name="categories[]" id="categories" multiple>
+                             @foreach ($categories as $category)
+                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
+                             @endforeach
+                         </select>
+                     </div>
+
+                     <div class="form-group">
+                         <label>Danh mục</label>
+                         <select name="genres[]" id="genres"class="form-select" multiple>
+                             @foreach ($genres as $genre)
+                                 <option value="{{ $genre->id }}"
+                                     {{ in_array($genre->id, $employer->genres->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                     {{ $genre->name }}
+                                 </option>
+                             @endforeach
+                         </select>
+                     </div>
+                     <div class="business-license">
+                         <h2>Giấy phép kinh doanh</h2>
+                         <p>Để chứng thực tài khoản Quý khách đang sử dụng trên Việc Làm 24h, vui lòng đăng tải giấy phép
+                             đăng
+                             ký
+                             kinh doanh.</p>
+
+                         <div class="upload-file">
+                             <button>Tải file</button>
+                             <span>(Dạng file: docx, .doc, .pdf đăng tương = 10 MB)</span>
+                         </div>
+
+                         <div class="license-note">
+                             <h3>Giấy phép kinh doanh hợp lệ</h3>
+                             <ul>
+                                 <li>Có dấu giáp lai của cơ quan có thẩm quyền.</li>
+                                 <li>Trường hợp giấy phép kinh doanh là bản photo thì phải có dấu công chứng.</li>
+                             </ul>
+                         </div>
+                         <button class="update-btn">Cập nhật</button>
+                     </div>
                  </div>
-
-                 <div class="form-group">
-                     <label>Tên công ty</label>
-                     <input type="text" placeholder="Tên công ty">
-                 </div>
-
-                 <div class="form-group">
-                     <label>Quy mô nhân sự</label>
-                     <select>
-                         <option>Chọn</option>
-                         <option>Dưới 50 người</option>
-                         <option>50-100 người</option>
-                         <option>100-500 người</option>
-                         <option>Trên 500 người</option>
-                     </select>
-                 </div>
-
-                 <div class="form-group">
-                     <label>Địa điểm</label>
-                     <select>
-                         <option>TP. HCM</option>
-                         <option>Hà Nội</option>
-                         <option>Đà Nẵng</option>
-                     </select>
-                 </div>
-
-                 <div class="form-group">
-                     <label>Địa chỉ</label>
-                     <input type="text">
-                 </div>
-
-                 <div class="form-group">
-                     <label>Điện thoại cố định</label>
-                     <input type="tel">
-                 </div>
-
-                 <div class="form-group">
-                     <label>Lĩnh vực hoạt động</label>
-                     <select>
-                         <option>Chọn</option>
-                         <option>Công nghệ thông tin</option>
-                         <option>Tài chính - Ngân hàng</option>
-                         <option>Giáo dục</option>
-                     </select>
-                 </div>
-
-                 <button class="update-btn">Cập nhật</button>
-             </div>
-
-             <div class="business-license">
-                 <h2>Giấy phép kinh doanh</h2>
-                 <p>Để chứng thực tài khoản Quý khách đang sử dụng trên Việc Làm 24h, vui lòng đăng tải giấy phép đăng ký
-                     kinh doanh.</p>
-
-                 <div class="upload-file">
-                     <button>Tải file</button>
-                     <span>(Dạng file: docx, .doc, .pdf đăng tương = 10 MB)</span>
-                 </div>
-
-                 <div class="license-note">
-                     <h3>Giấy phép kinh doanh hợp lệ</h3>
-                     <ul>
-                         <li>Có dấu giáp lai của cơ quan có thẩm quyền.</li>
-                         <li>Trường hợp giấy phép kinh doanh là bản photo thì phải có dấu công chứng.</li>
-                     </ul>
-                 </div>
-
-                 <button class="update-btn">Cập nhật</button>
-             </div>
+             </form>
          </div>
      </div>
 

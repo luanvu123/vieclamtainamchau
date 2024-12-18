@@ -106,4 +106,9 @@ class Employer extends Authenticatable
     {
         return $this->belongsToMany(Category::class, 'employer_category');
     }
+    public function genres()
+{
+    return $this->belongsToMany(Genre::class, 'employer_genre');
+}
+
 }

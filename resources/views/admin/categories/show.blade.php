@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Chi tiết danh mục</h1>
+    <h1>Chi tiết ngành nghề</h1>
     <div class="card">
         <div class="card-header">{{ $category->name }}</div>
         <div class="card-body">

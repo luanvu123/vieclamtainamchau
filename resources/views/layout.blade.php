@@ -869,7 +869,8 @@
                             <img src="{{ $avatar }}" alt="Avatar" class="auth-avatar">
                             <span class="auth-name">{{ $employer->name }}</span>
                             <div class="auth-actions">
-                                <a href="{{ route('employer.profile.edit') }}" class="auth-btn dashboard">Trang quản lý</a>
+                                <a href="{{ route('employer.profile.edit') }}" class="auth-btn dashboard">Trang quản
+                                    lý</a>
                                 <form action="{{ route('employer.logout') }}" method="POST" style="display: inline;">
                                     @csrf
                                     <button type="submit" class="auth-btn logout">Đăng xuất</button>
@@ -912,14 +913,14 @@
 
     <main>
         @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         @yield('content')
     </main>
@@ -1022,7 +1023,15 @@
     <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
     <script>
         new MultiSelectTag('countries') // id
+    </script>
+      <script>
+
+        new MultiSelectTag('genres')
+    </script>
+      <script>
+
         new MultiSelectTag('categories')
+
     </script>
     <script src="{{ asset('backend_admin/ckeditor/ckeditor.js') }}"></script>
     <script>

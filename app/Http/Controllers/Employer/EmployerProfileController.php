@@ -5,20 +5,62 @@ namespace App\Http\Controllers\Employer;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Country;
+use App\Models\Genre;
 use App\Models\JobPosting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+
 class EmployerProfileController extends Controller
 {
     public function edit()
     {
         $employer = Auth::guard('employer')->user();
-        return view('employer.profile.edit', compact('employer'));
+        $categories = Category::where('status', 'active')->get();
+        $genres = Genre::where('status', 'active')->get();
+        return view('employer.profile.edit', compact('employer', 'categories', 'genres'));
     }
-public function updateInfo(Request $request)
+    public function updateCompany(Request $request)
+    {
+        // Xác thực dữ liệu
+        $request->validate([
+            'mst' => 'nullable|string|max:255',
+            'company_name' => 'required|string|max:255',
+            'scale' => 'nullable|string',
+            'map' => 'nullable|string',
+            'categories' => 'nullable|array',
+            'categories.*' => 'exists:categories,id',
+            'genres' => 'nullable|array',
+            'genres.*' => 'exists:genres,id',
+        ]);
+
+        // Lấy employer đang đăng nhập
+        $employer = Auth::guard('employer')->user();
+
+        // Cập nhật các thông tin
+        $employer->update([
+            'mst' => $request->mst,
+            'company_name' => $request->company_name,
+            'slug' => Str::slug($request->company_name),
+            'scale' => $request->scale,
+            'map' => $request->map,
+        ]);
+
+        // Cập nhật quan hệ categories và genres
+        if ($request->has('categories')) {
+            $employer->categories()->sync($request->categories);
+        }
+
+        if ($request->has('genres')) {
+            $employer->genres()->sync($request->genres);
+        }
+
+        return redirect()->back()->with('success', 'Thông tin công ty đã được cập nhật.');
+    }
+
+    public function updateInfo(Request $request)
     {
         $request->validate([
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',

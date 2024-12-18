@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Danh sách danh mục</h1>
+    <h1>Danh sách ngành nghề</h1>
     <a href="{{ route('categories.create') }}" class="btn btn-primary mb-3">Thêm danh mục mới</a>
 
     @if (session('success'))

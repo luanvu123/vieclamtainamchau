@@ -10,6 +10,7 @@ use App\Http\Controllers\Candidate\CandidateProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\Employer\EmployerProfileController;
+use App\Http\Controllers\GenreController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -33,6 +34,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::resource('countries', CountryController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('genres', GenreController::class);
 });
 
 
@@ -75,9 +77,11 @@ Route::prefix('employer')->name('employer.')->group(function () {
     Route::get('/profile/edit', [EmployerProfileController::class, 'edit'])
         ->middleware('auth:employer')
         ->name('profile.edit');
-        Route::post('/profile/update', [EmployerProfileController::class, 'updateInfo'])
-    ->middleware('auth:employer')
-    ->name('profile.updateInfo');
+    Route::post('/profile/update', [EmployerProfileController::class, 'updateInfo'])
+        ->middleware('auth:employer')
+        ->name('profile.updateInfo');
+        Route::put('/employer/update-company', [EmployerProfileController::class, 'updateCompany'])->name('updateCompany')->middleware('auth:employer');
+
     Route::post('/profile/edit', [EmployerProfileController::class, 'update'])
         ->middleware('auth:employer')
         ->name('profile.update');

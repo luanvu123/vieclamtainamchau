@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container">
-        <h1>Sửa danh mục</h1>
+        <h1>Sửa ngành nghề</h1>
         <form action="{{ route('categories.update', $category) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')

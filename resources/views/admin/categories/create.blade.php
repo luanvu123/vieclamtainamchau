@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Thêm danh mục mới</h1>
+    <h1>Thêm ngành nghề mới</h1>
     <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
