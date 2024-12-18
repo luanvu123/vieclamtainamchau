@@ -189,6 +189,81 @@
              background: white;
          }
 
+         .main-content {
+             flex: 1;
+             background-color: #fff;
+             padding: 20px;
+             border-radius: 8px;
+             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+         }
+
+         .main-content h1 {
+             font-size: 24px;
+             font-weight: bold;
+             margin-bottom: 20px;
+             color: #333;
+         }
+
+         .main-content .form-label {
+             font-size: 14px;
+             font-weight: bold;
+             color: #333;
+         }
+
+         .main-content .form-control,
+         .main-content .form-select,
+         .main-content .search-field {
+             width: 100%;
+             padding: 8px;
+             margin-top: 5px;
+             border: 1px solid #ccc;
+             border-radius: 5px;
+             font-size: 14px;
+         }
+
+         .main-content .form-control:focus,
+         .main-content .form-select:focus {
+             outline: none;
+             border-color: #007bff;
+             box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+         }
+
+         .main-content textarea {
+             resize: none;
+         }
+
+         .main-content .btn-primary {
+             background-color: #007bff;
+             border: none;
+             padding: 10px 20px;
+             font-size: 14px;
+             color: #fff;
+             border-radius: 5px;
+             cursor: pointer;
+             transition: background 0.3s ease-in-out;
+         }
+
+         .main-content .btn-primary:hover {
+             background-color: #0056b3;
+         }
+
+         .text-danger {
+             font-size: 12px;
+             color: red;
+         }
+
+         select[multiple] {
+             height: auto;
+         }
+
+         .mb-3 {
+             margin-bottom: 16px;
+         }
+
+         .mb-4 {
+             margin-bottom: 24px;
+         }
+
          @media (max-width: 1200px) {
              .campaign-grid {
                  grid-template-columns: repeat(3, 1fr);
@@ -225,8 +300,9 @@
      </style>
      <div class="container">
          <div class="sidebar">
+             <div class="menu-title">Quản lý đăng tuyển dụng</div>
              <div class="menu-section">
-                 <div class="menu-title">Quản lý đăng tuyển dụng</div>
+
                  <a href="#" class="menu-item">
                      <i>+</i>
                      <span>Tạo tin tuyển dụng</span>
@@ -261,14 +337,13 @@
                  </a>
              </div>
          </div>
-
          <div class="main-content">
+             <h1 class="mb-4">Tạo bài đăng tuyển dụng</h1>
              <div class="container">
-                 <h1 class="mb-4">Tạo bài đăng tuyển dụng</h1>
                  <form action="{{ route('employer.job-posting.create') }}" method="POST">
                      @csrf
                      <div class="mb-3">
-                        <label for="title" class="form-label">Your Email</label>
+                         <label for="title" class="form-label">Email</label>
                          <input class="search-field" type="text" name="email" value="{{ $employer->email }}" readonly>
                      </div>
                      <!-- Title -->
@@ -314,6 +389,78 @@
                              <span class="text-danger">{{ $message }}</span>
                          @enderror
                      </div>
+                     <div class="mb-3">
+                         <label for="experience" class="form-label">Kinh nghiệm yêu cầu</label>
+                         <select id="experience" name="experience"
+                             class="form-control @error('experience') is-invalid @enderror">
+                             <option value="" disabled selected>Chọn kinh nghiệm</option>
+                             <option value="Không yêu cầu" {{ old('experience') == 'Không yêu cầu' ? 'selected' : '' }}>
+                                 Không yêu cầu</option>
+                             <option value="1 năm" {{ old('experience') == '1 năm' ? 'selected' : '' }}>1 năm</option>
+                             <option value="2 năm" {{ old('experience') == '2 năm' ? 'selected' : '' }}>2 năm</option>
+                             <option value="3 năm" {{ old('experience') == '3 năm' ? 'selected' : '' }}>3 năm</option>
+                             <option value="4 năm" {{ old('experience') == '4 năm' ? 'selected' : '' }}>4 năm</option>
+                             <option value="5 năm" {{ old('experience') == '5 năm' ? 'selected' : '' }}>5 năm</option>
+                             <option value="5+ năm" {{ old('experience') == '5+ năm' ? 'selected' : '' }}>5+ năm</option>
+                         </select>
+                         @error('experience')
+                             <span class="text-danger">{{ $message }}</span>
+                         @enderror
+                     </div>
+                     <!-- Rank -->
+                     <div class="mb-3">
+                         <label for="rank" class="form-label">Cấp bậc</label>
+                         <select id="rank" name="rank" class="form-control @error('rank') is-invalid @enderror">
+                             <option value="" disabled selected>Chọn cấp bậc</option>
+                             <option value="Nhân viên" {{ old('rank') == 'Nhân viên' ? 'selected' : '' }}>Nhân viên
+                             </option>
+                             <option value="Thực tập sinh" {{ old('rank') == 'Thực tập sinh' ? 'selected' : '' }}>Thực tập
+                                 sinh</option>
+                             <option value="Quản lý" {{ old('rank') == 'Quản lý' ? 'selected' : '' }}>Quản lý</option>
+                             <option value="Khác" {{ old('rank') == 'Khác' ? 'selected' : '' }}>Khác</option>
+                         </select>
+                         @error('rank')
+                             <span class="text-danger">{{ $message }}</span>
+                         @enderror
+                     </div>
+
+                     <!-- Number of Recruits -->
+                     <div class="mb-3">
+                         <label for="number_of_recruits" class="form-label">Số lượng tuyển dụng</label>
+                         <input type="number" id="number_of_recruits" name="number_of_recruits"
+                             class="form-control @error('number_of_recruits') is-invalid @enderror"
+                             value="{{ old('number_of_recruits') }}">
+                         @error('number_of_recruits')
+                             <span class="text-danger">{{ $message }}</span>
+                         @enderror
+                     </div>
+
+                     <!-- Sex -->
+                     <div class="mb-3">
+                         <label for="sex" class="form-label">Giới tính</label>
+                         <select id="sex" name="sex" class="form-control @error('sex') is-invalid @enderror">
+                             <option value="" disabled selected>Chọn giới tính</option>
+                             <option value="Nam" {{ old('sex') == 'Nam' ? 'selected' : '' }}>Nam</option>
+                             <option value="Nữ" {{ old('sex') == 'Nữ' ? 'selected' : '' }}>Nữ</option>
+                             <option value="Không yêu cầu" {{ old('sex') == 'Không yêu cầu' ? 'selected' : '' }}>Không yêu
+                                 cầu</option>
+                         </select>
+                         @error('sex')
+                             <span class="text-danger">{{ $message }}</span>
+                         @enderror
+                     </div>
+
+                     <!-- Skills Required -->
+                     <div class="mb-3">
+                         <label for="skills_required" class="form-label">Kỹ năng yêu cầu</label>
+                         <input type="text" id="skills_required" name="skills_required"
+                             class="form-control @error('skills_required') is-invalid @enderror"
+                             value="{{ old('skills_required') }}">
+                         @error('skills_required')
+                             <span class="text-danger">{{ $message }}</span>
+                         @enderror
+                     </div>
+
 
                      <!-- Description -->
                      <div class="mb-3">
@@ -327,8 +474,8 @@
                      <!-- Application Email -->
                      <div class="mb-3">
                          <label for="application_email_url" class="form-label">Email ứng tuyển</label>
-                         <input type="email" id="application_email_url" name="application_email_url" class="form-control"
-                             value="{{ old('application_email_url') }}" required>
+                         <input type="email" id="application_email_url" name="application_email_url"
+                             class="form-control" value="{{ old('application_email_url') }}" required>
                          @error('application_email_url')
                              <span class="text-danger">{{ $message }}</span>
                          @enderror

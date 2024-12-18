@@ -70,11 +70,14 @@ Route::prefix('employer')->name('employer.')->group(function () {
     Route::get('dashboard', [EmployerProfileController::class, 'dashboard'])
         ->middleware('auth:employer')
         ->name('dashboard');
-  Route::get('job-posting/create', [EmployerProfileController::class, 'getCreateJobPosting'])->name('job-posting.create.form');
-    Route::post('job-posting/create', [EmployerProfileController::class, 'createJobPosting'])->name('job-posting.create');
+    Route::get('job-posting/create', [EmployerProfileController::class, 'getCreateJobPosting'])->middleware('auth:employer')->name('job-posting.create.form');
+    Route::post('job-posting/create', [EmployerProfileController::class, 'createJobPosting'])->middleware('auth:employer')->name('job-posting.create');
     Route::get('/profile/edit', [EmployerProfileController::class, 'edit'])
         ->middleware('auth:employer')
         ->name('profile.edit');
+        Route::post('/profile/update', [EmployerProfileController::class, 'updateInfo'])
+    ->middleware('auth:employer')
+    ->name('profile.updateInfo');
     Route::post('/profile/edit', [EmployerProfileController::class, 'update'])
         ->middleware('auth:employer')
         ->name('profile.update');

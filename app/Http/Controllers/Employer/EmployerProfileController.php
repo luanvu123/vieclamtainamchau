@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Employer;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Country;
+use App\Models\JobPosting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Hash;
 class EmployerProfileController extends Controller
 {
     public function edit()
@@ -17,7 +18,38 @@ class EmployerProfileController extends Controller
         $employer = Auth::guard('employer')->user();
         return view('employer.profile.edit', compact('employer'));
     }
+public function updateInfo(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:15',
+            'address' => 'nullable|string|max:500',
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
 
+        $employer = Auth::guard('employer')->user();
+
+        // Cập nhật avatar
+        if ($request->hasFile('avatar')) {
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $employer->avatar = $avatarPath;
+        }
+
+        // Cập nhật các thông tin khác
+        $employer->name = $request->input('name');
+        $employer->phone = $request->input('phone');
+        $employer->address = $request->input('address');
+
+        // Cập nhật mật khẩu nếu có
+        if ($request->filled('password')) {
+            $employer->password = Hash::make($request->input('password'));
+        }
+
+        $employer->save();
+
+        return redirect()->route('employer.profile.edit')->with('success', 'Cập nhật thông tin thành công.');
+    }
     public function update(Request $request)
     {
         $employer = Auth::guard('employer')->user();
@@ -57,17 +89,17 @@ class EmployerProfileController extends Controller
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 
-      public function dashboard()
+    public function dashboard()
     {
         return view('employer.job_posting');
     }
-     public function getCreateJobPosting()
+    public function getCreateJobPosting()
     {
         $categories = Category::all(); // Lấy danh sách danh mục
         $countries = Country::all(); // Lấy danh sách quốc gia
-         $employer = Auth::guard('employer')->user();
+        $employer = Auth::guard('employer')->user();
 
-        return view('employer.create', compact('categories', 'countries','employer'));
+        return view('employer.create', compact('categories', 'countries', 'employer'));
     }
 
     // Hàm lưu bài đăng tuyển dụng (đã được viết trước)
@@ -82,13 +114,11 @@ class EmployerProfileController extends Controller
             'application_email_url' => 'required|email|max:255',
             'closing_date' => 'nullable|date',
             'salary' => 'nullable|string|max:50',
-            'experience' => 'nullable|string|max:100',
+            'experience' => 'nullable|in:Không yêu cầu,1 năm,2 năm,3 năm,4 năm,5 năm,5+ năm',
             'rank' => 'nullable|string|max:100',
             'number_of_recruits' => 'nullable|integer',
             'sex' => 'nullable|string|max:50',
-            'status' => 'required|in:0,1',
             'skills_required' => 'nullable|string|max:255',
-            'area' => 'nullable|string|max:255',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
             'countries' => 'nullable|array',
@@ -110,9 +140,7 @@ class EmployerProfileController extends Controller
             'rank' => $validated['rank'],
             'number_of_recruits' => $validated['number_of_recruits'],
             'sex' => $validated['sex'],
-            'status' => $validated['status'],
             'skills_required' => $validated['skills_required'],
-            'area' => $validated['area'],
         ]);
 
         if (!empty($validated['categories'])) {

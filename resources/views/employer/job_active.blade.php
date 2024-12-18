@@ -227,7 +227,7 @@
          <div class="sidebar">
              <div class="menu-section">
                  <div class="menu-title">Quản lý đăng tuyển dụng</div>
-                 <a href="#" class="menu-item">
+                 <a href="{{ route('employer.job-posting.create.form') }}" class="menu-item">
                      <i>+</i>
                      <span>Tạo tin tuyển dụng</span>
                  </a>

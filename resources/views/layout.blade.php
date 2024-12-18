@@ -869,7 +869,7 @@
                             <img src="{{ $avatar }}" alt="Avatar" class="auth-avatar">
                             <span class="auth-name">{{ $employer->name }}</span>
                             <div class="auth-actions">
-                                <a href="{{ route('employer.dashboard') }}" class="auth-btn dashboard">Trang quản lý</a>
+                                <a href="{{ route('employer.profile.edit') }}" class="auth-btn dashboard">Trang quản lý</a>
                                 <form action="{{ route('employer.logout') }}" method="POST" style="display: inline;">
                                     @csrf
                                     <button type="submit" class="auth-btn logout">Đăng xuất</button>
@@ -911,6 +911,16 @@
     </header>
 
     <main>
+        @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
         @yield('content')
     </main>
 
