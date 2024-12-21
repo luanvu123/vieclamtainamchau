@@ -14,5 +14,9 @@ class Genre extends Model
     {
         return $this->belongsToMany(Employer::class, 'employer_genre');
     }
+    public function jobPostings()
+    {
+        return $this->belongsToMany(JobPosting::class, 'genre_jobposting');
+    }
 }
 

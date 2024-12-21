@@ -14,6 +14,7 @@ use App\Http\Controllers\GenreController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
@@ -21,6 +22,8 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [SiteController::class, 'index'])->name('/');
 Route::get('/job', [SiteController::class, 'job'])->name('job');
+Route::get('/genre/{slug}', [SiteController::class, 'genre'])->name('genre.show');
+Route::get('/job/{slug}', [SiteController::class, 'job'])->name('job.show');
 
 
 Auth::routes();
@@ -67,20 +70,21 @@ Route::prefix('employer')->name('employer.')->group(function () {
     Route::get('login', [EmployerAuthController::class, 'showLoginForm'])->name('login');
     Route::post('login', [EmployerAuthController::class, 'login'])->name('login.submit');
     Route::post('logout', [EmployerAuthController::class, 'logout'])->name('logout');
+    Route::resource('job-posting', JobPostingController::class)
+        ->middleware('auth:employer');
 
     // Protected routes with 'auth:employer' middleware
     Route::get('dashboard', [EmployerProfileController::class, 'dashboard'])
         ->middleware('auth:employer')
         ->name('dashboard');
-    Route::get('job-posting/create', [EmployerProfileController::class, 'getCreateJobPosting'])->middleware('auth:employer')->name('job-posting.create.form');
-    Route::post('job-posting/create', [EmployerProfileController::class, 'createJobPosting'])->middleware('auth:employer')->name('job-posting.create');
+
     Route::get('/profile/edit', [EmployerProfileController::class, 'edit'])
         ->middleware('auth:employer')
         ->name('profile.edit');
     Route::post('/profile/update', [EmployerProfileController::class, 'updateInfo'])
         ->middleware('auth:employer')
         ->name('profile.updateInfo');
-        Route::put('/employer/update-company', [EmployerProfileController::class, 'updateCompany'])->name('updateCompany')->middleware('auth:employer');
+    Route::put('/employer/update-company', [EmployerProfileController::class, 'updateCompany'])->name('updateCompany')->middleware('auth:employer');
 
     Route::post('/profile/edit', [EmployerProfileController::class, 'update'])
         ->middleware('auth:employer')

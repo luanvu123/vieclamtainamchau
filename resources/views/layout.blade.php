@@ -179,6 +179,26 @@
             transform: translateY(-2px);
         }
 
+        .action-btn {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+
+        .action-btn.delete-btn {
+            background-color: #dc3545;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+
         @media (max-width: 1200px) {
             .header-actions {
                 flex-direction: column;
@@ -1604,7 +1624,7 @@
                                 alt="{{ Auth::guard('candidate')->user()->fullname_candidate }}">
                         </div>
                         <div class="auth-logged-in">
-                            <span class="auth-name">{{ $candidate->name }}</span>
+                            <span class="auth-name">{{ Auth::guard('candidate')->user()->name }}</span>
                             <div class="auth-actions">
                                 <a href="{{ route('candidate.profile.edit') }}" class="auth-btn profile">Hồ sơ</a>
                                 <form action="{{ route('candidate.logout') }}" method="POST" style="display: inline;">
@@ -1620,7 +1640,7 @@
                                 alt="{{ Auth::guard('employer')->user()->name }}">
                         </div>
                         <div class="auth-logged-in">
-                            <span class="auth-name">{{ $employer->name }}</span>
+                            <span class="auth-name">{{ Auth::guard('employer')->user()->name }}</span>
                             <div class="auth-actions">
                                 <a href="{{ route('employer.profile.edit') }}" class="auth-btn dashboard">Trang quản
                                     lý</a>
@@ -1639,6 +1659,8 @@
                             </div>
                         </div>
 
+
+
                         <div class="auth-group employer">
                             <span class="auth-label">Nhà tuyển dụng</span>
                             <div class="auth-buttons">
@@ -1655,10 +1677,10 @@
         <nav class="nav">
             <ul>
                 <li><a href="#">Trang chủ</a></li>
-                <li><a href="{{ route('site.countries') }}">Việc làm</a></li>
+                <li><a href="#">Việc làm trong nước</a></li>
                 <li><a href="#">Du học nghề</a></li>
                 <li><a href="#">Xuất khẩu lao động</a></li>
-                <li><a href="#">Tin tức</a></li>
+
                 <li><a href="#">Liên hệ</a></li>
             </ul>
         </nav>

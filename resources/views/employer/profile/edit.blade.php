@@ -5,11 +5,11 @@
              <div class="menu-title">Quản lý đăng tuyển dụng</div>
              <div class="menu-section">
 
-                 <a href="{{ route('employer.job-posting.create.form') }}" class="menu-item">
+                 <a href="{{ route('employer.job-posting.create') }}" class="menu-item">
                      <i>+</i>
                      <span>Tạo tin tuyển dụng</span>
                  </a>
-                 <a href="#" class="menu-item">
+                 <a href="{{ route('employer.job-posting.index') }}" class="menu-item">
                      <i>📋</i>
                      <span>Quản lý tin đăng</span>
                  </a>

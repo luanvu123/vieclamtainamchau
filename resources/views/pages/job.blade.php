@@ -189,35 +189,31 @@
         }
     </style>
     <div class="job-card">
-        <img src="{{ asset('frontend/img/Screenshot 2024-12-18 003807.png') }}" alt="Kelly Vietnam" class="company-logo">
+        <img src="{{ asset('storage/' . $jobPosting->employer->logo) }}" alt="{{ $jobPosting->employer->name }}"
+            class="company-logo">
 
         <div class="job-header">
-            <div class="company-name">Công Ty TNHH Công Nghệ Hóa Chất Kelly Việt Nam</div>
-            <h1 class="job-title">Nhân Viên Thu Mua (Khai Thác Và Giám Sát Nhà Cung Ứng)</h1>
+            <div class="company-name">{{ $jobPosting->employer->name }}</div>
+            <h1 class="job-title">{{ $jobPosting->title }}</h1>
 
             <div class="job-meta">
                 <div class="meta-item">
                     <img src="{{ asset('frontend/img/dollar-svgrepo-com.png') }}" alt="salary">
-                    10 - 20 triệu
+                    {{ $jobPosting->salary }}
                 </div>
                 <div class="meta-item">
                     <img src="{{ asset('frontend/img/alarm-svgrepo-com.png') }}" alt="deadline">
-                    Hạn nộp hồ sơ: 29/12/2024
+                    Hạn nộp hồ sơ: {{ \Carbon\Carbon::parse($jobPosting->closing_date)->format('d/m/Y') }}
                 </div>
                 <div class="meta-item">
                     <img src="{{ asset('frontend/img/map-location-pin-svgrepo-com.png') }}" alt="location">
-                    Hà Nội
+                    {{ $jobPosting->location }}
                 </div>
             </div>
 
-            <div class="meta-item">
-                <img src="{{ asset('frontend/img/entry-svgrepo-com.png') }}" alt="first">
-                Cơ hội đầu tiên! Hãy là người đầu tiên nộp hồ sơ!
-            </div>
-
             <div class="buttons">
-                <button class="apply-btn">Nộp hồ sơ</button>
-                <button class="save-btn">♡</button>
+                <a href="{{ $jobPosting->application_email_url }}" class="apply-btn">Nộp hồ sơ</a>
+                <button class="save-btn">♡ Lưu</button>
             </div>
         </div>
 
@@ -233,67 +229,58 @@
                     <img src="{{ asset('frontend/img/date-svgrepo-com.png') }}" alt="calendar">
                     <div>
                         <div>Ngày đăng</div>
-                        <strong>06/12/2024</strong>
+                        <strong>{{ \Carbon\Carbon::parse($jobPosting->created_at)->format('d/m/Y') }}</strong>
                     </div>
                 </div>
                 <div class="info-item">
                     <img src="{{ asset('frontend/img/ladder-svgrepo-com.png') }}" alt="level">
                     <div>
                         <div>Cấp bậc</div>
-                        <strong>Chuyên viên-nhân viên</strong>
+                        <strong>{{ $jobPosting->rank }}</strong>
                     </div>
                 </div>
                 <div class="info-item">
                     <img src="{{ asset('frontend/img/number-5-svgrepo-com.png') }}" alt="headcount">
                     <div>
                         <div>Số lượng tuyển</div>
-                        <strong>5</strong>
+                        <strong>{{ $jobPosting->number_of_recruits }}</strong>
                     </div>
                 </div>
                 <div class="info-item">
                     <img src="{{ asset('frontend/img/time-svgrepo-com.png') }}" alt="type">
                     <div>
                         <div>Hình thức làm việc</div>
-                        <strong>Toàn thời gian cố định</strong>
+                        <strong>{{ $jobPosting->type }}</strong>
                     </div>
                 </div>
                 <div class="info-item">
                     <img src="{{ asset('frontend/img/age-21-svgrepo-com.png') }}" alt="age">
                     <div>
                         <div>Độ tuổi</div>
-                        <strong>22 - 35 tuổi</strong>
+                        <strong>{{ $jobPosting->age_range }}</strong>
                     </div>
                 </div>
                 <div class="info-item">
                     <img src="{{ asset('frontend/img/university-svgrepo-com.png') }}" alt="experience">
                     <div>
                         <div>Yêu cầu kinh nghiệm</div>
-                        <strong>Chưa có kinh nghiệm</strong>
+                        <strong>{{ $jobPosting->experience }}</strong>
                     </div>
                 </div>
             </div>
 
             <div class="job-tags">
-                <a href="#" class="job-tag">Biên phiên dịch</a> /
-                <a href="#" class="job-tag">Cơ khí</a> /
-                <a href="#" class="job-tag">Ô tô - Tự động hóa</a> /
-                <a href="#" class="job-tag">Thu mua - Kho Vận - Chuỗi cung ứng</a>
+                @foreach (explode(',', $jobPosting->tags) as $tag)
+                    <a href="#" class="job-tag">{{ $tag }}</a>
+                @endforeach
             </div>
 
             <div class="job-description">
                 <h2>Mô tả công việc</h2>
-                <ul>
-                    <li>Tìm kiếm nhà cung ứng thực hiện gia công các sản phẩm : ép nhựa, đập tấm sắt, đúc nhôm kẽm, đần
-                        nhôm, đồ gỗ, nội thất ống sắt...</li>
-                    <li>Giám sát nhà cung ứng về kỹ thuật, chất lượng, tiến độ giao hàng...báo cáo với trưởng bộ phận.</li>
-                    <li>Thực hiện kiểm tra, kiểm đếm, nhận hàng từ nhà cung ứng.</li>
-                </ul>
+                {!! nl2br(e($jobPosting->description)) !!}
 
                 <h2>Yêu cầu công việc</h2>
-                <ul>
-                    <li>Trình độ: Có chứng chỉ chuyên ngành cơ khí, xử lý bề mặt kim loại</li>
-                    <li>Kinh nghiệm: Không yêu cầu</li>
-                </ul>
+                {!! nl2br(e($jobPosting->skills_required)) !!}
             </div>
         </div>
     </div>

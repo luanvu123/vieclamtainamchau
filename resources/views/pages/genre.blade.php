@@ -20,42 +20,34 @@
     </section>
 
 
-    @foreach ($genres as $genre)
+    <section class="job-categories">
+        <h1>Bài đăng tuyển dụng trong thể loại: {{ $genre->name }}</h1>
+
         @if ($genre->jobPostings->count() > 0)
-            <section class="job-categories">
-                <h2><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></h2>
-
-                <div class="category-grid">
-                    @foreach ($genre->jobPostings as $job)
-                        <div class="category-card">
-                            @if ($job->employer && $job->employer->avatar)
-                                <img src="{{ asset('storage/' . $job->employer->avatar) }}"
-                                    alt="{{ $job->employer->company_name }}"
-                                    onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
-                            @else
-                                <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">
-                            @endif
-
-                            <div class="card-content">
-                                <h3>{{ Str::limit($job->title, 30) }}</h3>
-                                <p>{{ $job->employer ? $job->employer->company_name : 'Công ty TNHH' }}</p>
-                                <span>Vietnam</span>
-                            </div>
-                            <a href="{{ route('job.show', $job->slug) }}" class="card-link" title="{{ $job->title }}"></a>
+             <div class="category-grid">
+                @foreach ($genre->jobPostings as $job)
+                     <div class="category-card">
+                        @if ($job->employer && $job->employer->company_logo)
+                            <img src="{{ asset('storage/' . $job->employer->company_logo) }}"
+                                alt="{{ $job->employer->company_name }}"
+                                onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
+                        @else
+                            <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">
+                        @endif
+                         <div class="card-content">
+                            <h3>{{ $job->title }}</h3>
+                            <p>{{ $job->employer->company_name ?? 'Công ty TNHH' }}</p>
+                            <p>Địa điểm: {{ $job->location ?? 'Không xác định' }}</p>
+                            <p>Lương: {{ $job->salary ?? 'Thỏa thuận' }}</p>
                         </div>
-                    @endforeach
-                </div>
-                @if ($genre->jobPostings->count() > 4)
-                    <div class="view-more">
-                        <a href="{{ route('genre.show', $genre->id) }}" class="btn btn-outline">
-                            Xem thêm {{ $genre->name }}
-                        </a>
-
+                        <a href="{{ route('job.show', $job->slug) }}" class="btn btn-primary">Xem chi tiết</a>
                     </div>
-                @endif
-            </section>
+                @endforeach
+            </div>
+        @else
+            <p>Hiện tại không có bài đăng tuyển dụng nào trong thể loại này.</p>
         @endif
-    @endforeach
+    </section>
 
     <section class="partners">
         <h2>CÁC ĐỐI TÁC</h2>

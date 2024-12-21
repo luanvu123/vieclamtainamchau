@@ -1,20 +1,15 @@
  @extends('layout')
  @section('content')
-     <style>
-
-
-        
-     </style>
      <div class="container">
          <div class="sidebar">
              <div class="menu-title">Quản lý đăng tuyển dụng</div>
              <div class="menu-section">
 
-                 <a href="#" class="menu-item">
+                 <a href="{{ route('employer.job-posting.create') }}" class="menu-item">
                      <i>+</i>
                      <span>Tạo tin tuyển dụng</span>
                  </a>
-                 <a href="#" class="menu-item">
+                 <a href="{{ route('employer.job-posting.index') }}" class="menu-item">
                      <i>📋</i>
                      <span>Quản lý tin đăng</span>
                  </a>
@@ -233,6 +228,20 @@
                              <span class="text-danger">{{ $message }}</span>
                          @enderror
                      </div>
+
+                     <!-- Genres -->
+                     <div class="mb-3">
+                         <label for="genres" class="form-label">Thể loại công việc</label>
+                         <select id="genres" name="genres[]" class="form-select" multiple>
+                             @foreach ($genres as $genre)
+                                 <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                             @endforeach
+                         </select>
+                         @error('genres')
+                             <span class="text-danger">{{ $message }}</span>
+                         @enderror
+                     </div>
+
 
 
                      <button type="submit" class="btn btn-primary">Lưu bài đăng</button>

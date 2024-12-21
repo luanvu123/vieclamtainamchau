@@ -135,69 +135,7 @@ class EmployerProfileController extends Controller
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 
-    public function dashboard()
-    {
-        return view('employer.job_posting');
-    }
-    public function getCreateJobPosting()
-    {
-        $categories = Category::all(); // Lấy danh sách danh mục
-        $countries = Country::all(); // Lấy danh sách quốc gia
-        $employer = Auth::guard('employer')->user();
+   
 
-        return view('employer.create', compact('categories', 'countries', 'employer'));
-    }
 
-    // Hàm lưu bài đăng tuyển dụng (đã được viết trước)
-    public function createJobPosting(Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'type' => 'required|in:fulltime,parttime,intern,freelance',
-            'age_range' => 'nullable|string|max:50',
-            'location' => 'nullable|string|max:255',
-            'description' => 'required|string',
-            'application_email_url' => 'required|email|max:255',
-            'closing_date' => 'nullable|date',
-            'salary' => 'nullable|string|max:50',
-            'experience' => 'nullable|in:Không yêu cầu,1 năm,2 năm,3 năm,4 năm,5 năm,5+ năm',
-            'rank' => 'nullable|string|max:100',
-            'number_of_recruits' => 'nullable|integer',
-            'sex' => 'nullable|string|max:50',
-            'skills_required' => 'nullable|string|max:255',
-            'categories' => 'nullable|array',
-            'categories.*' => 'exists:categories,id',
-            'countries' => 'nullable|array',
-            'countries.*' => 'exists:countries,id',
-        ]);
-
-        $jobPosting = JobPosting::create([
-            'employer_id' => auth('employer')->id(),
-            'title' => $validated['title'],
-            'slug' => Str::slug($validated['title']),
-            'type' => $validated['type'],
-            'age_range' => $validated['age_range'],
-            'location' => $validated['location'],
-            'description' => $validated['description'],
-            'application_email_url' => $validated['application_email_url'],
-            'closing_date' => $validated['closing_date'],
-            'salary' => $validated['salary'],
-            'experience' => $validated['experience'],
-            'rank' => $validated['rank'],
-            'number_of_recruits' => $validated['number_of_recruits'],
-            'sex' => $validated['sex'],
-            'skills_required' => $validated['skills_required'],
-        ]);
-
-        if (!empty($validated['categories'])) {
-            $jobPosting->categories()->sync($validated['categories']);
-        }
-
-        if (!empty($validated['countries'])) {
-            $jobPosting->countries()->sync($validated['countries']);
-        }
-
-        return redirect()->route('employer.dashboard')
-            ->with('success', 'Bài đăng tuyển dụng đã được tạo thành công.');
-    }
 }
