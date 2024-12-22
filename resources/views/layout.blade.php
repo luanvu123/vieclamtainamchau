@@ -1607,15 +1607,6 @@
                 <h1>VIỆC LÀM TẠI NĂM CHÂU</h1>
             </div>
             <div class="header-actions">
-                <div class="your-location">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <select class="location-select">
-                        <option>Vị trí của bạn</option>
-                        <option>Hà Nội</option>
-                        <option>TP HCM</option>
-                        <option>Đà Nẵng</option>
-                    </select>
-                </div>
                 <div class="auth-section">
                     @if (Auth::guard('candidate')->check())
                         <div class="avatar-container">
@@ -1676,11 +1667,13 @@
         </div>
         <nav class="nav">
             <ul>
-                <li><a href="#">Trang chủ</a></li>
-                <li><a href="#">Việc làm trong nước</a></li>
-                <li><a href="#">Du học nghề</a></li>
-                <li><a href="#">Xuất khẩu lao động</a></li>
-
+                <li><a href="{{route('/')}}">Trang chủ</a></li>
+                <li><a href="{{route('site.countries')}}">Việc làm</a></li>
+                @if (isset($genre_home) && $genre_home->count() > 0)
+            @foreach ($genre_home as $genre)
+                <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
+            @endforeach
+        @endif
                 <li><a href="#">Liên hệ</a></li>
             </ul>
         </nav>

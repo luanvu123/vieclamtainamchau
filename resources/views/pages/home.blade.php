@@ -2,174 +2,148 @@
 @section('content')
     <section class="hero">
         <div class="search-bar">
-            <input type="text" placeholder="Nhập từ khóa tìm kiếm">
-            <input type="text" placeholder="Lựa chọn nghề nghiệp">
-            <input type="text" placeholder="Nhập thị trường">
-            <button class="search-btn">Tìm kiếm</button>
+            <form action="{{ route('site.search') }}" method="GET">
+                <input type="text" name="keyword" placeholder="Nhập từ khóa tìm kiếm" value="{{ request('keyword') }}">
+                <select name="category">
+                    <option value="">Lựa chọn nghề nghiệp</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->slug }}"
+                            {{ request('category') == $category->slug ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <select name="country">
+                    <option value="">Nhập thị trường</option>
+                    @foreach ($countries as $country)
+                        <option value="{{ $country->slug }}" {{ request('country') == $country->slug ? 'selected' : '' }}>
+                            {{ $country->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <button class="search-btn" type="submit">Tìm kiếm</button>
+            </form>
         </div>
     </section>
 
+
     <section class="stats">
-        @foreach ($categories as $category)
+        @foreach ($categories as $categoryItem)
             <div class="stat-item">
-                <img src="{{ $category->image ? asset('storage/' . $category->image) : asset('frontend/img/default-category.png') }}"
-                    alt="{{ $category->name }}">
-                <p>{{ $category->name }}</p>
+                <a href="{{ route('category.show', $categoryItem->slug) }}">
+                    <img src="{{ $categoryItem->image ? asset('storage/' . $categoryItem->image) : asset('frontend/img/default-category.png') }}"
+                        alt="{{ $categoryItem->name }}">
+                    <p>{{ $categoryItem->name }}</p>
+                </a>
             </div>
         @endforeach
     </section>
 
 
-    @foreach ($genres as $genre)
-        @if ($genre->jobPostings->count() > 0)
-            <section class="job-categories">
-                <h2><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></h2>
 
-                <div class="category-grid">
-                    @foreach ($genre->jobPostings as $job)
-                        <div class="category-card">
-                            @if ($job->employer && $job->employer->avatar)
-                                <img src="{{ asset('storage/' . $job->employer->avatar) }}"
-                                    alt="{{ $job->employer->company_name }}"
-                                    onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
-                            @else
-                                <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">
-                            @endif
 
-                            <div class="card-content">
-                                <h3>{{ Str::limit($job->title, 30) }}</h3>
-                                <p>{{ $job->employer ? $job->employer->company_name : 'Công ty TNHH' }}</p>
-                                <span>Vietnam</span>
+    <section class="job-categories">
+
+        @foreach ($genres as $genre)
+            @if ($genre->jobPostings->count() > 0)
+                <section class="job-categories">
+                    <h2><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></h2>
+
+                    <div class="category-grid">
+                        @foreach ($genre->jobPostings as $job)
+                            <div class="category-card">
+                                @if ($job->employer && $job->employer->avatar)
+                                    <img src="{{ asset('storage/' . $job->employer->avatar) }}"
+                                        alt="{{ $job->employer->company_name }}"
+                                        onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
+                                @else
+                                    <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">
+                                @endif
+
+                                <div class="card-content">
+                                    <h3>{{ Str::limit($job->title, 30) }}</h3>
+                                    <p>{{ $job->employer ? $job->employer->company_name : 'Công ty TNHH' }}</p>
+                                    <span>Vietnam</span>
+                                </div>
+                                <a href="{{ route('job.show', $job->slug) }}" class="card-link"
+                                    title="{{ $job->title }}"> Xem chi tiết</a>
                             </div>
-                            <a href="{{ route('job.show', $job->slug) }}" class="card-link" title="{{ $job->title }}"></a>
+                        @endforeach
+                    </div>
+                    @if ($genre->jobPostings->count() > 4)
+                        <div class="view-more">
+                            <a href="{{ route('genre.show', $genre->id) }}" class="btn btn-outline">
+                                Xem thêm {{ $genre->name }}
+                            </a>
+
                         </div>
-                    @endforeach
-                </div>
-                @if ($genre->jobPostings->count() > 4)
-                    <div class="view-more">
-                        <a href="{{ route('genre.show', $genre->id) }}" class="btn btn-outline">
-                            Xem thêm {{ $genre->name }}
-                        </a>
+                    @endif
+                </section>
+            @endif
+        @endforeach
 
+      <section class="partners">
+    <h2>CÁC ĐỐI TÁC</h2>
+    <div class="partner-grid">
+        @if ($employerIsPartner->count() > 0)
+            @foreach ($employerIsPartner as $partner)
+                <div class="partner-logo">
+                    <img src="{{ asset('storage/' . $partner->company_logo) }}"
+                         alt="{{ $partner->company_name }}"
+                         onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
+                    <div class="partner-info">
+                        <h3>{{ $partner->company_name }}</h3>
+                        <div class="position-count">
+                            <i class="fas fa-briefcase"></i>
+                            <span>{{ $partner->job_postings_count }} vị trí đang tuyển</span>
+                        </div>
                     </div>
-                @endif
-            </section>
+                </div>
+            @endforeach
+        @else
+            <p>Hiện tại chưa có đối tác nào.</p>
         @endif
-    @endforeach
+    </div>
+</section>
 
-    <section class="partners">
-        <h2>CÁC ĐỐI TÁC</h2>
-        <div class="partner-grid">
-            <div class="partner-logo">
-                <img src="{{ asset('frontend/img/company1.png') }}" alt="Partner Logo">
-                <div class="partner-info">
-                    <div class="position-count">
-                        <i class="fas fa-briefcase"></i>
-                        <span>51 vị trí đang tuyển</span>
-                    </div>
-                </div>
-            </div>
-            <div class="partner-logo">
-                <img src="{{ asset('frontend/img/company1.png') }}" alt="Partner Logo">
-                <div class="partner-info">
-                    <div class="position-count">
-                        <i class="fas fa-briefcase"></i>
-                        <span>43 vị trí đang tuyển</span>
-                    </div>
-                </div>
-            </div>
-            <div class="partner-logo">
-                <img src="{{ asset('frontend/img/company1.png') }}" alt="Partner Logo">
-                <div class="partner-info">
-                    <div class="position-count">
-                        <i class="fas fa-briefcase"></i>
-                        <span>37 vị trí đang tuyển</span>
-                    </div>
-                </div>
-            </div>
-            <div class="partner-logo">
-                <img src="{{ asset('frontend/img/company1.png') }}" alt="Partner Logo">
-                <div class="partner-info">
-                    <div class="position-count">
-                        <i class="fas fa-briefcase"></i>
-                        <span>45 vị trí đang tuyển</span>
-                    </div>
-                </div>
-            </div>
-            <div class="partner-logo">
-                <img src="{{ asset('frontend/img/company1.png') }}" alt="Partner Logo">
-                <div class="partner-info">
-                    <div class="position-count">
-                        <i class="fas fa-briefcase"></i>
-                        <span>39 vị trí đang tuyển</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="keywords-section">
-        <h2>TỪ KHÓA TÌM VIỆC LÀM PHỔ BIẾN TẠI VIỆC LÀM NĂM CHÂU</h2>
-        <div class="keywords-container">
-            <div class="keyword-column">
-                <h3>Việc làm theo ngành nghề</h3>
-                <ul class="keyword-list">
-                    <li>Lao động phổ thông</li>
-                    <li>Công nhân sản xuất</li>
-                    <li>Chăm sóc khách hàng</li>
-                    <li>Kỹ sư</li>
-                    <li>Cơ khí / Điện tử</li>
-                    <li>An ninh - Bảo vệ</li>
-                    <li>Chăm sóc khách hàng/ phục vụ - bưng bê</li>
-                    <li>Thợ may</li>
-                    <li>Khai thác nông lương - Khương phạt</li>
-                    <li>Quản lý</li>
-                    <li>Content Writer</li>
-                </ul>
-            </div>
+        <section class="keywords-section">
+            <h2>TỪ KHÓA TÌM VIỆC LÀM PHỔ BIẾN TẠI VIỆC LÀM NĂM CHÂU</h2>
+            <div class="keywords-container">
+                <div class="keyword-column">
+                    <h3>Việc làm theo ngành nghề</h3>
+                    <ul class="keyword-list">
+                        @foreach ($categories as $categoryItem)
+                            <li>
+                                <a href="{{ route('category.show', $categoryItem->slug) }}">{{ $categoryItem->name }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
 
-            <div class="keyword-column">
-                <h3>Việc làm tại quốc gia</h3>
-                <ul class="keyword-list">
-                    <li>Đài Loan</li>
-                    <li>Singapore</li>
-                    <li>Đức</li>
-                    <li>Tây Ban Nha</li>
-                    <li>Ba Lan</li>
-                    <li>Hungary</li>
-                    <li>Hà Lan</li>
-                    <li>Bồ Đào Nha</li>
-                    <li>Thụy Điển</li>
-                    <li>Trung Quốc</li>
-                    <li>Ả Rập</li>
-                    <li>UAE</li>
-                    <li>Kuwait</li>
-                    <li>Vương Quốc Anh</li>
-                    <li>Argentina</li>
-                    <li>Canada</li>
-                    <li>Estonia</li>
-                    <li>Nhật Bản</li>
-                    <li>Úc</li>
-                </ul>
-            </div>
+                <div class="keyword-column">
+                    <h3>Việc làm tại quốc gia</h3>
+                    <ul class="keyword-list">
+                        @foreach ($countries as $country)
+                            <li>
+                                <a href="{{ route('country.show', $country->slug) }}">{{ $country->name }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
 
-            <div class="keyword-column">
-                <h3>Việc làm phổ biến</h3>
-                <ul class="keyword-list">
-                    <li>Lao động phổ thông</li>
-                    <li>Công nhân sản xuất</li>
-                    <li>Chăm sóc khách hàng</li>
-                    <li>Kỹ sư</li>
-                    <li>Cơ khí / Điện tử</li>
-                    <li>An ninh - Bảo vệ</li>
-                    <li>Chăm sóc khách hàng/ phục vụ - bưng bê</li>
-                    <li>Thợ may</li>
-                    <li>Khai thác nông lương - Khương phạt</li>
-                    <li>Quản lý</li>
-                    <li>Content Writer</li>
-                </ul>
+                <div class="keyword-column">
+                    <h3>Việc làm danh mục</h3>
+                    <ul class="keyword-list">
+                        @foreach ($genres as $genre)
+                            <li>
+                                <a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
             </div>
-        </div>
-    </section>
-    <!-- End Cart Area  -->
-@endsection
+        </section>
+        <!-- End Cart Area  -->
+    @endsection

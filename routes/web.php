@@ -24,6 +24,9 @@ Route::get('/', [SiteController::class, 'index'])->name('/');
 Route::get('/job', [SiteController::class, 'job'])->name('job');
 Route::get('/genre/{slug}', [SiteController::class, 'genre'])->name('genre.show');
 Route::get('/job/{slug}', [SiteController::class, 'job'])->name('job.show');
+Route::get('/category/{slug}', [SiteController::class, 'category'])->name('category.show');
+Route::get('/country/{slug}', [SiteController::class, 'country'])->name('country.show');
+Route::get('/search', [SiteController::class, 'search'])->name('site.search');
 
 
 Auth::routes();
@@ -72,11 +75,8 @@ Route::prefix('employer')->name('employer.')->group(function () {
     Route::post('logout', [EmployerAuthController::class, 'logout'])->name('logout');
     Route::resource('job-posting', JobPostingController::class)
         ->middleware('auth:employer');
+    Route::delete('employer/gallery/{id}', [EmployerProfileController::class, 'deleteGalleryImage'])->middleware('auth:employer')->name('gallery.delete');
 
-    // Protected routes with 'auth:employer' middleware
-    Route::get('dashboard', [EmployerProfileController::class, 'dashboard'])
-        ->middleware('auth:employer')
-        ->name('dashboard');
 
     Route::get('/profile/edit', [EmployerProfileController::class, 'edit'])
         ->middleware('auth:employer')

@@ -1,6 +1,6 @@
 @extends('layout')
 @section('content')
-    <section class="hero">
+   <section class="hero">
         <div class="search-bar">
             <form action="{{ route('site.search') }}" method="GET">
                 <input type="text" name="keyword" placeholder="Nhập từ khóa tìm kiếm" value="{{ request('keyword') }}">
@@ -39,14 +39,12 @@
     </section>
 
 
-
-
     <section class="job-categories">
-        <h1>Bài đăng tuyển dụng trong thể loại: {{ $genre->name }}</h1>
+        <h1>Công việc trong danh mục: {{ $category->name }}</h1>
 
-        @if ($genre->jobPostings->count() > 0)
+        @if ($category->jobPostings->count() > 0)
             <div class="category-grid">
-                @foreach ($genre->jobPostings as $job)
+                @foreach ($category->jobPostings as $job)
                     <div class="category-card">
                         @if ($job->employer && $job->employer->company_logo)
                             <img src="{{ asset('storage/' . $job->employer->company_logo) }}"
@@ -66,7 +64,7 @@
                 @endforeach
             </div>
         @else
-            <p>Hiện tại không có bài đăng tuyển dụng nào trong thể loại này.</p>
+            <p>Hiện tại không có bài đăng tuyển dụng nào trong danh mục này.</p>
         @endif
     </section>
 
@@ -121,47 +119,68 @@
         </div>
     </section>
 
-
-
-
-
-  <section class="keywords-section">
-            <h2>TỪ KHÓA TÌM VIỆC LÀM PHỔ BIẾN TẠI VIỆC LÀM NĂM CHÂU</h2>
-            <div class="keywords-container">
-                <div class="keyword-column">
-                    <h3>Việc làm theo ngành nghề</h3>
-                    <ul class="keyword-list">
-                        @foreach ($categories as $categoryItem)
-                            <li>
-                                <a href="{{ route('category.show', $categoryItem->slug) }}">{{ $categoryItem->name }}</a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-
-                <div class="keyword-column">
-                    <h3>Việc làm tại quốc gia</h3>
-                    <ul class="keyword-list">
-                        @foreach ($countries as $country)
-                            <li>
-                                <a href="{{ route('country.show', $country->slug) }}">{{ $country->name }}</a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-
-                <div class="keyword-column">
-                    <h3>Việc làm danh mục</h3>
-                    <ul class="keyword-list">
-                        @foreach ($genres as $genre)
-                            <li>
-                                <a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-
+    <section class="keywords-section">
+        <h2>TỪ KHÓA TÌM VIỆC LÀM PHỔ BIẾN TẠI VIỆC LÀM NĂM CHÂU</h2>
+        <div class="keywords-container">
+            <div class="keyword-column">
+                <h3>Việc làm theo ngành nghề</h3>
+                <ul class="keyword-list">
+                    <li>Lao động phổ thông</li>
+                    <li>Công nhân sản xuất</li>
+                    <li>Chăm sóc khách hàng</li>
+                    <li>Kỹ sư</li>
+                    <li>Cơ khí / Điện tử</li>
+                    <li>An ninh - Bảo vệ</li>
+                    <li>Chăm sóc khách hàng/ phục vụ - bưng bê</li>
+                    <li>Thợ may</li>
+                    <li>Khai thác nông lương - Khương phạt</li>
+                    <li>Quản lý</li>
+                    <li>Content Writer</li>
+                </ul>
             </div>
-        </section>
+
+            <div class="keyword-column">
+                <h3>Việc làm tại quốc gia</h3>
+                <ul class="keyword-list">
+                    <li>Đài Loan</li>
+                    <li>Singapore</li>
+                    <li>Đức</li>
+                    <li>Tây Ban Nha</li>
+                    <li>Ba Lan</li>
+                    <li>Hungary</li>
+                    <li>Hà Lan</li>
+                    <li>Bồ Đào Nha</li>
+                    <li>Thụy Điển</li>
+                    <li>Trung Quốc</li>
+                    <li>Ả Rập</li>
+                    <li>UAE</li>
+                    <li>Kuwait</li>
+                    <li>Vương Quốc Anh</li>
+                    <li>Argentina</li>
+                    <li>Canada</li>
+                    <li>Estonia</li>
+                    <li>Nhật Bản</li>
+                    <li>Úc</li>
+                </ul>
+            </div>
+
+            <div class="keyword-column">
+                <h3>Việc làm phổ biến</h3>
+                <ul class="keyword-list">
+                    <li>Lao động phổ thông</li>
+                    <li>Công nhân sản xuất</li>
+                    <li>Chăm sóc khách hàng</li>
+                    <li>Kỹ sư</li>
+                    <li>Cơ khí / Điện tử</li>
+                    <li>An ninh - Bảo vệ</li>
+                    <li>Chăm sóc khách hàng/ phục vụ - bưng bê</li>
+                    <li>Thợ may</li>
+                    <li>Khai thác nông lương - Khương phạt</li>
+                    <li>Quản lý</li>
+                    <li>Content Writer</li>
+                </ul>
+            </div>
+        </div>
+    </section>
     <!-- End Cart Area  -->
 @endsection

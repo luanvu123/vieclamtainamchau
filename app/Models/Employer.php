@@ -110,4 +110,19 @@ class Employer extends Authenticatable
     {
         return $this->belongsToMany(Genre::class, 'employer_genre');
     }
+     public function gallery()
+    {
+        return $this->hasMany(CompanyGallery::class)->orderBy('sort_order');
+    }
+ public function jobPostings()
+    {
+        return $this->hasMany(JobPosting::class, 'employer_id');
+    }
+    /**
+     * Get all active gallery images.
+     */
+    public function activeGallery()
+    {
+        return $this->gallery()->where('is_active', true);
+    }
 }

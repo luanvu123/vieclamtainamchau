@@ -1,5 +1,30 @@
  @extends('layout')
  @section('content')
+     <style>
+         .img-thumbnail {
+             object-fit: cover;
+             width: 100%;
+             /* Full width of the container */
+             height: 150px;
+             /* Fixed height for uniformity */
+             border-radius: 10px;
+             /* Optional: rounded corners */
+         }
+
+         .row {
+             display: flex;
+             flex-wrap: wrap;
+             gap: 15px;
+             /* Space between columns */
+         }
+
+         .col-md-3 {
+             flex: 1 1 calc(25% - 15px);
+             /* Adjust for 4 columns */
+             max-width: calc(25% - 15px);
+             box-sizing: border-box;
+         }
+     </style>
      <div class="container">
          <div class="sidebar">
              <div class="menu-title">Quản lý đăng tuyển dụng</div>
@@ -120,7 +145,8 @@
                              <select name="scale">
                                  <option value="">Chọn</option>
                                  <option value="Dưới 50 người"
-                                     {{ old('scale', $employer->scale) == 'Dưới 50 người' ? 'selected' : '' }}>Dưới 50 người
+                                     {{ old('scale', $employer->scale) == 'Dưới 50 người' ? 'selected' : '' }}>Dưới 50
+                                     người
                                  </option>
                                  <option value="50-100 người"
                                      {{ old('scale', $employer->scale) == '50-100 người' ? 'selected' : '' }}>50-100 người
@@ -141,6 +167,32 @@
                              <input type="text" name="map" placeholder="Đường dẫn Google Map"
                                  value="{{ old('map', $employer->map) }}">
                          </div>
+
+                         <div class="form-group">
+                             <label for="gallery_images">Hình ảnh gallery</label>
+                             <input type="file" name="gallery_images[]" multiple accept="image/*">
+                         </div>
+
+                         <!-- Hiển thị hình ảnh gallery hiện tại -->
+                         @if ($employer->gallery->isNotEmpty())
+                             <div class="form-group">
+                                 <label>Hình ảnh hiện tại</label>
+                                 <div class="row">
+                                     @foreach ($employer->gallery as $image)
+                                         <div class="col-md-3 text-center">
+                                             <img src="{{ asset('storage/' . $image->image_path) }}"
+                                                 class="img-thumbnail mb-2" alt="Gallery Image">
+                                             <p>{{ $image->caption }}</p>
+                                             <input type="checkbox" name="delete_gallery[]" value="{{ $image->id }}">
+                                             Xóa
+                                         </div>
+                                     @endforeach
+                                 </div>
+                             </div>
+                         @endif
+
+
+
 
                          <div class="form-group">
                              <label>Lĩnh vực hoạt động</label>
@@ -243,4 +295,5 @@
              }
          });
      </script>
+
  @endsection

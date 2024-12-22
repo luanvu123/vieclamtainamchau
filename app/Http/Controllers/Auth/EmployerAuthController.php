@@ -57,7 +57,7 @@ class EmployerAuthController extends Controller
 
         if (Auth::guard('employer')->attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended(route('employer.dashboard'));
+            return redirect()->intended(route('employer.job-posting.index'));
         }
 
         return back()->withErrors([

@@ -1,8 +1,21 @@
 @extends('layout')
-@section('content')
 
+@section('content')
 <section class="job-categories">
-    <h1>Việc làm tại quốc gia: {{ $country->name }}</h1>
+    <h1>
+        Kết quả tìm kiếm:
+        @if (request('keyword'))
+            "{{ request('keyword') }}"
+        @endif
+
+        @if (request('category'))
+            trong danh mục "{{ $categories->firstWhere('slug', request('category'))->name ?? 'Không xác định' }}"
+        @endif
+
+        @if (request('country'))
+            tại quốc gia "{{ $countries->firstWhere('slug', request('country'))->name ?? 'Không xác định' }}"
+        @endif
+    </h1>
 
     @if ($jobPostings->count() > 0)
         <div class="category-grid">
@@ -26,7 +39,8 @@
             @endforeach
         </div>
     @else
-        <p>Hiện tại không có bài đăng tuyển dụng nào tại {{ $country->name }}.</p>
+        <p>Không tìm thấy kết quả phù hợp với tiêu chí tìm kiếm.</p>
     @endif
 </section>
+
 @endsection
