@@ -70,56 +70,7 @@
         @endif
     </section>
 
-    <section class="partners">
-        <h2>CÁC ĐỐI TÁC</h2>
-        <div class="partner-grid">
-            <div class="partner-logo">
-                <img src="{{ asset('frontend/img/company1.png') }}" alt="Partner Logo">
-                <div class="partner-info">
-                    <div class="position-count">
-                        <i class="fas fa-briefcase"></i>
-                        <span>51 vị trí đang tuyển</span>
-                    </div>
-                </div>
-            </div>
-            <div class="partner-logo">
-                <img src="{{ asset('frontend/img/company1.png') }}" alt="Partner Logo">
-                <div class="partner-info">
-                    <div class="position-count">
-                        <i class="fas fa-briefcase"></i>
-                        <span>43 vị trí đang tuyển</span>
-                    </div>
-                </div>
-            </div>
-            <div class="partner-logo">
-                <img src="{{ asset('frontend/img/company1.png') }}" alt="Partner Logo">
-                <div class="partner-info">
-                    <div class="position-count">
-                        <i class="fas fa-briefcase"></i>
-                        <span>37 vị trí đang tuyển</span>
-                    </div>
-                </div>
-            </div>
-            <div class="partner-logo">
-                <img src="{{ asset('frontend/img/company1.png') }}" alt="Partner Logo">
-                <div class="partner-info">
-                    <div class="position-count">
-                        <i class="fas fa-briefcase"></i>
-                        <span>45 vị trí đang tuyển</span>
-                    </div>
-                </div>
-            </div>
-            <div class="partner-logo">
-                <img src="{{ asset('frontend/img/company1.png') }}" alt="Partner Logo">
-                <div class="partner-info">
-                    <div class="position-count">
-                        <i class="fas fa-briefcase"></i>
-                        <span>39 vị trí đang tuyển</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
 
 

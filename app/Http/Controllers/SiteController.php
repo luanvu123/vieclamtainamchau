@@ -82,6 +82,7 @@ class SiteController extends Controller
     {
         // Lấy danh sách tất cả các danh mục để hiển thị ở sidebar hoặc header
         $categories = Category::where('status', 'active')->get();
+        $countries = Country::where('status', 'active')->get(); // Lấy quốc gia từ bảng Country
 
         // Lấy thông tin danh mục dựa trên slug
         $category = Category::where('slug', $slug)
@@ -93,7 +94,7 @@ class SiteController extends Controller
             }])
             ->firstOrFail();
 
-        return view('pages.category', compact('category', 'categories'));
+        return view('pages.category', compact('category', 'categories','countries'));
     }
     public function search(Request $request)
     {

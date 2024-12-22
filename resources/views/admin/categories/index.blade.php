@@ -12,6 +12,7 @@
     <table class="table" id="user-table">
         <thead>
             <tr>
+                <th>id</th>
                 <th>Tên</th>
                 <th>Hình ảnh</th>
                 <th>Trạng thái</th>
@@ -21,6 +22,7 @@
         <tbody>
             @foreach ($categories as $category)
             <tr>
+                <td>{{$category->id}}</td>
                 <td>{{ $category->name }}</td>
                 <td>
                     @if ($category->image)
