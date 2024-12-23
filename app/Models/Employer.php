@@ -61,6 +61,8 @@ class Employer extends Authenticatable
         'detail',
         'facebook',
         'twitter',
+         'verification_token',
+         'remember_token'
     ];
 
     /**

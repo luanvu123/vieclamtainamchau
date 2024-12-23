@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\EmployerVerificationMail;
 use App\Models\Employer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class EmployerAuthController extends Controller
@@ -26,6 +28,8 @@ class EmployerAuthController extends Controller
             'company_name' => 'required|string|max:255',
         ]);
 
+        $verificationToken = Str::random(32);
+
         $employer = Employer::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -33,15 +37,37 @@ class EmployerAuthController extends Controller
             'phone' => $request->phone,
             'company_name' => $request->company_name,
             'slug' => Str::slug($request->company_name),
-            'status' => 1,
+            'status' => 0, // Chưa kích hoạt
             'isVerify' => 0,
             'isVerifyEmail' => 0,
+            'verification_token' => $verificationToken, // Sử dụng verification_token
         ]);
 
-        Auth::guard('employer')->login($employer);
+        Mail::to($employer->email)->send(new EmployerVerificationMail($employer));
 
-        return redirect()->route('employer.dashboard')->with('success', 'Registration successful!');
+        return redirect()->route('employer.register')
+            ->with('success', 'Vui lòng kiểm tra email để xác thực tài khoản của bạn.');
     }
+
+
+    public function verify($token)
+    {
+        $employer = Employer::where('verification_token', $token)->first();
+
+        if (!$employer) {
+            return redirect()->route('employer.register')->with('error', 'Mã xác thực không hợp lệ.');
+        }
+
+        $employer->update([
+            'status' => 1, // Kích hoạt tài khoản
+            'isVerify' => 1,
+            'isVerifyEmail' => 1,
+            'verification_token' => null, // Xóa token sau khi xác thực
+        ]);
+
+        return redirect()->route('employer.login')->with('success', 'Tài khoản đã được xác thực thành công. Bạn có thể đăng nhập.');
+    }
+
 
     public function showLoginForm()
     {
@@ -55,13 +81,22 @@ class EmployerAuthController extends Controller
             'password' => 'required',
         ]);
 
+        // Kiểm tra thông tin đăng nhập
+        $employer = Employer::where('email', $credentials['email'])->first();
+
+        if ($employer && $employer->verification_token !== null) {
+            return back()->withErrors([
+                'email' => 'Tài khoản của bạn chưa được xác thực. Vui lòng kiểm tra email để xác thực.',
+            ])->withInput($request->only('email', 'remember'));
+        }
+
         if (Auth::guard('employer')->attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
             return redirect()->intended(route('employer.job-posting.index'));
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Thông tin đăng nhập không chính xác.',
         ])->withInput($request->only('email', 'remember'));
     }
 
@@ -73,4 +108,5 @@ class EmployerAuthController extends Controller
 
         return redirect()->route('employer.login');
     }
+    
 }

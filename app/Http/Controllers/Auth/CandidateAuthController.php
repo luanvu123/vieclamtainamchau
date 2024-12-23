@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CandidateVerificationMail;
 class CandidateAuthController extends Controller
 {
     public function showRegistrationForm()
@@ -19,23 +22,77 @@ class CandidateAuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:candidates,email',
-            'phone' => 'required|string|max:15',
-            'password' => 'required|string|min:8|confirmed',
+            'email' => 'required|string|email|max:255|unique:candidates',
+            'password' => 'required|string|min:6|confirmed',
+        ], [
+            'name.required' => 'Họ và tên không được để trống.',
+            'email.required' => 'Email không được để trống.',
+            'password.required' => 'Mật khẩu không được để trống.',
+            'email.email' => 'Email phải là địa chỉ email hợp lệ.',
+            'password.min' => 'Mật khẩu phải có ít nhất :min ký tự.',
+            'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
         ]);
 
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Tạo mã xác thực ngẫu nhiên
+        $verificationToken = Str::random(32);
+
+        // Tạo một bản ghi ứng viên tạm thời với trạng thái chưa kích hoạt
         $candidate = Candidate::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'status' => 0,
+            'verification_token' => $verificationToken,
         ]);
+        Mail::to($candidate->email)->send(new CandidateVerificationMail($candidate));
 
-        Auth::guard('candidate')->login($candidate);
+        return redirect()->route('candidate.register')->with('success', 'Vui lòng kiểm tra email để xác thực tài khoản.');
+    }
 
-        return redirect()->route('candidate.dashboard');
+
+    public function verify($token)
+    {
+        // Tìm ứng viên với mã xác thực
+        $candidate = Candidate::where('verification_token', $token)->first();
+
+        if (!$candidate) {
+            return redirect()->route('candidate.register')->with('error', 'Mã xác thực không hợp lệ.');
+        }
+
+        // Cập nhật trạng thái và xóa mã xác thực
+        $candidate->status = 1;
+        $candidate->verification_token = null;
+        $candidate->save();
+
+        return redirect()->route('candidate.login')->with('success', 'Tài khoản của bạn đã được xác thực thành công.');
+    }
+
+
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('candidate')->attempt($credentials)) {
+            $candidate = Auth::guard('candidate')->user();
+
+            // Kiểm tra nếu tài khoản chưa xác thực
+            if ($candidate->verification_token !== null) {
+                Auth::guard('candidate')->logout(); // Đăng xuất ngay lập tức nếu chưa xác thực
+                return redirect()->back()->withInput()->withErrors(['email' => 'Bạn chưa xác thực tài khoản. Vui lòng kiểm tra email.']);
+            }
+
+            // Nếu đã xác thực
+            return redirect()->route('/')->with('success', 'Xin chào ' . $candidate->name);
+        } else {
+            return redirect()->back()->withInput()->withErrors(['email' => 'Thông tin đăng nhập không chính xác']);
+        }
     }
 
     public function showLoginForm()
@@ -43,22 +100,7 @@ class CandidateAuthController extends Controller
         return view('candidate.auth.login');
     }
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
 
-        if (Auth::guard('candidate')->attempt($credentials, $request->remember)) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('/'));
-        }
-
-        throw ValidationException::withMessages([
-            'email' => __('auth.failed'),
-        ]);
-    }
 
     public function logout(Request $request)
     {

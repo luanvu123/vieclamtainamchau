@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CandidateManageController;
 use App\Http\Controllers\Auth\CandidateAuthController;
 use App\Http\Controllers\Auth\CandidateForgotPasswordController;
 use App\Http\Controllers\Auth\CandidateResetPasswordController;
@@ -48,6 +49,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('manage/employers', EmployerManageController::class, [
         'as' => 'manage'
     ]);
+    Route::resource('candidate-manage', CandidateManageController::class);
 });
 
 
@@ -59,28 +61,12 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
     Route::post('logout', [CandidateAuthController::class, 'logout'])->name('logout');
     Route::get('candidate/auth/google', [CandidateAuthController::class, 'redirectToGoogle'])->name('auth.google');
     Route::get('candidate/auth/google/callback', [CandidateAuthController::class, 'handleGoogleCallback']);
-    Route::get('/email/verify', [CandidateAuthController::class, 'showVerifyEmail'])
-        ->name('email.verify');
-    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        $request->fulfill();
-        return redirect()->route('login')
-            ->with('success', 'Email đã được xác thực thành công. Vui lòng đăng nhập.');
-    })->middleware(['auth:candidate', 'signed'])->name('verification.verify');
-
-
-    Route::post('/email/verification-notification', [CandidateAuthController::class, 'resendVerification'])
-        ->middleware(['throttle:6,1'])
-        ->name('verification.send');
-
-    // Protected routes with 'auth:candidate' middleware
+    Route::get('/verify/{token}', [CandidateAuthController::class, 'verify'])->name('verify');
     Route::get('dashboard', [CandidateAuthController::class, 'dashboard'])
         ->middleware('auth:candidate')
         ->name('dashboard');
     Route::get('/profile/edit', [CandidateProfileController::class, 'edit'])->middleware('auth:candidate')->name('profile.edit');
     Route::post('/profile/edit', [CandidateProfileController::class, 'update'])->middleware('auth:candidate')->name('profile.update');
-
-
-    // Password reset routes
     Route::get('password/reset', [CandidateForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
     Route::post('password/email', [CandidateForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
     Route::get('password/reset/{token}', [CandidateResetPasswordController::class, 'showResetForm'])->name('password.reset');
@@ -96,7 +82,8 @@ Route::prefix('employer')->name('employer.')->group(function () {
     Route::post('logout', [EmployerAuthController::class, 'logout'])->name('logout');
     Route::resource('job-posting', JobPostingController::class)
         ->middleware('auth:employer');
-    Route::delete('employer/gallery/{id}', [EmployerProfileController::class, 'deleteGalleryImage'])->middleware('auth:employer')->name('gallery.delete');
+
+    Route::get('/verify/{token}', [EmployerAuthController::class, 'verify'])->name('verify');
 
 
     Route::get('/profile/edit', [EmployerProfileController::class, 'edit'])
@@ -105,13 +92,11 @@ Route::prefix('employer')->name('employer.')->group(function () {
     Route::post('/profile/update', [EmployerProfileController::class, 'updateInfo'])
         ->middleware('auth:employer')
         ->name('profile.updateInfo');
-    Route::put('/employer/update-company', [EmployerProfileController::class, 'updateCompany'])->name('updateCompany')->middleware('auth:employer');
+    Route::put('/update-company', [EmployerProfileController::class, 'updateCompany'])->name('updateCompany')->middleware('auth:employer');
 
     Route::post('/profile/edit', [EmployerProfileController::class, 'update'])
         ->middleware('auth:employer')
         ->name('profile.update');
-
-    // Password reset routes
     Route::get('password/reset', [EmployerForgotPasswordController::class, 'showLinkRequestForm'])
         ->name('password.request');
     Route::post('password/email', [EmployerForgotPasswordController::class, 'sendResetLinkEmail'])

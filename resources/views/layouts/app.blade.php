@@ -182,6 +182,14 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     </ul>
                                 </li>
 
+                                  <li class="treeview {{ Request::is('candidate-manage*') ? 'active' : '' }}">
+                                    <a href="{{ route('candidate-manage.index') }}">
+                                        <img src="{{ asset('backend_admin/images/candidate-for-elections-svgrepo-com.svg') }}"
+                                            alt="Google" width="20" height="20">
+                                        <span> Ứng viên</span>
+                                    </a>
+                                </li>
+
 
                             </ul>
                         </div>
