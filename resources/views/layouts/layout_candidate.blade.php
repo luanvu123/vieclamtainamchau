@@ -55,7 +55,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-candidate">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">Logo</a>
+            <a class="navbar-brand" href="{{ route('home') }}">Vieclamtainamchau</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>

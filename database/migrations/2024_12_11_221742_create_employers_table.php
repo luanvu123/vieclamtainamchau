@@ -47,7 +47,7 @@ class CreateEmployersTable extends Migration
             $table->boolean('isInfomation')->default(0);
             $table->boolean('IsBasicnews')->default(0);
             $table->boolean('isUrgentrecruitment')->default(0);
-            $table->boolean('IsPrioritize')->default(0);
+            $table->boolean('IsPartner')->default(0);
             $table->boolean('IsRefresheveryhour')->default(0);
             $table->boolean('IsRefresheveryday')->default(0);
             $table->boolean('IsDarkredeffect')->default(0);

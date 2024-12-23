@@ -163,6 +163,24 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 
                                     </ul>
                                 </li>
+                                 <li
+                                    class="treeview {{ Request::is('manage.employers.index', 'job-postings-manage*', 'admin/companies*', 'ordermanages*', 'products*', 'employers/purchasedManage*') ? 'active' : '' }}">
+                                    <a href="#">
+                                        <img src="{{ asset('backend_admin/images/company-svgrepo-com.svg') }}"
+                                            alt="Google" width="20" height="20">
+                                        <span> Nhà tuyẻn dụng
+                                        </span>
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </a>
+                                    <ul class="treeview-menu">
+                                        <li class="{{ Request::is('employers') ? 'active' : '' }}">
+                                            <a href="{{ route('manage.employers.index') }}">
+                                                <img src="{{ asset('backend_admin/images/company-portal-svgrepo-com.svg') }}"
+                                                    alt="Google" width="20" height="20"> Danh sách NTD
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
 
 
                             </ul>

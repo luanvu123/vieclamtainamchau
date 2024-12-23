@@ -12,12 +12,13 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\Employer\EmployerProfileController;
 use App\Http\Controllers\GenreController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\EmployerManageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [SiteController::class, 'index'])->name('/');
@@ -32,6 +33,9 @@ Route::get('/search', [SiteController::class, 'search'])->name('site.search');
 Auth::routes();
 
 
+
+
+
 Route::get('/danh-sach-cac-quoc-gia', [SiteController::class, 'countries'])->name('site.countries');
 
 Route::group(['middleware' => ['auth']], function () {
@@ -41,6 +45,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('countries', CountryController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('genres', GenreController::class);
+    Route::resource('manage/employers', EmployerManageController::class, [
+        'as' => 'manage'
+    ]);
 });
 
 
@@ -50,6 +57,20 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
     Route::get('login', [CandidateAuthController::class, 'showLoginForm'])->name('login');
     Route::post('login', [CandidateAuthController::class, 'login'])->name('login.submit');
     Route::post('logout', [CandidateAuthController::class, 'logout'])->name('logout');
+    Route::get('candidate/auth/google', [CandidateAuthController::class, 'redirectToGoogle'])->name('auth.google');
+    Route::get('candidate/auth/google/callback', [CandidateAuthController::class, 'handleGoogleCallback']);
+    Route::get('/email/verify', [CandidateAuthController::class, 'showVerifyEmail'])
+        ->name('email.verify');
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect()->route('login')
+            ->with('success', 'Email đã được xác thực thành công. Vui lòng đăng nhập.');
+    })->middleware(['auth:candidate', 'signed'])->name('verification.verify');
+
+
+    Route::post('/email/verification-notification', [CandidateAuthController::class, 'resendVerification'])
+        ->middleware(['throttle:6,1'])
+        ->name('verification.send');
 
     // Protected routes with 'auth:candidate' middleware
     Route::get('dashboard', [CandidateAuthController::class, 'dashboard'])

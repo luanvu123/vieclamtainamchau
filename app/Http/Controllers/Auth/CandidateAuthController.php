@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Laravel\Socialite\Facades\Socialite;
 
 class CandidateAuthController extends Controller
 {
@@ -59,14 +60,47 @@ class CandidateAuthController extends Controller
         ]);
     }
 
- public function logout(Request $request)
-{
-    Auth::guard('candidate')->logout();
-    return redirect()->route('candidate.login');
-}
+    public function logout(Request $request)
+    {
+        Auth::guard('candidate')->logout();
+        return redirect()->route('candidate.login');
+    }
 
     public function dashboard()
     {
         return view('pages.home');
+    }
+
+     public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    // Phương thức callback từ Google
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
+            $candidate = Candidate::where('email', $googleUser->getEmail())->first();
+
+            // Nếu user đã tồn tại
+            if ($candidate) {
+                Auth::guard('candidate')->login($candidate);
+            } else {
+                // Nếu user chưa tồn tại, tạo mới
+                $candidate = Candidate::create([
+                    'name' => $googleUser->getName(),
+                    'email' => $googleUser->getEmail(),
+                    'google_id' => $googleUser->getId(),
+                    'password' => bcrypt(uniqid()), // Mật khẩu ngẫu nhiên
+                ]);
+
+                Auth::guard('candidate')->login($candidate);
+            }
+
+            return redirect()->route('candidate.dashboard');
+        } catch (\Exception $e) {
+            return redirect()->route('candidate.auth.register')->with('error', 'Đăng ký bằng Google thất bại.');
+        }
     }
 }
