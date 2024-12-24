@@ -135,39 +135,102 @@
                             </div>
                         </div>
 
-                        <div class="col-12 mb-3">
-                            <h5>Dịch vụ nâng cao</h5>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" name="IsBasicnews"
-                                            value="1" {{ $employer->IsBasicnews ? 'checked' : '' }}>
-                                        <label class="form-check-label">Tin cơ bản</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" name="isUrgentrecruitment"
-                                            value="1" {{ $employer->isUrgentrecruitment ? 'checked' : '' }}>
-                                        <label class="form-check-label">Tuyển gấp</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" name="IsPartner" value="1"
-                                            {{ $employer->IsPartner ? 'checked' : '' }}>
-                                        <label class="form-check-label">Đối tác</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" name="IsHoteffect"
-                                            value="1" {{ $employer->IsHoteffect ? 'checked' : '' }}>
-                                        <label class="form-check-label">Nổi bật</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                     <div class="col-12 mb-3">
+    <h5>Dịch vụ nâng cao</h5>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="service-card">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="IsBasicnews"
+                        value="1" {{ $employer->IsBasicnews ? 'checked' : '' }}>
+                    <label class="form-check-label">
+                        <i class="fas fa-newspaper text-primary"></i> Tin cơ bản
+                    </label>
+                </div>
+                @if($employer->IsBasicnews_updated_at)
+                    <div class="service-update-info">
+                        <small class="text-muted">
+                            <i class="fas fa-clock"></i>
+                            {{ $employer->IsBasicnews_updated_at->format('H:i d/m/Y') }}
+                            <span class="d-block ms-3">
+                                {{ $employer->IsBasicnews_updated_at->diffForHumans() }}
+                            </span>
+                        </small>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="service-card">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="isUrgentrecruitment"
+                        value="1" {{ $employer->isUrgentrecruitment ? 'checked' : '' }}>
+                    <label class="form-check-label">
+                        <i class="fas fa-bolt text-warning"></i> Tuyển gấp
+                    </label>
+                </div>
+                @if($employer->isUrgentrecruitment_updated_at)
+                    <div class="service-update-info">
+                        <small class="text-muted">
+                            <i class="fas fa-clock"></i>
+                            {{ $employer->isUrgentrecruitment_updated_at->format('H:i d/m/Y') }}
+                            <span class="d-block ms-3">
+                                {{ $employer->isUrgentrecruitment_updated_at->diffForHumans() }}
+                            </span>
+                        </small>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="service-card">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="IsPartner"
+                        value="1" {{ $employer->IsPartner ? 'checked' : '' }}>
+                    <label class="form-check-label">
+                        <i class="fas fa-crown text-warning"></i> Đối tác
+                    </label>
+                </div>
+                @if($employer->IsPartner_updated_at)
+                    <div class="service-update-info">
+                        <small class="text-muted">
+                            <i class="fas fa-clock"></i>
+                            {{ $employer->IsPartner_updated_at->format('H:i d/m/Y') }}
+                            <span class="d-block ms-3">
+                                {{ $employer->IsPartner_updated_at->diffForHumans() }}
+                            </span>
+                        </small>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="service-card">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="IsHoteffect"
+                        value="1" {{ $employer->IsHoteffect ? 'checked' : '' }}>
+                    <label class="form-check-label">
+                        <i class="fas fa-fire text-danger"></i> Nổi bật
+                    </label>
+                </div>
+                @if($employer->IsHoteffect_updated_at)
+                    <div class="service-update-info">
+                        <small class="text-muted">
+                            <i class="fas fa-clock"></i>
+                            {{ $employer->IsHoteffect_updated_at->format('H:i d/m/Y') }}
+                            <span class="d-block ms-3">
+                                {{ $employer->IsHoteffect_updated_at->diffForHumans() }}
+                            </span>
+                        </small>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
 
                     </div>
 

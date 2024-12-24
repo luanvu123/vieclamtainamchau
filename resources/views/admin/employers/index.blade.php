@@ -1,6 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
+    <style>
+        .service-features .feature-item {
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            margin-bottom: 10px;
+        }
+
+        .service-features .feature-item i {
+            margin-right: 6px;
+        }
+
+        .service-time {
+            margin-top: 4px;
+            margin-left: 24px;
+            font-size: 0.85em;
+        }
+
+        .service-time small {
+            display: block;
+            line-height: 1.4;
+        }
+    </style>
     <div class="container-fluid px-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="mt-4">Quản lý nhà tuyển dụng</h1>
@@ -13,9 +36,10 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover" id="employersTable">
+                    <table class="table table-bordered table-hover" id="user-table">
                         <thead>
                             <tr>
+                                <th><i class="fas fa-number"></i> #</th>
                                 <th><i class="fas fa-image"></i> Logo</th>
                                 <th><i class="fas fa-building"></i> Tên công ty</th>
                                 <th><i class="fas fa-info-circle"></i> Thông tin cơ bản</th>
@@ -27,6 +51,7 @@
                         <tbody>
                             @foreach ($employers as $employer)
                                 <tr>
+                                    <td>{{ $employer->id }}</td>
                                     <td class="text-center">
                                         <img src="{{ asset('storage/' . $employer->avatar) }}" alt="Logo"
                                             class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
@@ -50,11 +75,12 @@
                                         </div>
                                         <div class="mb-1">
                                             <span
-                                                class="badge {{ $employer->isVerifyEmail ? 'bg-success' : 'bg-warning' }}">
+                                                class="badge {{ $employer->verification_token === null ? 'bg-success' : 'bg-warning' }}">
                                                 <i class="fas fa-envelope"></i>
-                                                {{ $employer->isVerifyEmail ? 'Đã xác thực email' : 'Chưa xác thực email' }}
+                                                {{ $employer->verification_token === null ? 'Đã xác thực email' : 'Chưa xác thực email' }}
                                             </span>
                                         </div>
+
                                         <div>
                                             <span
                                                 class="badge {{ $employer->isVerifyCompany ? 'bg-success' : 'bg-warning' }}">
@@ -68,21 +94,68 @@
                                             @if ($employer->IsBasicnews)
                                                 <div class="feature-item">
                                                     <i class="fas fa-newspaper text-primary"></i> Tin cơ bản
+                                                    @if ($employer->IsBasicnews_updated_at)
+                                                        <div class="service-time">
+                                                            <small class="text-muted">
+                                                                <i class="fas fa-clock"></i>
+                                                                {{ $employer->IsBasicnews_updated_at->format('H:i d/m/Y') }}
+                                                                <span class="d-block ms-3">
+                                                                    {{ $employer->IsBasicnews_updated_at->diffForHumans() }}
+                                                                </span>
+                                                            </small>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             @endif
+
                                             @if ($employer->isUrgentrecruitment)
                                                 <div class="feature-item">
                                                     <i class="fas fa-bolt text-warning"></i> Tuyển gấp
+                                                    @if ($employer->isUrgentrecruitment_updated_at)
+                                                        <div class="service-time">
+                                                            <small class="text-muted">
+                                                                <i class="fas fa-clock"></i>
+                                                                {{ $employer->isUrgentrecruitment_updated_at->format('H:i d/m/Y') }}
+                                                                <span class="d-block ms-3">
+                                                                    {{ $employer->isUrgentrecruitment_updated_at->diffForHumans() }}
+                                                                </span>
+                                                            </small>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             @endif
+
                                             @if ($employer->IsPartner)
                                                 <div class="feature-item">
                                                     <i class="fas fa-crown text-warning"></i> Đối tác
+                                                    @if ($employer->IsPartner_updated_at)
+                                                        <div class="service-time">
+                                                            <small class="text-muted">
+                                                                <i class="fas fa-clock"></i>
+                                                                {{ $employer->IsPartner_updated_at->format('H:i d/m/Y') }}
+                                                                <span class="d-block ms-3">
+                                                                    {{ $employer->IsPartner_updated_at->diffForHumans() }}
+                                                                </span>
+                                                            </small>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             @endif
+
                                             @if ($employer->IsHoteffect)
                                                 <div class="feature-item">
                                                     <i class="fas fa-fire text-danger"></i> Nổi bật
+                                                    @if ($employer->IsHoteffect_updated_at)
+                                                        <div class="service-time">
+                                                            <small class="text-muted">
+                                                                <i class="fas fa-clock"></i>
+                                                                {{ $employer->IsHoteffect_updated_at->format('H:i d/m/Y') }}
+                                                                <span class="d-block ms-3">
+                                                                    {{ $employer->IsHoteffect_updated_at->diffForHumans() }}
+                                                                </span>
+                                                            </small>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             @endif
                                         </div>

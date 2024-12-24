@@ -63,7 +63,13 @@
                                 <div class="card-content">
                                     <h3>{{ Str::limit($job->title, 30) }}</h3>
                                     <p>{{ $job->employer ? $job->employer->company_name : 'Công ty TNHH' }}</p>
-                                    <span>Vietnam</span>
+                                    <span>
+                                        @if ($job->countries->isNotEmpty())
+                                            {{ $job->countries->pluck('name')->join(', ') }}
+                                        @else
+                                            Không xác định quốc gia
+                                        @endif
+                                    </span>
                                 </div>
                                 <a href="{{ route('job.show', $job->slug) }}" class="card-link"
                                     title="{{ $job->title }}"> Xem chi tiết</a>
@@ -82,29 +88,28 @@
             @endif
         @endforeach
 
-      <section class="partners">
-    <h2>CÁC ĐỐI TÁC</h2>
-    <div class="partner-grid">
-        @if ($employerIsPartner->count() > 0)
-            @foreach ($employerIsPartner as $partner)
-                <div class="partner-logo">
-                    <img src="{{ asset('storage/' . $partner->company_logo) }}"
-                         alt="{{ $partner->company_name }}"
-                         onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
-                    <div class="partner-info">
-                        <h3>{{ $partner->company_name }}</h3>
-                        <div class="position-count">
-                            <i class="fas fa-briefcase"></i>
-                            <span>{{ $partner->job_postings_count }} vị trí đang tuyển</span>
+        <section class="partners">
+            <h2>CÁC ĐỐI TÁC</h2>
+            <div class="partner-grid">
+                @if ($employerIsPartner->count() > 0)
+                    @foreach ($employerIsPartner as $partner)
+                        <div class="partner-logo">
+                            <img src="{{ asset('storage/' . $partner->company_logo) }}" alt="{{ $partner->company_name }}"
+                                onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
+                            <div class="partner-info">
+                                <h3>{{ $partner->company_name }}</h3>
+                                <div class="position-count">
+                                    <i class="fas fa-briefcase"></i>
+                                    <span>{{ $partner->job_postings_count }} vị trí đang tuyển</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            @endforeach
-        @else
-            <p>Hiện tại chưa có đối tác nào.</p>
-        @endif
-    </div>
-</section>
+                    @endforeach
+                @else
+                    <p>Hiện tại chưa có đối tác nào.</p>
+                @endif
+            </div>
+        </section>
 
 
         <section class="keywords-section">

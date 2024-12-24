@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -61,8 +62,12 @@ class Employer extends Authenticatable
         'detail',
         'facebook',
         'twitter',
-         'verification_token',
-         'remember_token'
+        'verification_token',
+        'remember_token',
+        'IsBasicnews_updated_at',
+        'isUrgentrecruitment_updated_at',
+        'IsPartner_updated_at',
+        'IsHoteffect_updated_at'
     ];
 
     /**
@@ -95,6 +100,14 @@ class Employer extends Authenticatable
         'IsFramingeffect' => 'boolean',
         'IsHoteffect' => 'boolean',
         'isVerifyEmail' => 'boolean',
+        'IsBasicnews_updated_at',
+        'isUrgentrecruitment_updated_at',
+        'IsPartner_updated_at',
+        'IsHoteffect_updated_at',
+        'IsBasicnews_updated_at' => 'datetime',
+        'isUrgentrecruitment_updated_at' => 'datetime',
+        'IsPartner_updated_at' => 'datetime',
+        'IsHoteffect_updated_at' => 'datetime',
     ];
 
     /**
@@ -127,4 +140,13 @@ class Employer extends Authenticatable
     {
         return $this->gallery()->where('is_active', true);
     }
+   public function getDaysSinceServiceUpdate($service)
+{
+    $timestamp = $this->{$service . '_updated_at'};
+
+    if (!$timestamp) return null; // Nếu không có thời gian cập nhật
+
+    return Carbon::parse($timestamp)->diffInDays(now());
+}
+
 }

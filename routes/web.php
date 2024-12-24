@@ -46,6 +46,9 @@ Route::get('/danh-sach-cac-quoc-gia', [SiteController::class, 'countries'])->nam
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('services', ServiceController::class);
+     Route::resource('manage/employers', EmployerManageController::class, [
+        'as' => 'manage'
+    ]);
     Route::resource('banks', BankController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);

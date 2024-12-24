@@ -124,8 +124,14 @@ class EmployerManageController extends Controller
 
         foreach ($booleanFields as $field) {
             $validated[$field] = $request->has($field);
+
+            // Kiểm tra nếu giá trị thay đổi thì cập nhật timestamp
+            if ($employer->$field !== $validated[$field]) {
+                $validated[$field . '_updated_at'] = now();
+            }
         }
 
+        // Xử lý logo nếu có
         if ($request->hasFile('logo')) {
             if ($employer->logo) {
                 Storage::delete($employer->logo);
@@ -133,8 +139,10 @@ class EmployerManageController extends Controller
             $validated['logo'] = $request->file('logo')->store('employers/logos', 'public');
         }
 
+        // Thêm slug
         $validated['slug'] = Str::slug($validated['company_name']);
 
+        // Cập nhật employer với tất cả dữ liệu đã validate
         $employer->update($validated);
 
         return redirect()->route('manage.employers.edit', $employer)

@@ -33,12 +33,13 @@ class SiteController extends Controller
     public function index()
     {
         $categories = Category::where('status', 'active')->get();
-        $genres = Genre::with(['jobPostings' => function ($query) {
-            $query->with('employer')
-                ->where('status', 'active')
-                ->where('closing_date', '>', now())
-                ->latest();
-        }])->get();
+       $genres = Genre::with(['jobPostings' => function ($query) {
+    $query->with(['employer', 'countries']) // Nạp cả employer và countries
+        ->where('status', 'active')
+        ->where('closing_date', '>', now())
+        ->latest();
+}])->get();
+
 
         $countries = Country::where('status', 'active')->get(); // Lấy quốc gia từ bảng Country
         $employerIsPartner = Employer::where('isPartner', 1)->withCount('jobPostings')->get();
