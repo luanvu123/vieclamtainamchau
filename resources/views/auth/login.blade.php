@@ -13,15 +13,12 @@
             <div class="row login-box">
                 <div class="col-lg-5 form-text">
                     <div class="info clearfix">
-                        <h1 class="animate-charcter">Welcome To Admin Vieclamso1</h1>
+                        <h1 class="animate-charcter">Welcome To Admin Vieclamtainamchau</h1>
 
                     </div>
                 </div>
                 <div class="col-lg-7 align-self-center form-section">
                     <div class="form-inner">
-                        <a href="{{ route('countries') }}" class="logo">
-                            <img src="" alt="logo">
-                        </a>
                         <h3>Sign Into Your Account</h3>
                         <form method="POST" action="{{ route('login') }}">
                             @csrf

@@ -223,143 +223,146 @@
             margin: 25px 0 15px;
             color: #333;
         }
-.other-jobs-section {
-    margin-top: 2.5rem;
-    padding: 1.5rem;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
 
-.section-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid #edf2f7;
-}
+        .other-jobs-section {
+            margin-top: 2.5rem;
+            padding: 1.5rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
 
-.jobs-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #edf2f7;
+        }
 
-.job-item {
-    padding: 1.25rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-}
+        .jobs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
 
-.job-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    border-color: #cbd5e0;
-}
+        .job-item {
+            padding: 1.25rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
 
-.job-item-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
+        .job-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-color: #cbd5e0;
+        }
 
-.job-item-title {
-    font-size: 1.125rem;
-    margin: 0;
-}
+        .job-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
 
-.job-item-title a {
-    color: #2d3748;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
+        .job-item-title {
+            font-size: 1.125rem;
+            margin: 0;
+        }
 
-.job-item-title a:hover {
-    color: #4299e1;
-}
+        .job-item-title a {
+            color: #2d3748;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
 
-.hot-label {
-    background: #f56565;
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
+        .job-item-title a:hover {
+            color: #4299e1;
+        }
 
-.job-item-details {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.25rem;
-    margin-bottom: 1rem;
-}
+        .hot-label {
+            background: #f56565;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
 
-.detail {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #4a5568;
-    font-size: 0.9375rem;
-}
+        .job-item-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            margin-bottom: 1rem;
+        }
 
-.detail i {
-    color: #718096;
-}
+        .detail {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #4a5568;
+            font-size: 0.9375rem;
+        }
 
-.job-item-skills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-}
+        .detail i {
+            color: #718096;
+        }
 
-.skill-tag {
-    background: #edf2f7;
-    color: #4a5568;
-    padding: 0.25rem 0.75rem;
-    border-radius: 15px;
-    font-size: 0.875rem;
-}
+        .job-item-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
 
-.job-item-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #718096;
-    font-size: 0.875rem;
-}
+        .skill-tag {
+            background: #edf2f7;
+            color: #4a5568;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.875rem;
+        }
 
-.deadline, .views {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
+        .job-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #718096;
+            font-size: 0.875rem;
+        }
 
-.no-jobs-message {
-    text-align: center;
-    padding: 2rem;
-    background: #f7fafc;
-    border-radius: 6px;
-    color: #718096;
-}
+        .deadline,
+        .views {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-@media (max-width: 768px) {
-    .job-item-details {
-        gap: 0.75rem;
-    }
+        .no-jobs-message {
+            text-align: center;
+            padding: 2rem;
+            background: #f7fafc;
+            border-radius: 6px;
+            color: #718096;
+        }
 
-    .detail {
-        font-size: 0.875rem;
-    }
+        @media (max-width: 768px) {
+            .job-item-details {
+                gap: 0.75rem;
+            }
 
-    .job-item-footer {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-}
+            .detail {
+                font-size: 0.875rem;
+            }
+
+            .job-item-footer {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
         .job-description ul {
             list-style-type: none;
             padding-left: 20px;
@@ -547,12 +550,7 @@
                 </div>
             </div>
 
-            {{-- @if ($jobPosting->is_first_applicant)
-        <div class="first-apply">
-            <img src="{{ asset('frontend/img/entry-svgrepo-com.png') }}" alt="first">
-            Cơ hội đầu tiên! Hãy là người đầu tiên nộp hồ sơ!
-        </div>
-        @endif --}}
+
 
             <!-- Action Buttons -->
             <div class="buttons">
@@ -654,68 +652,129 @@
 
                 </div>
                 <div class="other-jobs-section">
-    <h2 class="section-title">Việc làm khác từ công ty</h2>
+                    <h2 class="section-title">Việc làm khác từ công ty</h2>
 
-    @if ($orderJob->count() > 0)
-        <div class="jobs-list">
-            @foreach ($orderJob as $job)
-                <div class="job-item">
-                    <div class="job-item-header">
-                        <h3 class="job-item-title">
-                            <a href="{{ route('job.show', $job->slug) }}">{{ $job->title }}</a>
-                        </h3>
-                        @if($job->isHot)
-                            <span class="hot-label">Hot</span>
-                        @endif
-                    </div>
+                    @if ($orderJob->count() > 0)
+                        <div class="jobs-list">
+                            @foreach ($orderJob as $job)
+                                <div class="job-item">
+                                    <div class="job-item-header">
+                                        <h3 class="job-item-title">
+                                            <a href="{{ route('job.show', $job->slug) }}">{{ $job->title }}</a>
+                                        </h3>
+                                        @if ($job->isHot)
+                                            <span class="hot-label">Hot</span>
+                                        @endif
+                                    </div>
 
-                    <div class="job-item-details">
-                        <div class="detail">
-                            <i class="fas fa-coins"></i>
-                            <span>{{ $job->salary }}</span>
-                        </div>
-                        <div class="detail">
-                            <i class="fas fa-map-marker"></i>
-                            <span>{{ $job->city }}</span>
-                        </div>
-                        <div class="detail">
-                            <i class="fas fa-briefcase"></i>
-                            <span>{{ $job->type }}</span>
-                        </div>
-                        <div class="detail">
-                            <i class="fas fa-users"></i>
-                            <span>{{ $job->number_of_recruits }} người</span>
-                        </div>
-                    </div>
+                                    <div class="job-item-details">
+                                        <div class="detail">
+                                            <i class="fas fa-coins"></i>
+                                            <span>{{ $job->salary }}</span>
+                                        </div>
+                                        <div class="detail">
+                                            <i class="fas fa-map-marker"></i>
+                                            <span>{{ $job->location }}</span>
+                                        </div>
+                                        <div class="detail">
+                                            <i class="fas fa-briefcase"></i>
+                                            <span>{{ $job->type }}</span>
+                                        </div>
+                                        <div class="detail">
+                                            <i class="fas fa-users"></i>
+                                            <span>{{ $job->number_of_recruits }} người</span>
+                                        </div>
+                                    </div>
 
-                    <div class="job-item-skills">
-                        @foreach(explode(',', $job->skills_required) as $skill)
-                            <span class="skill-tag">{{ trim($skill) }}</span>
-                        @endforeach
-                    </div>
+                                    <div class="job-item-skills">
+                                        @foreach (explode(',', $job->skills_required) as $skill)
+                                            <span class="skill-tag">{{ trim($skill) }}</span>
+                                        @endforeach
+                                    </div>
 
-                    <div class="job-item-footer">
-                        <div class="deadline">
-                            <i class="far fa-clock"></i>
-                            <span>Hạn nộp: {{ \Carbon\Carbon::parse($job->closing_date)->format('d/m/Y') }}</span>
+                                    <div class="job-item-footer">
+                                        <div class="deadline">
+                                            <i class="far fa-clock"></i>
+                                            <span>Hạn nộp:
+                                                {{ \Carbon\Carbon::parse($job->closing_date)->format('d/m/Y') }}</span>
+                                        </div>
+                                        <div class="views">
+                                            <i class="far fa-eye"></i>
+                                            <span>{{ $job->views }} lượt xem</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                        <div class="views">
-                            <i class="far fa-eye"></i>
-                            <span>{{ $job->views }} lượt xem</span>
+                    @else
+                        <div class="no-jobs-message">
+                            <p>Hiện tại công ty chưa có tin tuyển dụng nào khác</p>
                         </div>
-                    </div>
+                    @endif
                 </div>
-            @endforeach
-        </div>
-    @else
-        <div class="no-jobs-message">
-            <p>Hiện tại công ty chưa có tin tuyển dụng nào khác</p>
-        </div>
-    @endif
-</div>
             </div>
         </div>
     </div>
+    <!-- Add this to your view file -->
+    <div id="applicationModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Nộp hồ sơ ứng tuyển</h2>
+            <form id="applicationForm" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="job_posting_id" id="jobPostingId">
+
+                <div class="form-group">
+                    <label for="cv">CV của bạn (PDF, DOC, DOCX)*</label>
+                    <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="introduction">Giới thiệu bản thân (không bắt buộc)</label>
+                    <textarea id="introduction" name="introduction" rows="4"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Nộp hồ sơ</button>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        .close {
+            float: right;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -737,34 +796,7 @@
                 });
 
                 // Job application functionality
-                window.applyJob = function(jobId) {
-                    // Kiểm tra đăng nhập
-                    @auth
-                    // Gửi request apply job
-                    fetch(`/jobs/${jobId}/apply`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert('Ứng tuyển thành công!');
-                            } else {
-                                alert(data.message || 'Có lỗi xảy ra khi ứng tuyển.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Có lỗi xảy ra khi ứng tuyển.');
-                        });
-                @else
-                    // Redirect to login if not authenticated
-                    window.location.href = '{{ route('login') }}';
-                @endauth
-            };
+
 
             // Save/Unsave job functionality
             window.toggleSaveJob = function(jobId) {
@@ -877,5 +909,50 @@
         });
         });
         });
+    </script>
+     <script>
+        function applyJob(jobId) {
+            document.getElementById('jobPostingId').value = jobId;
+            document.getElementById('applicationModal').style.display = 'block';
+        }
+
+        // Close modal when clicking on X or outside
+        document.querySelector('.close').onclick = function() {
+            document.getElementById('applicationModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('applicationModal')) {
+                document.getElementById('applicationModal').style.display = 'none';
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('applicationForm').onsubmit = function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch('{{ route('candidate.apply') }}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert(data.message);
+                        document.getElementById('applicationModal').style.display = 'none';
+                        document.getElementById('applicationForm').reset();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Có lỗi xảy ra, vui lòng thử lại');
+                });
+        };
     </script>
 @endsection

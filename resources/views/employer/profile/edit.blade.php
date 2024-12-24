@@ -38,9 +38,9 @@
                      <i>📋</i>
                      <span>Quản lý tin đăng</span>
                  </a>
-                 <a href="#" class="menu-item">
+                 <a href="{{ route('employer.services') }}" class="menu-item">
                      <i>📊</i>
-                     <span>Chiến dịch tuyển dụng</span>
+                     <span>Mua dịch vụ</span>
                  </a>
              </div>
 

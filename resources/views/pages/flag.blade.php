@@ -295,15 +295,36 @@
             });
 
             // Handle form submission
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Add your form submission logic here
-                const formData = new FormData(form);
-                console.log('Form submitted:', Object.fromEntries(formData));
-                // You can add an AJAX request here to send the data to your server
+          form.addEventListener('submit', function (e) {
+    e.preventDefault();
 
-                closeModal();
-            });
+    const formData = new FormData(form);
+    const typeTitle = modalTitle.classList.contains('job-seekers') ? 'Tư vấn cho người tìm việc' : 'Tư vấn cho Nhà tuyển dụng';
+    formData.append('type_title', typeTitle);
+
+    fetch('/supports', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        },
+        body: formData,
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to submit consultation');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert(data.message);
+            closeModal();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Đã xảy ra lỗi khi gửi thông tin tư vấn.');
+        });
+});
+
         });
     </script>
 @endsection

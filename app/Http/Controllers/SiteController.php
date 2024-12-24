@@ -35,14 +35,14 @@ class SiteController extends Controller
         $categories = Category::where('status', 'active')->get();
         $genres = Genre::with(['jobPostings' => function ($query) {
             $query->with('employer')
-                ->where('status', '1')
+                ->where('status', 'active')
                 ->where('closing_date', '>', now())
                 ->latest();
         }])->get();
 
         $countries = Country::where('status', 'active')->get(); // Lấy quốc gia từ bảng Country
         $employerIsPartner = Employer::where('isPartner', 1)->withCount('jobPostings')->get();
-        return view('pages.home', compact('categories', 'genres', 'countries','employerIsPartner'));
+        return view('pages.home', compact('categories', 'genres', 'countries', 'employerIsPartner'));
     }
 
     public function genre($slug)
@@ -61,23 +61,23 @@ class SiteController extends Controller
             ->firstOrFail();
         return view('pages.genre', compact('genre', 'genres', 'categories', 'countries'));
     }
-  public function job($slug)
-{
-    $jobPosting = JobPosting::where('slug', $slug)
-        ->with('employer')
-        ->firstOrFail();
+    public function job($slug)
+    {
+        $jobPosting = JobPosting::where('slug', $slug)
+            ->with('employer')
+            ->firstOrFail();
+        $jobPosting->increment('views');
+        $orderJob = JobPosting::where('employer_id', $jobPosting->employer_id)
+            ->where('slug', '!=', $slug)
+            ->where('status', 'active')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
 
-    $orderJob = JobPosting::where('employer_id', $jobPosting->employer_id)
-        ->where('slug', '!=', $slug)
-        ->where('status', 'active')
-        ->orderBy('created_at', 'desc')
-        ->limit(5)
-        ->get();
+        $categories = Category::where('status', 'active')->get();
 
-    $categories = Category::where('status', 'active')->get();
-
-    return view('pages.job', compact('jobPosting', 'categories', 'orderJob'));
-}
+        return view('pages.job', compact('jobPosting', 'categories', 'orderJob'));
+    }
     public function category($slug)
     {
         // Lấy danh sách tất cả các danh mục để hiển thị ở sidebar hoặc header
@@ -94,7 +94,7 @@ class SiteController extends Controller
             }])
             ->firstOrFail();
 
-        return view('pages.category', compact('category', 'categories','countries'));
+        return view('pages.category', compact('category', 'categories', 'countries'));
     }
     public function search(Request $request)
     {

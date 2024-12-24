@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <title>
         Trang Admin
@@ -20,6 +21,8 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             window.scrollTo(0, 1);
         }
     </script>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
     <script src="{{ asset('backend_admin/js/jquery-1.11.1.min.js') }}"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.lordicon.com/qjzruarw.js"></script>
@@ -87,6 +90,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
         }
     </style>
 </head>
+
 <body class="cbp-spmenu-push">
     @if (Auth::check())
         <div class="main-content">
@@ -142,19 +146,19 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                                     alt="Google" width="20" height="20"> Phân quyền quản trị
                                             </a>
                                         </li>
-                                         <li class="{{ Request::is('countries*') ? 'active' : '' }}">
+                                        <li class="{{ Request::is('countries*') ? 'active' : '' }}">
                                             <a href="{{ route('countries.index') }}">
                                                 <img src="{{ asset('backend_admin/images/file-cv-svgrepo-com.svg') }}"
                                                     alt="Google" width="20" height="20"> Quốc gia
                                             </a>
                                         </li>
-                                         <li class="{{ Request::is('categories*') ? 'active' : '' }}">
+                                        <li class="{{ Request::is('categories*') ? 'active' : '' }}">
                                             <a href="{{ route('categories.index') }}">
                                                 <img src="{{ asset('backend_admin/images/8673763_ic_fluent_slide_size_filled_icon.svg') }}"
                                                     alt="Google" width="20" height="20"> Thể loại
                                             </a>
                                         </li>
-                                         <li class="{{ Request::is('genres') ? 'active' : '' }}">
+                                        <li class="{{ Request::is('genres') ? 'active' : '' }}">
                                             <a href="{{ route('genres.index') }}">
                                                 <img src="{{ asset('backend_admin/images/gift-svgrepo-com.svg') }}"
                                                     alt="Google" width="20" height="20"> Danh mục
@@ -163,7 +167,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 
                                     </ul>
                                 </li>
-                                 <li
+                                <li
                                     class="treeview {{ Request::is('manage.employers.index', 'job-postings-manage*', 'admin/companies*', 'ordermanages*', 'products*', 'employers/purchasedManage*') ? 'active' : '' }}">
                                     <a href="#">
                                         <img src="{{ asset('backend_admin/images/company-svgrepo-com.svg') }}"
@@ -182,11 +186,31 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     </ul>
                                 </li>
 
-                                  <li class="treeview {{ Request::is('candidate-manage*') ? 'active' : '' }}">
+                                <li class="treeview {{ Request::is('candidate-manage*') ? 'active' : '' }}">
                                     <a href="{{ route('candidate-manage.index') }}">
                                         <img src="{{ asset('backend_admin/images/candidate-for-elections-svgrepo-com.svg') }}"
                                             alt="Google" width="20" height="20">
                                         <span> Ứng viên</span>
+                                    </a>
+                                </li>
+                                <li class="treeview {{ Request::is('support-manage*') ? 'active' : '' }}">
+                                    <a href="{{ route('support-manage.index') }}">
+                                        <img src="{{ asset('backend_admin/images/support-svgrepo-com.svg') }}"
+                                            alt="Google" width="20" height="20"> Hỗ trợ
+
+                                    </a>
+                                </li>
+                                <li class="{{ Request::is('banks*') ? 'active' : '' }}">
+                                    <a href="{{ route('banks.index') }}">
+                                        <img src="{{ asset('backend_admin/images/3018587_admin_administrator_ajax_options_permission_icon.svg') }}"
+                                            alt="Google" width="20" height="20"> Thông tin thanh
+                                        toán
+                                    </a>
+                                </li>
+                                <li class="{{ Request::is('services*') ? 'active' : '' }}">
+                                    <a href="{{ route('services.index') }}">
+                                        <img src="{{ asset('backend_admin/images/shopping-cart-reversed-svgrepo-com.svg') }}"
+                                            alt="Google" width="20" height="20"> Danh sách dịch vụ
                                     </a>
                                 </li>
 
@@ -419,14 +443,23 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     </script>
     <script>
         CKEDITOR.replace('summary2');
+        CKEDITOR.replace('summary6');
     </script>
 
     <script src="{{ asset('backend_admin/js/utils.js') }}"></script>
 
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <script src="https://cdn.bootcdn.net/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
+    <script>
+        new MultiSelectTag('countries') // id
+    </script>
+    <script>
+        new MultiSelectTag('genres')
+    </script>
+    <script>
+        new MultiSelectTag('categories')
+    </script>
 </body>
 
 </html>
-

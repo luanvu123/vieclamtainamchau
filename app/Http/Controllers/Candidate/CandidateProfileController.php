@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 class CandidateProfileController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('candidate');
+    }
     public function edit()
     {
         $candidate = Auth::guard('candidate')->user();

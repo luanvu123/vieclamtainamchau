@@ -14,6 +14,7 @@
 
 /* Auth card styling */
 .auth-card {
+     width: 100%;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -194,6 +195,44 @@ input[type="checkbox"] {
 }
     </style>
     <div class="container">
+        <div class="sidebar">
+             <div class="menu-title">Quản lý CV</div>
+             <div class="menu-section">
+
+                 <a href="{{ route('employer.job-posting.create') }}" class="menu-item">
+                     <i>+</i>
+                     <span>Tạo CV</span>
+                 </a>
+                 <a href="{{ route('employer.job-posting.index') }}" class="menu-item">
+                     <i>📋</i>
+                     <span>Quản lý tin đăng</span>
+                 </a>
+                 <a href="{{ route('employer.services') }}" class="menu-item">
+                     <i>📊</i>
+                     <span>Mua dịch vụ</span>
+                 </a>
+             </div>
+
+             <div class="menu-section">
+                 <div class="menu-title">Quản lý ứng viên</div>
+                 <a href="#" class="menu-item">
+                     <i>👥</i>
+                     <span>Hồ sơ ứng tuyển</span>
+                 </a>
+                 <a href="#" class="menu-item">
+                     <i>📄</i>
+                     <span>Quản lý thẻ</span>
+                 </a>
+                 <a href="#" class="menu-item">
+                     <i>❤️</i>
+                     <span>Hồ sơ đã lưu</span>
+                 </a>
+                 <a href="#" class="menu-item">
+                     <i>🔍</i>
+                     <span>Tìm ứng viên mới</span>
+                 </a>
+             </div>
+         </div>
         <div class="auth-card">
             <div class="auth-header text-center">
                 <i class="fas fa-user-edit header-icon"></i>

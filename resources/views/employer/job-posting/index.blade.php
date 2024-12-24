@@ -12,9 +12,9 @@
                     <i>📋</i>
                     <span>Quản lý tin đăng</span>
                 </a>
-                <a href="#" class="menu-item">
+                <a href="{{ route('employer.services') }}" class="menu-item">
                     <i>📊</i>
-                    <span>Chiến dịch tuyển dụng</span>
+                    <span>Mua dịch vụ</span>
                 </a>
             </div>
 
@@ -68,9 +68,15 @@
                             <td>{{ $job->title }}</td>
                             <td>{{ $job->closing_date }}</td>
                             <td>{{ $job->views }}</td>
-                            <td> CV ứng tuyển</td>
                             <td>
-                                <a href="{{ route('employer.job-posting.edit', $job->id) }}" class="action-btn">Chỉnh sửa</a>
+                                <a href="{{ route('employer.job-posting.applications', $job->id) }}"
+                                    class="application-btn">
+                                    CV ứng tuyển ({{ $job->applications->count() }})
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ route('employer.job-posting.edit', $job->id) }}" class="action-btn">Chỉnh
+                                    sửa</a>
                                 <form action="{{ route('employer.job-posting.destroy', $job->id) }}" method="POST"
                                     style="display:inline;">
                                     @csrf

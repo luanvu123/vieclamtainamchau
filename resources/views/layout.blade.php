@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
@@ -14,6 +15,10 @@
             padding: 0;
             box-sizing: border-box;
             font-family: Arial, sans-serif;
+        }
+
+        a {
+            text-decoration: none;
         }
 
         .avatar-container {
@@ -1667,13 +1672,13 @@
         </div>
         <nav class="nav">
             <ul>
-                <li><a href="{{route('/')}}">Trang chủ</a></li>
-                <li><a href="{{route('site.countries')}}">Việc làm</a></li>
+                <li><a href="{{ route('/') }}">Trang chủ</a></li>
+                <li><a href="{{ route('site.countries') }}">Việc làm</a></li>
                 @if (isset($genre_home) && $genre_home->count() > 0)
-            @foreach ($genre_home as $genre)
-                <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
-            @endforeach
-        @endif
+                    @foreach ($genre_home as $genre)
+                        <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
+                    @endforeach
+                @endif
                 <li><a href="#">Liên hệ</a></li>
             </ul>
         </nav>
@@ -1806,6 +1811,16 @@
         CKEDITOR.replace('summary4');
         CKEDITOR.replace('summary5');
         CKEDITOR.replace('description');
+    </script>
+    <script src="{{ asset('backend_admin/js/jquery-1.11.1.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
+
+    <!-- Include DataTables JavaScript -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#user-table').DataTable();
+        });
     </script>
 </body>
 

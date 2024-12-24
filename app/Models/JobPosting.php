@@ -10,10 +10,27 @@ class JobPosting extends Model
     use HasFactory;
 
     protected $fillable = [
-        'employer_id', 'title', 'slug', 'type', 'age_range', 'location', 'tags',
-        'description', 'application_email_url', 'closing_date', 'salary', 'experience',
-        'rank', 'number_of_recruits', 'sex', 'status', 'skills_required',
-        'area', 'city', 'isHot', 'views'
+        'employer_id',
+        'title',
+        'slug',
+        'type',
+        'age_range',
+        'location',
+        'tags',
+        'description',
+        'application_email_url',
+        'closing_date',
+        'salary',
+        'experience',
+        'rank',
+        'number_of_recruits',
+        'sex',
+        'status',
+        'skills_required',
+        'area',
+        'city',
+        'isHot',
+        'views'
     ];
 
     /**
@@ -39,9 +56,13 @@ class JobPosting extends Model
     {
         return $this->belongsTo(Employer::class);
     }
-     public function genres()
+    public function genres()
     {
         return $this->belongsToMany(Genre::class, 'genre_jobposting');
     }
+    // app/Models/JobPosting.php
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
 }
-

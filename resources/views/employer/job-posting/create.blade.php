@@ -13,9 +13,9 @@
                      <i>📋</i>
                      <span>Quản lý tin đăng</span>
                  </a>
-                 <a href="#" class="menu-item">
+                 <a href="{{ route('employer.services') }}" class="menu-item">
                      <i>📊</i>
-                     <span>Chiến dịch tuyển dụng</span>
+                     <span>Mua dịch vụ</span>
                  </a>
              </div>
 
@@ -42,7 +42,7 @@
          <div class="main-content">
              <h1 class="mb-4">Tạo bài đăng tuyển dụng</h1>
              <div class="container">
-                 <form action="{{ route('employer.job-posting.create') }}" method="POST">
+                 <form action="{{ route('employer.job-posting.store') }}" method="POST">
                      @csrf
                      <div class="mb-3">
                          <label for="title" class="form-label">Email</label>
