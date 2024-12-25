@@ -7,6 +7,7 @@ use App\Models\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+
 class CandidateProfileController extends Controller
 {
     public function __construct()
@@ -19,6 +20,14 @@ class CandidateProfileController extends Controller
         return view('candidate.profile', compact('candidate'));
     }
 
+    public function cvWhite()
+    {
+        return view('candidate.cv_white');
+    }
+    public function cvBlack()
+    {
+        return view('candidate.cv_black');
+    }
     public function applications()
     {
         // Lấy candidate hiện tại
@@ -44,22 +53,24 @@ class CandidateProfileController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:candidates,email,' . Auth::id(),
-            'phone' => 'nullable|string|max:15',
-            'dob' => 'nullable|date',
+            'phone' => 'required|string|max:15',
+            'dob' => 'required|date',
             'avatar_candidate' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
             'cv_path' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
-            'gender' => 'nullable|string',
-            'address' => 'nullable|string',
-            'position' => 'nullable|string',
-            'is_public' => 'nullable|boolean',
-            'cv_public' => 'nullable|boolean',
-            'linkedin' => 'nullable|string',
-            'level' => 'nullable|string',
-            'desired_level' => 'nullable|string',
-            'desired_salary' => 'nullable|numeric',
-            'education_level' => 'nullable|string',
-            'years_of_experience' => 'nullable|integer',
-            'working_form' => 'nullable|string',
+            'gender' => 'required|string',
+            'address' => 'required|string',
+            'position' => 'required|string',
+            'is_public' => 'nullable|in:0,1',
+            'cv_public' => 'nullable|in:0,1',
+            'linkedin' => 'required|string',
+            'level' => 'required|string',
+            'desired_level' => 'required|string',
+            'desired_salary' => 'required|string',
+            'education_level' => 'required|string',
+            'years_of_experience' => 'required|integer',
+            'working_form' => 'required|string',
+            'skill' => 'required|string|max:255',
+
         ]);
 
         // Retrieve the authenticated candidate
@@ -73,8 +84,8 @@ class CandidateProfileController extends Controller
         $candidate->gender = $request->input('gender');
         $candidate->address = $request->input('address');
         $candidate->position = $request->input('position');
-        $candidate->is_public = $request->has('is_public');
-        $candidate->cv_public = $request->has('cv_public');
+        $candidate->is_public = $request->input('is_public', 0); // Default to 0 if not set
+        $candidate->cv_public = $request->input('cv_public', 0); // Default to 0 if not set
         $candidate->linkedin = $request->input('linkedin');
         $candidate->level = $request->input('level');
         $candidate->desired_level = $request->input('desired_level');
@@ -82,6 +93,7 @@ class CandidateProfileController extends Controller
         $candidate->education_level = $request->input('education_level');
         $candidate->years_of_experience = $request->input('years_of_experience');
         $candidate->working_form = $request->input('working_form');
+         $candidate->skill = $request->input('skill');
 
         // Handle file uploads
         if ($request->hasFile('avatar_candidate')) {

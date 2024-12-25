@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\Bank;
+use App\Models\Candidate;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Genre;
@@ -20,6 +21,13 @@ class JobPostingController extends Controller
     {
         $this->middleware('employer');
     }
+
+   public function findCandidate()
+{
+    $candidates = Candidate::where('is_public', 1)->get();
+
+    return view('employer.job-posting.find_candidate', compact('candidates'));
+}
 
     public function index()
     {
@@ -39,12 +47,12 @@ class JobPostingController extends Controller
     }
     public function store(Request $request)
     {
-         $employer = Auth::guard('employer')->user();
+        $employer = Auth::guard('employer')->user();
 
-    // Kiểm tra nếu IsBasicnews == 0
-    if ($employer->IsBasicnews == 0) {
-        return redirect()->back()->with('error', 'Bạn cần phải mua dịch vụ Tin cơ bản để đăng tin tuyển dụng.');
-    }
+        // Kiểm tra nếu IsBasicnews == 0
+        if ($employer->IsBasicnews == 0) {
+            return redirect()->back()->with('error', 'Bạn cần phải mua dịch vụ Tin cơ bản để đăng tin tuyển dụng.');
+        }
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|in:fulltime,parttime,intern,freelance',
@@ -258,7 +266,7 @@ class JobPostingController extends Controller
 
         return view('employer.job-posting.saved-applications', compact('savedApplications'));
     }
-     public function services()
+    public function services()
     {
         $services = Service::where('status', Service::STATUS_ACTIVE)
             ->orderBy('created_at', 'desc')

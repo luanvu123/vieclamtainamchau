@@ -123,9 +123,8 @@ class SiteController extends Controller
 
         $jobPostings = $query->with('employer')->where('status', 'active')->paginate(10);
 
-        $categories = Category::all(); // Truyền để tìm tên danh mục
-        $countries = Country::all();   // Truyền để tìm tên quốc gia
-
+        $categories = Category::where('status', 'active')->get();
+        $countries = Country::where('status', 'active')->get();
         return view('pages.search', compact('jobPostings', 'categories', 'countries'));
     }
 }

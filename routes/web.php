@@ -84,6 +84,9 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
         ->name('dashboard');
     Route::post('/apply', [ApplicationController::class, 'store'])->middleware('candidate')->name('apply');
     Route::get('/profile/edit', [CandidateProfileController::class, 'edit'])->middleware('candidate')->name('profile.edit');
+
+    Route::get('/cv-white', [CandidateProfileController::class, 'cvWhite'])->middleware('candidate')->name('cv.white');
+    Route::get('/cv-black', [CandidateProfileController::class, 'cvBlack'])->middleware('candidate')->name('cv.black');
     Route::post('/profile/edit', [CandidateProfileController::class, 'update'])->middleware('candidate')->name('profile.update');
     Route::get('password/reset', [CandidateForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
     Route::post('password/email', [CandidateForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
@@ -93,6 +96,8 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
 
 Route::prefix('employer')->name('employer.')->group(function () {
     // Authentication Routes
+    Route::get('job-posting/find-candidate', [JobPostingController::class, 'findCandidate'])
+    ->name('job-posting.find-candidate');
     Route::get('/services', [JobPostingController::class, 'services'])->name('services')->middleware('employer');
     Route::get('register', [EmployerAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [EmployerAuthController::class, 'register'])->name('register.submit');

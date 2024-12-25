@@ -25,7 +25,7 @@
                     <i>👥</i>
                     <span>Hồ sơ ứng tuyển</span>
                 </a>
-                <a href="#" class="menu-item">
+                <a href="{{ route('employer.job-posting.find-candidate') }}" class="menu-item">
                     <i>🔍</i>
                     <span>Tìm ứng viên mới</span>
                 </a>

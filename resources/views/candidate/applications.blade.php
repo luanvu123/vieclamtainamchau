@@ -191,28 +191,20 @@
             <div class="menu-title">Quản lý CV</div>
             <div class="menu-section">
 
-                <a href="" class="menu-item">
-                    <i>+</i>
-                    <span>Tạo CV</span>
-                </a>
+                <a href="{{ route('candidate.cv.white')}}" class="menu-item">
+                     <i>📄</i>
+                     <span>Mẫu CV cổ điển</span>
+                 </a>
+                  <a href="{{ route('candidate.cv.black')}}" class="menu-item">
+                     <i>📄</i>
+                     <span>Mẫu CV hiện đại</span>
+                 </a>
             </div>
             <div class="menu-section">
                 <div class="menu-title">Quản lý ứng tuyển</div>
                 <a href="{{ route('candidate.applications') }}" class="menu-item">
                     <i>👥</i>
                     <span>Hồ sơ đã nộp</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i>📄</i>
-                    <span>Quản lý thẻ</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i>❤️</i>
-                    <span>Hồ sơ đã lưu</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i>🔍</i>
-                    <span>Tìm ứng viên mới</span>
                 </a>
             </div>
         </div>

@@ -5,7 +5,7 @@
 @section('content')
 <div class="auth-container">
     <div class="auth-card">
-        <h1>Employer Login</h1>
+        <h1>Đăng nhập nhà tuyển dụng</h1>
 
         <form method="POST" action="{{ route('employer.login.submit') }}" class="auth-form">
             @csrf
@@ -35,12 +35,12 @@
                 </a>
             </div>
 
-            <button type="submit" class="btn-submit">Login</button>
+            <button type="submit" class="btn-submit">Đăng nhập</button>
         </form>
 
         <p class="auth-links">
-            Don't have an account?
-            <a href="{{ route('employer.register') }}">Register here</a>
+            Bạn chưa có tài khoản?
+            <a href="{{ route('employer.register') }}">Đăng kí ngay</a>
         </p>
     </div>
 </div>

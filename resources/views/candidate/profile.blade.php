@@ -4,227 +4,238 @@
 
 @section('content')
     <style>
-   /* Container styling */
-.container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
+        /* Container styling */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-/* Auth card styling */
-.auth-card {
-     width: 100%;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    max-width: 800px;
-    margin: 40px auto;
-}
+        /* Auth card styling */
+        .auth-card {
+            width: 100%;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 800px;
+            margin: 40px auto;
+        }
 
-/* Header styling */
-.auth-header {
-    margin-bottom: 30px;
-}
+        /* Header styling */
+        .auth-header {
+            margin-bottom: 30px;
+        }
 
-.auth-header h2 {
-    color: #333;
-    font-size: 24px;
-    margin: 10px 0 0;
-}
+        .auth-header h2 {
+            color: #333;
+            font-size: 24px;
+            margin: 10px 0 0;
+        }
 
-.header-icon {
-    font-size: 32px;
-    color: #dc3545; /* Changed to red */
-    margin-bottom: 10px;
-}
+        .header-icon {
+            font-size: 32px;
+            color: #dc3545;
+            /* Changed to red */
+            margin-bottom: 10px;
+        }
 
-/* Form group styling */
-.form-group {
-    margin-bottom: 20px;
-}
+        /* Form group styling */
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #555;
-}
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
 
-.form-group label i {
-    width: 20px;
-    margin-right: 8px;
-    color: #dc3545; /* Changed to red */
-}
+        .form-group label i {
+            width: 20px;
+            margin-right: 8px;
+            color: #dc3545;
+            /* Changed to red */
+        }
 
-.checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.checkbox-group label {
-    margin-bottom: 0;
-}
+        .checkbox-group label {
+            margin-bottom: 0;
+        }
 
-.form-control {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
-    transition: border-color 0.3s;
-}
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
 
-.form-control:focus {
-    border-color: #dc3545; /* Changed to red */
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25); /* Changed to red with opacity */
-}
+        .form-control:focus {
+            border-color: #dc3545;
+            /* Changed to red */
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
+            /* Changed to red with opacity */
+        }
 
-/* Checkbox styling */
-input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin-right: 8px;
-    cursor: pointer;
-}
+        /* Checkbox styling */
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
 
-/* File input styling */
-.form-control-file {
-    padding: 8px 0;
-}
+        /* File input styling */
+        .form-control-file {
+            padding: 8px 0;
+        }
 
-/* Button styling */
-.btn {
-    padding: 12px 24px;
-    border-radius: 4px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
-}
+        /* Button styling */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
 
-.btn i {
-    margin-right: 8px;
-}
+        .btn i {
+            margin-right: 8px;
+        }
 
-.btn-primary {
-    background-color: #dc3545; /* Changed to red */
-    border: none;
-    color: white;
-}
+        .btn-primary {
+            background-color: #dc3545;
+            /* Changed to red */
+            border: none;
+            color: white;
+        }
 
-.btn-primary:hover {
-    background-color: #c82333; /* Darker red for hover */
-}
+        .btn-primary:hover {
+            background-color: #c82333;
+            /* Darker red for hover */
+        }
 
-/* Alert styling */
-.alert {
-    padding: 12px 20px;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+        /* Alert styling */
+        .alert {
+            padding: 12px 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.alert i {
-    font-size: 18px;
-}
+        .alert i {
+            font-size: 18px;
+        }
 
-.alert-success {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
-}
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
 
-    .auth-card {
-        padding: 20px;
-        margin: 20px auto;
-    }
+            .auth-card {
+                padding: 20px;
+                margin: 20px auto;
+            }
 
-    .auth-header h2 {
-        font-size: 20px;
-    }
+            .auth-header h2 {
+                font-size: 20px;
+            }
 
-    .header-icon {
-        font-size: 28px;
-    }
+            .header-icon {
+                font-size: 28px;
+            }
 
-    .form-group {
-        margin-bottom: 15px;
-    }
+            .form-group {
+                margin-bottom: 15px;
+            }
 
-    .btn {
-        width: 100%;
-        padding: 10px 20px;
-    }
-}
+            .btn {
+                width: 100%;
+                padding: 10px 20px;
+            }
+        }
 
-@media (max-width: 480px) {
-    .auth-card {
-        padding: 15px;
-        margin: 10px auto;
-    }
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 15px;
+                margin: 10px auto;
+            }
 
-    .header-icon {
-        font-size: 24px;
-    }
+            .header-icon {
+                font-size: 24px;
+            }
 
-    .form-control {
-        font-size: 14px;
-        padding: 8px 10px;
-    }
+            .form-control {
+                font-size: 14px;
+                padding: 8px 10px;
+            }
 
-    .btn {
-        font-size: 14px;
-    }
+            .btn {
+                font-size: 14px;
+            }
 
-    .form-group label i {
-        width: 16px;
-        font-size: 14px;
-    }
-}
+            .form-group label i {
+                width: 16px;
+                font-size: 14px;
+            }
+        }
     </style>
     <div class="container">
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="sidebar">
-             <div class="menu-title">Quản lý CV</div>
-             <div class="menu-section">
+            <div class="menu-title">Quản lý CV</div>
+            <div class="menu-section">
 
-                 <a href="" class="menu-item">
-                     <i>+</i>
-                     <span>Tạo CV</span>
-                 </a>
-             </div>
+                <a href="{{ route('candidate.cv.white') }}" class="menu-item">
+                    <i>📄</i>
+                    <span>Mẫu CV cổ điển</span>
+                </a>
+                <a href="{{ route('candidate.cv.black') }}" class="menu-item">
+                    <i>📄</i>
+                    <span>Mẫu CV hiện đại</span>
+                </a>
+            </div>
 
-             <div class="menu-section">
-                 <div class="menu-title">Quản lý ứng tuyển</div>
-                 <a href="{{route('candidate.applications')}}" class="menu-item">
-                     <i>👥</i>
-                     <span>Hồ sơ đã nộp</span>
-                 </a>
-                 <a href="#" class="menu-item">
-                     <i>📄</i>
-                     <span>Quản lý thẻ</span>
-                 </a>
-                 <a href="#" class="menu-item">
-                     <i>❤️</i>
-                     <span>Hồ sơ đã lưu</span>
-                 </a>
-                 <a href="#" class="menu-item">
-                     <i>🔍</i>
-                     <span>Tìm ứng viên mới</span>
-                 </a>
-             </div>
-         </div>
+            <div class="menu-section">
+                <div class="menu-title">Quản lý ứng tuyển</div>
+                <a href="{{ route('candidate.applications') }}" class="menu-item">
+                    <i>👥</i>
+                    <span>Hồ sơ đã nộp</span>
+                </a>
+            </div>
+        </div>
         <div class="auth-card">
             <div class="auth-header text-center">
                 <i class="fas fa-user-edit header-icon"></i>
@@ -256,14 +267,14 @@ input[type="checkbox"] {
                 <div class="form-group">
                     <label for="phone"><i class="fas fa-phone"></i> Số điện thoại</label>
                     <input type="text" class="form-control" id="phone" name="phone"
-                        value="{{ old('phone', $candidate->phone) }}">
+                        value="{{ old('phone', $candidate->phone) }}"required>
                 </div>
 
 
                 <div class="form-group">
                     <label for="dob"><i class="fas fa-birthday-cake"></i> Ngày sinh</label>
-                    <input type="date" class="form-control" id="dob" name="dob"
-                        value="{{ old('dob', $candidate->dob) }}">
+                   <input type="date" class="form-control" id="dob" name="dob" value="{{ old('dob', $candidate->dob ? $candidate->dob->format('Y-m-d') : '') }}" required>
+
                 </div>
 
                 <div class="form-group">
@@ -281,26 +292,29 @@ input[type="checkbox"] {
                 <div class="form-group">
                     <label for="address"><i class="fas fa-map-marker-alt"></i> Địa chỉ</label>
                     <input type="text" class="form-control" id="address" name="address"
-                        value="{{ old('address', $candidate->address) }}">
+                        value="{{ old('address', $candidate->address) }}"required>
                 </div>
 
                 <div class="form-group">
                     <label for="position"><i class="fas fa-briefcase"></i> Vị trí</label>
                     <input type="text" class="form-control" id="position" name="position"
-                        value="{{ old('position', $candidate->position) }}">
+                        value="{{ old('position', $candidate->position) }}"required>
                 </div>
 
                 <div class="form-group checkbox-group">
-                    <label><i class="fas fa-globe"></i> Công khai</label>
-                    <input type="checkbox" id="is_public" name="is_public"
+                    <label><i class="fas fa-globe"></i> Công khai hồ sơ</label>
+                    <input type="hidden" name="is_public" value="0"> <!-- Giá trị mặc định -->
+                    <input type="checkbox" id="is_public" name="is_public" value="1"
                         {{ old('is_public', $candidate->is_public) ? 'checked' : '' }}>
                 </div>
 
                 <div class="form-group checkbox-group">
                     <label><i class="fas fa-file-alt"></i> CV công khai</label>
-                    <input type="checkbox" id="cv_public" name="cv_public"
+                    <input type="hidden" name="cv_public" value="0"> <!-- Giá trị mặc định -->
+                    <input type="checkbox" id="cv_public" name="cv_public" value="1"
                         {{ old('cv_public', $candidate->cv_public) ? 'checked' : '' }}>
                 </div>
+
 
                 <div class="form-group">
                     <label for="linkedin"><i class="fab fa-linkedin"></i> LinkedIn</label>
@@ -309,50 +323,77 @@ input[type="checkbox"] {
                 </div>
 
                 <div class="form-group">
-                    <label for="level"><i class="fas fa-layer-group"></i> Cấp độ</label>
+                    <label for="level"><i class="fas fa-layer-group"></i> Công việc hiện tại</label>
                     <input type="text" class="form-control" id="level" name="level"
-                        value="{{ old('level', $candidate->level) }}">
+                        value="{{ old('level', $candidate->level) }}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="desired_level"><i class="fas fa-star"></i> Mong muốn cấp độ</label>
                     <input type="text" class="form-control" id="desired_level" name="desired_level"
-                        value="{{ old('desired_level', $candidate->desired_level) }}">
+                        value="{{ old('desired_level', $candidate->desired_level) }}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="desired_salary"><i class="fas fa-money-bill-wave"></i> Mong muốn lương</label>
-                    <input type="number" class="form-control" id="desired_salary" name="desired_salary"
-                        value="{{ old('desired_salary', $candidate->desired_salary) }}">
+                    <input type="text" class="form-control" id="desired_salary" name="desired_salary"
+                        value="{{ old('desired_salary', $candidate->desired_salary) }}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="education_level"><i class="fas fa-graduation-cap"></i> Trình độ học vấn</label>
                     <input type="text" class="form-control" id="education_level" name="education_level"
-                        value="{{ old('education_level', $candidate->education_level) }}">
+                        value="{{ old('education_level', $candidate->education_level) }}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="years_of_experience"><i class="fas fa-clock"></i> Số năm kinh nghiệm</label>
                     <input type="number" class="form-control" id="years_of_experience" name="years_of_experience"
-                        value="{{ old('years_of_experience', $candidate->years_of_experience) }}">
+                        value="{{ old('years_of_experience', $candidate->years_of_experience) }}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="working_form"><i class="fas fa-building"></i> Hình thức làm việc</label>
                     <input type="text" class="form-control" id="working_form" name="working_form"
-                        value="{{ old('working_form', $candidate->working_form) }}">
+                        value="{{ old('working_form', $candidate->working_form) }}" required>
                 </div>
 
                 <div class="form-group">
+    <label for="skill"><i class="fas fa-cogs"></i> Kỹ năng</label>
+    <input type="text" class="form-control" id="skill" name="skill"
+        value="{{ old('skill', $candidate->skill) }}" required>
+</div>
+
+                <div class="form-group">
                     <label for="avatar_candidate"><i class="fas fa-camera"></i> Ảnh đại diện</label>
+                    @if ($candidate->avatar_candidate)
+                        <div class="mb-3">
+                            <img src="{{ asset('storage/avatars/' . $candidate->avatar_candidate) }}" alt="Avatar"
+                                class="img-thumbnail" style="max-width: 200px;">
+                        </div>
+                    @endif
                     <input type="file" class="form-control-file" id="avatar_candidate" name="avatar_candidate">
                 </div>
 
                 <div class="form-group">
                     <label for="cv_path"><i class="fas fa-file-upload"></i> CV</label>
+                    @if ($candidate->cv_path)
+                        <div class="mb-3">
+                            <!-- Hiển thị CV trực tiếp nếu có file -->
+                            <iframe src="{{ asset('storage/cvs/' . $candidate->cv_path) }}" width="100%"
+                                height="500px" frameborder="0">
+                                <!-- Nếu trình duyệt không hỗ trợ iframe, có thể cung cấp một liên kết tải xuống -->
+                                <a href="{{ asset('storage/cvs/' . $candidate->cv_path) }}" target="_blank"
+                                    class="btn btn-primary">
+                                    Tải xuống CV
+                                </a>
+                            </iframe>
+                        </div>
+                    @endif
                     <input type="file" class="form-control-file" id="cv_path" name="cv_path">
                 </div>
+
+
 
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary">
