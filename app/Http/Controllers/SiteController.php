@@ -21,7 +21,7 @@ class SiteController extends Controller
         $country = Country::where('slug', $slug)->firstOrFail(); // Lấy quốc gia theo slug
 
         $jobPostings = $country->jobPostings()
-            ->where('status', '1')
+            ->where('status', 'active')
             ->where('closing_date', '>', now())
             ->with('employer')
             ->latest()
@@ -55,7 +55,7 @@ class SiteController extends Controller
         $genre = Genre::where('slug', $slug)
             ->with(['jobPostings' => function ($query) {
                 $query->with('employer')
-                    ->where('status', '1')
+                    ->where('status', 'active')
                     ->where('closing_date', '>', now())
                     ->latest();
             }])
@@ -79,21 +79,27 @@ class SiteController extends Controller
 
         return view('pages.job', compact('jobPosting', 'categories', 'orderJob'));
     }
-    public function category($slug)
-    {
-        $categories = Category::where('status', 'active')->get();
-        $countries = Country::where('status', 'active')->get();
-        $category = Category::where('slug', $slug)
-            ->with(['jobPostings' => function ($query) {
-                $query->with('employer')
-                    ->where('status', '1')
-                    ->where('closing_date', '>', now())
-                    ->latest();
-            }])
-            ->firstOrFail();
+  public function category($slug)
+{
+    $categories = Category::where('status', 'active')->get();
+    $countries = Country::where('status', 'active')->get();
 
-        return view('pages.category', compact('category', 'categories', 'countries'));
-    }
+    // Sửa lại phần query để lấy jobPostings
+    $category = Category::where('slug', $slug)
+        ->where('status', 'active')
+        ->firstOrFail();
+
+    $jobPostings = JobPosting::whereHas('categories', function($query) use ($category) {
+            $query->where('categories.id', $category->id);
+        })
+        ->with('employer')
+        ->where('status', 'active')
+        ->where('closing_date', '>', now())
+        ->latest()
+        ->paginate(12);  // Thêm phân trang
+
+    return view('pages.category', compact('category', 'categories', 'countries', 'jobPostings'));
+}
     public function search(Request $request)
     {
         $query = JobPosting::query();
@@ -115,7 +121,7 @@ class SiteController extends Controller
             });
         }
 
-        $jobPostings = $query->with('employer')->where('status', '1')->paginate(10);
+        $jobPostings = $query->with('employer')->where('status', 'active')->paginate(10);
 
         $categories = Category::all(); // Truyền để tìm tên danh mục
         $countries = Country::all();   // Truyền để tìm tên quốc gia
