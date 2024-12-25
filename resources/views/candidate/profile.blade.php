@@ -199,25 +199,17 @@ input[type="checkbox"] {
              <div class="menu-title">Quản lý CV</div>
              <div class="menu-section">
 
-                 <a href="{{ route('employer.job-posting.create') }}" class="menu-item">
+                 <a href="" class="menu-item">
                      <i>+</i>
                      <span>Tạo CV</span>
-                 </a>
-                 <a href="{{ route('employer.job-posting.index') }}" class="menu-item">
-                     <i>📋</i>
-                     <span>Quản lý tin đăng</span>
-                 </a>
-                 <a href="{{ route('employer.services') }}" class="menu-item">
-                     <i>📊</i>
-                     <span>Mua dịch vụ</span>
                  </a>
              </div>
 
              <div class="menu-section">
-                 <div class="menu-title">Quản lý ứng viên</div>
-                 <a href="#" class="menu-item">
+                 <div class="menu-title">Quản lý ứng tuyển</div>
+                 <a href="{{route('candidate.applications')}}" class="menu-item">
                      <i>👥</i>
-                     <span>Hồ sơ ứng tuyển</span>
+                     <span>Hồ sơ đã nộp</span>
                  </a>
                  <a href="#" class="menu-item">
                      <i>📄</i>

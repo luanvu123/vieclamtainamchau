@@ -70,6 +70,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 Route::prefix('candidate')->name('candidate.')->group(function () {
+     Route::get('/applications', [CandidateProfileController::class, 'applications'])->middleware('candidate')->name('applications');
     Route::get('register', [CandidateAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [CandidateAuthController::class, 'register'])->name('register.submit');
     Route::get('login', [CandidateAuthController::class, 'showLoginForm'])->name('login');

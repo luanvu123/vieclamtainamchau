@@ -39,6 +39,12 @@ class JobPostingController extends Controller
     }
     public function store(Request $request)
     {
+         $employer = Auth::guard('employer')->user();
+
+    // Kiểm tra nếu IsBasicnews == 0
+    if ($employer->IsBasicnews == 0) {
+        return redirect()->back()->with('error', 'Bạn cần phải mua dịch vụ Tin cơ bản để đăng tin tuyển dụng.');
+    }
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|in:fulltime,parttime,intern,freelance',

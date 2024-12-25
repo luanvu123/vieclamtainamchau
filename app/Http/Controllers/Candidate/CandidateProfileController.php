@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Candidate;
 
 use App\Http\Controllers\Controller;
+use App\Models\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -18,6 +19,19 @@ class CandidateProfileController extends Controller
         return view('candidate.profile', compact('candidate'));
     }
 
+    public function applications()
+    {
+        // Lấy candidate hiện tại
+        $candidate = Auth::guard('candidate')->user();
+
+        // Lấy danh sách ứng tuyển với eager loading
+        $applications = Application::with(['jobPosting', 'jobPosting.employer'])
+            ->where('candidate_id', $candidate->id)
+            ->latest() // Sắp xếp theo thời gian mới nhất
+            ->paginate(10); // Phân trang, mỗi trang 10 items
+
+        return view('candidate.applications', compact('applications'));
+    }
     /**
      * Update the candidate's profile.
      *

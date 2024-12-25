@@ -33,12 +33,12 @@ class SiteController extends Controller
     public function index()
     {
         $categories = Category::where('status', 'active')->get();
-       $genres = Genre::with(['jobPostings' => function ($query) {
-    $query->with(['employer', 'countries']) // Nạp cả employer và countries
-        ->where('status', 'active')
-        ->where('closing_date', '>', now())
-        ->latest();
-}])->get();
+        $genres = Genre::with(['jobPostings' => function ($query) {
+            $query->with(['employer', 'countries']) // Nạp cả employer và countries
+                ->where('status', 'active')
+                ->where('closing_date', '>', now())
+                ->latest();
+        }])->get();
 
 
         $countries = Country::where('status', 'active')->get(); // Lấy quốc gia từ bảng Country
@@ -81,16 +81,13 @@ class SiteController extends Controller
     }
     public function category($slug)
     {
-        // Lấy danh sách tất cả các danh mục để hiển thị ở sidebar hoặc header
         $categories = Category::where('status', 'active')->get();
-        $countries = Country::where('status', 'active')->get(); // Lấy quốc gia từ bảng Country
-
-        // Lấy thông tin danh mục dựa trên slug
+        $countries = Country::where('status', 'active')->get();
         $category = Category::where('slug', $slug)
             ->with(['jobPostings' => function ($query) {
-                $query->with('employer') // Kèm thông tin nhà tuyển dụng
-                    ->where('status', '1') // Chỉ hiển thị bài đăng đang hoạt động
-                    ->where('closing_date', '>', now()) // Bài đăng chưa hết hạn
+                $query->with('employer')
+                    ->where('status', '1')
+                    ->where('closing_date', '>', now())
                     ->latest();
             }])
             ->firstOrFail();
