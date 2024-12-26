@@ -140,13 +140,12 @@ class Employer extends Authenticatable
     {
         return $this->gallery()->where('is_active', true);
     }
-   public function getDaysSinceServiceUpdate($service)
-{
-    $timestamp = $this->{$service . '_updated_at'};
+    public function getDaysSinceServiceUpdate($service)
+    {
+        $timestamp = $this->{$service . '_updated_at'};
 
-    if (!$timestamp) return null; // Nếu không có thời gian cập nhật
+        if (!$timestamp) return null; // Nếu không có thời gian cập nhật
 
-    return Carbon::parse($timestamp)->diffInDays(now());
-}
-
+        return Carbon::parse($timestamp)->diffInDays(now());
+    }
 }

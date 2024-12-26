@@ -13,9 +13,12 @@ use Illuminate\Support\Str;
 
 class EmployerManageController extends Controller
 {
-    public function __construct()
+     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('permission:employer-list|employer-create|employer-edit|employer-delete', ['only' => ['index', 'store']]);
+        $this->middleware('permission:employer-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:employer-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:employer-delete', ['only' => ['destroy']]);
     }
 
     public function index()

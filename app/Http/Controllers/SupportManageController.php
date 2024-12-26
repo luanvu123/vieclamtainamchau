@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class SupportManageController extends Controller
 {
+     public function __construct()
+    {
+        $this->middleware('permission:support-list|support-edit|support-delete', ['only' => ['index', 'edit', 'update', 'destroy']]);
+    }
     // Hiển thị danh sách tư vấn
     public function index()
     {

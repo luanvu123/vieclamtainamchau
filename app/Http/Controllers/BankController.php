@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Storage;
 
 class BankController extends Controller
 {
-    //  public function __construct()
-    // {
-    //     $this->middleware('permission:bank-list|bank-create|bank-edit|bank-delete', ['only' => ['index', 'show']]);
-    //     $this->middleware('permission:bank-create', ['only' => ['create', 'store']]);
-    //     $this->middleware('permission:bank-edit', ['only' => ['edit', 'update']]);
-    //     $this->middleware('permission:bank-delete', ['only' => ['destroy']]);
-    // }
+     public function __construct()
+    {
+        $this->middleware('permission:bank-list|bank-create|bank-edit|bank-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:bank-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:bank-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:bank-delete', ['only' => ['destroy']]);
+    }
     public function index()
     {
         $banks = Bank::where('user_id', Auth::id())->get();

@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class CandidateManageController extends Controller
 {
+     public function __construct()
+    {
+        $this->middleware('permission:candidate-list|candidate-create|candidate-edit|candidate-delete', ['only' => ['index', 'store']]);
+        $this->middleware('permission:candidate-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:candidate-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:candidate-delete', ['only' => ['destroy']]);
+    }
     /**
      * Hiển thị danh sách ứng viên.
      */
