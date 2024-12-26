@@ -205,7 +205,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                         <span> Ứng viên</span>
                                         @if ($candidateCountTwoHour > 0)
                                             <span class="label label-primary pull-right">{{ $candidateCountTwoHour }}
-                                                New Candidates</span>
+                                            </span>
                                         @endif
                                     </a>
                                 </li>
@@ -213,6 +213,10 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     <a href="{{ route('support-manage.index') }}">
                                         <img src="{{ asset('backend_admin/images/support-svgrepo-com.svg') }}"
                                             alt="Google" width="20" height="20"> Hỗ trợ
+                                             @if ($supportCountTwoHour > 0)
+                                            <span class="label label-primary pull-right">{{ $supportCountTwoHour }}
+                                                New</span>
+                                        @endif
 
                                     </a>
                                 </li>
@@ -229,12 +233,16 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                             alt="Google" width="20" height="20"> Danh sách dịch vụ
                                     </a>
                                 </li>
-                                  <li class="{{ Request::is('manage/job-postings') ? 'active' : '' }}">
-                                            <a href="{{ route('manage.employers.indexJobPosting') }}">
-                                                <img src="{{ asset('backend_admin/images/file-document-svgrepo-com.svg') }}"
-                                                    alt="Google" width="20" height="20"> Chiến dịch tuyển dụng
-                                            </a>
-                                        </li>
+                                <li class="{{ Request::is('manage/job-postings') ? 'active' : '' }}">
+                                    <a href="{{ route('manage.employers.indexJobPosting') }}">
+                                        <img src="{{ asset('backend_admin/images/file-document-svgrepo-com.svg') }}"
+                                            alt="Google" width="20" height="20"> Chiến dịch tuyển dụng
+                                        @if ($jobPostingCountTwoHour > 0)
+                                            <span class="label label-primary pull-right">{{ $jobPostingCountTwoHour }}
+                                                New</span>
+                                        @endif
+                                    </a>
+                                </li>
 
 
                             </ul>
@@ -325,51 +333,65 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                 <div class="main-page">
                     <div class="col_3">
                         <div class="col-md-3 widget widget1">
-                            <div class="r3_counter_box">
-                                <i class="pull-left fa fa-dollar icon-rounded"></i>
-                                <div class="stats">
-                                    <h5><strong>10</strong></h5>
-                                    <span>Chiến dịch đang mở</span>
+                            <a href="{{ route('support-manage.index') }}">
+                                <div class="r3_counter_box">
+                                    <i class="pull-left fa fa-dollar icon-rounded"></i>
+                                    <div class="stats">
+                                        <h5><strong>{{ $supportCount }}</strong></h5>
+                                        <span>Hỗ trợ</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
+
                         <div class="col-md-3 widget widget1">
-                            <div class="r3_counter_box">
-                                <i class="pull-left fa fa-laptop user1 icon-rounded"></i>
-                                <div class="stats">
-                                    <h5><strong>10</strong></h5>
-                                    <span>Tông số việc làm</span>
+                            <a href="{{ route('manage.employers.index') }}">
+                                <div class="r3_counter_box">
+                                    <i class="pull-left fa fa-laptop user1 icon-rounded"></i>
+                                    <div class="stats">
+                                        <h5><strong>{{ $employerCount }}</strong></h5>
+                                        <span>Nhà tuyển dụng</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
+
                         <div class="col-md-3 widget widget1">
-                            <div class="r3_counter_box">
-                                <i class="pull-left fa fa-money user2 icon-rounded"></i>
-                                <div class="stats">
-                                    <h5><strong>10</strong></h5>
-                                    <span> Ứng viên </span>
+                            <a href="{{ route('candidate-manage.index') }}">
+                                <div class="r3_counter_box">
+                                    <i class="pull-left fa fa-money user2 icon-rounded"></i>
+                                    <div class="stats">
+                                        <h5><strong>{{ $candidateCount }}</strong></h5>
+                                        <span>Ứng viên</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
+
                         <div class="col-md-3 widget widget1">
-                            <div class="r3_counter_box">
-                                <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
-                                <div class="stats">
-                                    <h5><strong>10</strong></h5>
-                                    <span>Nhà tuyển
-                                        dụng</span>
+                            <a href="{{ route('manage.employers.indexJobPosting') }}">
+                                <div class="r3_counter_box">
+                                    <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
+                                    <div class="stats">
+                                        <h5><strong>{{ $jobPostingCount }}</strong></h5>
+                                        <span>Tổng chiến dịch</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
+
                         <div class="col-md-3 widget">
-                            <div class="r3_counter_box">
-                                <i class="pull-left fa fa-users dollar2 icon-rounded"></i>
-                                <div class="stats">
-                                    <h5><strong>10</strong></h5>
-                                    <span>Dịch vụ đang chạy</span>
+                            <a href="{{ route('manage.employers.indexJobPosting') }}">
+                                <div class="r3_counter_box">
+                                    <i class="pull-left fa fa-users dollar2 icon-rounded"></i>
+                                    <div class="stats">
+                                        <h5><strong>{{ $activeJobPostingCount }}</strong></h5>
+                                        <span>Chiến dịch đang chạy</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
+
                         <div class="clearfix"></div>
                     </div>
                     <br>

@@ -226,6 +226,10 @@
                     <i>📄</i>
                     <span>Mẫu CV hiện đại</span>
                 </a>
+                <a href="{{ route('candidate.cv.logistic') }}" class="menu-item">
+                    <i>📄</i>
+                    <span>Mẫu CV Xuất khẩu LD</span>
+                </a>
             </div>
 
             <div class="menu-section">

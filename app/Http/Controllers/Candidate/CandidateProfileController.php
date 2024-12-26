@@ -28,6 +28,10 @@ class CandidateProfileController extends Controller
     {
         return view('candidate.cv_black');
     }
+    public function cvLogistic()
+    {
+        return view('candidate.cv_logistic');
+    }
     public function applications()
     {
         // Lấy candidate hiện tại

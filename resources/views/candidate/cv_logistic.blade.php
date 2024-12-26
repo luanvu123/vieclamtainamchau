@@ -3,10 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV Coffee Theme</title>
+    <title>CV Logistics Theme</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        /* Reset CSS */
+        :root {
+            --primary: #003366;
+            --secondary: #0066cc;
+            --accent: #66a3ff;
+            --light: #f0f5ff;
+            --text: #333;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,27 +21,16 @@
             font-family: 'Arial', sans-serif;
         }
 
-        :root {
-            --primary: #6F4E37;
-            --secondary: #C4A484;
-            --accent: #8B4513;
-            --light: #FFF8DC;
-            --text: #333;
-        }
-
         body {
             background-color: #f5f5f5;
-            color: var(--text);
         }
 
-        /* A4 Container Settings */
         .container {
             width: 210mm;
             min-height: 297mm;
             margin: 20px auto;
             background: white;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            position: relative;
         }
 
         .cv-page {
@@ -42,28 +38,26 @@
             margin: 0;
             width: 100%;
             min-height: 297mm;
-            position: relative;
+            display: grid;
+            grid-template-columns: 35% 65%;
         }
 
-        /* Header Section */
-        .header {
+        /* Left Sidebar */
+        .sidebar {
             background-color: var(--primary);
             color: white;
-            padding: 20px;
-            text-align: center;
-            width: 100%;
-            margin: 0;
+            padding: 30px 20px;
+            min-height: 297mm;
         }
 
-        /* Profile Image */
         .profile-img-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
             position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 15px;
             border-radius: 50%;
             overflow: hidden;
-            border: 4px solid var(--secondary);
+            border: 4px solid var(--accent);
         }
 
         .profile-img {
@@ -78,12 +72,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0,0,0,0.5);
             display: flex;
             justify-content: center;
             align-items: center;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: 0.3s;
             cursor: pointer;
         }
 
@@ -91,32 +85,64 @@
             opacity: 1;
         }
 
-        .profile-img-overlay span {
-            color: white;
-            font-size: 12px;
-            text-align: center;
-            padding: 5px;
-        }
-
         #image-upload {
             display: none;
         }
 
-        /* Content Sections */
-        .content {
-            padding: 20px 30px;
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+
+        .sidebar-title {
+            color: var(--accent);
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 30px;
+            background: white;
+        }
+
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .name {
+            color: var(--primary);
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .title {
+            color: var(--secondary);
+            font-size: 1.2em;
         }
 
         .section {
-            margin-bottom: 15px;
-            padding: 10px 15px;
-            border-left: 3px solid var(--secondary);
+            margin-bottom: 25px;
         }
 
         .section-title {
             color: var(--primary);
-            margin-bottom: 8px;
-            font-size: 1.2em;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .experience-item {
+            margin-bottom: 15px;
+        }
+
+        .experience-title {
+            color: var(--secondary);
+            font-weight: bold;
         }
 
         .editable {
@@ -127,12 +153,11 @@
         }
 
         .editable:hover {
-            border-color: var(--secondary);
+            border-color: var(--accent);
             background-color: var(--light);
             cursor: text;
         }
 
-        /* Controls */
         .controls {
             position: fixed;
             bottom: 20px;
@@ -160,37 +185,16 @@
             color: white;
         }
 
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        /* Print/PDF Specific Styles */
         @media print {
             .controls, .profile-img-overlay {
                 display: none !important;
             }
-
             .container {
                 margin: 0;
-                padding: 0;
                 box-shadow: none;
-                width: 210mm;
-                height: 297mm;
             }
-
             .cv-page {
                 margin: 0;
-                padding: 0;
-                width: 210mm;
-                height: 297mm;
-            }
-
-            body {
-                margin: 0;
-                padding: 0;
-                width: 210mm;
-                height: 297mm;
             }
         }
     </style>
@@ -198,7 +202,7 @@
 <body>
     <div class="container">
         <div class="cv-page" id="cv-content">
-            <div class="header">
+            <div class="sidebar">
                 <div class="profile-img-container">
                     <img src="/api/placeholder/150/150" alt="Profile" class="profile-img" id="profile-preview">
                     <div class="profile-img-overlay" onclick="document.getElementById('image-upload').click()">
@@ -206,50 +210,86 @@
                     </div>
                 </div>
                 <input type="file" id="image-upload" accept="image/*">
-                <h1 class="editable" data-field="name">Nguyễn Văn A</h1>
-                <p class="editable" data-field="title">Chuyên Viên Phát Triển Web</p>
+
+                <div class="sidebar-section">
+                    <h2 class="sidebar-title">Thông Tin Liên Hệ</h2>
+                    <div class="editable" data-field="contact">
+                        📧 email@example.com<br>
+                        📱 0123 456 789<br>
+                        📍 Hà Nội, Việt Nam
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h2 class="sidebar-title">Kỹ Năng</h2>
+                    <div class="editable" data-field="skills">
+                        • Quản lý chuỗi cung ứng<br>
+                        • Quản lý kho bãi<br>
+                        • Tối ưu hóa vận chuyển<br>
+                        • MS Office, SAP<br>
+                        • Tiếng Anh thành thạo
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h2 class="sidebar-title">Chứng Chỉ</h2>
+                    <div class="editable" data-field="certificates">
+                        • FIATA Diploma<br>
+                        • IATA Dangerous Goods<br>
+                        • ISO 9001:2015 Lead Auditor
+                    </div>
+                </div>
             </div>
 
-            <div class="content">
-                <div class="section">
-                    <h2 class="section-title">Thông Tin Liên Hệ</h2>
-                    <p class="editable" data-field="email">email@example.com</p>
-                    <p class="editable" data-field="phone">0123 456 789</p>
-                    <p class="editable" data-field="address">Hà Nội, Việt Nam</p>
+            <div class="main-content">
+                <div class="header">
+                    <h1 class="name editable" data-field="name">Nguyễn Văn A</h1>
+                    <div class="title editable" data-field="title">Chuyên Viên Logistics</div>
                 </div>
 
                 <div class="section">
                     <h2 class="section-title">Giới Thiệu</h2>
-                    <p class="editable" data-field="summary">
-                        Tôi là một chuyên viên phát triển web với hơn 5 năm kinh nghiệm trong việc xây dựng và phát triển các ứng dụng web.
-                    </p>
+                    <div class="editable" data-field="summary">
+                        Chuyên viên Logistics với hơn 5 năm kinh nghiệm trong quản lý chuỗi cung ứng và vận tải quốc tế. Có khả năng tối ưu hóa quy trình vận chuyển, giảm chi phí và nâng cao hiệu quả hoạt động.
+                    </div>
                 </div>
 
                 <div class="section">
                     <h2 class="section-title">Kinh Nghiệm</h2>
                     <div class="editable" data-field="experience">
-                        <p><strong>Senior Web Developer</strong> - Công ty ABC (2020 - Hiện tại)</p>
-                        <p>- Phát triển và duy trì các ứng dụng web quy mô lớn</p>
-                        <p>- Quản lý team 5 người</p>
+                        <div class="experience-item">
+                            <div class="experience-title">Trưởng phòng Logistics - Công ty ABC</div>
+                            <div class="experience-date">2020 - Hiện tại</div>
+                            <ul>
+                                <li>Quản lý đội ngũ 20 nhân viên logistics</li>
+                                <li>Tối ưu hóa chi phí vận chuyển giảm 25%</li>
+                                <li>Xây dựng và triển khai hệ thống quản lý kho tự động</li>
+                            </ul>
+                        </div>
+                        <div class="experience-item">
+                            <div class="experience-title">Chuyên viên Logistics - Công ty XYZ</div>
+                            <div class="experience-date">2018 - 2020</div>
+                            <ul>
+                                <li>Phụ trách vận tải quốc tế</li>
+                                <li>Quản lý quan hệ với đối tác vận chuyển</li>
+                                <li>Xử lý thủ tục hải quan</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
                 <div class="section">
                     <h2 class="section-title">Học Vấn</h2>
                     <div class="editable" data-field="education">
-                        <p><strong>Đại học XYZ</strong> - Cử nhân CNTT (2015-2019)</p>
-                        <p>- Tốt nghiệp loại Giỏi</p>
-                        <p>- GPA: 3.8/4.0</p>
-                    </div>
-                </div>
-
-                <div class="section">
-                    <h2 class="section-title">Kỹ Năng</h2>
-                    <div class="editable" data-field="skills">
-                        - HTML, CSS, JavaScript
-                        - React, Vue.js
-                        - Node.js, PHP
-                        - MySQL, MongoDB
+                        <div class="experience-item">
+                            <div class="experience-title">Đại học Giao Thông Vận Tải</div>
+                            <div class="experience-date">2014 - 2018</div>
+                            <div>Cử nhân Logistics và Quản lý Chuỗi Cung ứng</div>
+                            <ul>
+                                <li>GPA: 3.8/4.0</li>
+                                <li>Luận văn: Tối ưu hóa mạng lưới vận tải</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -317,7 +357,7 @@
             const element = document.getElementById('cv-content');
             const opt = {
                 margin: 0,
-                filename: 'cv.pdf',
+                filename: 'cv-logistics.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }

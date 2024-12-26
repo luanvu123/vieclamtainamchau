@@ -7,10 +7,15 @@ use App\Models\Country;
 use App\Models\Employer;
 use App\Models\Genre;
 use App\Models\JobPosting;
+use App\Models\OnlineVisitor;
 use Illuminate\Http\Request;
 
 class SiteController extends Controller
 {
+     public function about()
+    {
+        return view('pages.about');
+    }
     public function countries()
     {
         $countries = Country::where('status', true)->get();
@@ -30,7 +35,7 @@ class SiteController extends Controller
         return view('pages.country', compact('country', 'jobPostings'));
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $categories = Category::where('status', 'active')->get();
         $genres = Genre::with(['jobPostings' => function ($query) {
@@ -39,11 +44,10 @@ class SiteController extends Controller
                 ->where('closing_date', '>', now())
                 ->latest();
         }])->get();
-
-
+        OnlineVisitor::trackVisitor($request->ip());
         $countries = Country::where('status', 'active')->get(); // Lấy quốc gia từ bảng Country
         $employerIsPartner = Employer::where('isPartner', 1)->withCount('jobPostings')->get();
-        return view('pages.home', compact('categories', 'genres', 'countries', 'employerIsPartner'));
+        return view('pages.home', compact('categories', 'genres', 'countries', 'employerIsPartner',));
     }
 
     public function genre($slug)

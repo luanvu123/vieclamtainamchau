@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [SiteController::class, 'index'])->name('/');
 Route::get('/job', [SiteController::class, 'job'])->name('job');
+Route::get('/about', [SiteController::class, 'about'])->name('about');
 Route::get('/genre/{slug}', [SiteController::class, 'genre'])->name('genre.show');
 Route::get('/job/{slug}', [SiteController::class, 'job'])->name('job.show');
 Route::get('/category/{slug}', [SiteController::class, 'category'])->name('category.show');
@@ -85,6 +86,8 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
 
     Route::get('/cv-white', [CandidateProfileController::class, 'cvWhite'])->middleware('candidate')->name('cv.white');
     Route::get('/cv-black', [CandidateProfileController::class, 'cvBlack'])->middleware('candidate')->name('cv.black');
+    Route::get('/cv-logistic', [CandidateProfileController::class, 'cvLogistic'])->middleware('candidate')->name('cv.logistic');
+
     Route::post('/profile/edit', [CandidateProfileController::class, 'update'])->middleware('candidate')->name('profile.update');
     Route::get('password/reset', [CandidateForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
     Route::post('password/email', [CandidateForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');

@@ -1679,7 +1679,7 @@
                         <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
                     @endforeach
                 @endif
-                <li><a href="#">Liên hệ</a></li>
+                <li><a href="{{route('about')}}">Liên hệ</a></li>
             </ul>
         </nav>
     </header>
@@ -1703,10 +1703,10 @@
             <div class="footer-links">
                 <h3>Trang chủ</h3>
                 <ul>
-                    <li><a href="#">Về chúng tôi</a></li>
-                    <li><a href="#">Bảng giá dịch vụ</a></li>
-                    <li><a href="#">Người tìm việc</a></li>
-                    <li><a href="#">Nhà tuyển dụng</a></li>
+                    <li><a href="{{route('about')}}">Về chúng tôi</a></li>
+                    <li><a href="{{route('employer.services')}}">Bảng giá dịch vụ</a></li>
+                    <li><a href="{{route('candidate.login')}}">Người tìm việc</a></li>
+                    <li><a href="{{route('employer.login')}}">Nhà tuyển dụng</a></li>
                 </ul>
             </div>
 

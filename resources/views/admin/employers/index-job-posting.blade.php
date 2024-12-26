@@ -22,7 +22,11 @@
                     @foreach($jobPostings as $jobPosting)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $jobPosting->title }}</td>
+                            <td>{{ $jobPosting->title }}
+                                 @if ($jobPosting->created_at  >= \Carbon\Carbon::now()->subHours(2))
+                                    <span class="badge badge-danger">New</span>
+                                @endif
+                            </td>
                             <td>{{ $jobPosting->employer->name }}</td>
                             <td>{{ $jobPosting->created_at->format('M d, Y') }}</td>
                             <td>
