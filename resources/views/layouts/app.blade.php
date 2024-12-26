@@ -72,6 +72,23 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     </script>
 
     <style>
+        /* In your CSS file */
+        .avatar-container {
+            position: relative;
+        }
+
+        .new-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #f39c12;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 10px;
+        }
+
         .image-card {
             position: relative;
         }
@@ -108,7 +125,8 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                             </button>
                             <h1>
                                 <a class="navbar-brand" href="{{ url('/') }}"><span
-                                        class="fa fa-area-chart"></span> HOME<span class="dashboard_text">Vieclamso1
+                                        class="fa fa-area-chart"></span> HOME<span
+                                        class="dashboard_text">Vieclamtainamchau
                                         Admin</span></a>
                             </h1>
                         </div>
@@ -126,7 +144,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     $segment = Request::segment(1);
                                 @endphp
                                 <li
-                                    class="treeview {{ Request::is('users*') || Request::is('cv_templates*') || Request::is('roles*') || Request::is('categories*') ? 'active' : '' }}">
+                                    class="treeview {{ Request::is('users*') || Request::is('cv_templates*') || Request::is('countries*') || Request::is('genres*') || Request::is('roles*') || Request::is('categories*') ? 'active' : '' }}">
                                     <a href="#">
                                         <img src="{{ asset('backend_admin/images/9165478_unbox_package_icon.svg') }}"
                                             alt="Google" width="20" height="20">
@@ -168,22 +186,16 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     </ul>
                                 </li>
                                 <li
-                                    class="treeview {{ Request::is('manage.employers.index', 'job-postings-manage*', 'admin/companies*', 'ordermanages*', 'products*', 'employers/purchasedManage*') ? 'active' : '' }}">
-                                    <a href="#">
-                                        <img src="{{ asset('backend_admin/images/company-svgrepo-com.svg') }}"
+                                    class="treeview {{ Request::is('manage/employers') || Request::is('employer/admin/employers*') ? 'active' : '' }}">
+                                    <a href="{{ route('manage.employers.index') }}">
+                                        <img src="{{ asset('backend_admin/images/company-portal-svgrepo-com.svg') }}"
                                             alt="Google" width="20" height="20">
-                                        <span> Nhà tuyẻn dụng
-                                        </span>
-                                        <i class="fa fa-angle-left pull-right"></i>
+                                        <span> Nhà tuyển dụng</span>
+                                        @if ($employerCountTwoHour > 0)
+                                            <span
+                                                class="label label-primary pull-right">{{ $employerCountTwoHour }}</span>
+                                        @endif
                                     </a>
-                                    <ul class="treeview-menu">
-                                        <li class="{{ Request::is('employers') ? 'active' : '' }}">
-                                            <a href="{{ route('manage.employers.index') }}">
-                                                <img src="{{ asset('backend_admin/images/company-portal-svgrepo-com.svg') }}"
-                                                    alt="Google" width="20" height="20"> Danh sách NTD
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </li>
 
                                 <li class="treeview {{ Request::is('candidate-manage*') ? 'active' : '' }}">
@@ -191,6 +203,10 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                         <img src="{{ asset('backend_admin/images/candidate-for-elections-svgrepo-com.svg') }}"
                                             alt="Google" width="20" height="20">
                                         <span> Ứng viên</span>
+                                        @if ($candidateCountTwoHour > 0)
+                                            <span class="label label-primary pull-right">{{ $candidateCountTwoHour }}
+                                                New Candidates</span>
+                                        @endif
                                     </a>
                                 </li>
                                 <li class="treeview {{ Request::is('support-manage*') ? 'active' : '' }}">
@@ -213,6 +229,12 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                             alt="Google" width="20" height="20"> Danh sách dịch vụ
                                     </a>
                                 </li>
+                                  <li class="{{ Request::is('manage/job-postings') ? 'active' : '' }}">
+                                            <a href="{{ route('manage.employers.indexJobPosting') }}">
+                                                <img src="{{ asset('backend_admin/images/file-document-svgrepo-com.svg') }}"
+                                                    alt="Google" width="20" height="20"> Chiến dịch tuyển dụng
+                                            </a>
+                                        </li>
 
 
                             </ul>

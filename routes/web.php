@@ -46,9 +46,10 @@ Route::get('/danh-sach-cac-quoc-gia', [SiteController::class, 'countries'])->nam
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('services', ServiceController::class);
-     Route::resource('manage/employers', EmployerManageController::class, [
+    Route::resource('manage/employers', EmployerManageController::class, [
         'as' => 'manage'
     ]);
+    Route::get('manage/job-postings', [EmployerManageController::class, 'indexJobPosting'])->name('manage.employers.indexJobPosting');
     Route::resource('banks', BankController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
@@ -56,9 +57,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('countries', CountryController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('genres', GenreController::class);
-    Route::resource('manage/employers', EmployerManageController::class, [
-        'as' => 'manage'
-    ]);
     Route::resource('candidate-manage', CandidateManageController::class);
     Route::resource('support-manage', SupportManageController::class)->only([
         'index',
@@ -70,7 +68,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 Route::prefix('candidate')->name('candidate.')->group(function () {
-     Route::get('/applications', [CandidateProfileController::class, 'applications'])->middleware('candidate')->name('applications');
+    Route::get('/applications', [CandidateProfileController::class, 'applications'])->middleware('candidate')->name('applications');
     Route::get('register', [CandidateAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [CandidateAuthController::class, 'register'])->name('register.submit');
     Route::get('login', [CandidateAuthController::class, 'showLoginForm'])->name('login');
@@ -97,7 +95,7 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
 Route::prefix('employer')->name('employer.')->group(function () {
     // Authentication Routes
     Route::get('job-posting/find-candidate', [JobPostingController::class, 'findCandidate'])
-    ->name('job-posting.find-candidate');
+        ->name('job-posting.find-candidate');
     Route::get('/services', [JobPostingController::class, 'services'])->name('services')->middleware('employer');
     Route::get('register', [EmployerAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [EmployerAuthController::class, 'register'])->name('register.submit');

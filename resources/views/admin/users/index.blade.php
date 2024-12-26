@@ -38,15 +38,10 @@
                                     </td>
                                     <td>{{ $user->created_at->format('M d, Y') }}</td>
                                     <td>
-                                        <select id="{{ $user->id }}"class="user_choose">
-                                            @if ($user->status == 0)
-                                                <option value="1">Hoạt động</option>
-                                                <option selected value="0">Ngừng hoạt động</option>
-                                            @else
-                                                <option selected value="1">Hoạt động</option>
-                                                <option value="0">Ngừng hoạt động</option>
-                                            @endif
-                                        </select>
+                                        <span
+                                            class="badge {{ $user->status == 'active' ? 'badge-success' : 'badge-danger' }}">
+                                            {{ ucfirst($user->status) }}
+                                        </span>
                                     </td>
                                     <td class="action">
                                         <a href="{{ route('users.edit', $user->id) }}"><i class="fa fa-pencil"></i>

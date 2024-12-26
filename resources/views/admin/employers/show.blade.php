@@ -22,9 +22,10 @@
             <div class="card-body">
                 @if ($jobPostings->count() > 0)
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
+                        <table class="table table-bordered table-hover" id="user-table">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Tiêu đề</th>
                                     <th>Thông tin</th>
                                     <th>Yêu cầu</th>
@@ -36,6 +37,7 @@
                             <tbody>
                                 @foreach ($jobPostings as $job)
                                     <tr>
+                                        <td>{{$job->id}}</td>
                                         <td>
                                             <div class="fw-bold">{{ $job->title }}</div>
                                             <small class="text-muted">

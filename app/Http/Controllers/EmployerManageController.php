@@ -24,6 +24,14 @@ class EmployerManageController extends Controller
         return view('admin.employers.index', compact('employers'));
     }
 
+      public function indexJobPosting()
+    {
+        // Lấy tất cả bài đăng tuyển dụng
+        $jobPostings = JobPosting::with(['employer', 'categories', 'genres', 'countries'])->get();
+
+        // Trả về view và gửi dữ liệu $jobPostings
+        return view('admin.employers.index-job-posting', compact('jobPostings'));
+    }
     public function show($id)
     {
         $employer = Employer::findOrFail($id);

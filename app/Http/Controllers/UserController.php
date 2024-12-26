@@ -133,9 +133,9 @@ class UserController extends Controller
         // Kiểm tra vai trò của người dùng hiện tại
         $currentUserRoleIds = Auth::user()->roles->pluck('id')->toArray();
 
-        // if (!in_array(1, $currentUserRoleIds) && $user->id !== Auth::id()) {
-        //     abort(403, 'Unauthorized action.');
-        // }
+        if (!in_array(1, $currentUserRoleIds) && $user->id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
 
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
@@ -167,7 +167,7 @@ class UserController extends Controller
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email,' . $id,
                 'password' => 'nullable|same:confirm-password',
-                'roles' => 'nullable', // Điều chỉnh điều kiện validation nếu cần
+                'roles' => 'nullable', 
                 'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif',
                 'gender' => 'nullable|string',
                 'address' => 'nullable|string',
@@ -182,6 +182,7 @@ class UserController extends Controller
                 'instagram' => 'nullable|string',
                 'facebook' => 'nullable|string',
                 'paypal' => 'nullable|string',
+                'status' => 'nullable|in:active,inactive',
             ]);
 
             // Lấy tất cả dữ liệu từ yêu cầu

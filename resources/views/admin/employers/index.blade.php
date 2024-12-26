@@ -53,9 +53,15 @@
                                 <tr>
                                     <td>{{ $employer->id }}</td>
                                     <td class="text-center">
-                                        <img src="{{ asset('storage/' . $employer->avatar) }}" alt="Logo"
-                                            class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-                                    </td>
+    <div class="avatar-container">
+        <img src="{{ asset('storage/' . $employer->avatar) }}" alt="Logo"
+            class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+        <!-- Show "New" if the employer was created within the last 2 hours -->
+        @if($employer->created_at >= \Carbon\Carbon::now()->subHours(2))
+            <span class="new-badge">New</span>
+        @endif
+    </div>
+</td>
                                     <td>
                                         <div class="fw-bold">{{ $employer->company_name }}</div>
                                         <small class="text-muted">MST: {{ $employer->mst }}</small>

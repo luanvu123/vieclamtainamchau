@@ -49,6 +49,16 @@
                     </div>
                 </div>
 
+                <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="form-group">
+        <strong><i class="fas fa-circle"></i> Trạng thái:</strong>
+        <select name="status" class="form-control">
+            <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>Active</option>
+            <option value="inactive" {{ $user->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+        </select>
+    </div>
+</div>
+
                 <div class="col-xs-2 col-sm-2 col-md-2">
                     <div class="form-group">
                         <strong><i class="fas fa-venus-mars"></i> Giới tính:</strong>
@@ -147,7 +157,6 @@
                         <input type="text" name="paypal" value="{{ $user->paypal }}" class="form-control" placeholder="PayPal">
                     </div>
                 </div>
-
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
                         <strong><i class="fas fa-user-tag"></i> Role:</strong>

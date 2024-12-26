@@ -38,9 +38,9 @@ class JobPostingController extends Controller
     }
     public function create()
     {
-        $categories = Category::all(); // Lấy danh sách danh mục
-        $countries = Country::all(); // Lấy danh sách quốc gia
-        $genres = Genre::all(); // Lấy danh sách thể loại
+        $categories = Category::where('status', 'active')->get(); // Lấy danh sách danh mục
+        $countries = Country::where('status', 'active')->get(); // Lấy danh sách quốc gia
+        $genres = Genre::where('status', 'active')->get(); // Lấy danh sách thể loại
         $employer = Auth::guard('employer')->user();
 
         return view('employer.job-posting.create', compact('categories', 'countries', 'employer', 'genres'));
@@ -117,9 +117,9 @@ class JobPostingController extends Controller
                 ->with('error', 'Bạn không có quyền chỉnh sửa bài đăng này');
         }
 
-        $categories = Category::all();
-        $countries = Country::all();
-        $genres = Genre::all();
+        $categories = Category::where('status', 'active')->get();
+        $countries = Country::where('status', 'active')->get();
+        $genres = Genre::where('status', 'active')->get();
 
         return view('employer.job-posting.edit', compact(
             'jobPosting',
