@@ -2,23 +2,23 @@
 
 @section('content')
     <!-- Section: Các Lá Cờ Quốc Gia -->
-<section class="countries-section">
-    <h2>Các Quốc Gia</h2>
-    <div class="countries-container">
-        @foreach ($countries->chunk(4) as $chunk)
-            <div class="row">
-                @foreach ($chunk as $country)
-                    <div class="country-item">
-                        <a href="{{ route('country.show', $country->slug) }}">
-                            <img src="{{ asset('storage/' . $country->image) }}" alt="{{ $country->name }}" class="flag">
-                            <span class="country-name">{{ $country->name }}</span>
-                        </a>
-                    </div>
-                @endforeach
-            </div>
-        @endforeach
-    </div>
-</section>
+    <section class="countries-section">
+        <h2>Các Quốc Gia</h2>
+        <div class="countries-container">
+            @foreach ($countries->chunk(8) as $chunk)
+                <div class="row">
+                    @foreach ($chunk as $country)
+                        <div class="country-item">
+                            <a href="{{ route('country.show', $country->slug) }}">
+                                <img src="{{ asset('storage/' . $country->image) }}" alt="{{ $country->name }}" class="flag">
+                                <span class="country-name">{{ $country->name }}</span>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            @endforeach
+        </div>
+    </section>
 
     <!-- Section: Hotline -->
     <section class="hotlines-section">
@@ -207,6 +207,79 @@
                 padding: 6px 10px;
             }
         }
+
+        .countries-section {
+            padding: 2rem 0;
+        }
+
+        .countries-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .country-item {
+            text-align: center;
+        }
+
+        .country-item a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s;
+        }
+
+        .country-item a:hover {
+            transform: translateY(-5px);
+        }
+
+        .flag {
+            width: 100%;
+            aspect-ratio: 3/2;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 8px;
+        }
+
+        .country-name {
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .row {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .row {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 
     <!-- Modal HTML -->
@@ -295,35 +368,37 @@
             });
 
             // Handle form submission
-          form.addEventListener('submit', function (e) {
-    e.preventDefault();
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
 
-    const formData = new FormData(form);
-    const typeTitle = modalTitle.classList.contains('job-seekers') ? 'Tư vấn cho người tìm việc' : 'Tư vấn cho Nhà tuyển dụng';
-    formData.append('type_title', typeTitle);
+                const formData = new FormData(form);
+                const typeTitle = modalTitle.classList.contains('job-seekers') ?
+                    'Tư vấn cho người tìm việc' : 'Tư vấn cho Nhà tuyển dụng';
+                formData.append('type_title', typeTitle);
 
-    fetch('/supports', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        },
-        body: formData,
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to submit consultation');
-            }
-            return response.json();
-        })
-        .then(data => {
-            alert(data.message);
-            closeModal();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Đã xảy ra lỗi khi gửi thông tin tư vấn.');
-        });
-});
+                fetch('/supports', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute('content'),
+                        },
+                        body: formData,
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to submit consultation');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert(data.message);
+                        closeModal();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Đã xảy ra lỗi khi gửi thông tin tư vấn.');
+                    });
+            });
 
         });
     </script>

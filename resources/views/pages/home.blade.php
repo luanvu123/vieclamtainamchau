@@ -51,7 +51,7 @@
 
                     <div class="category-grid">
                         @foreach ($genre->jobPostings as $job)
-                            <div class="category-card">
+                           <div class="category-card {{ $job->employer && $job->employer->IsHoteffect ? 'hot-effect' : '' }}">
                                 @if ($job->employer && $job->employer->avatar)
                                     <img src="{{ asset('storage/' . $job->employer->avatar) }}"
                                         alt="{{ $job->employer->company_name }}"

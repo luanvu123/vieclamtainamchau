@@ -75,25 +75,32 @@ class CandidateAuthController extends Controller
 
 
 
-    public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
+   public function login(Request $request)
+{
+    $credentials = $request->only('email', 'password');
 
-        if (Auth::guard('candidate')->attempt($credentials)) {
-            $candidate = Auth::guard('candidate')->user();
+    // Thử kiểm tra thông tin đăng nhập của candidate
+    if (Auth::guard('candidate')->attempt($credentials)) {
+        $candidate = Auth::guard('candidate')->user();
 
-            // Kiểm tra nếu tài khoản chưa xác thực
-            if ($candidate->verification_token !== null) {
-                Auth::guard('candidate')->logout(); // Đăng xuất ngay lập tức nếu chưa xác thực
-                return redirect()->back()->withInput()->withErrors(['email' => 'Bạn chưa xác thực tài khoản. Vui lòng kiểm tra email.']);
-            }
-
-            // Nếu đã xác thực
-            return redirect()->route('/')->with('success', 'Xin chào ' . $candidate->name);
-        } else {
-            return redirect()->back()->withInput()->withErrors(['email' => 'Thông tin đăng nhập không chính xác']);
+        // Kiểm tra trạng thái của tài khoản
+        if ($candidate->status !== 1) {
+            Auth::guard('candidate')->logout(); // Đăng xuất ngay lập tức nếu trạng thái không phải là 1
+            return redirect()->back()->withInput()->withErrors(['email' => 'Tài khoản của bạn đang chờ xác thực.']);
         }
+
+        // Kiểm tra nếu tài khoản đã xác thực
+        if ($candidate->verification_token !== null) {
+            Auth::guard('candidate')->logout(); // Đăng xuất nếu chưa xác thực
+            return redirect()->back()->withInput()->withErrors(['email' => 'Bạn chưa xác thực tài khoản. Vui lòng kiểm tra email.']);
+        }
+
+        // Nếu đã xác thực và trạng thái là 1
+        return redirect()->route('/')->with('success', 'Xin chào ' . $candidate->name);
+    } else {
+        return redirect()->back()->withInput()->withErrors(['email' => 'Thông tin đăng nhập không chính xác']);
     }
+}
 
     public function showLoginForm()
     {

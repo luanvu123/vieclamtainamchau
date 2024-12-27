@@ -47,7 +47,7 @@
         @if ($genre->jobPostings->count() > 0)
             <div class="category-grid">
                 @foreach ($genre->jobPostings as $job)
-                    <div class="category-card">
+                   <div class="category-card {{ $job->employer && $job->employer->IsHoteffect ? 'hot-effect' : '' }}">
                         @if ($job->employer && $job->employer->company_logo)
                             <img src="{{ asset('storage/' . $job->employer->company_logo) }}"
                                 alt="{{ $job->employer->company_name }}"

@@ -74,31 +74,40 @@ class EmployerAuthController extends Controller
         return view('employer.auth.login');
     }
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+   public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        // Kiểm tra thông tin đăng nhập
-        $employer = Employer::where('email', $credentials['email'])->first();
+    // Kiểm tra thông tin đăng nhập
+    $employer = Employer::where('email', $credentials['email'])->first();
 
-        if ($employer && $employer->verification_token !== null) {
-            return back()->withErrors([
-                'email' => 'Tài khoản của bạn chưa được xác thực. Vui lòng kiểm tra email để xác thực.',
-            ])->withInput($request->only('email', 'remember'));
-        }
-
-        if (Auth::guard('employer')->attempt($credentials, $request->filled('remember'))) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('employer.job-posting.index'));
-        }
-
+    // Kiểm tra nếu employer tồn tại và có verification_token khác null
+    if ($employer && $employer->verification_token !== null) {
         return back()->withErrors([
-            'email' => 'Thông tin đăng nhập không chính xác.',
+            'email' => 'Tài khoản của bạn chưa được xác thực. Vui lòng kiểm tra email để xác thực.',
         ])->withInput($request->only('email', 'remember'));
     }
+
+    // Thêm kiểm tra status của employer
+    if (!$employer || $employer->status !== 1) {
+        return back()->withErrors([
+            'email' => 'Tài khoản của bạn đang chờ xác thực.',
+        ])->withInput($request->only('email', 'remember'));
+    }
+
+    // Thử đăng nhập
+    if (Auth::guard('employer')->attempt($credentials, $request->filled('remember'))) {
+        $request->session()->regenerate();
+        return redirect()->intended(route('employer.job-posting.index'));
+    }
+
+    return back()->withErrors([
+        'email' => 'Thông tin đăng nhập không chính xác.',
+    ])->withInput($request->only('email', 'remember'));
+}
 
     public function logout(Request $request)
     {
@@ -108,5 +117,5 @@ class EmployerAuthController extends Controller
 
         return redirect()->route('employer.login');
     }
-    
+
 }

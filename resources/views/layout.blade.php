@@ -106,7 +106,47 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+.category-card.hot-effect {
+    border: 2px solid #ff6b6b;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+    transform: translateY(-3px);
+}
 
+.category-card.hot-effect::before {
+    content: "Hot";
+    position: absolute;
+    top: -12px;
+    right: 10px;
+    background: #ff6b6b;
+    color: white;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.category-card.hot-effect:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+}
+
+/* Thêm animation pulse cho hot-effect */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(255, 107, 107, 0.4);
+    }
+    100% {
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+    }
+}
+
+.category-card.hot-effect {
+    animation: pulse 2s infinite;
+}
         .your-location i {
             color: #ff0000;
         }
@@ -1608,7 +1648,7 @@
     <header class="header">
         <div class="header-top">
             <div class="logo">
-                <img src="{{ asset('frontend/img/logo.png') }}" alt="Logo">
+                <img src="{{ asset('frontend/img/logo.png') }}" style="width:200px;height:200px;" alt="Logo">
                 <h1>VIỆC LÀM TẠI NĂM CHÂU</h1>
             </div>
             <div class="header-actions">
@@ -1683,7 +1723,152 @@
             </ul>
         </nav>
     </header>
+@if (!Auth::guard('employer')->check() && !Auth::guard('candidate')->check())
+    <div class="warning-modal" id="warningModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="{{ asset('frontend/img/logo.png') }}" alt="Logo">
+                <div class="modal-title-group">
+                    <div class="modal-title">VIỆC LÀM TẠI NĂM CHÂU TRÊN THẾ GIỚI</div>
+                    <div class="modal-subtitle">JOBS IN FIVE CONTINENTS OF THE WORLD</div>
+                </div>
+            </div>
 
+            <div class="modal-body">
+                <p class="modal-highlight">TÌM VIỆC LÀM MỚI – TÌM TRƯỜNG DU HỌC NGHỀ - TÌM CÔNG TY TUYỂN DỤNG LAO ĐỘNG MIỄN PHÍ</p>
+                <p>TRANG WEBSITE VIECLAMTAINAMCHAU Này</p>
+                <p>Chỉ dành cho Người Tìm việc – Du học sinh – Học Nghề - Người lao động Đi xuất khẩu lao động.</p>
+                <p class="modal-warning">TRANG WEBSITE NÀY KHÔNG DÀNH CHO: các Công ty môi giới – Đại lý việc Làm.</p>
+                <p>Nghiêm cấm các Tổ chức Hoặc Cá nhân lợi dụng nội dung việc làm – Du học nghề - Việc làm xuất khẩu lao động đăng trên trang web này để thông tin môi giới kiếm tiền ,lừa đảo người tìm việc, người đi du học nghề, Người đi xuất khẩu lao động.</p>
+                <p>Người tìm việc – du học sinh học nghề - Người đi xuất khẩu lao động.</p>
+                <a href="{{ route('candidate.register') }}" class="register-link">Đăng ký tài khoản miễn phí ngay để xem tin việc làm mới – tìm trường du học nghề - tìm Công ty tuyển dụng lao động.</a>
+                <a href="{{ route('employer.register') }}" class="register-link">Đăng ký tài khoản nhà tuyển dụng miễn phí ngay </a>
+            </div>
+
+            <div class="modal-footer">
+                <div class="contact-info">
+                    <span>📞 +84.6565815</span>
+                    <span>✉️ hotro@vieclamtainamchau.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .warning-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .modal-title {
+            color: #ff0000;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .modal-subtitle {
+            color: #ff0000;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .modal-body {
+            text-align: center;
+        }
+
+        .modal-body p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .modal-highlight {
+            font-weight: bold;
+            color: #ff0000;
+        }
+
+        .modal-warning {
+            font-weight: bold;
+        }
+
+        .register-link {
+            display: inline-block;
+            background: #ff0000;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            margin: 1.5rem 0;
+            font-weight: bold;
+        }
+
+        .register-link:hover {
+            background: #cc0000;
+        }
+
+        .modal-footer {
+            margin-top: 1.5rem;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                padding: 1rem;
+            }
+
+            .modal-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+        }
+    </style>
+
+
+@endif
     <main>
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -1820,6 +2005,26 @@
     <script>
         $(document).ready(function() {
             $('#user-table').DataTable();
+        });
+    </script>
+     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('warningModal');
+            if (modal) {
+                // Prevent closing on click outside
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        e.preventDefault();
+                    }
+                });
+
+                // Prevent closing with Escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                    }
+                });
+            }
         });
     </script>
 </body>

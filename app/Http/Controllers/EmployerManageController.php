@@ -7,13 +7,15 @@ use App\Models\Country;
 use App\Models\Employer;
 use App\Models\Genre;
 use App\Models\JobPosting;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class EmployerManageController extends Controller
 {
-     public function __construct()
+    public function __construct()
     {
         $this->middleware('permission:employer-list|employer-create|employer-edit|employer-delete', ['only' => ['index', 'store']]);
         $this->middleware('permission:employer-create', ['only' => ['create', 'store']]);
@@ -27,7 +29,7 @@ class EmployerManageController extends Controller
         return view('admin.employers.index', compact('employers'));
     }
 
-      public function indexJobPosting()
+    public function indexJobPosting()
     {
         // Lấy tất cả bài đăng tuyển dụng
         $jobPostings = JobPosting::with(['employer', 'categories', 'genres', 'countries'])->get();
@@ -48,8 +50,14 @@ class EmployerManageController extends Controller
 
     public function edit(Employer $employer)
     {
-        return view('admin.employers.edit', compact('employer'));
+        $user = Auth::user();
+        if ($user->roles()->where('id', 1)->exists() || $employer->user_id === $user->id) {
+            $users = User::all(); // Lấy danh sách tất cả user
+            return view('admin.employers.edit', compact('employer', 'users'));
+        }
+        abort(403, 'Bạn không có quyền truy cập.');
     }
+
 
     public function editJobPosting($employerId, $jobPostingId)
     {
@@ -104,6 +112,10 @@ class EmployerManageController extends Controller
 
     public function update(Request $request, Employer $employer)
     {
+        $user = Auth::user();
+        if (!$user->roles()->where('id', 1)->exists() && $employer->user_id !== $user->id) {
+            abort(403, 'Bạn không có quyền chỉnh sửa.');
+        }
         $validated = $request->validate([
             'company_name' => 'required|string|max:255',
             'name' => 'required|string|max:255',
@@ -122,6 +134,7 @@ class EmployerManageController extends Controller
             'isUrgentrecruitment' => 'boolean',
             'IsPartner' => 'boolean',
             'IsHoteffect' => 'boolean',
+            'user_id' => 'nullable|exists:users,id',
         ]);
 
         // Handle boolean fields
@@ -141,7 +154,12 @@ class EmployerManageController extends Controller
                 $validated[$field . '_updated_at'] = now();
             }
         }
-
+        if ($user->roles()->where('id', 1)->exists() && $request->filled('user_id')) {
+            $validated['user_id'] = $request->user_id;
+        } else {
+            // Đảm bảo giữ nguyên user_id nếu không phải admin
+            $validated['user_id'] = $employer->user_id;
+        }
         // Xử lý logo nếu có
         if ($request->hasFile('logo')) {
             if ($employer->logo) {

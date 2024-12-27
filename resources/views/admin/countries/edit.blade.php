@@ -22,10 +22,6 @@
             <input type="text" name="name" id="name" class="form-control" value="{{ $country->name }}" required>
         </div>
 
-        <div class="form-group">
-            <label for="slug">Slug:</label>
-            <input type="text" name="slug" id="slug" class="form-control" value="{{ $country->slug }}" required>
-        </div>
 
         <div class="form-group">
             <label for="image">Hình ảnh:</label>
