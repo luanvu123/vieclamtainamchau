@@ -17,7 +17,7 @@ class CandidateForgotPasswordController extends Controller
 
     public function showLinkRequestForm()
     {
-        return view('candidate.auth.forgot_password');
+        return view('candidate.auth.forgot-password');
     }
 }
 

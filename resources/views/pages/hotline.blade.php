@@ -1,51 +1,47 @@
 @extends('layout')
 
 @section('content')
-    <section class="services">
-        <div class="hero-content">
-            <h1>Giới thiệu về Báo Online Việt Nam tại năm châu "vieclamnamchau.com"</h1>
+    
 
-            <div class="about-us">
-                <h2>Chúng tôi là ai?</h2>
-                <p>Những năm ý nghĩ làm một điều gì đó để chúng tôi giúp Cộng Đồng người Việt tại năm châu ngày một phát
-                    triển vững mạnh. Chính vì thế Tin tin việc xin việc vieclamnamchau.com cung cấp thông tin và những việc
-                    trọng thể về nhu cầu tìm kiếm việc làm nhà ở, sang nhượng business và dịch vụ cho cộng đồng trong được
-                    đơn giản, nhanh gọn, dễ dàng hơn.</p>
+    <!-- Section: Hotline -->
+    <section class="hotlines-section">
+        <!-- Job Seekers Column -->
+        <div class="hotline-column">
+            <h2 class="hotline-title job-seekers">Hotline cho người tìm việc</h2>
+
+            <div class="hotline-info">
+                <span class="hotline-label job-seekers">Hotline hỗ trợ</span>
+                <span class="hotline-number job-seekers">0567 012 132</span>
             </div>
+
+            <div class="hotline-info">
+                <span class="hotline-label job-seekers">Hotline hỗ trợ kỹ thuật</span>
+                <span class="hotline-number job-seekers">0567 012 132</span>
+            </div>
+
+            <button class="consult-button job-seekers">Tư vấn cho người tìm việc</button>
         </div>
-        <div class="hero-image">
-            <img src="{{ asset('frontend/about.png') }}" alt="Business professional with phone">
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Employers Column -->
+        <div class="hotline-column">
+            <h2 class="hotline-title employers">Hotline cho Nhà tuyển dụng</h2>
+
+            <div class="hotline-info">
+                <span class="hotline-label employers">Hotline hỗ trợ</span>
+                <span class="hotline-number employers">0567 012 132</span>
+            </div>
+
+            <div class="hotline-info">
+                <span class="hotline-label employers">Hotline hỗ trợ kỹ thuật</span>
+                <span class="hotline-number employers">0567 012 132</span>
+            </div>
+
+            <button class="consult-button employers">Tư vấn cho Nhà tuyển dụng</button>
         </div>
-        <h2>Chúng tôi có thể làm gì cho bạn</h2>
-
-        <p class="highlight">Bạn đang tìm kiếm 1 công việc</p>
-        <p>Bạn chưa tự tin vào khả năng tiếng anh của mình bạn muốn tìm công việc full-time, part time sau những giờ đi học.
-            Đừng lo, chúng tôi luôn nỗ lực hết mình để đẩy dựng website Vieclamtainamchau.com trở thành kênh chuyên tin về
-            Việc làm - Du học - Xuất khẩu lao động - Nhà ở & Dịch vụ cung cấp cho bạn và cộng đồng Việt nam, người Việc tại
-            nầm châu, những thông tin hữu ích, công cụ tìm kiếm, cách bố trí thông minh giúp bạn có thể dễ dàng tìm kiếm
-            được công việc mình mong muốn.</p>
-
-        <p class="highlight">Bạn là chủ doanh nghiệp, shop, nhà hàng, muốn tìm kiếm nhân viên phù hợp</p>
-        <p>Chúng tôi luôn đồng hành, giúp bạn đăng quảng cáo tìm thợ, cho thuê nhà, thuê phòng, sang nhượng business một
-            cách nhanh nhất với mục chi phí rất rẻ kèm tới đa cho bạn bằng sự nhiệt tình, tận tâm, hỗ trợ khách hàng 24/7
-            của chúng tôi.</p>
-
-        <h2>Các dịch vụ của chúng tôi</h2>
-        <ul>
-            <li>Đăng tin quảng cáo VIP Post</li>
-            <li>Đặt banner trên website, Group Facebook, Pin bài posting</li>
-            <li>Viết bài nội dung về dịch vụ, sản phẩm, doanh nghiệp của bạn</li>
-            <li>Lập, quản lý và phát triển Fanpage Facebook</li>
-            <li>Đăng ký dịch vụ, doanh nghiệp của bạn trên Google Map(hỗ trợ làm SEO local)</li>
-            <li>Thiết kế logo, Business card, bảng giá dịch vụ chuyên nghiệp</li>
-            <li>Chạy quảng cáo Facebook, Google</li>
-            <li>Xây dựng thư viện, đánh giá chiến lượng Marketing plan...</li>
-        </ul>
-
-        <a href="#" class="cta-button">Xem bảng giá dịch vụ</a>
     </section>
-
-
     <style>
         .container {
             max-width: 1200px;
