@@ -10,6 +10,7 @@
     <p>Cảm ơn bạn đã đăng ký tài khoản. Vui lòng nhấn vào liên kết dưới đây để xác thực tài khoản của bạn:</p>
     <p><a href="{{ $verificationLink }}">Xác thực tài khoản</a></p>
     <p>Nếu bạn không đăng ký tài khoản này, vui lòng bỏ qua email này.</p>
+        <p>Sau khi bạn xác thực. Chúng tôi sẽ kiểm tra tài khoản của bạn trong vòng 2h. Sau 2h bạn có thể đăng nhập lại nhé  </p>
     <p>Trân trọng,<br>Đội ngũ hỗ trợ</p>
 </body>
 </html>

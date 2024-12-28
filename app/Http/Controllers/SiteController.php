@@ -16,6 +16,10 @@ class SiteController extends Controller
     {
         return view('pages.about');
     }
+     public function hotline()
+    {
+        return view('pages.hotline');
+    }
     public function countries()
     {
         $countries = Country::where('status', true)->get();

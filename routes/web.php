@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', [SiteController::class, 'index'])->name('/');
 Route::get('/job', [SiteController::class, 'job'])->name('job');
 Route::get('/about', [SiteController::class, 'about'])->name('about');
+Route::get('/lien-he', [SiteController::class, 'hotline'])->name('hotline');
 Route::get('/genre/{slug}', [SiteController::class, 'genre'])->name('genre.show');
 Route::get('/job/{slug}', [SiteController::class, 'job'])->name('job.show');
 Route::get('/category/{slug}', [SiteController::class, 'category'])->name('category.show');

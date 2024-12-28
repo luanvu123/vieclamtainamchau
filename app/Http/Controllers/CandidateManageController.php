@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Candidate;
 use Illuminate\Http\Request;
+use App\Mail\CandidateApprovalMail;
+use Illuminate\Support\Facades\Mail;
+
 
 class CandidateManageController extends Controller
 {
@@ -46,6 +49,7 @@ class CandidateManageController extends Controller
         ]);
 
         $candidate->update($request->all());
+         Mail::to($candidate->email)->send(new CandidateApprovalMail($candidate));
 
         return redirect()->route('candidate-manage.index')->with('success', 'Cập nhật ứng viên thành công.');
     }

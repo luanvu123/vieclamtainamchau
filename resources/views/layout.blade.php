@@ -106,47 +106,51 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
-.category-card.hot-effect {
-    border: 2px solid #ff6b6b;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
-    transform: translateY(-3px);
-}
 
-.category-card.hot-effect::before {
-    content: "Hot";
-    position: absolute;
-    top: -12px;
-    right: 10px;
-    background: #ff6b6b;
-    color: white;
-    padding: 2px 12px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: bold;
-    z-index: 1;
-}
+        .category-card.hot-effect {
+            border: 2px solid #ff6b6b;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+            transform: translateY(-3px);
+        }
 
-.category-card.hot-effect:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
-}
+        .category-card.hot-effect::before {
+            content: "Hot";
+            position: absolute;
+            top: -12px;
+            right: 10px;
+            background: #ff6b6b;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 1;
+        }
 
-/* Thêm animation pulse cho hot-effect */
-@keyframes pulse {
-    0% {
-        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
-    }
-    50% {
-        box-shadow: 0 4px 20px rgba(255, 107, 107, 0.4);
-    }
-    100% {
-        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
-    }
-}
+        .category-card.hot-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+        }
 
-.category-card.hot-effect {
-    animation: pulse 2s infinite;
-}
+        /* Thêm animation pulse cho hot-effect */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 4px 20px rgba(255, 107, 107, 0.4);
+            }
+
+            100% {
+                box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+            }
+        }
+
+        .category-card.hot-effect {
+            animation: pulse 2s infinite;
+        }
+
         .your-location i {
             color: #ff0000;
         }
@@ -1640,12 +1644,87 @@
             margin: 0 2rem;
         }
 
+        /* CSS cho overlay và xử lý tương tác */
+        .site-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(1px);
+            z-index: 998;
+            pointer-events: none;
+            /* Cho phép scroll qua overlay */
+        }
+
+        /* Vô hiệu hóa click cho toàn bộ trang */
+        body:has(.site-overlay) * {
+            pointer-events: none;
+        }
+
+        /* Cho phép scroll */
+        body:has(.site-overlay) {
+            overflow-y: auto;
+        }
+
+        /* Cho phép tương tác với modal */
+        .warning-modal,
+        .warning-modal * {
+            pointer-events: auto !important;
+        }
+
+        /* Style cho các elements không thể click */
+        .site-overlay~* a,
+        .site-overlay~* button,
+        .site-overlay~* input,
+        .site-overlay~* select {
+            opacity: 0.7;
+            cursor: not-allowed;
+            user-select: none;
+        }
+
+        /* Khôi phục style cho elements trong modal */
+        .warning-modal a,
+        .warning-modal button,
+        .warning-modal input {
+            opacity: 1 !important;
+            cursor: pointer !important;
+            user-select: auto !important;
+        }
+
+        /* Hiệu ứng hover cho elements không thể click */
+        .site-overlay~* a:hover,
+        .site-overlay~* button:hover {
+            position: relative;
+        }
+
+        .site-overlay~* a:hover::after,
+        .site-overlay~* button:hover::after {
+            content: "Vui lòng đăng nhập để tiếp tục";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+
         /* Responsive Styles */
     </style>
 </head>
 
 <body>
     <header class="header">
+        <!-- Thêm overlay div ngay sau thẻ header -->
+        @if (!Auth::guard('employer')->check() && !Auth::guard('candidate')->check())
+            <div class="site-overlay" id="siteOverlay"></div>
+        @endif
         <div class="header-top">
             <div class="logo">
                 <img src="{{ asset('frontend/img/logo.png') }}" style="width:200px;height:200px;" alt="Logo">
@@ -1719,156 +1798,232 @@
                         <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
                     @endforeach
                 @endif
-                <li><a href="{{route('about')}}">Liên hệ</a></li>
+                <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
             </ul>
         </nav>
     </header>
-@if (!Auth::guard('employer')->check() && !Auth::guard('candidate')->check())
-    <div class="warning-modal" id="warningModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <img src="{{ asset('frontend/img/logo.png') }}" alt="Logo">
-                <div class="modal-title-group">
-                    <div class="modal-title">VIỆC LÀM TẠI NĂM CHÂU TRÊN THẾ GIỚI</div>
-                    <div class="modal-subtitle">JOBS IN FIVE CONTINENTS OF THE WORLD</div>
+    @if (!Auth::guard('employer')->check() && !Auth::guard('candidate')->check())
+        <div class="warning-modal" id="warningModal">
+            <div class="modal-content">
+                <button class="close-button" id="closeModal">&times;</button>
+                <div class="modal-header">
+                    <img src="{{ asset('frontend/img/logo.png') }}" alt="Logo">
+                    <div class="modal-title-group" style="margin-left: 240px;">
+                        <div class="modal-title">VIỆC LÀM TẠI NĂM CHÂU TRÊN THẾ GIỚI</div>
+                        <div class="modal-subtitle">JOBS IN FIVE CONTINENTS OF THE WORLD</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="modal-body">
-                <p class="modal-highlight">TÌM VIỆC LÀM MỚI – TÌM TRƯỜNG DU HỌC NGHỀ - TÌM CÔNG TY TUYỂN DỤNG LAO ĐỘNG MIỄN PHÍ</p>
-                <p>TRANG WEBSITE VIECLAMTAINAMCHAU Này</p>
-                <p>Chỉ dành cho Người Tìm việc – Du học sinh – Học Nghề - Người lao động Đi xuất khẩu lao động.</p>
-                <p class="modal-warning">TRANG WEBSITE NÀY KHÔNG DÀNH CHO: các Công ty môi giới – Đại lý việc Làm.</p>
-                <p>Nghiêm cấm các Tổ chức Hoặc Cá nhân lợi dụng nội dung việc làm – Du học nghề - Việc làm xuất khẩu lao động đăng trên trang web này để thông tin môi giới kiếm tiền ,lừa đảo người tìm việc, người đi du học nghề, Người đi xuất khẩu lao động.</p>
-                <p>Người tìm việc – du học sinh học nghề - Người đi xuất khẩu lao động.</p>
-                <a href="{{ route('candidate.register') }}" class="register-link">Đăng ký tài khoản miễn phí ngay để xem tin việc làm mới – tìm trường du học nghề - tìm Công ty tuyển dụng lao động.</a>
-                <a href="{{ route('employer.register') }}" class="register-link">Đăng ký tài khoản nhà tuyển dụng miễn phí ngay </a>
-            </div>
+                <div class="modal-body">
+                    <p class="modal-highlight">TÌM VIỆC LÀM MỚI – TÌM TRƯỜNG DU HỌC NGHỀ - TÌM CÔNG TY TUYỂN DỤNG LAO
+                        ĐỘNG MIỄN PHÍ</p>
+                    <p>TRANG WEBSITE VIECLAMTAINAMCHAU Này</p>
+                    <p>Chỉ dành cho Người Tìm việc – Du học sinh – Học Nghề - Người lao động Đi xuất khẩu lao động.</p>
+                    <p class="modal-warning">TRANG WEBSITE NÀY KHÔNG DÀNH CHO: các Công ty môi giới – Đại lý việc Làm.
+                    </p>
+                    <p>Nghiêm cấm các Tổ chức Hoặc Cá nhân lợi dụng nội dung việc làm – Du học nghề - Việc làm xuất khẩu
+                        lao động đăng trên trang web này để thông tin môi giới kiếm tiền ,lừa đảo người tìm việc, người
+                        đi du học nghề, Người đi xuất khẩu lao động.</p>
+                    <p>Người tìm việc – du học sinh học nghề - Người đi xuất khẩu lao động.</p>
+                    <a href="{{ route('candidate.register') }}" class="register-link">Đăng ký tài khoản miễn phí ngay
+                        để xem tin việc làm mới – tìm trường du học nghề - tìm Công ty tuyển dụng lao động.</a>
+                    <a href="{{ route('employer.register') }}" class="register-link">Đăng ký tài khoản nhà tuyển dụng
+                        miễn phí ngay </a>
+                </div>
 
-            <div class="modal-footer">
-                <div class="contact-info">
-                    <span>📞 +84.6565815</span>
-                    <span>✉️ hotro@vieclamtainamchau.com</span>
+                <div class="modal-footer">
+                    <div class="contact-info">
+                        <span>📞 +84.6565815</span>
+                        <span>✉️ hotro@vieclamtainamchau.com</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <style>
-        .warning-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
+        <style>
+            .warning-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            }
 
-        .modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-header img {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-        }
-
-        .modal-title {
-            color: #ff0000;
-            font-size: 1.25rem;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .modal-subtitle {
-            color: #ff0000;
-            font-size: 1rem;
-            text-align: center;
-        }
-
-        .modal-body {
-            text-align: center;
-        }
-
-        .modal-body p {
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-
-        .modal-highlight {
-            font-weight: bold;
-            color: #ff0000;
-        }
-
-        .modal-warning {
-            font-weight: bold;
-        }
-
-        .register-link {
-            display: inline-block;
-            background: #ff0000;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 4px;
-            text-decoration: none;
-            margin: 1.5rem 0;
-            font-weight: bold;
-        }
-
-        .register-link:hover {
-            background: #cc0000;
-        }
-
-        .modal-footer {
-            margin-top: 1.5rem;
-            border-top: 1px solid #eee;
-            padding-top: 1rem;
-        }
-
-        .contact-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
             .modal-content {
-                padding: 1rem;
+                background: white;
+                padding: 2rem;
+                border-radius: 8px;
+                width: 90%;
+                max-width: 800px;
+                max-height: 90vh;
+                overflow-y: auto;
             }
 
             .modal-header {
-                flex-direction: column;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .modal-header img {
+                width: 60px;
+                height: 60px;
+                object-fit: contain;
+            }
+
+            .modal-title {
+                color: #ff0000;
+                font-size: 1.25rem;
+                font-weight: bold;
                 text-align: center;
+            }
+
+            .modal-subtitle {
+                color: #ff0000;
+                font-size: 1rem;
+                text-align: center;
+            }
+
+            .modal-body {
+                text-align: center;
+            }
+
+            .modal-body p {
+                margin-bottom: 1rem;
+                line-height: 1.5;
+            }
+
+            .modal-highlight {
+                font-weight: bold;
+                color: #ff0000;
+            }
+
+            .modal-warning {
+                font-weight: bold;
+            }
+
+            .register-link {
+                display: inline-block;
+                background: #ff0000;
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 4px;
+                text-decoration: none;
+                margin: 1.5rem 0;
+                font-weight: bold;
+            }
+
+            .register-link:hover {
+                background: #cc0000;
+            }
+
+            .modal-footer {
+                margin-top: 1.5rem;
+                border-top: 1px solid #eee;
+                padding-top: 1rem;
             }
 
             .contact-info {
-                flex-direction: column;
-                gap: 0.5rem;
-                text-align: center;
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.9rem;
             }
-        }
-    </style>
 
+            .modal-content {
+                position: relative;
+                /* Để định vị nút close */
+                /* Các style khác giữ nguyên */
+            }
 
-@endif
+            .close-button {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background: #ff0000;
+                border: 2px solid white;
+                color: white;
+                font-size: 24px;
+                line-height: 24px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                z-index: 1;
+            }
+
+            .close-button:hover {
+                background: #cc0000;
+                transform: rotate(90deg);
+            }
+
+            /* Thêm animation cho modal */
+            .warning-modal {
+                animation: fadeIn 0.3s ease-out;
+            }
+
+            .modal-content {
+                animation: slideIn 0.3s ease-out;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes slideIn {
+                from {
+                    transform: translateY(-50px);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+
+            /* Điều chỉnh responsive */
+            @media (max-width: 768px) {
+                .close-button {
+                    top: 10px;
+                    right: 10px;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .modal-content {
+                    padding: 1rem;
+                }
+
+                .modal-header {
+                    flex-direction: column;
+                    text-align: center;
+                }
+
+                .contact-info {
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    text-align: center;
+                }
+            }
+        </style>
+    @endif
     <main>
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -1888,17 +2043,17 @@
             <div class="footer-links">
                 <h3>Trang chủ</h3>
                 <ul>
-                    <li><a href="{{route('about')}}">Về chúng tôi</a></li>
-                    <li><a href="{{route('employer.services')}}">Bảng giá dịch vụ</a></li>
-                    <li><a href="{{route('candidate.login')}}">Người tìm việc</a></li>
-                    <li><a href="{{route('employer.login')}}">Nhà tuyển dụng</a></li>
+                    <li><a href="{{ route('about') }}">Về chúng tôi</a></li>
+                    <li><a href="{{ route('employer.services') }}">Bảng giá dịch vụ</a></li>
+                    <li><a href="{{ route('candidate.login') }}">Người tìm việc</a></li>
+                    <li><a href="{{ route('employer.login') }}">Nhà tuyển dụng</a></li>
                 </ul>
             </div>
 
             <div class="footer-links">
                 <h3>Hỗ trợ</h3>
                 <ul>
-                    <li><a href="#">Liên hệ với chúng tôi</a></li>
+                    <li><a href="{{ route('hotline') }}">Liên hệ với chúng tôi</a></li>
                     <li><a href="#">Quy định đăng tin</a></li>
                     <li><a href="#">Hướng dẫn đăng tin</a></li>
                     <li><a href="#">Câu hỏi thường gặp</a></li>
@@ -1978,6 +2133,23 @@
             }
         });
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const warningModal = document.getElementById("warningModal");
+            const closeModal = document.getElementById("closeModal");
+
+            if (warningModal && closeModal) {
+                // Đóng modal
+                closeModal.addEventListener("click", function() {
+                    warningModal.style.display = "none";
+                    document.body.classList.remove("modal-active");
+                });
+
+                // Hiển thị modal
+                document.body.classList.add("modal-active");
+            }
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
     <script>
         new MultiSelectTag('countries') // id
@@ -2007,7 +2179,7 @@
             $('#user-table').DataTable();
         });
     </script>
-     <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('warningModal');
             if (modal) {
@@ -2025,6 +2197,52 @@
                     }
                 });
             }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!document.querySelector('.site-overlay')) return;
+
+            // Chặn sự kiện click trên toàn trang
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.warning-modal')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Hiển thị thông báo nhỏ khi click
+                    const notification = document.createElement('div');
+                    notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 10px 20px;
+                border-radius: 4px;
+                z-index: 1001;
+                animation: fadeInOut 2s ease-in-out;
+            `;
+                    notification.textContent = 'Vui lòng đăng nhập để tương tác với trang web';
+                    document.body.appendChild(notification);
+
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 2000);
+                }
+            }, true);
+
+            // Style cho animation thông báo
+            const style = document.createElement('style');
+            style.textContent = `
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, -20px); }
+            15% { opacity: 1; transform: translate(-50%, 0); }
+            85% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -20px); }
+        }
+    `;
+            document.head.appendChild(style);
         });
     </script>
 </body>

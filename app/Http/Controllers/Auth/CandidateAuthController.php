@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CandidateVerificationMail;
+
 class CandidateAuthController extends Controller
 {
     public function showRegistrationForm()
@@ -25,15 +26,19 @@ class CandidateAuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:candidates',
+            'phone' => 'required|string|max:15|unique:candidates', // Quy tắc cho số điện thoại
             'password' => 'required|string|min:6|confirmed',
         ], [
             'name.required' => 'Họ và tên không được để trống.',
             'email.required' => 'Email không được để trống.',
+            'phone.required' => 'Số điện thoại không được để trống.', // Thông báo lỗi cho phone
+            'phone.unique' => 'Số điện thoại đã được sử dụng.',
             'password.required' => 'Mật khẩu không được để trống.',
             'email.email' => 'Email phải là địa chỉ email hợp lệ.',
             'password.min' => 'Mật khẩu phải có ít nhất :min ký tự.',
             'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
         ]);
+
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -46,10 +51,12 @@ class CandidateAuthController extends Controller
         $candidate = Candidate::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
+            'phone' => $request->input('phone'), // Lưu số điện thoại
             'password' => Hash::make($request->input('password')),
             'status' => 0,
             'verification_token' => $verificationToken,
         ]);
+
         Mail::to($candidate->email)->send(new CandidateVerificationMail($candidate));
 
         return redirect()->route('candidate.register')->with('success', 'Vui lòng kiểm tra email để xác thực tài khoản.');
@@ -75,32 +82,32 @@ class CandidateAuthController extends Controller
 
 
 
-   public function login(Request $request)
-{
-    $credentials = $request->only('email', 'password');
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
 
-    // Thử kiểm tra thông tin đăng nhập của candidate
-    if (Auth::guard('candidate')->attempt($credentials)) {
-        $candidate = Auth::guard('candidate')->user();
+        // Thử kiểm tra thông tin đăng nhập của candidate
+        if (Auth::guard('candidate')->attempt($credentials)) {
+            $candidate = Auth::guard('candidate')->user();
 
-        // Kiểm tra trạng thái của tài khoản
-        if ($candidate->status != 1) {
-            Auth::guard('candidate')->logout(); // Đăng xuất ngay lập tức nếu trạng thái không phải là 1
-            return redirect()->back()->withInput()->withErrors(['email' => 'Tài khoản của bạn đang chờ xác thực.']);
+            // Kiểm tra trạng thái của tài khoản
+            if ($candidate->status != 1) {
+                Auth::guard('candidate')->logout(); // Đăng xuất ngay lập tức nếu trạng thái không phải là 1
+                return redirect()->back()->withInput()->withErrors(['email' => 'Tài khoản của bạn đang chờ xác thực.']);
+            }
+
+            // Kiểm tra nếu tài khoản đã xác thực
+            if ($candidate->verification_token !== null) {
+                Auth::guard('candidate')->logout(); // Đăng xuất nếu chưa xác thực
+                return redirect()->back()->withInput()->withErrors(['email' => 'Bạn chưa xác thực tài khoản. Vui lòng kiểm tra email.']);
+            }
+
+            // Nếu đã xác thực và trạng thái là 1
+            return redirect()->route('/')->with('success', 'Xin chào ' . $candidate->name);
+        } else {
+            return redirect()->back()->withInput()->withErrors(['email' => 'Thông tin đăng nhập không chính xác']);
         }
-
-        // Kiểm tra nếu tài khoản đã xác thực
-        if ($candidate->verification_token !== null) {
-            Auth::guard('candidate')->logout(); // Đăng xuất nếu chưa xác thực
-            return redirect()->back()->withInput()->withErrors(['email' => 'Bạn chưa xác thực tài khoản. Vui lòng kiểm tra email.']);
-        }
-
-        // Nếu đã xác thực và trạng thái là 1
-        return redirect()->route('/')->with('success', 'Xin chào ' . $candidate->name);
-    } else {
-        return redirect()->back()->withInput()->withErrors(['email' => 'Thông tin đăng nhập không chính xác']);
     }
-}
 
     public function showLoginForm()
     {
@@ -120,7 +127,7 @@ class CandidateAuthController extends Controller
         return view('pages.home');
     }
 
-     public function redirectToGoogle()
+    public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
     }
