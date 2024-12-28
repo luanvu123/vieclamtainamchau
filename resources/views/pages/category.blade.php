@@ -57,7 +57,6 @@
                         <p>Địa điểm: {{ $job->location ?? 'Không xác định' }}</p>
                         <p>Lương: {{ $job->salary ?? 'Thỏa thuận' }}</p>
                     </div>
-                    <a href="{{ route('job.show', $job->slug) }}" class="btn btn-primary">Xem chi tiết</a>
                 </div>
             @endforeach
         </div>

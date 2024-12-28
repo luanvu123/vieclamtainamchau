@@ -84,7 +84,7 @@ class CandidateAuthController extends Controller
         $candidate = Auth::guard('candidate')->user();
 
         // Kiểm tra trạng thái của tài khoản
-        if ($candidate->status !== 1) {
+        if ($candidate->status != 1) {
             Auth::guard('candidate')->logout(); // Đăng xuất ngay lập tức nếu trạng thái không phải là 1
             return redirect()->back()->withInput()->withErrors(['email' => 'Tài khoản của bạn đang chờ xác thực.']);
         }

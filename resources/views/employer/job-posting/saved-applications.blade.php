@@ -142,7 +142,7 @@
         </div>
 
         <div class="main-content">
-            <div class="top-bar">
+            {{-- <div class="top-bar">
                 <h2>Quản lý tin đăng</h2>
                 <button class="post-button">+ Đăng tin ngay</button>
             </div>
@@ -160,11 +160,11 @@
                 <select class="filter-select">
                     <option>Tất cả nguồn tin</option>
                 </select>
-            </div>
+            </div> --}}
             <div class="saved-applications-container">
                 <h2>Hồ sơ đã lưu</h2>
 
-                <table class="applications-table" id="saved-applications-table">
+                <table class="applications-table" id="user-table">
                     <thead>
                         <tr>
                             <th>#</th>

@@ -51,17 +51,26 @@
 
                     <div class="category-grid">
                         @foreach ($genre->jobPostings as $job)
-                           <div class="category-card {{ $job->employer && $job->employer->IsHoteffect ? 'hot-effect' : '' }}">
+                            <div
+                                class="category-card {{ $job->employer && $job->employer->IsHoteffect ? 'hot-effect' : '' }}">
                                 @if ($job->employer && $job->employer->avatar)
-                                    <img src="{{ asset('storage/' . $job->employer->avatar) }}"
-                                        alt="{{ $job->employer->company_name }}"
-                                        onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
+                                    <a href="{{ route('job.show', $job->slug) }}">
+                                        <img src="{{ asset('storage/' . $job->employer->avatar) }}"
+                                            alt="{{ $job->employer->company_name }}"
+                                            onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
+                                    </a>
                                 @else
-                                    <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">
+                                    <a href="{{ route('job.show', $job->slug) }}">
+                                        <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">
+                                    </a>
                                 @endif
 
                                 <div class="card-content">
-                                    <h3>{{ Str::limit($job->title, 30) }}</h3>
+                                    <h3>
+                                        <a href="{{ route('job.show', $job->slug) }}">
+                                            {{ Str::limit($job->title, 30) }}
+                                        </a>
+                                    </h3>
                                     <p>{{ $job->employer ? $job->employer->company_name : 'Công ty TNHH' }}</p>
                                     <span>
                                         @if ($job->countries->isNotEmpty())
@@ -71,14 +80,13 @@
                                         @endif
                                     </span>
                                 </div>
-                                <a href="{{ route('job.show', $job->slug) }}" class="card-link"
-                                    title="{{ $job->title }}"> Xem chi tiết</a>
                             </div>
                         @endforeach
                     </div>
+
                     @if ($genre->jobPostings->count() > 4)
                         <div class="view-more">
-                            <a href="{{ route('genre.show', $genre->id) }}" class="btn btn-outline">
+                            <a href="{{ route('genre.show', $genre->slug) }}" class="btn btn-outline">
                                 Xem thêm {{ $genre->name }}
                             </a>
 

@@ -33,25 +33,7 @@
         </div>
 
         <div class="main-content">
-            <div class="top-bar">
-                <h2>Quản lý tin đăng</h2>
-                <button class="post-button">+ Đăng tin ngay</button>
-            </div>
-
-            <div class="filters">
-                <select class="filter-select">
-                    <option>Tất cả tin đăng</option>
-                </select>
-                <select class="filter-select">
-                    <option>Tất cả trạng thái</option>
-                </select>
-                <select class="filter-select">
-                    <option>Tất cả loại tin</option>
-                </select>
-                <select class="filter-select">
-                    <option>Tất cả nguồn tin</option>
-                </select>
-            </div>
+        
             <div class="applications-container">
                 <h2>Danh sách ứng viên - {{ $jobPosting->title }}</h2>
 
