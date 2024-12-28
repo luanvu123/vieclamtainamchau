@@ -1651,8 +1651,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(1px);
+            background: transparent;
+            /* Bỏ background mờ */
             z-index: 998;
             pointer-events: none;
             /* Cho phép scroll qua overlay */
@@ -1679,7 +1679,6 @@
         .site-overlay~* button,
         .site-overlay~* input,
         .site-overlay~* select {
-            opacity: 0.7;
             cursor: not-allowed;
             user-select: none;
         }
@@ -1688,7 +1687,6 @@
         .warning-modal a,
         .warning-modal button,
         .warning-modal input {
-            opacity: 1 !important;
             cursor: pointer !important;
             user-select: auto !important;
         }
@@ -1808,7 +1806,7 @@
                 <button class="close-button" id="closeModal">&times;</button>
                 <div class="modal-header">
                     <img src="{{ asset('frontend/img/logo.png') }}" alt="Logo">
-                    <div class="modal-title-group" style="margin-left: 240px;">
+                    <div class="modal-title-group" style="margin-left: 120px;">
                         <div class="modal-title">VIỆC LÀM TẠI NĂM CHÂU TRÊN THẾ GIỚI</div>
                         <div class="modal-subtitle">JOBS IN FIVE CONTINENTS OF THE WORLD</div>
                     </div>
@@ -1872,8 +1870,8 @@
             }
 
             .modal-header img {
-                width: 60px;
-                height: 60px;
+                width: 100px;
+                height: 100px;
                 object-fit: contain;
             }
 
@@ -2223,7 +2221,7 @@
                 z-index: 1001;
                 animation: fadeInOut 2s ease-in-out;
             `;
-                    notification.textContent = 'Vui lòng đăng nhập để tương tác với trang web';
+                    notification.textContent = 'Vui lòng click vào modal để tương tác với trang web';
                     document.body.appendChild(notification);
 
                     setTimeout(() => {

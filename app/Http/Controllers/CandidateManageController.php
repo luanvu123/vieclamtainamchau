@@ -38,21 +38,24 @@ class CandidateManageController extends Controller
     /**
      * Cập nhật thông tin ứng viên.
      */
-    public function update(Request $request, $id)
-    {
-        $candidate = Candidate::findOrFail($id);
+  public function update(Request $request, $id)
+{
+    $candidate = Candidate::findOrFail($id);
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:candidates,email,' . $id,
-            'phone' => 'nullable|string|max:15',
-        ]);
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:candidates,email,' . $id,
+        'phone' => 'nullable|string|max:15',
+        'status' => 'required|integer|in:0,1', // Chỉ cho phép trạng thái 0 hoặc 1
+    ]);
 
-        $candidate->update($request->all());
-         Mail::to($candidate->email)->send(new CandidateApprovalMail($candidate));
+    $candidate->update($request->all());
 
-        return redirect()->route('candidate-manage.index')->with('success', 'Cập nhật ứng viên thành công.');
-    }
+    Mail::to($candidate->email)->send(new CandidateApprovalMail($candidate));
+
+    return redirect()->route('candidate-manage.index')->with('success', 'Cập nhật ứng viên thành công.');
+}
+
 
     /**
      * Xóa ứng viên.
