@@ -244,6 +244,14 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     </a>
                                 </li>
 
+                                  <li class="treeview {{ Request::is('news*') ? 'active' : '' }}">
+                                    <a href="{{ route('news.index') }}">
+                                        <img src="{{ asset('backend_admin/images/newspaper-news-svgrepo-com.svg') }}"
+                                            alt="Google" width="20" height="20">
+                                        <span> Tin tức</span>
+                                    </a>
+                                </li>
+
 
                             </ul>
                         </div>

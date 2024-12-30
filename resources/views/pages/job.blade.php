@@ -526,7 +526,7 @@
 
     <div class="job-card">
         <!-- Company Logo -->
-        <img src="{{ asset($jobPosting->employer->company_logo ?? 'frontend/img/company-default.png') }}"
+        <img src="{{ asset('storage/' .$jobPosting->employer->avatar) }}"
             alt="{{ $jobPosting->employer->company_name }}" class="company-logo">
 
         <!-- Job Header Section -->
@@ -555,7 +555,7 @@
             <!-- Action Buttons -->
             <div class="buttons">
                 <button class="apply-btn" onclick="applyJob({{ $jobPosting->id }})">Nộp hồ sơ</button>
-                <button class="save-btn" onclick="toggleSaveJob({{ $jobPosting->id }})">♡</button>
+                {{-- <button class="save-btn" onclick="toggleSaveJob({{ $jobPosting->id }})">♡</button> --}}
             </div>
         </div>
 
@@ -580,23 +580,22 @@
                     <div class="info-item">
                         <img src="{{ asset('frontend/img/ladder-svgrepo-com.png') }}" alt="level">
                         <div>
-                            <div>Cấp bậc</div>
-                            <strong>{{ $jobPosting->level }}</strong>
+                            <div>Kinh nghiệm</div>
+                            <strong>{{ $jobPosting->experience }}</strong>
                         </div>
                     </div>
                     <div class="info-item">
                         <img src="{{ asset('frontend/img/number-5-svgrepo-com.png') }}" alt="headcount">
                         <div>
                             <div>Số lượng tuyển</div>
-                            <strong>{{ $jobPosting->headcount }}</strong>
+                            <strong>{{ $jobPosting->number_of_recruits }}</strong>
                         </div>
                     </div>
-                    <!-- Add more info items as needed -->
                 </div>
 
                 <div class="job-tags">
                     @foreach ($jobPosting->genres as $genre)
-                        <a href="{{ route('genres.show', $genre->id) }}" class="job-tag">{{ $genre->name }}</a>
+                        <a href="{{ route('genre.show', $genre->slug) }}" class="job-tag">{{ $genre->name }}</a>
                         @if (!$loop->last)
                             /
                         @endif
@@ -624,7 +623,7 @@
                 <div class="company-brief">
                     <div class="brief-item">
                         <h3>Quy mô công ty</h3>
-                        <p>{{ $jobPosting->employer->scale }}</p>
+                        <p>{{ $jobPosting->employer->scale }} </p>
                     </div>
                     <div class="brief-item">
                         <h3>Địa chỉ</h3>
@@ -647,7 +646,7 @@
                 <div class="company-brief">
                     <div class="brief-item">
                         <h3>Thông tin</h3>
-                        <p>{{ $jobPosting->employer->detail }}</p>
+                        <p>{!! $jobPosting->employer->detail !!}</p>
                     </div>
 
                 </div>
@@ -798,43 +797,42 @@
                 // Job application functionality
 
 
-            // Save/Unsave job functionality
-            window.toggleSaveJob = function(jobId) {
-                @auth
-                const saveBtn = document.querySelector('.save-btn');
+                // Save/Unsave job functionality
+                window.toggleSaveJob = function(jobId) {
+                    @auth
+                    const saveBtn = document.querySelector('.save-btn');
 
-                fetch(`/jobs/${jobId}/toggle-save`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Toggle heart icon
-                            if (data.saved) {
-                                saveBtn.innerHTML = '❤️';
-                                saveBtn.classList.add('saved');
-                            } else {
-                                saveBtn.innerHTML = '♡';
-                                saveBtn.classList.remove('saved');
+                    fetch(`/jobs/${jobId}/toggle-save`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                             }
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Có lỗi xảy ra khi lưu công việc.');
-                    });
-            @else
-                window.location.href = '{{ route('login') }}';
-            @endauth
-        };
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Toggle heart icon
+                                if (data.saved) {
+                                    saveBtn.innerHTML = '❤️';
+                                    saveBtn.classList.add('saved');
+                                } else {
+                                    saveBtn.innerHTML = '♡';
+                                    saveBtn.classList.remove('saved');
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Có lỗi xảy ra khi lưu công việc.');
+                        });
+                @else
+                    window.location.href = '{{ route('login') }}';
+                @endauth
+            };
 
-        // Check if job is saved on page load
-        @auth
-        fetch(`/jobs/{{ $jobPosting->id }}/check-saved`)
+            // Check if job is saved on page load
+            @auth fetch(`/jobs/{{ $jobPosting->id }}/check-saved`)
             .then(response => response.json())
             .then(data => {
                 if (data.saved) {
@@ -910,7 +908,7 @@
         });
         });
     </script>
-     <script>
+    <script>
         function applyJob(jobId) {
             document.getElementById('jobPostingId').value = jobId;
             document.getElementById('applicationModal').style.display = 'block';

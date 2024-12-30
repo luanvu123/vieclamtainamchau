@@ -1,6 +1,6 @@
 @extends('layout')
 @section('content')
-   <section class="hero">
+    <section class="hero">
         <div class="search-bar">
             <form action="{{ route('site.search') }}" method="GET">
                 <input type="text" name="keyword" placeholder="Nhập từ khóa tìm kiếm" value="{{ request('keyword') }}">
@@ -39,34 +39,35 @@
     </section>
 
 
-  <section class="job-categories">
-    @if ($jobPostings->count() > 0)
-        <div class="category-grid">
-            @foreach ($jobPostings as $job)
-               <div class="category-card {{ $job->employer && $job->employer->IsHoteffect ? 'hot-effect' : '' }}">
-                    @if ($job->employer && $job->employer->company_logo)
-                        <img src="{{ asset('storage/' . $job->employer->company_logo) }}"
-                            alt="{{ $job->employer->company_name }}"
-                            onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
-                    @else
-                        <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">
-                    @endif
-                    <div class="card-content">
-                        <h3>{{ $job->title }}</h3>
-                        <p>{{ $job->employer->company_name ?? 'Công ty TNHH' }}</p>
-                        <p>Địa điểm: {{ $job->location ?? 'Không xác định' }}</p>
-                        <p>Lương: {{ $job->salary ?? 'Thỏa thuận' }}</p>
-                    </div>
-                </div>
-            @endforeach
-        </div>
 
-        {{-- Thêm phân trang --}}
-        <div class="pagination-container mt-4">
-            {{ $jobPostings->links() }}
-        </div>
-    @else
-        <p>Hiện tại không có bài đăng tuyển dụng nào trong danh mục này.</p>
-    @endif
-</section>
+    <section class="job-categories">
+        @if ($jobPostings->count() > 0)
+            <div class="category-grid">
+                @foreach ($jobPostings as $job)
+                    <div class="category-card {{ $job->employer && $job->employer->IsHoteffect ? 'hot-effect' : '' }}">
+                        @if ($job->employer && $job->employer->avatar)
+                            <img src="{{ asset('storage/' . $job->employer->avatar) }}"
+                                alt="{{ $job->employer->company_name }}"
+                                onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
+                        @else
+                            <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">
+                        @endif
+                        <div class="card-content">
+                            <h3>{{ $job->title }}</h3>
+                            <p>{{ $job->employer->company_name ?? 'Công ty TNHH' }}</p>
+                            <p>Địa điểm: {{ $job->location ?? 'Không xác định' }}</p>
+                            <p>Lương: {{ $job->salary ?? 'Thỏa thuận' }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            {{-- Thêm phân trang --}}
+            <div class="pagination-container mt-4">
+                {{ $jobPostings->links() }}
+            </div>
+        @else
+            <p>Hiện tại không có bài đăng tuyển dụng nào trong danh mục này.</p>
+        @endif
+    </section>
 @endsection

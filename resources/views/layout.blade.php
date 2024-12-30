@@ -1652,15 +1652,21 @@
             width: 100%;
             height: 100%;
             background: transparent;
-            /* Bỏ background mờ */
             z-index: 998;
             pointer-events: none;
-            /* Cho phép scroll qua overlay */
         }
 
-        /* Vô hiệu hóa click cho toàn bộ trang */
+        /* Vô hiệu hóa click cho toàn bộ trang trừ header và nút đăng nhập/đăng ký */
         body:has(.site-overlay) * {
             pointer-events: none;
+        }
+
+        /* Cho phép tương tác với header và nút đăng nhập/đăng ký */
+        .header-top,
+        .auth-group,
+        .auth-buttons,
+        .auth-btn {
+            pointer-events: auto !important;
         }
 
         /* Cho phép scroll */
@@ -1675,30 +1681,23 @@
         }
 
         /* Style cho các elements không thể click */
-        .site-overlay~* a,
-        .site-overlay~* button,
-        .site-overlay~* input,
-        .site-overlay~* select {
+        .site-overlay~*:not(.auth-group):not(.auth-buttons):not(.auth-btn) a,
+        .site-overlay~*:not(.auth-group):not(.auth-buttons):not(.auth-btn) button,
+        .site-overlay~*:not(.auth-group):not(.auth-buttons):not(.auth-btn) input,
+        .site-overlay~*:not(.auth-group):not(.auth-buttons):not(.auth-btn) select {
             cursor: not-allowed;
             user-select: none;
         }
 
-        /* Khôi phục style cho elements trong modal */
-        .warning-modal a,
-        .warning-modal button,
-        .warning-modal input {
+        /* Khôi phục style cho nút đăng nhập/đăng ký */
+        .auth-btn {
             cursor: pointer !important;
             user-select: auto !important;
         }
 
-        /* Hiệu ứng hover cho elements không thể click */
-        .site-overlay~* a:hover,
-        .site-overlay~* button:hover {
-            position: relative;
-        }
-
-        .site-overlay~* a:hover::after,
-        .site-overlay~* button:hover::after {
+        /* Hiệu ứng hover chỉ cho elements bị chặn */
+        .site-overlay~*:not(.auth-group):not(.auth-buttons):not(.auth-btn) a:hover::after,
+        .site-overlay~*:not(.auth-group):not(.auth-buttons):not(.auth-btn) button:hover::after {
             content: "Vui lòng đăng nhập để tiếp tục";
             position: absolute;
             bottom: 100%;
@@ -1726,7 +1725,10 @@
         <div class="header-top">
             <div class="logo">
                 <img src="{{ asset('frontend/img/logo.png') }}" style="width:200px;height:200px;" alt="Logo">
-                <h1>VIỆC LÀM TẠI NĂM CHÂU</h1>
+                <div class="modal-title-group" style="margin-left: 120px;">
+                        <div class="modal-title" style="color: white">VIỆC LÀM TẠI NĂM CHÂU TRÊN THẾ GIỚI</div>
+                        <div class="modal-subtitle" style="color: white">JOBS IN FIVE CONTINENTS OF THE WORLD</div>
+                    </div>
             </div>
             <div class="header-actions">
                 <div class="auth-section">
@@ -1796,6 +1798,7 @@
                         <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
                     @endforeach
                 @endif
+                 <li><a href="{{ route('news.home') }}">Tin tức</a></li>
                 <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
             </ul>
         </nav>
@@ -1941,8 +1944,8 @@
 
             .close-button {
                 position: absolute;
-                top: 0px;
-                right: 0px;
+                top: 20px;
+                right: 41px;
                 width: 30px;
                 height: 30px;
                 border-radius: 50%;
@@ -2201,13 +2204,17 @@
         document.addEventListener('DOMContentLoaded', function() {
             if (!document.querySelector('.site-overlay')) return;
 
-            // Chặn sự kiện click trên toàn trang
+            // Chặn sự kiện click trên toàn trang trừ nút đăng nhập/đăng ký
             document.addEventListener('click', function(e) {
-                if (!e.target.closest('.warning-modal')) {
+                // Kiểm tra xem element được click có phải là nút đăng nhập/đăng ký không
+                const isAuthButton = e.target.closest('.auth-btn') ||
+                    e.target.closest('.auth-group') ||
+                    e.target.closest('.auth-buttons');
+
+                if (!e.target.closest('.warning-modal') && !isAuthButton) {
                     e.preventDefault();
                     e.stopPropagation();
 
-                    // Hiển thị thông báo nhỏ khi click
                     const notification = document.createElement('div');
                     notification.style.cssText = `
                 position: fixed;
@@ -2221,7 +2228,7 @@
                 z-index: 1001;
                 animation: fadeInOut 2s ease-in-out;
             `;
-                    notification.textContent = 'Vui lòng click vào modal để tương tác với trang web';
+                    notification.textContent = 'Vui lòng đăng nhập để tiếp tục';
                     document.body.appendChild(notification);
 
                     setTimeout(() => {
@@ -2229,18 +2236,6 @@
                     }, 2000);
                 }
             }, true);
-
-            // Style cho animation thông báo
-            const style = document.createElement('style');
-            style.textContent = `
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translate(-50%, -20px); }
-            15% { opacity: 1; transform: translate(-50%, 0); }
-            85% { opacity: 1; transform: translate(-50%, 0); }
-            100% { opacity: 0; transform: translate(-50%, -20px); }
-        }
-    `;
-            document.head.appendChild(style);
         });
     </script>
 </body>

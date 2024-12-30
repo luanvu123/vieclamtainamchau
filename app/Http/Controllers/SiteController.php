@@ -7,6 +7,7 @@ use App\Models\Country;
 use App\Models\Employer;
 use App\Models\Genre;
 use App\Models\JobPosting;
+use App\Models\News;
 use App\Models\OnlineVisitor;
 use Illuminate\Http\Request;
 
@@ -24,6 +25,43 @@ class SiteController extends Controller
     {
         $countries = Country::where('status', true)->get();
         return view('pages.flag', compact('countries'));
+    }
+    public function news()
+    {
+        // Lấy tin tức được kích hoạt, sắp xếp mới nhất và phân trang
+        $news = News::where('status', true)
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(12); // 12 tin một trang
+
+        // Lấy các tin nổi bật
+        $outstandingNews = News::where('status', true)
+                              ->where('isOutstanding', true)
+                              ->orderBy('created_at', 'desc')
+                              ->take(5) // Lấy 5 tin nổi bật
+                              ->get();
+
+        return view('pages.news', compact('news', 'outstandingNews'));
+    }
+
+    public function newsDetail($id)
+    {
+        try {
+            // Lấy chi tiết tin tức
+            $news = News::where('status', true)
+                       ->findOrFail($id);
+
+            // Lấy tin tức liên quan (cùng trạng thái active, không bao gồm tin hiện tại)
+            $relatedNews = News::where('status', true)
+                              ->where('id', '!=', $id)
+                              ->latest()
+                              ->take(6) // Lấy 6 tin liên quan
+                              ->get();
+
+            return view('pages.news-detail', compact('news', 'relatedNews'));
+
+        } catch (\Exception $e) {
+            abort(404); // Trả về trang 404 nếu không tìm thấy tin tức
+        }
     }
     public function country($slug)
     {
@@ -54,22 +92,34 @@ class SiteController extends Controller
         return view('pages.home', compact('categories', 'genres', 'countries', 'employerIsPartner',));
     }
 
-    public function genre($slug)
-    {
-        $genres = Genre::where('status', 'active')->get();
-        $categories = Category::where('status', 'active')->get();
-        $countries = Country::where('status', 'active')->get(); // Lấy quốc gia từ bảng Country
-        // Tìm genre dựa trên slug
-        $genre = Genre::where('slug', $slug)
-            ->with(['jobPostings' => function ($query) {
-                $query->with('employer')
-                    ->where('status', 'active')
-                    ->where('closing_date', '>', now())
-                    ->latest();
-            }])
-            ->firstOrFail();
-        return view('pages.genre', compact('genre', 'genres', 'categories', 'countries'));
+  public function genre($slug)
+{
+    $genres = Genre::where('status', 'active')->get();
+    $categories = Category::where('status', 'active')->get();
+    $countries = Country::where('status', 'active')->get();
+
+    $genre = Genre::where('slug', $slug)
+        ->with(['jobPostings' => function ($query) {
+            $query->with(['employer', 'countries'])
+                ->where('status', 'active')
+                ->where('closing_date', '>', now())
+                ->latest();
+        }])
+        ->firstOrFail();
+
+    // Nhóm jobs theo country
+    $jobsByCountry = collect();
+    foreach ($genre->jobPostings as $job) {
+        foreach ($job->countries as $country) {
+            if (!$jobsByCountry->has($country->id)) {
+                $jobsByCountry[$country->id] = collect();
+            }
+            $jobsByCountry[$country->id]->push($job);
+        }
     }
+
+    return view('pages.genre', compact('genre', 'genres', 'categories', 'countries', 'jobsByCountry'));
+}
     public function job($slug)
     {
         $jobPosting = JobPosting::where('slug', $slug)

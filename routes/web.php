@@ -14,6 +14,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\Employer\EmployerProfileController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployerManageController;
@@ -37,6 +38,8 @@ Route::get('/category/{slug}', [SiteController::class, 'category'])->name('categ
 Route::get('/country/{slug}', [SiteController::class, 'country'])->name('country.show');
 Route::get('/search', [SiteController::class, 'search'])->name('site.search');
 Route::post('/supports', [SupportController::class, 'store'])->name('supports.store');
+Route::get('/tin-tuc', [SiteController::class, 'news'])->name('news.home');
+Route::get('/tin-tuc/{id}', [SiteController::class, 'newsDetail'])->name('news.detail.home');
 
 Auth::routes();
 
@@ -55,6 +58,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('banks', BankController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
+    Route::resource('news', NewsController::class);
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::resource('countries', CountryController::class);
     Route::resource('categories', CategoryController::class);
@@ -70,6 +74,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 Route::prefix('candidate')->name('candidate.')->group(function () {
+
     Route::get('/applications', [CandidateProfileController::class, 'applications'])->middleware('candidate')->name('applications');
     Route::get('register', [CandidateAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [CandidateAuthController::class, 'register'])->name('register.submit');

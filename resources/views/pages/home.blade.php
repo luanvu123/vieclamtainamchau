@@ -102,7 +102,7 @@
                 @if ($employerIsPartner->count() > 0)
                     @foreach ($employerIsPartner as $partner)
                         <div class="partner-logo">
-                            <img src="{{ asset('storage/' . $partner->company_logo) }}" alt="{{ $partner->company_name }}"
+                            <img src="{{ asset('storage/' . $partner->avatar) }}" alt="{{ $partner->company_name }}"
                                 onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
                             <div class="partner-info">
                                 <h3>{{ $partner->company_name }}</h3>
