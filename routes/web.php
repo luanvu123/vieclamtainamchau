@@ -104,7 +104,7 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
 Route::prefix('employer')->name('employer.')->group(function () {
     // Authentication Routes
     Route::get('job-posting/find-candidate', [JobPostingController::class, 'findCandidate'])
-        ->name('job-posting.find-candidate');
+        ->name('job-posting.find-candidate')->middleware('employer');
     Route::get('/services', [JobPostingController::class, 'services'])->name('services')->middleware('employer');
     Route::get('register', [EmployerAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [EmployerAuthController::class, 'register'])->name('register.submit');
@@ -118,7 +118,8 @@ Route::prefix('employer')->name('employer.')->group(function () {
         [EmployerManageController::class, 'editJobPosting']
     )
         ->name('admin.job-postings.edit');
-
+   Route::get('dich-vu-da-mua', [JobPostingController::class, 'serviceActive'])
+        ->name('service-active')->middleware('employer');
     Route::put(
         'admin/employers/{employerId}/job-postings/{jobPostingId}',
         [EmployerManageController::class, 'updateJobPosting']

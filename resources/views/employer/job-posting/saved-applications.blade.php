@@ -126,11 +126,15 @@
                     <i>📊</i>
                     <span>Mua dịch vụ</span>
                 </a>
+                <a href="{{ route('employer.service-active') }}" class="menu-item">
+                    <i>❤️</i>
+                    <span>Dịch vụ đã mua</span>
+                </a>
             </div>
 
             <div class="menu-section">
                 <div class="menu-title">Quản lý ứng viên</div>
-                <a href="#" class="menu-item">
+                <a href="{{ route('employer.saved-applications') }}" class="menu-item">
                     <i>👥</i>
                     <span>Hồ sơ ứng tuyển</span>
                 </a>
@@ -164,64 +168,64 @@
             <div class="saved-applications-container">
                 <h2>Hồ sơ đã lưu</h2>
 
-                <table class="applications-table" id="user-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Tên ứng viên</th>
-                            <th>Email</th>
-                            <th>Vị trí ứng tuyển</th>
-                            <th>Ngày nộp</th>
-                            <th>CV</th>
-                            <th>Giới thiệu</th>
-                            <th>Trạng thái</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($savedApplications as $application)
-                            <tr data-application-id="{{ $application->id }}">
-                                <td>{{ $application->id }}</td>
-                                <td>{{ $application->candidate->name }}</td>
-                                <td>{{ $application->candidate->email }}</td>
-                                <td>{{ $application->jobPosting->title }}</td>
-                                <td>{{ $application->created_at->format('d/m/Y H:i') }}</td>
-                                <td>
-                                    <a href="{{ asset('storage/' . $application->cv_path) }}" target="_blank"
-                                        class="view-cv-btn">
-                                        Xem CV
-                                    </a>
-                                </td>
-                                <td>
-                                    @if ($application->introduction)
-                                        <button onclick="showIntroduction('{{ $application->id }}')" class="view-intro-btn">
-                                            Xem giới thiệu
-                                        </button>
-                                    @else
-                                        <span class="no-intro">Không có</span>
-                                    @endif
-                                </td>
-                                <td class="status-cell">
-                                    <span class="status-badge status-{{ $application->status }}">
-                                        {{ ucfirst($application->status) }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <button onclick="toggleSave('{{ $application->id }}')" class="save-btn saved"
-                                        data-application-id="{{ $application->id }}">
-                                        Đã lưu
-                                    </button>
-                                </td>
-                            </tr>
-                        @empty
+                @if ($savedApplications->isNotEmpty())
+                    <table class="applications-table" id="user-table">
+                        <thead>
                             <tr>
-                                <td colspan="9" class="no-applications">
-                                    Chưa có hồ sơ nào được lưu.
-                                </td>
+                                <th>#</th>
+                                <th>Tên ứng viên</th>
+                                <th>Email</th>
+                                <th>Vị trí ứng tuyển</th>
+                                <th>Ngày nộp</th>
+                                <th>CV</th>
+                                <th>Giới thiệu</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
                             </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($savedApplications as $application)
+                                <tr data-application-id="{{ $application->id }}">
+                                    <td>{{ $application->id }}</td>
+                                    <td>{{ $application->candidate->name }}</td>
+                                    <td>{{ $application->candidate->email }}</td>
+                                    <td>{{ $application->jobPosting->title }}</td>
+                                    <td>{{ $application->created_at->format('d/m/Y H:i') }}</td>
+                                    <td>
+                                        <a href="{{ asset('storage/' . $application->cv_path) }}" target="_blank"
+                                            class="view-cv-btn">
+                                            Xem CV
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @if ($application->introduction)
+                                            <button onclick="showIntroduction('{{ $application->id }}')"
+                                                class="view-intro-btn">
+                                                Xem giới thiệu
+                                            </button>
+                                        @else
+                                            <span class="no-intro">Không có</span>
+                                        @endif
+                                    </td>
+                                    <td class="status-cell">
+                                        <span class="status-badge status-{{ $application->status }}">
+                                            {{ ucfirst($application->status) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button onclick="toggleSave('{{ $application->id }}')" class="save-btn saved"
+                                            data-application-id="{{ $application->id }}">
+                                            Đã lưu
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @else
+                    <p class="no-applications">Chưa có hồ sơ nào được lưu.</p>
+                @endif
+
             </div>
 
         </div>

@@ -18,46 +18,56 @@
                         <p>Trang chủ: {{ $totalVisitors }}</p>
 
                         <h2>Đang online</h2>
-                        <p> {{ $onlineVisitors }}</p>
-                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<div class="chart-container" style="width: 80%; margin: auto;">
-    <canvas id="employerChart"></canvas>
-</div>
+                        <p>{{ $onlineVisitors }}</p>
 
-<script>
-    const labels = {!! json_encode($chartData->keys()) !!};
-    const data = {!! json_encode($chartData->values()) !!};
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    const ctx = document.getElementById('employerChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Số lượng nhà tuyển dụng trong tháng',
-                data: data,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            },
-            responsive: true,
-            maintainAspectRatio: false,
-        }
-    });
-</script>
+                        <div class="chart-container" style="width: 80%; margin: auto;">
+                            <canvas id="employerChart"></canvas>
+                        </div>
 
+                        <script>
+                            const labels = {!! json_encode($employerChartData->keys()) !!};
+                            const employerData = {!! json_encode($employerChartData->values()) !!};
+                            const candidateData = {!! json_encode($candidateChartData->values()) !!};
+
+                            const ctx = document.getElementById('employerChart').getContext('2d');
+                            new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: labels,
+                                    datasets: [
+                                        {
+                                            label: 'Số lượng nhà tuyển dụng',
+                                            data: employerData,
+                                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                            borderColor: 'rgba(75, 192, 192, 1)',
+                                            borderWidth: 1
+                                        },
+                                        {
+                                            label: 'Số lượng ứng viên',
+                                            data: candidateData,
+                                            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                            borderColor: 'rgba(153, 102, 255, 1)',
+                                            borderWidth: 1
+                                        }
+                                    ]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    },
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                }
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 @endsection
+

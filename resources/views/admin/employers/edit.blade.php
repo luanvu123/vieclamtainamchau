@@ -185,7 +185,7 @@
                                             <input class="form-check-input" type="checkbox" name="isUrgentrecruitment"
                                                 value="1" {{ $employer->isUrgentrecruitment ? 'checked' : '' }}>
                                             <label class="form-check-label">
-                                                <i class="fas fa-bolt text-warning"></i> Tuyển gấp
+                                                <i class="fas fa-bolt text-warning"></i> Tìm ứng viên
                                             </label>
                                         </div>
                                         @if ($employer->isUrgentrecruitment_updated_at)

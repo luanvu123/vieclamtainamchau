@@ -22,12 +22,21 @@ class JobPostingController extends Controller
         $this->middleware('employer');
     }
 
-   public function findCandidate()
-{
-    $candidates = Candidate::where('is_public', 1)->get();
+    public function findCandidate()
+    {
+        $employer = Auth::guard('employer')->user();
 
-    return view('employer.job-posting.find_candidate', compact('candidates'));
-}
+        if ($employer->isUrgentrecruitmen == 0) {
+            // Chuyển thông báo lỗi qua session
+            return redirect()->back()->with('error', 'Bạn chưa mua dịch vụ xem thông tin ứng viên.');
+        }
+
+        $candidates = Candidate::where('is_public', 1)->get();
+
+        return view('employer.job-posting.find_candidate', compact('candidates'));
+    }
+
+
 
     public function index()
     {
@@ -277,5 +286,10 @@ class JobPostingController extends Controller
             ->get();
 
         return view('employer.job-posting.services', compact('services', 'banks'));
+    }
+    public function serviceActive()
+    {
+        $employer = Auth::guard('employer')->user();
+        return view('employer.job-posting.service-active', compact('employer'));
     }
 }

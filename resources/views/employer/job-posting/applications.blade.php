@@ -17,6 +17,10 @@
                     <i>📊</i>
                     <span>Mua dịch vụ</span>
                 </a>
+                <a href="{{ route('employer.service-active') }}" class="menu-item">
+                    <i>❤️</i>
+                    <span>Dịch vụ đã mua</span>
+                </a>
             </div>
 
             <div class="menu-section">
@@ -33,7 +37,7 @@
         </div>
 
         <div class="main-content">
-        
+
             <div class="applications-container">
                 <h2>Danh sách ứng viên - {{ $jobPosting->title }}</h2>
 

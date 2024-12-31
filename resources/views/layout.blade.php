@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
+        <!-- Thêm Toastr CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
     <title>Job Portal</title>
     <style>
         * {
@@ -2036,6 +2039,7 @@
             </div>
         @endif
 
+
         @yield('content')
     </main>
 
@@ -2238,6 +2242,16 @@
             }, true);
         });
     </script>
+    <!-- Thêm Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+@if (session('error'))
+    <script>
+        $(document).ready(function() {
+            toastr.error("{{ session('error') }}", "Lỗi!");
+        });
+    </script>
+@endif
 </body>
 
 </html>

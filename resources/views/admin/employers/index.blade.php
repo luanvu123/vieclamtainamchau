@@ -53,15 +53,16 @@
                                 <tr>
                                     <td>{{ $employer->id }}</td>
                                     <td class="text-center">
-    <div class="avatar-container">
-        <img src="{{ asset('storage/' . $employer->avatar) }}" alt="Logo"
-            class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-        <!-- Show "New" if the employer was created within the last 2 hours -->
-        @if($employer->created_at >= \Carbon\Carbon::now()->subHours(2))
-            <span class="new-badge">New</span>
-        @endif
-    </div>
-</td>
+                                        <div class="avatar-container">
+                                            <img src="{{ asset('storage/' . $employer->avatar) }}" alt="Logo"
+                                                class="rounded-circle"
+                                                style="width: 50px; height: 50px; object-fit: cover;">
+                                            <!-- Show "New" if the employer was created within the last 2 hours -->
+                                            @if ($employer->created_at >= \Carbon\Carbon::now()->subHours(2))
+                                                <span class="new-badge">New</span>
+                                            @endif
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class="fw-bold">{{ $employer->company_name }}</div>
                                         <small class="text-muted">MST: {{ $employer->mst }}</small>
@@ -116,7 +117,7 @@
 
                                             @if ($employer->isUrgentrecruitment)
                                                 <div class="feature-item">
-                                                    <i class="fas fa-bolt text-warning"></i> Tuyển gấp
+                                                    <i class="fas fa-bolt text-warning"></i> Tìm ứng viên
                                                     @if ($employer->isUrgentrecruitment_updated_at)
                                                         <div class="service-time">
                                                             <small class="text-muted">

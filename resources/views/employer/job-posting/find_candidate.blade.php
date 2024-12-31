@@ -22,7 +22,7 @@
         }
     </style>
     <div class="container">
-        <div class="sidebar">
+      <div class="sidebar">
             <div class="menu-section">
                 <div class="menu-title">Quản lý đăng tuyển dụng</div>
                 <a href="{{ route('employer.job-posting.create') }}" class="menu-item">
@@ -36,6 +36,10 @@
                 <a href="{{ route('employer.services') }}" class="menu-item">
                     <i>📊</i>
                     <span>Mua dịch vụ</span>
+                </a>
+                <a href="{{ route('employer.service-active') }}" class="menu-item">
+                    <i>❤️</i>
+                    <span>Dịch vụ đã mua</span>
                 </a>
             </div>
 

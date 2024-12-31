@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
-     public function __construct()
+    public function __construct()
     {
         $this->middleware('permission:category-list|category-create|category-edit|category-delete', ['only' => ['index', 'store']]);
         $this->middleware('permission:category-create', ['only' => ['create', 'store']]);

@@ -16,11 +16,15 @@
                     <i>📊</i>
                     <span>Mua dịch vụ</span>
                 </a>
+                <a href="{{ route('employer.service-active') }}" class="menu-item">
+                    <i>❤️</i>
+                    <span>Dịch vụ đã mua</span>
+                </a>
             </div>
 
             <div class="menu-section">
                 <div class="menu-title">Quản lý ứng viên</div>
-                <a href="#" class="menu-item">
+                <a href="{{ route('employer.saved-applications') }}" class="menu-item">
                     <i>👥</i>
                     <span>Hồ sơ ứng tuyển</span>
                 </a>
