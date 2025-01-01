@@ -40,7 +40,10 @@ Route::get('/search', [SiteController::class, 'search'])->name('site.search');
 Route::post('/supports', [SupportController::class, 'store'])->name('supports.store');
 Route::get('/tin-tuc', [SiteController::class, 'news'])->name('news.home');
 Route::get('/tin-tuc/{id}', [SiteController::class, 'newsDetail'])->name('news.detail.home');
-
+Route::get('2fa/verify', [CandidateAuthController::class, 'show2FAForm'])->name('2fa.verify');
+Route::post('2fa/verify', [CandidateAuthController::class, 'verify2FA'])->name('2fa.verify.post');
+Route::get('2fa/enable', [CandidateAuthController::class, 'enable2FA'])->name('2fa.enable');
+Route::post('2fa/enable', [CandidateAuthController::class, 'confirm2FA'])->name('2fa.enable.post');
 Auth::routes();
 
 

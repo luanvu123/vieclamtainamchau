@@ -14,6 +14,8 @@
                     <th>Tên</th>
                     <th>Email</th>
                     <th>Số điện thoại</th>
+                    <th>Ngày tạo</th>
+                    <th>Ngày cập nhật</th>
                     <th>Chức năng</th>
                 </tr>
             </thead>
@@ -34,6 +36,8 @@
                         <td>{{ $candidate->name }}</td>
                         <td>{{ $candidate->email }}</td>
                         <td>{{ $candidate->phone }}</td>
+                        <td>{{ $candidate->created_at->format('d/m/Y H:i') }}</td> <!-- Hiển thị ngày tạo -->
+                        <td>{{ $candidate->updated_at->format('d/m/Y H:i') }}</td> <!-- Hiển thị ngày cập nhật -->
                         <td>
                             <a href="{{ route('candidate-manage.edit', $candidate->id) }}"
                                 class="btn btn-warning btn-sm">Chỉnh sửa</a>
@@ -49,6 +53,6 @@
                 @endforeach
             </tbody>
         </table>
-        {{ $candidates->links() }}
     </div>
 @endsection
+

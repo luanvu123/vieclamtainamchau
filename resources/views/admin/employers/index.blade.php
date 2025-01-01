@@ -72,7 +72,12 @@
                                         <div><i class="fas fa-envelope"></i> {{ $employer->email }}</div>
                                         <div><i class="fas fa-phone"></i> {{ $employer->phone }}</div>
                                         <div><i class="fas fa-map-marker-alt"></i> {{ $employer->address }}</div>
+                                        <div><i class="fas fa-calendar-plus"></i> Ngày tạo:
+                                            {{ $employer->created_at->format('d/m/Y H:i') }}</div>
+                                        <div><i class="fas fa-calendar-check"></i> Ngày cập nhật:
+                                            {{ $employer->updated_at->format('d/m/Y H:i') }}</div>
                                     </td>
+
                                     <td>
                                         <div class="mb-1">
                                             <span class="badge {{ $employer->status ? 'bg-success' : 'bg-danger' }}">

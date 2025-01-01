@@ -22,7 +22,7 @@ class CandidateManageController extends Controller
      */
     public function index()
     {
-        $candidates = Candidate::paginate(10); // Phân trang
+        $candidates = Candidate::all(); // Phân trang
         return view('admin.candidates.index', compact('candidates'));
     }
 
