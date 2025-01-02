@@ -9,17 +9,21 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('candidates', function (Blueprint $table) {
-            $table->string('google2fa_secret')->nullable()->after('verification_token');
+            $table->text('google2fa_secret')->nullable();
+            $table->boolean('google2fa_enabled')->default(false);
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::table('candidates', function (Blueprint $table) {
-            $table->dropColumn('google2fa_secret');
+            $table->dropColumn(['google2fa_secret', 'google2fa_enabled']);
         });
     }
 };

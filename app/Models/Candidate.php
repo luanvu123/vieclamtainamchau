@@ -42,6 +42,7 @@ class Candidate extends Authenticatable
         'education_level',
         'years_of_experience',
         'working_form',
+        'google2fa_secret'
     ];
 
     /**
