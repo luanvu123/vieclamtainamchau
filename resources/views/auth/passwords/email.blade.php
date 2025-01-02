@@ -17,13 +17,13 @@
             <div class="row login-box">
                 <div class="col-lg-5 form-text">
                     <div class="info clearfix">
-                        <h1 class="animate-charcter">Welcome To Admin Vieclamso1</h1>
+                        <h1 class="animate-charcter">Welcome To Admin Vieclamtainamchau</h1>
                     </div>
                 </div>
                 <div class="col-lg-7 form-section">
                     <div class="form-inner">
                         <a href="{{ route('/') }}" class="logo">
-                            <img src="{{ asset('storage/' . $info->logo_home) }}" alt="logo">
+                           <img src="{{ asset('frontend/img/logo.png') }}" style="width:200px;height:200px;" alt="Logo">
                         </a>
                         <h3>Recover Your Password</h3>
                         <form method="POST" action="{{ route('password.email') }}">

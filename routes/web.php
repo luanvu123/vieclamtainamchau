@@ -98,10 +98,10 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
     Route::get('/cv-logistic', [CandidateProfileController::class, 'cvLogistic'])->middleware('candidate')->name('cv.logistic');
 
     Route::post('/profile/edit', [CandidateProfileController::class, 'update'])->middleware('candidate')->name('profile.update');
-    Route::get('password/reset', [CandidateForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-    Route::post('password/email', [CandidateForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-    Route::get('password/reset/{token}', [CandidateResetPasswordController::class, 'showResetForm'])->name('password.reset');
-    Route::post('password/reset', [CandidateResetPasswordController::class, 'reset'])->name('password.update');
+    Route::get('forget-password', [CandidateForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+    Route::post('forget-password', [CandidateForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+    Route::get('reset-password/{token}', [CandidateForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+    Route::post('reset-password', [CandidateForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 });
 
 Route::prefix('employer')->name('employer.')->group(function () {
@@ -121,7 +121,7 @@ Route::prefix('employer')->name('employer.')->group(function () {
         [EmployerManageController::class, 'editJobPosting']
     )
         ->name('admin.job-postings.edit');
-   Route::get('dich-vu-da-mua', [JobPostingController::class, 'serviceActive'])
+    Route::get('dich-vu-da-mua', [JobPostingController::class, 'serviceActive'])
         ->name('service-active')->middleware('employer');
     Route::put(
         'admin/employers/{employerId}/job-postings/{jobPostingId}',
@@ -149,12 +149,8 @@ Route::prefix('employer')->name('employer.')->group(function () {
     Route::post('/profile/edit', [EmployerProfileController::class, 'update'])
         ->middleware('employer')
         ->name('profile.update');
-    Route::get('password/reset', [EmployerForgotPasswordController::class, 'showLinkRequestForm'])
-        ->name('password.request');
-    Route::post('password/email', [EmployerForgotPasswordController::class, 'sendResetLinkEmail'])
-        ->name('password.email');
-    Route::get('password/reset/{token}', [EmployerResetPasswordController::class, 'showResetForm'])
-        ->name('password.reset');
-    Route::post('password/reset', [EmployerResetPasswordController::class, 'reset'])
-        ->name('password.update');
+     Route::get('forget-password', [EmployerForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+    Route::post('forget-password', [EmployerForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+    Route::get('reset-password/{token}', [EmployerForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+    Route::post('reset-password', [EmployerForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 });

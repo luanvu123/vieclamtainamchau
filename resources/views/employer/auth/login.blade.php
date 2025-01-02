@@ -30,7 +30,7 @@
                 <label>
                     <input type="checkbox" name="remember"> Remember me
                 </label>
-                <a href="{{ route('employer.password.request') }}" class="forgot-password">
+                <a href="{{ route('employer.forget.password.get') }}" class="forgot-password">
                     Forgot Password?
                 </a>
             </div>

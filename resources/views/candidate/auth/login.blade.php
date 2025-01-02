@@ -11,7 +11,7 @@
                 <p class="text-muted">Chào mừng bạn trở lại!</p>
             </div>
 
-            {{-- <form method="POST" action="{{ route('candidate.login.submit') }}">
+            <form method="POST" action="{{ route('candidate.login.submit') }}">
                 @csrf
 
                 @if ($errors->any())
@@ -46,7 +46,7 @@
                 </button>
 
 
-            </form> --}}
+            </form>
               <div class="mt-3 text-center">
                     <a href="{{ route('candidate.auth.google') }}" class="btn btn-danger">
                         <i class="fab fa-google me-2"></i>Đăng ký bằng Google
@@ -54,7 +54,7 @@
                 </div>
               <div class="auth-footer">
                     <p class="mb-2">
-                        <a href="{{ route('candidate.password.request') }}">Quên mật khẩu?</a>
+                        <a href="{{ route('candidate.forget.password.get') }}">Quên mật khẩu?</a>
                     </p>
                     <p>
                         Chưa có tài khoản?

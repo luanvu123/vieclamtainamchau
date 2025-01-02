@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,7 @@
     <style>
         .navbar-candidate {
             background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .auth-container {
@@ -22,7 +23,7 @@
         .auth-card {
             background: white;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             padding: 2rem;
             width: 100%;
             max-width: 400px;
@@ -52,6 +53,7 @@
     </style>
     @yield('styles')
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-candidate">
         <div class="container">
@@ -63,6 +65,12 @@
     </nav>
 
     <main>
+        @if (session('message'))
+            <div class="alert alert-success">
+                {{ session('message') }}
+            </div>
+        @endif
+
         @yield('content')
     </main>
 
@@ -75,4 +83,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     @yield('scripts')
 </body>
+
 </html>
