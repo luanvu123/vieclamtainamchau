@@ -156,7 +156,7 @@ class CandidateAuthController extends Controller
 
             return redirect()->route('/')->with('success', 'Xin chào ' . $candidate->name);
         } catch (\Exception $e) {
-            return redirect()->route('candidate.auth.register')->with('error', 'Đăng ký bằng Google thất bại.');
+            return redirect()->route('candidate.register')->with('error', 'Đăng ký bằng Google thất bại.');
         }
     }
 }

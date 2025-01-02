@@ -11,7 +11,7 @@
                     <p class="text-muted">Tạo tài khoản để bắt đầu tìm việc</p>
                 </div>
 
-                <form method="POST" action="{{ route('candidate.register.submit') }}">
+                {{-- <form method="POST" action="{{ route('candidate.register.submit') }}">
                     @csrf
 
                     @if ($errors->any())
@@ -65,14 +65,15 @@
                         <i class="fas fa-user-plus me-2"></i>Đăng ký
                     </button>
 
-                    <div class="auth-footer">
+
+
+                </form> --}}
+                  <div class="auth-footer">
                         <p>
                             Đã có tài khoản?
                             <a href="{{ route('candidate.login') }}">Đăng nhập</a>
                         </p>
                     </div>
-
-                </form>
                 <div class="mt-3 text-center">
                     <a href="{{ route('candidate.auth.google') }}" class="btn btn-danger">
                         <i class="fab fa-google me-2"></i>Đăng ký bằng Google

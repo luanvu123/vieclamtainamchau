@@ -84,8 +84,8 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
     Route::get('login', [CandidateAuthController::class, 'showLoginForm'])->name('login');
     Route::post('login', [CandidateAuthController::class, 'login'])->name('login.submit');
     Route::post('logout', [CandidateAuthController::class, 'logout'])->name('logout');
-    Route::get('candidate/auth/google', [CandidateAuthController::class, 'redirectToGoogle'])->name('auth.google');
-    Route::get('candidate/auth/google/callback', [CandidateAuthController::class, 'handleGoogleCallback']);
+    Route::get('auth/google', [CandidateAuthController::class, 'redirectToGoogle'])->name('auth.google');
+    Route::get('auth/google/callback', [CandidateAuthController::class, 'handleGoogleCallback']);
     Route::get('/verify/{token}', [CandidateAuthController::class, 'verify'])->name('verify');
     Route::get('dashboard', [CandidateAuthController::class, 'dashboard'])
         ->middleware('candidate')
