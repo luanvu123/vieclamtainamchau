@@ -29,14 +29,14 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [SiteController::class, 'index'])->name('/');
-Route::get('/job', [SiteController::class, 'job'])->name('job');
-Route::get('/about', [SiteController::class, 'about'])->name('about');
+Route::get('/job', [SiteController::class, 'job'])->name('job')->middleware('candidate');
+Route::get('/about', [SiteController::class, 'about'])->name('about')->middleware('candidate');
 Route::get('/lien-he', [SiteController::class, 'hotline'])->name('hotline');
-Route::get('/genre/{slug}', [SiteController::class, 'genre'])->name('genre.show');
-Route::get('/job/{slug}', [SiteController::class, 'job'])->name('job.show');
-Route::get('/category/{slug}', [SiteController::class, 'category'])->name('category.show');
-Route::get('/country/{slug}', [SiteController::class, 'country'])->name('country.show');
-Route::get('/search', [SiteController::class, 'search'])->name('site.search');
+Route::get('/genre/{slug}', [SiteController::class, 'genre'])->name('genre.show')->middleware('candidate');
+Route::get('/job/{slug}', [SiteController::class, 'job'])->name('job.show')->middleware('candidate');
+Route::get('/category/{slug}', [SiteController::class, 'category'])->name('category.show')->middleware('candidate');
+Route::get('/country/{slug}', [SiteController::class, 'country'])->name('country.show')->middleware('candidate');
+Route::get('/search', [SiteController::class, 'search'])->name('site.search')->middleware('candidate');
 Route::post('/supports', [SupportController::class, 'store'])->name('supports.store');
 Route::get('/tin-tuc', [SiteController::class, 'news'])->name('news.home');
 Route::get('/tin-tuc/{id}', [SiteController::class, 'newsDetail'])->name('news.detail.home');
@@ -46,7 +46,7 @@ Auth::routes();
 
 
 
-Route::get('/danh-sach-cac-quoc-gia', [SiteController::class, 'countries'])->name('site.countries');
+Route::get('/danh-sach-cac-quoc-gia', [SiteController::class, 'countries'])->name('site.countries')->middleware('candidate');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('services', ServiceController::class);

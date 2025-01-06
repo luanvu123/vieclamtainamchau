@@ -121,7 +121,7 @@ class JobPostingController extends Controller
         $employer = Auth::guard('employer')->user();
 
         // Check if the job posting belongs to the authenticated employer
-        if ($jobPosting->employer_id !== $employer->id) {
+        if ($jobPosting->employer_id != $employer->id) {
             return redirect()->route('employer.job-posting.index')
                 ->with('error', 'Bạn không có quyền chỉnh sửa bài đăng này');
         }
