@@ -173,7 +173,7 @@
                         <h2>Chào bạn</h2>
                         <p class="subtitle">Bạn hãy dành ra vài giây để xác nhận thông tin dưới đây nhé! 👋</p>
                         <p class="description">
-                            Để tối ưu tốt nhất cho trải nghiệm của bạn với TopCV,<br>
+                            Để tối ưu tốt nhất cho trải nghiệm của bạn với Vieclamtainamchau,<br>
                             vui lòng lựa chọn nhóm phù hợp nhất với bạn.
                         </p>
 

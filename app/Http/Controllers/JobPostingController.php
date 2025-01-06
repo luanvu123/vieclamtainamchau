@@ -118,7 +118,7 @@ class JobPostingController extends Controller
     public function edit($id)
     {
         $jobPosting = JobPosting::with(['categories', 'countries', 'genres'])->findOrFail($id);
-        $employer = auth()->user();
+        $employer = Auth::guard('employer')->user();
 
         // Check if the job posting belongs to the authenticated employer
         if ($jobPosting->employer_id !== $employer->id) {
