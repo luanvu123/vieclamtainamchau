@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class GenreController extends Controller
 {
-     public function __construct()
+    public function __construct()
     {
         $this->middleware('permission:genre-list|genre-create|genre-edit|genre-delete', ['only' => ['index', 'store']]);
         $this->middleware('permission:genre-create', ['only' => ['create', 'store']]);
@@ -34,7 +34,12 @@ class GenreController extends Controller
             'slug' => 'nullable|string|max:255|unique:genres,slug',
             'status' => 'required|in:active,inactive',
         ]);
+        $slug = $request->slug ? Str::slug($request->slug) : Str::slug($request->name);
 
+        // Kiểm tra slug trùng
+        if (Genre::where('slug', $slug)->exists()) {
+            return redirect()->back()->withErrors(['slug' => 'Slug đã tồn tại. Vui lòng chọn tên khác.'])->withInput();
+        }
         Genre::create([
             'name' => $request->name,
             'slug' => $request->slug ? Str::slug($request->slug) : Str::slug($request->name),
@@ -65,7 +70,12 @@ class GenreController extends Controller
             'slug' => 'nullable|string|max:255|unique:genres,slug,' . $genre->id,
             'status' => 'required|in:active,inactive',
         ]);
+        $slug = $request->slug ? Str::slug($request->slug) : Str::slug($request->name);
 
+        // Kiểm tra slug trùng nhưng không bao gồm bản ghi hiện tại
+        if (Genre::where('slug', $slug)->where('id', '!=', $genre->id)->exists()) {
+            return redirect()->back()->withErrors(['slug' => 'Slug đã tồn tại. Vui lòng chọn tên khác.'])->withInput();
+        }
         $genre->update([
             'name' => $request->name,
             'slug' => $request->slug ? Str::slug($request->slug) : Str::slug($request->name),
@@ -77,11 +87,8 @@ class GenreController extends Controller
 
     public function destroy(Genre $genre)
     {
-
-
         $genre->delete();
 
         return redirect()->route('genres.index')->with('success', 'Thể loại đã được xóa.');
     }
 }
-

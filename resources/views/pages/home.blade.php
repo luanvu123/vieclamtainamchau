@@ -1,5 +1,6 @@
 @extends('layout')
 @section('content')
+    
     <section class="hero">
         <div class="search-bar">
             <form action="{{ route('site.search') }}" method="GET">

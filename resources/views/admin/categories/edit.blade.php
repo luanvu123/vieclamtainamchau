@@ -22,10 +22,18 @@
                     </div>
                 @endif
             </div>
+            <div class="form-group">
+                <label for="isHot">Du học nghề</label>
+                <input type="checkbox" id="isHot" name="isHot" value="1"
+                    {{ old('isHot', $category->isHot ?? 0) ? 'checked' : '' }}>
+            </div>
+
             <select name="status" class="form-control" id="status">
                 <option value="active" {{ $category->status === 'active' ? 'selected' : '' }}>Hoạt động</option>
                 <option value="inactive" {{ $category->status === 'inactive' ? 'selected' : '' }}>Không hoạt động</option>
             </select>
+
+
 
             <button type="submit" class="btn btn-success">Cập nhật</button>
         </form>

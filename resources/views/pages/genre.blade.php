@@ -263,6 +263,7 @@
 
     <section class="countries-section">
         <h1>Bài đăng tuyển dụng trong thể loại: {{ $genre->name }}</h1>
+        <br>
         <div class="countries-container">
             @foreach ($countries->chunk(8) as $chunk)
                 <div class="row">

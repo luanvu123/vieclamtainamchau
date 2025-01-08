@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
-        <!-- Thêm Toastr CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <!-- Thêm Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
-    <title>Job Portal</title>
+    <title>Vieclamtainamchau</title>
     <style>
         * {
             margin: 0;
@@ -290,41 +290,140 @@
             position: relative;
         }
 
+        .search-bar input,
+        .search-bar select {
+            flex: 1;
+            height: 48px;
+            padding: 8px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #374151;
+            background-color: #fff;
+            transition: all 0.2s ease;
+        }
+
+        /* Custom select styling */
+        /* Hero section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ asset('frontend/img/we-are-hiring-digital-collage.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 0;
+        }
+
+        /* Search bar container */
         .search-bar {
             position: absolute;
             bottom: 30px;
             /* Cách đáy ảnh 30px, điều chỉnh theo ý bạn */
             left: 50%;
             transform: translateX(-50%);
-            /* Căn giữa theo chiều ngang */
-            background: rgba(255, 255, 255, 0.9);
-            /* Làm nổi bật khung tìm kiếm */
+
+
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            display: flex;
+
             gap: 10px;
         }
 
-        .search-bar input {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            flex: 1;
-            /* Để các ô input có kích thước đồng đều */
+        /* Search form */
+        .search-bar form {
+            display: flex;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .search-bar .search-btn {
-            background: #c21a33;
-            color: #fff;
-            padding: 10px 20px;
+        /* Common styles for input and select */
+        .search-bar input,
+        .search-bar select {
+            flex: 1;
+            height: 48px;
+            padding: 8px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #374151;
+            background-color: #fff;
+            transition: all 0.2s ease;
+        }
+
+        /* Custom select styling */
+        .search-bar select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        /* Focus states */
+        .search-bar input:focus,
+        .search-bar select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Search button */
+        .search-btn {
+            padding: 12px 32px;
+            background-color: #dc2626;
+            color: white;
             border: none;
             border-radius: 4px;
+            font-weight: 500;
             cursor: pointer;
+            transition: background-color 0.2s ease;
+            min-width: 120px;
+            height: 48px;
         }
 
-        .search-bar .search-btn:hover {
-            background: #0056b3;
+        .search-btn:hover {
+            background-color: #b91c1c;
+        }
+
+        /* Placeholder styling */
+        .search-bar input::placeholder {
+            color: #9ca3af;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 40px 0;
+            }
+
+            .search-bar form {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-bar input,
+            .search-bar select,
+            .search-btn {
+                width: 100%;
+            }
+
+            .search-btn {
+                margin-top: 8px;
+            }
+        }
+
+        /* Hover states */
+        .search-bar input:hover,
+        .search-bar select:hover {
+            border-color: #cbd5e1;
+        }
+
+        /* Disabled state */
+        .search-bar input:disabled,
+        .search-bar select:disabled {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
         }
 
         /* Stats Section */
@@ -1715,6 +1814,135 @@
             z-index: 1000;
         }
 
+        /* Styling cho navigation chính */
+        .nav {
+            background-color: #ff0c0c;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav>ul>li {
+            position: relative;
+        }
+
+        .nav ul li a {
+            color: #ffffff;
+            display: block;
+            padding: 15px 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav>ul>li>a:hover {
+            background-color: #f5f5f5;
+            color: #2563eb;
+            /* màu xanh khi hover */
+        }
+
+        /* Styling cho dropdown */
+        .dropdown-menu {
+            background-color: rgb(254, 11, 11);
+            border-radius: 4px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            display: none;
+            left: 0;
+            min-width: 200px;
+            opacity: 0;
+            position: absolute;
+            top: 100%;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        /* Hiển thị dropdown khi hover */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Styling cho các item trong dropdown */
+        .dropdown-menu li {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .dropdown-menu li:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-menu li a {
+            padding: 12px 20px;
+            display: block;
+            color: #4b5563;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #f8f9fa;
+            color: #2563eb;
+            padding-left: 24px;
+            /* thêm effect lùi vào khi hover */
+        }
+
+        /* Thêm mũi tên cho dropdown */
+        .dropdown>a::after {
+            content: '▼';
+            font-size: 10px;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            .nav ul {
+                flex-direction: column;
+            }
+
+            .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                display: none;
+                min-width: 100%;
+            }
+
+            .dropdown:hover .dropdown-menu {
+                display: block;
+            }
+
+            .nav>ul>li {
+                width: 100%;
+                border-bottom: 1px solid #eee;
+            }
+
+            .nav>ul>li:last-child {
+                border-bottom: none;
+            }
+        }
+
+        /* Animation cho dropdown */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown:hover .dropdown-menu {
+            animation: fadeIn 0.3s ease forwards;
+        }
+
         /* Responsive Styles */
     </style>
 </head>
@@ -1729,9 +1957,9 @@
             <div class="logo">
                 <img src="{{ asset('frontend/img/logo.png') }}" style="width:200px;height:200px;" alt="Logo">
                 <div class="modal-title-group" style="margin-left: 120px;">
-                        <div class="modal-title" style="color: white">VIỆC LÀM TẠI NĂM CHÂU TRÊN THẾ GIỚI</div>
-                        <div class="modal-subtitle" style="color: white">JOBS IN FIVE CONTINENTS OF THE WORLD</div>
-                    </div>
+                    <div class="modal-title" style="color: white">VIỆC LÀM TẠI NĂM CHÂU TRÊN THẾ GIỚI</div>
+                    <div class="modal-subtitle" style="color: white">JOBS IN FIVE CONTINENTS OF THE WORLD</div>
+                </div>
             </div>
             <div class="header-actions">
                 <div class="auth-section">
@@ -1801,7 +2029,21 @@
                         <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
                     @endforeach
                 @endif
-                 <li><a href="{{ route('news.home') }}">Tin tức</a></li>
+                <li class="dropdown">
+                    <a href="#">Danh mục hot</a>
+                    <ul class="dropdown-menu">
+                        @if (isset($categoryHot) && $categoryHot->count() > 0)
+                            @foreach ($categoryHot as $hotCategory)
+                                <li><a
+                                        href="{{ route('category.show', $hotCategory->slug) }}">{{ $hotCategory->name }}</a>
+                                </li>
+                            @endforeach
+                        @else
+                            <li><a href="#">Không có danh mục nổi bật</a></li>
+                        @endif
+                    </ul>
+                </li>
+                <li><a href="{{ route('news.home') }}">Tin tức</a></li>
                 <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
             </ul>
         </nav>
@@ -2243,15 +2485,15 @@
         });
     </script>
     <!-- Thêm Toastr JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-@if (session('error'))
-    <script>
-        $(document).ready(function() {
-            toastr.error("{{ session('error') }}", "Lỗi!");
-        });
-    </script>
-@endif
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @if (session('error'))
+        <script>
+            $(document).ready(function() {
+                toastr.error("{{ session('error') }}", "Lỗi!");
+            });
+        </script>
+    @endif
 </body>
 
 </html>

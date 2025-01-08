@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $fillable = ['user_id', 'name', 'image', 'status', 'slug'];
+    protected $fillable = ['user_id', 'name', 'image', 'status', 'slug', 'isHot',];
     public function candidates()
     {
         return $this->belongsToMany(Candidate::class, 'candidate_category');
@@ -24,4 +25,3 @@ class Category extends Model
         return $this->belongsToMany(JobPosting::class, 'category_job_posting');
     }
 }
-

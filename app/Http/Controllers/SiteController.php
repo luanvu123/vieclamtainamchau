@@ -79,7 +79,7 @@ class SiteController extends Controller
 
     public function index(Request $request)
     {
-        $categories = Category::where('status', 'active')->get();
+        $categories = Category::where('status', 'active')->where('isHot', 0)->get();
         $genres = Genre::with(['jobPostings' => function ($query) {
             $query->with(['employer', 'countries']) // Nạp cả employer và countries
                 ->where('status', 'active')
@@ -95,7 +95,7 @@ class SiteController extends Controller
   public function genre($slug)
 {
     $genres = Genre::where('status', 'active')->get();
-    $categories = Category::where('status', 'active')->get();
+    $categories = Category::where('status', 'active')->where('isHot', 0)->get();
     $countries = Country::where('status', 'active')->get();
 
     $genre = Genre::where('slug', $slug)
@@ -133,13 +133,13 @@ class SiteController extends Controller
             ->limit(5)
             ->get();
 
-        $categories = Category::where('status', 'active')->get();
+        $categories = Category::where('status', 'active')->where('isHot', 0)->get();
 
         return view('pages.job', compact('jobPosting', 'categories', 'orderJob'));
     }
   public function category($slug)
 {
-    $categories = Category::where('status', 'active')->get();
+    $categories = Category::where('status', 'active')->where('isHot', 0)->get();
     $countries = Country::where('status', 'active')->get();
 
     // Sửa lại phần query để lấy jobPostings
@@ -181,7 +181,7 @@ class SiteController extends Controller
 
         $jobPostings = $query->with('employer')->where('status', 'active')->paginate(10);
 
-        $categories = Category::where('status', 'active')->get();
+        $categories = Category::where('status', 'active')->where('isHot', 0)->get();
         $countries = Country::where('status', 'active')->get();
         return view('pages.search', compact('jobPostings', 'categories', 'countries'));
     }

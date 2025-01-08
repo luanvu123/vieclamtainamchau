@@ -7,10 +7,12 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Employer;
 use App\Models\Candidate;
+use App\Models\Category;
 use App\Models\JobPosting;
 use App\Models\OnlineVisitor;
 use App\Models\Support;
 use Carbon\Carbon;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -24,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-   public function boot()
+    public function boot()
     {
         // Đếm số lượng hỗ trợ
         $supportCount = Support::count();
@@ -55,8 +57,8 @@ class AppServiceProvider extends ServiceProvider
 
         // Count the number of job postings created in the last 2 hours
         $jobPostingCountTwoHour = JobPosting::where('created_at', '>=', Carbon::now()->subHours(2))->count();
- $supportCountTwoHour = Support::where('created_at', '>=', Carbon::now()->subHours(2))->count();
- // Đếm tổng số lượt truy cập
+        $supportCountTwoHour = Support::where('created_at', '>=', Carbon::now()->subHours(2))->count();
+        // Đếm tổng số lượt truy cập
         $totalVisitors = OnlineVisitor::count();
 
         // Đếm số người đang online (5 phút qua)
@@ -69,12 +71,14 @@ class AppServiceProvider extends ServiceProvider
         View::share('employerCountTwoHour', $employerCountTwoHour);
         View::share('candidateCountTwoHour', $candidateCountTwoHour);
         View::share('jobPostingCountTwoHour', $jobPostingCountTwoHour);
-          View::share('supportCountTwoHour', $supportCountTwoHour);
+        View::share('supportCountTwoHour', $supportCountTwoHour);
 
         // Optionally, you can share other data like genres as shown in your existing code
         view()->composer('*', function ($view) {
             $genre_home = Genre::where('status', 'active')->get();
             $view->with('genre_home', $genre_home);
+            $categoryHot = Category::where('isHot', 1)->where('status', 'active')->get();
+            $view->with('categoryHot', $categoryHot);
         });
     }
 }
