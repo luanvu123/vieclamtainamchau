@@ -26,17 +26,6 @@
         </div>
     </section>
 
-    <section class="stats">
-        @foreach ($categories as $categoryItem)
-            <div class="stat-item">
-                <a href="{{ route('category.show', $categoryItem->slug) }}">
-                    <img src="{{ $categoryItem->image ? asset('storage/' . $categoryItem->image) : asset('frontend/img/default-category.png') }}"
-                        alt="{{ $categoryItem->name }}">
-                    <p>{{ $categoryItem->name }}</p>
-                </a>
-            </div>
-        @endforeach
-    </section>
 
 
 

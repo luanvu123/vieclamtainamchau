@@ -23,8 +23,10 @@ class SiteController extends Controller
     }
     public function countries()
     {
+          $categories = Category::where('status', 'active')->where('isHot', 0)->get();
+    $countries = Country::where('status', 'active')->get();
         $countries = Country::where('status', true)->get();
-        return view('pages.flag', compact('countries'));
+        return view('pages.flag', compact('countries', 'categories', 'countries'));
     }
     public function news()
     {

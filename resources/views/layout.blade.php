@@ -637,6 +637,18 @@
             background: transparent;
             color: white;
         }
+.job-categories .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(286px, 100%), 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.job-categories .category-card {
+    max-width: 486px;
+
+}
+
 
         .language-select select option {
             background: #ff0000;
@@ -2301,18 +2313,17 @@
                 <h3>Hỗ trợ</h3>
                 <ul>
                     <li><a href="{{ route('hotline') }}">Liên hệ với chúng tôi</a></li>
-                    <li><a href="#">Quy định đăng tin</a></li>
-                    <li><a href="#">Hướng dẫn đăng tin</a></li>
-                    <li><a href="#">Câu hỏi thường gặp</a></li>
+                    <li><a href="{{ route('candidate.cv.white') }}">Cv cổ điển</a></li>
+                    <li><a href="{{ route('candidate.cv.black') }}">CV hiện đại</a></li>
+                    <li><a href="{{ route('candidate.cv.logistic') }}">CV xuất nhập khẩu</a></li>
                 </ul>
             </div>
 
             <div class="footer-links">
                 <h3>Hỏi đáp</h3>
                 <ul>
-                    <li><a href="#">Giải đáp thắc mắc</a></li>
-                    <li><a href="#">Các hồ sơ thường gặp</a></li>
-                    <li><a href="#">Thủ tục cần thiết</a></li>
+                    <li><a href="{{ route('hotline') }}">Giải đáp thắc mắc</a></li>
+                    <li><a href="{{route('news.home')}}">Tin tức</a></li>
                 </ul>
             </div>
 
