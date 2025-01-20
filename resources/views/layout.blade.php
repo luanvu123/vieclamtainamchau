@@ -637,17 +637,18 @@
             background: transparent;
             color: white;
         }
-.job-categories .category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(286px, 100%), 1fr));
-    gap: 20px;
-    padding: 20px;
-}
 
-.job-categories .category-card {
-    max-width: 486px;
+        .job-categories .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(286px, 100%), 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
 
-}
+        .job-categories .category-card {
+            max-width: 486px;
+
+        }
 
 
         .language-select select option {
@@ -2323,7 +2324,7 @@
                 <h3>Hỏi đáp</h3>
                 <ul>
                     <li><a href="{{ route('hotline') }}">Giải đáp thắc mắc</a></li>
-                    <li><a href="{{route('news.home')}}">Tin tức</a></li>
+                    <li><a href="{{ route('news.home') }}">Tin tức</a></li>
                 </ul>
             </div>
 
@@ -2346,13 +2347,18 @@
         </div>
 
         <div class="footer-bottom">
-            <div class="language-select">
-                <label>Ngôn ngữ:</label>
-                <select>
-                    <option value="vi">Tiếng Việt</option>
-                    <option value="en">English</option>
-                </select>
-            </div>
+            <div id="google_translate_element"></div>
+            <script type="text/javascript">
+                function googleTranslateElementInit() {
+                    new google.translate.TranslateElement({
+                        pageLanguage: 'vi',
+                        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                    }, 'google_translate_element');
+                }
+            </script>
+            <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+            </script>
+
 
             <div class="social-links">
                 <a href="#" class="social-link">
