@@ -109,9 +109,9 @@
                         <div class="col-12 mb-3">
                             <label class="form-label">Logo công ty</label>
                             <input type="file" class="form-control @error('logo') is-invalid @enderror" name="logo">
-                            @if ($employer->logo)
+                            @if ($employer->avatar)
                                 <div class="mt-2">
-                                    <img src="{{ asset('storage/' . $employer->logo) }}" alt="Current Logo"
+                                    <img src="{{ asset('storage/' . $employer->avatar) }}" alt="Current Logo"
                                         style="height: 100px;">
                                 </div>
                             @endif
@@ -148,6 +148,13 @@
                                 <input class="form-check-input" type="checkbox" name="status" value="1"
                                     {{ $employer->status ? 'checked' : '' }}>
                                 <label class="form-check-label">Trạng thái hoạt động</label>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="isVerifyCompany" value="1"
+                                    {{ $employer->isVerifyCompany ? 'checked' : '' }}>
+                                <label class="form-check-label">Đã xác thực số điện thoại</label>
                             </div>
                         </div>
 

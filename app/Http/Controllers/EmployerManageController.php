@@ -131,6 +131,7 @@ class EmployerManageController extends Controller
             'status' => 'boolean',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'IsBasicnews' => 'boolean',
+             'isVerifyCompany' => 'boolean',
             'isUrgentrecruitment' => 'boolean',
             'IsPartner' => 'boolean',
             'IsHoteffect' => 'boolean',
@@ -143,7 +144,8 @@ class EmployerManageController extends Controller
             'IsBasicnews',
             'isUrgentrecruitment',
             'IsPartner',
-            'IsHoteffect'
+            'IsHoteffect',
+            'isVerifyCompany'
         ];
 
         foreach ($booleanFields as $field) {
@@ -162,8 +164,8 @@ class EmployerManageController extends Controller
         }
         // Xử lý logo nếu có
         if ($request->hasFile('logo')) {
-            if ($employer->logo) {
-                Storage::delete($employer->logo);
+            if ($employer->avatar) {
+                Storage::delete($employer->avatar);
             }
             $validated['logo'] = $request->file('logo')->store('employers/logos', 'public');
         }

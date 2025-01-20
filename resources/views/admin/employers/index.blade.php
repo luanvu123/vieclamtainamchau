@@ -97,7 +97,7 @@
                                             <span
                                                 class="badge {{ $employer->isVerifyCompany ? 'bg-success' : 'bg-warning' }}">
                                                 <i class="fas fa-building"></i>
-                                                {{ $employer->isVerifyCompany ? 'Đã xác thực công ty' : 'Chưa xác thực công ty' }}
+                                                {{ $employer->isVerifyCompany ? 'Đã xác thực số điện thoại' : 'Chưa xác thực số điện thoại' }}
                                             </span>
                                         </div>
                                     </td>

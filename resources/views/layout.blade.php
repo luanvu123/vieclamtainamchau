@@ -2030,7 +2030,7 @@
                     @endforeach
                 @endif
                 <li class="dropdown">
-                    <a href="#">Danh mục hot</a>
+                    <a href="#">Du học nghề</a>
                     <ul class="dropdown-menu">
                         @if (isset($categoryHot) && $categoryHot->count() > 0)
                             @foreach ($categoryHot as $hotCategory)
@@ -2039,7 +2039,7 @@
                                 </li>
                             @endforeach
                         @else
-                            <li><a href="#">Không có danh mục nổi bật</a></li>
+                            <li><a href="#">Không có du học nghề</a></li>
                         @endif
                     </ul>
                 </li>

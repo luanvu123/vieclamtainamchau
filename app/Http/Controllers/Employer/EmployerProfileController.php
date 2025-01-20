@@ -152,8 +152,8 @@ class EmployerProfileController extends Controller
         $data['slug'] = Str::slug($request->company_name);
 
         if ($request->hasFile('logo')) {
-            if ($employer->logo) {
-                Storage::delete($employer->logo);
+            if ($employer->avatar) {
+                Storage::delete($employer->avatar);
             }
             $data['logo'] = $request->file('logo')->store('employer/logos');
         }

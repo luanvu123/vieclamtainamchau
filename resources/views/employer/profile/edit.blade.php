@@ -11,6 +11,117 @@
              /* Optional: rounded corners */
          }
 
+         /* Phone input wrapper */
+         .phone-verify-wrapper {
+             display: flex;
+             align-items: center;
+             gap: 10px;
+         }
+
+         .phone-input {
+             flex: 1;
+         }
+
+         /* Verify button */
+         .verify-btn {
+             padding: 8px 16px;
+             background-color: #2563eb;
+             color: white;
+             border: none;
+             border-radius: 4px;
+             cursor: pointer;
+             display: flex;
+             align-items: center;
+             gap: 6px;
+             transition: all 0.2s ease;
+         }
+
+         .verify-btn:hover {
+             background-color: #1d4ed8;
+         }
+
+         /* Verify badge */
+         .verify-badge {
+             display: flex;
+             align-items: center;
+             gap: 6px;
+             color: #059669;
+             font-size: 14px;
+             padding: 6px 12px;
+             background-color: #d1fae5;
+             border-radius: 4px;
+         }
+
+         .verify-badge i {
+             color: #059669;
+         }
+
+         /* Modal styles */
+         .modal {
+             display: none;
+             position: fixed;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 100%;
+             background-color: rgba(0, 0, 0, 0.5);
+             z-index: 1000;
+         }
+
+         .modal-content {
+             position: relative;
+             background-color: #fff;
+             margin: 10% auto;
+             padding: 20px;
+             width: 90%;
+             max-width: 500px;
+             border-radius: 8px;
+             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+         }
+
+         .close-modal {
+             position: absolute;
+             right: 20px;
+             top: 15px;
+             font-size: 24px;
+             cursor: pointer;
+             color: #666;
+         }
+
+         .close-modal:hover {
+             color: #000;
+         }
+
+         .modal-body {
+             text-align: center;
+         }
+
+         .modal-body h3 {
+             margin-bottom: 20px;
+             color: #1f2937;
+         }
+
+         .qr-code {
+             margin: 20px 0;
+         }
+
+         .qr-code img {
+             max-width: 200px;
+             height: auto;
+         }
+
+         .verify-instruction {
+             padding: 15px;
+             background-color: #f3f4f6;
+             border-radius: 4px;
+             margin-top: 20px;
+         }
+
+         .verify-instruction p {
+             color: #4b5563;
+             line-height: 1.5;
+         }
+
          .row {
              display: flex;
              flex-wrap: wrap;
@@ -92,9 +203,40 @@
                              <input type="text" name="name" value="{{ old('name', $employer->name) }}" required>
                          </div>
 
+                         <!-- Trong form group phone -->
                          <div class="form-group">
                              <label>Số điện thoại</label>
-                             <input type="tel" name="phone" value="{{ old('phone', $employer->phone) }}">
+                             <div class="phone-verify-wrapper">
+                                 <input type="tel" name="phone" value="{{ old('phone', $employer->phone) }}"
+                                     class="phone-input {{ $employer->isVerifyCompany == 1 ? 'verified' : '' }}"
+                                     {{ $employer->isVerifyCompany == 1 ? 'readonly' : '' }}>
+                                 @if ($employer->isVerifyCompany == 1)
+                                     <span class="verify-badge">
+                                         <i class="fas fa-check-circle"></i> Đã xác thực
+                                     </span>
+                                 @else
+                                     <button type="button" class="verify-btn" onclick="openVerifyModal()">
+                                         <i class="fas fa-shield-alt"></i> Xác thực
+                                     </button>
+                                 @endif
+                             </div>
+                         </div>
+
+                         <!-- Modal QR Code -->
+                         <div id="verifyModal" class="modal">
+                             <div class="modal-content">
+                                 <span class="close-modal">&times;</span>
+                                 <div class="modal-body">
+                                     <h3>Xác thực công ty</h3>
+                                     <div class="qr-code">
+                                         <img src="{{ asset('frontend/QR zalo.jpg') }}" alt="QR Code Zalo">
+                                     </div>
+                                     <div class="verify-instruction">
+                                         <p>Vui lòng ghi rõ tên công ty số điện thoại và mã số thuế qua mã zalo hoặc liên
+                                             hệ: 0846565815</p>
+                                     </div>
+                                 </div>
+                             </div>
                          </div>
 
                          <div class="form-group">
@@ -291,4 +433,31 @@
          });
      </script>
 
+     <script>
+         // Hàm mở modal
+         function openVerifyModal() {
+             document.getElementById('verifyModal').style.display = 'block';
+         }
+
+         // Hàm đóng modal
+         function closeVerifyModal() {
+             document.getElementById('verifyModal').style.display = 'none';
+         }
+
+         // Thêm event listeners
+         document.querySelector('.close-modal').addEventListener('click', closeVerifyModal);
+
+         // Đóng modal khi click bên ngoài
+         window.addEventListener('click', function(event) {
+             const modal = document.getElementById('verifyModal');
+             if (event.target === modal) {
+                 closeVerifyModal();
+             }
+         });
+
+         // Ngăn chặn việc đóng modal khi click vào nội dung modal
+         document.querySelector('.modal-content').addEventListener('click', function(event) {
+             event.stopPropagation();
+         });
+     </script>
  @endsection
