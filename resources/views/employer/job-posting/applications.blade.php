@@ -56,9 +56,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($applications as $application)
+                            @forelse ($applications as $key=> $application)
                                 <tr data-application-id="{{ $application->id }}">
-                                    <td>{{ $application->id }}</td>
+                                    <td>{{ $key  }}</td>
                                     <td>{{ $application->candidate->name }}</td>
                                     <td>{{ $application->candidate->email }}</td>
                                     <td>{{ $application->created_at->format('d/m/Y H:i') }}</td>

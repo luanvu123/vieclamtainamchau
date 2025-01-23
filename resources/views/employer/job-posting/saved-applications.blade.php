@@ -184,9 +184,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($savedApplications as $application)
+                            @foreach ($savedApplications as $key=> $application)
                                 <tr data-application-id="{{ $application->id }}">
-                                    <td>{{ $application->id }}</td>
+                                    <td>{{ $key }}</td>
                                     <td>{{ $application->candidate->name }}</td>
                                     <td>{{ $application->candidate->email }}</td>
                                     <td>{{ $application->jobPosting->title }}</td>
@@ -194,7 +194,7 @@
                                     <td>
                                         <a href="{{ asset('storage/' . $application->cv_path) }}" target="_blank"
                                             class="view-cv-btn">
-                                            Xem CV
+                                             CV
                                         </a>
                                     </td>
                                     <td>

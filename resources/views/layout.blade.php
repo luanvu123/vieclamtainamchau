@@ -18,6 +18,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: Arial, sans-serif;
+
         }
 
         a {
@@ -76,6 +77,7 @@
             /* Tạo bóng */
             color: white;
             /* Màu chữ nếu cần nổi bật */
+            
         }
 
         .logo {
@@ -2492,7 +2494,7 @@
             }, true);
         });
     </script>
-   <script src="{{ asset('backend_admin/js/jquery-1.11.1.min.js') }}"></script>
+    <script src="{{ asset('backend_admin/js/jquery-1.11.1.min.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
 
     <!-- Include DataTables JavaScript -->

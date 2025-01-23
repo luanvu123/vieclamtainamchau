@@ -42,6 +42,7 @@
                 <table class="job-table" id="user-table">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>Tên tin đăng</th>
                             <th>Thời hạn</th>
                             <th>Lượt xem</th>
@@ -50,8 +51,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($jobPostings as $job)
+                        @foreach ($jobPostings as $key => $job)
                             <tr>
+                                <td>{{$key}}</td>
                                 <td>{{ $job->title }}</td>
                                 <td>{{ $job->closing_date }}</td>
                                 <td>{{ $job->views }}</td>
