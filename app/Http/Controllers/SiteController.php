@@ -13,36 +13,39 @@ use Illuminate\Http\Request;
 
 class SiteController extends Controller
 {
-     public function about()
+    public function about()
     {
         return view('pages.about');
     }
-     public function hotline()
+    public function hotline()
     {
         return view('pages.hotline');
     }
     public function countries()
     {
-          $categories = Category::where('status', 'active')->where('isHot', 0)->get();
-    $countries = Country::where('status', 'active')->get();
+        $categories = Category::where('status', 'active')->where('isHot', 0)->get();
         $countries = Country::where('status', true)->get();
-        return view('pages.flag', compact('countries', 'categories', 'countries'));
+        return view('pages.flag', compact('countries', 'categories'));
     }
     public function news()
     {
         // Lấy tin tức được kích hoạt, sắp xếp mới nhất và phân trang
         $news = News::where('status', true)
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(12); // 12 tin một trang
-
-        // Lấy các tin nổi bật
+            ->where('isBanner', false)
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
         $outstandingNews = News::where('status', true)
-                              ->where('isOutstanding', true)
-                              ->orderBy('created_at', 'desc')
-                              ->take(5) // Lấy 5 tin nổi bật
-                              ->get();
+            ->where('isOutstanding', true)
+            ->orderBy('created_at', 'desc')
+            ->take(5) // Lấy 5 tin nổi bật
+            ->get();
+        $bannerNews = News::where('isBanner', true)
+            ->orderBy('created_at', 'desc')
+            ->where('status', true)
+            ->take(3) // Limit to 3 banner news items
+            ->get();
 
-        return view('pages.news', compact('news', 'outstandingNews'));
+        return view('pages.news', compact('news', 'outstandingNews', 'bannerNews'));
     }
 
     public function newsDetail($id)
@@ -50,17 +53,18 @@ class SiteController extends Controller
         try {
             // Lấy chi tiết tin tức
             $news = News::where('status', true)
-                       ->findOrFail($id);
+            
+                ->findOrFail($id);
 
             // Lấy tin tức liên quan (cùng trạng thái active, không bao gồm tin hiện tại)
             $relatedNews = News::where('status', true)
-                              ->where('id', '!=', $id)
-                              ->latest()
-                              ->take(6) // Lấy 6 tin liên quan
-                              ->get();
+            ->where('isBanner', false)
+                ->where('id', '!=', $id)
+                ->latest()
+                ->take(6) // Lấy 6 tin liên quan
+                ->get();
 
             return view('pages.news-detail', compact('news', 'relatedNews'));
-
         } catch (\Exception $e) {
             abort(404); // Trả về trang 404 nếu không tìm thấy tin tức
         }
@@ -68,7 +72,8 @@ class SiteController extends Controller
     public function country($slug)
     {
         $country = Country::where('slug', $slug)->firstOrFail(); // Lấy quốc gia theo slug
-
+        $categories = Category::where('status', 'active')->where('isHot', 0)->get();
+        $countries = Country::where('status', true)->get();
         $jobPostings = $country->jobPostings()
             ->where('status', 'active')
             ->where('closing_date', '>', now())
@@ -76,7 +81,7 @@ class SiteController extends Controller
             ->latest()
             ->get();
 
-        return view('pages.country', compact('country', 'jobPostings'));
+        return view('pages.country', compact('country', 'jobPostings', 'countries', 'categories'));
     }
 
     public function index(Request $request)
@@ -94,34 +99,34 @@ class SiteController extends Controller
         return view('pages.home', compact('categories', 'genres', 'countries', 'employerIsPartner',));
     }
 
-  public function genre($slug)
-{
-    $genres = Genre::where('status', 'active')->get();
-    $categories = Category::where('status', 'active')->where('isHot', 0)->get();
-    $countries = Country::where('status', 'active')->get();
+    public function genre($slug)
+    {
+        $genres = Genre::where('status', 'active')->get();
+        $categories = Category::where('status', 'active')->where('isHot', 0)->get();
+        $countries = Country::where('status', 'active')->get();
 
-    $genre = Genre::where('slug', $slug)
-        ->with(['jobPostings' => function ($query) {
-            $query->with(['employer', 'countries'])
-                ->where('status', 'active')
-                ->where('closing_date', '>', now())
-                ->latest();
-        }])
-        ->firstOrFail();
+        $genre = Genre::where('slug', $slug)
+            ->with(['jobPostings' => function ($query) {
+                $query->with(['employer', 'countries'])
+                    ->where('status', 'active')
+                    ->where('closing_date', '>', now())
+                    ->latest();
+            }])
+            ->firstOrFail();
 
-    // Nhóm jobs theo country
-    $jobsByCountry = collect();
-    foreach ($genre->jobPostings as $job) {
-        foreach ($job->countries as $country) {
-            if (!$jobsByCountry->has($country->id)) {
-                $jobsByCountry[$country->id] = collect();
+        // Nhóm jobs theo country
+        $jobsByCountry = collect();
+        foreach ($genre->jobPostings as $job) {
+            foreach ($job->countries as $country) {
+                if (!$jobsByCountry->has($country->id)) {
+                    $jobsByCountry[$country->id] = collect();
+                }
+                $jobsByCountry[$country->id]->push($job);
             }
-            $jobsByCountry[$country->id]->push($job);
         }
-    }
 
-    return view('pages.genre', compact('genre', 'genres', 'categories', 'countries', 'jobsByCountry'));
-}
+        return view('pages.genre', compact('genre', 'genres', 'categories', 'countries', 'jobsByCountry'));
+    }
     public function job($slug)
     {
         $jobPosting = JobPosting::where('slug', $slug)
@@ -139,27 +144,27 @@ class SiteController extends Controller
 
         return view('pages.job', compact('jobPosting', 'categories', 'orderJob'));
     }
-  public function category($slug)
-{
-    $categories = Category::where('status', 'active')->where('isHot', 0)->get();
-    $countries = Country::where('status', 'active')->get();
+    public function category($slug)
+    {
+        $categories = Category::where('status', 'active')->where('isHot', 0)->get();
+        $countries = Country::where('status', 'active')->get();
 
-    // Sửa lại phần query để lấy jobPostings
-    $category = Category::where('slug', $slug)
-        ->where('status', 'active')
-        ->firstOrFail();
+        // Sửa lại phần query để lấy jobPostings
+        $category = Category::where('slug', $slug)
+            ->where('status', 'active')
+            ->firstOrFail();
 
-    $jobPostings = JobPosting::whereHas('categories', function($query) use ($category) {
+        $jobPostings = JobPosting::whereHas('categories', function ($query) use ($category) {
             $query->where('categories.id', $category->id);
         })
-        ->with('employer')
-        ->where('status', 'active')
-        ->where('closing_date', '>', now())
-        ->latest()
-        ->paginate(12);  // Thêm phân trang
+            ->with('employer')
+            ->where('status', 'active')
+            ->where('closing_date', '>', now())
+            ->latest()
+            ->paginate(12);  // Thêm phân trang
 
-    return view('pages.category', compact('category', 'categories', 'countries', 'jobPostings'));
-}
+        return view('pages.category', compact('category', 'categories', 'countries', 'jobPostings'));
+    }
     public function search(Request $request)
     {
         $query = JobPosting::query();

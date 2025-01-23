@@ -115,6 +115,6 @@ class EmployerAuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('employer.login');
+        return redirect()->route('/');
     }
 }

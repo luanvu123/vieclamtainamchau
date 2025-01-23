@@ -2,7 +2,6 @@
 @section('content')
 
     <section class="job-categories">
-    <h1>Việc làm tại quốc gia: {{ $country->name }}</h1>
     @if ($jobPostings->count() > 0)
         <div class="category-grid">
             @foreach ($jobPostings as $job)

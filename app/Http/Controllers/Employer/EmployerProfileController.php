@@ -23,80 +23,80 @@ class EmployerProfileController extends Controller
         return view('employer.profile.edit', compact('employer', 'categories', 'genres'));
     }
 
-   public function updateCompany(Request $request)
-{
-    // Xác thực dữ liệu
-    $request->validate([
-        'mst' => 'nullable|string|max:255',
-        'company_name' => 'required|string|max:255',
-        'scale' => 'nullable|string',
-        'map' => 'nullable|string',
-        'categories' => 'nullable|array',
-        'categories.*' => 'exists:categories,id',
-        'genres' => 'nullable|array',
-        'genres.*' => 'exists:genres,id',
-        'business_license' => 'nullable|file|mimes:doc,docx,pdf|max:10240',
-        'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        'gallery_captions.*' => 'nullable|string|max:255',
-        'gallery_sort_orders.*' => 'nullable|integer|min:0',
-        'delete_gallery.*' => 'nullable|integer|exists:company_galleries,id', // Kiểm tra ID ảnh hợp lệ
-    ]);
+    public function updateCompany(Request $request)
+    {
+        // Xác thực dữ liệu
+        $request->validate([
+            'mst' => 'nullable|string|max:255',
+            'company_name' => 'required|string|max:255',
+            'scale' => 'nullable|string',
+            'map' => 'nullable|string',
+            'categories' => 'nullable|array',
+            'categories.*' => 'exists:categories,id',
+            'genres' => 'nullable|array',
+            'genres.*' => 'exists:genres,id',
+            'business_license' => 'nullable|file|mimes:doc,docx,pdf|max:10240',
+            'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'gallery_captions.*' => 'nullable|string|max:255',
+            'gallery_sort_orders.*' => 'nullable|integer|min:0',
+            'delete_gallery.*' => 'nullable|integer|exists:company_galleries,id', // Kiểm tra ID ảnh hợp lệ
+        ]);
 
-    // Lấy employer đang đăng nhập
-    $employer = Auth::guard('employer')->user();
+        // Lấy employer đang đăng nhập
+        $employer = Auth::guard('employer')->user();
 
-    // Cập nhật các thông tin
-    $employer->update([
-        'mst' => $request->mst,
-        'company_name' => $request->company_name,
-        'slug' => Str::slug($request->company_name),
-        'scale' => $request->scale,
-        'map' => $request->map,
-    ]);
+        // Cập nhật các thông tin
+        $employer->update([
+            'mst' => $request->mst,
+            'company_name' => $request->company_name,
+            'slug' => Str::slug($request->company_name),
+            'scale' => $request->scale,
+            'map' => $request->map,
+        ]);
 
-    // Cập nhật quan hệ categories và genres
-    if ($request->has('categories')) {
-        $employer->categories()->sync($request->categories);
-    }
+        // Cập nhật quan hệ categories và genres
+        if ($request->has('categories')) {
+            $employer->categories()->sync($request->categories);
+        }
 
-    if ($request->has('genres')) {
-        $employer->genres()->sync($request->genres);
-    }
+        if ($request->has('genres')) {
+            $employer->genres()->sync($request->genres);
+        }
 
-    // Xóa ảnh được chọn
-    if ($request->filled('delete_gallery')) {
-        $deleteGalleryIds = $request->input('delete_gallery');
-        $imagesToDelete = $employer->gallery()->whereIn('id', $deleteGalleryIds)->get();
+        // Xóa ảnh được chọn
+        if ($request->filled('delete_gallery')) {
+            $deleteGalleryIds = $request->input('delete_gallery');
+            $imagesToDelete = $employer->gallery()->whereIn('id', $deleteGalleryIds)->get();
 
-        foreach ($imagesToDelete as $image) {
-            // Xóa file khỏi storage
-            if (Storage::disk('public')->exists($image->image_path)) {
-                Storage::disk('public')->delete($image->image_path);
+            foreach ($imagesToDelete as $image) {
+                // Xóa file khỏi storage
+                if (Storage::disk('public')->exists($image->image_path)) {
+                    Storage::disk('public')->delete($image->image_path);
+                }
+
+                // Xóa bản ghi khỏi database
+                $image->delete();
             }
-
-            // Xóa bản ghi khỏi database
-            $image->delete();
         }
-    }
 
-    // Thêm ảnh mới vào gallery
-    if ($request->hasFile('gallery_images')) {
-        foreach ($request->file('gallery_images') as $index => $image) {
-            $imagePath = $image->store('company_galleries', 'public');
-            $caption = $request->gallery_captions[$index] ?? null;
-            $sortOrder = $request->gallery_sort_orders[$index] ?? 0;
+        // Thêm ảnh mới vào gallery
+        if ($request->hasFile('gallery_images')) {
+            foreach ($request->file('gallery_images') as $index => $image) {
+                $imagePath = $image->store('company_galleries', 'public');
+                $caption = $request->gallery_captions[$index] ?? null;
+                $sortOrder = $request->gallery_sort_orders[$index] ?? 0;
 
-            $employer->gallery()->create([
-                'image_path' => $imagePath,
-                'caption' => $caption,
-                'sort_order' => $sortOrder,
-                'is_active' => true,
-            ]);
+                $employer->gallery()->create([
+                    'image_path' => $imagePath,
+                    'caption' => $caption,
+                    'sort_order' => $sortOrder,
+                    'is_active' => true,
+                ]);
+            }
         }
-    }
 
-    return redirect()->back()->with('success', 'Thông tin công ty đã được cập nhật.');
-}
+        return redirect()->back()->with('success', 'Thông tin công ty đã được cập nhật.');
+    }
 
 
     public function updateInfo(Request $request)

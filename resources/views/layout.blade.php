@@ -2433,16 +2433,7 @@
         CKEDITOR.replace('summary5');
         CKEDITOR.replace('description');
     </script>
-    <script src="{{ asset('backend_admin/js/jquery-1.11.1.min.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
 
-    <!-- Include DataTables JavaScript -->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#user-table').DataTable();
-        });
-    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('warningModal');
@@ -2501,8 +2492,16 @@
             }, true);
         });
     </script>
-    <!-- Thêm Toastr JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+   <script src="{{ asset('backend_admin/js/jquery-1.11.1.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
+
+    <!-- Include DataTables JavaScript -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#user-table').DataTable();
+        });
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @if (session('error'))
         <script>

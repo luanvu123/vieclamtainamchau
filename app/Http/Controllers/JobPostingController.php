@@ -26,7 +26,7 @@ class JobPostingController extends Controller
     {
         $employer = Auth::guard('employer')->user();
 
-        if ($employer->isUrgentrecruitmen == 0) {
+        if ($employer->isUrgentrecruitment == 0) {
             // Chuyển thông báo lỗi qua session
             return redirect()->back()->with('error', 'Bạn chưa mua dịch vụ xem thông tin ứng viên.');
         }

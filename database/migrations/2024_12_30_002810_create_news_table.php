@@ -20,7 +20,8 @@ class CreateNewsTable extends Migration
             $table->text('description')->nullable();
             $table->string('website')->nullable();
             $table->boolean('status')->default(true); // true: active, false: inactive
-            $table->boolean('isOutstanding')->default(false); // true: nổi bật
+            $table->boolean('isOutstanding')->default(false);
+            $table->boolean('isBanner')->default(false); // true: nổi bật
             $table->timestamps();
         });
     }

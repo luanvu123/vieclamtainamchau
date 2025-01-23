@@ -28,6 +28,7 @@ class NewsController extends Controller
             'website' => 'nullable|url',
             'status' => 'required|boolean',
             'isOutstanding' => 'required|boolean',
+            'isBanner'=>'required|boolean',
         ]);
 
         $data = $request->all();
@@ -60,6 +61,7 @@ class NewsController extends Controller
             'website' => 'nullable|url',
             'status' => 'required|boolean',
             'isOutstanding' => 'required|boolean',
+            'isBanner'=>'required|boolean',
         ]);
 
         $data = $request->all();

@@ -25,7 +25,7 @@
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Mô tả</label>
-            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description">{{ old('description', $news->description) }}</textarea>
+            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description">{!! old('description', $news->description) !!}</textarea>
             @error('description')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -54,6 +54,16 @@
                 <option value="0" {{ old('isOutstanding', $news->isOutstanding) == 0 ? 'selected' : '' }}>Không</option>
             </select>
             @error('isOutstanding')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+         <div class="mb-3">
+            <label for="isOutstanding" class="form-label">Quảng cáo</label>
+            <select class="form-select @error('isBanner') is-invalid @enderror" id="isBanner" name="isBanner" required>
+                <option value="1" {{ old('isBanner', $news->isBanner) == 1 ? 'selected' : '' }}>Có</option>
+                <option value="0" {{ old('isBanner', $news->isBanner) == 0 ? 'selected' : '' }}>Không</option>
+            </select>
+            @error('isBanner')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>

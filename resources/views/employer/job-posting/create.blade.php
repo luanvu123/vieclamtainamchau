@@ -2,47 +2,43 @@
  @section('content')
      <div class="container">
          <div class="sidebar">
-            <div class="menu-section">
-                <div class="menu-title">Quản lý đăng tuyển dụng</div>
-                <a href="{{ route('employer.job-posting.create') }}" class="menu-item">
-                    <i>+</i>
-                    <span>Tạo tin tuyển dụng</span>
-                </a>
-                <a href="{{ route('employer.job-posting.index') }}" class="menu-item">
-                    <i>📋</i>
-                    <span>Quản lý tin đăng</span>
-                </a>
-                <a href="{{ route('employer.services') }}" class="menu-item">
-                    <i>📊</i>
-                    <span>Mua dịch vụ</span>
-                </a>
-                <a href="{{ route('employer.service-active') }}" class="menu-item">
-                    <i>❤️</i>
-                    <span>Dịch vụ đã mua</span>
-                </a>
-            </div>
+             <div class="menu-section">
+                 <div class="menu-title">Quản lý đăng tuyển dụng</div>
+                 <a href="{{ route('employer.job-posting.create') }}" class="menu-item">
+                     <i>+</i>
+                     <span>Tạo tin tuyển dụng</span>
+                 </a>
+                 <a href="{{ route('employer.job-posting.index') }}" class="menu-item">
+                     <i>📋</i>
+                     <span>Quản lý tin đăng</span>
+                 </a>
+                 <a href="{{ route('employer.services') }}" class="menu-item">
+                     <i>📊</i>
+                     <span>Mua dịch vụ</span>
+                 </a>
+                 <a href="{{ route('employer.service-active') }}" class="menu-item">
+                     <i>❤️</i>
+                     <span>Dịch vụ đã mua</span>
+                 </a>
+             </div>
 
-            <div class="menu-section">
-                <div class="menu-title">Quản lý ứng viên</div>
-                <a href="{{ route('employer.saved-applications') }}" class="menu-item">
-                    <i>👥</i>
-                    <span>Hồ sơ ứng tuyển</span>
-                </a>
-                <a href="{{ route('employer.job-posting.find-candidate') }}" class="menu-item">
-                    <i>🔍</i>
-                    <span>Tìm ứng viên mới</span>
-                </a>
-            </div>
-        </div>
+             <div class="menu-section">
+                 <div class="menu-title">Quản lý ứng viên</div>
+                 <a href="{{ route('employer.saved-applications') }}" class="menu-item">
+                     <i>👥</i>
+                     <span>Hồ sơ ứng tuyển</span>
+                 </a>
+                 <a href="{{ route('employer.job-posting.find-candidate') }}" class="menu-item">
+                     <i>🔍</i>
+                     <span>Tìm ứng viên mới</span>
+                 </a>
+             </div>
+         </div>
          <div class="main-content">
              <h1 class="mb-4">Tạo bài đăng tuyển dụng</h1>
              <div class="container">
                  <form action="{{ route('employer.job-posting.store') }}" method="POST">
                      @csrf
-                     <div class="mb-3">
-                         <label for="title" class="form-label">Email</label>
-                         <input class="search-field" type="text" name="email" value="{{ $employer->email }}" readonly>
-                     </div>
                      <!-- Title -->
                      <div class="mb-3">
                          <label for="title" class="form-label">Tiêu đề</label>
@@ -52,6 +48,31 @@
                              <span class="text-danger">{{ $message }}</span>
                          @enderror
                      </div>
+                     <!-- Categories -->
+                     <div class="mb-3">
+                         <label for="categories" class="form-label">Chọn ngành nghề và Du học nghề</label>
+                         <select id="categories" name="categories[]" class="form-select" multiple>
+                             @foreach ($categories as $category)
+                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
+                             @endforeach
+                         </select>
+                         @error('categories')
+                             <span class="text-danger">{{ $message }}</span>
+                         @enderror
+                     </div>
+                     <!-- Genres -->
+                     <div class="mb-3">
+                         <label for="genres" class="form-label">Chọn danh mục Xuất khẩu lao động</label>
+                         <select id="genres" name="genres[]" class="form-select" multiple>
+                             @foreach ($genres as $genre)
+                                 <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                             @endforeach
+                         </select>
+                         @error('genres')
+                             <span class="text-danger">{{ $message }}</span>
+                         @enderror
+                     </div>
+
 
                      <!-- Type -->
                      <div class="mb-3">
@@ -170,12 +191,9 @@
 
                      <!-- Application Email -->
                      <div class="mb-3">
-                         <label for="application_email_url" class="form-label">Email ứng tuyển</label>
-                         <input type="email" id="application_email_url" name="application_email_url"
-                             class="form-control" value="{{ old('application_email_url') }}" required>
-                         @error('application_email_url')
-                             <span class="text-danger">{{ $message }}</span>
-                         @enderror
+                         <label for="title" class="form-label">Email nhận hồ sơ</label>
+                         <input class="search-field" type="text" name="email" value="{{ $employer->email }}"
+                             readonly>
                      </div>
 
                      <!-- Closing Date -->
@@ -198,18 +216,7 @@
                          @enderror
                      </div>
 
-                     <!-- Categories -->
-                     <div class="mb-3">
-                         <label for="categories" class="form-label">Danh mục</label>
-                         <select id="categories" name="categories[]" class="form-select" multiple>
-                             @foreach ($categories as $category)
-                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
-                             @endforeach
-                         </select>
-                         @error('categories')
-                             <span class="text-danger">{{ $message }}</span>
-                         @enderror
-                     </div>
+
 
                      <!-- Countries -->
                      <div class="mb-3">
@@ -224,18 +231,7 @@
                          @enderror
                      </div>
 
-                     <!-- Genres -->
-                     <div class="mb-3">
-                         <label for="genres" class="form-label">Thể loại công việc</label>
-                         <select id="genres" name="genres[]" class="form-select" multiple>
-                             @foreach ($genres as $genre)
-                                 <option value="{{ $genre->id }}">{{ $genre->name }}</option>
-                             @endforeach
-                         </select>
-                         @error('genres')
-                             <span class="text-danger">{{ $message }}</span>
-                         @enderror
-                     </div>
+
 
 
 

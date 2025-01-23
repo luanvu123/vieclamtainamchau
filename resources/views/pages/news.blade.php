@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +14,7 @@
             --gray-color: #666;
             --light-gray: #f5f5f5;
             --border-radius: 8px;
-            --box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         * {
@@ -239,94 +240,147 @@
                 max-width: 100%;
             }
         }
+
+    .news-banner {
+    width: 100%;
+    padding: 20px 0;
+    background-color: #f4f4f4;
+}
+
+.banner-carousel {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.banner-item {
+    flex: 1;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.banner-item:hover {
+    transform: scale(1.05);
+}
+
+.banner-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .banner-carousel {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .banner-image {
+        height: 200px;
+    }
+}
     </style>
 </head>
+
 <body>
     <main class="container">
         <section class="hero">
             <h1>Tin Tức & Cập Nhật</h1>
-            <p>Khám phá những tin tức mới nhất về nghề nghiệp, việc làm và phát triển sự nghiệp. Cập nhật xu hướng và cơ hội mới trong thị trường lao động.</p>
+            <p>Khám phá những tin tức mới nhất về nghề nghiệp, việc làm và phát triển sự nghiệp. Cập nhật xu hướng và cơ
+                hội mới trong thị trường lao động.</p>
         </section>
 
-        @if($outstandingNews->count() > 0)
-        <section class="featured-news">
-            <h2 class="section-title">Tin Tức Nổi Bật</h2>
-            <div class="featured-grid">
-                @foreach($outstandingNews as $featured)
-                <article class="news-card">
-                    <div class="news-image-container">
-                        @if($featured->image)
-                        <img
-                            src="{{ asset('storage/' .$featured->image) }}"
-                            alt="{{ $featured->name }}"
-                            class="news-image"
-                            loading="lazy"
-                        >
-                        @endif
-                    </div>
-                    <div class="news-content">
-                        <span class="news-tag">Nổi bật</span>
-                        <a href="{{ route('news.detail.home', $featured->id) }}" class="news-title">
-                            {{ $featured->name }}
-                        </a>
-                        <p class="news-description">
-                            {{ Str::limit(strip_tags($featured->description), 150) }}
-                        </p>
-                        <div class="news-meta">
-                            <span class="news-date">
-                                <i class="far fa-calendar"></i>
-                                {{ $featured->created_at->format('d/m/Y') }}
-                            </span>
-                            @if($featured->website)
-                            <a href="{{ $featured->website }}" class="news-source" target="_blank">
-                                <i class="fas fa-external-link-alt"></i>
-                                <span>Xem nguồn</span>
-                            </a>
-                            @endif
-                        </div>
-                    </div>
-                </article>
-                @endforeach
-            </div>
-        </section>
+        @if ($outstandingNews->count() > 0)
+            <section class="featured-news">
+                <h2 class="section-title">Tin Tức Nổi Bật</h2>
+                <div class="featured-grid">
+                    @foreach ($outstandingNews as $featured)
+                        <article class="news-card">
+                            <div class="news-image-container">
+                                @if ($featured->image)
+                                    <img src="{{ asset('storage/' . $featured->image) }}" alt="{{ $featured->name }}"
+                                        class="news-image" loading="lazy">
+                                @endif
+                            </div>
+                            <div class="news-content">
+                                <span class="news-tag">Nổi bật</span>
+                                <a href="{{ route('news.detail.home', $featured->id) }}" class="news-title">
+                                    {{ $featured->name }}
+                                </a>
+                                <p class="news-description">
+                                    {{ Str::limit(strip_tags($featured->description), 150) }}
+                                </p>
+                                <div class="news-meta">
+                                    <span class="news-date">
+                                        <i class="far fa-calendar"></i>
+                                        {{ $featured->created_at->format('d/m/Y') }}
+                                    </span>
+                                    @if ($featured->website)
+                                        <a href="{{ $featured->website }}" class="news-source" target="_blank">
+                                            <i class="fas fa-external-link-alt"></i>
+                                            <span>Xem nguồn</span>
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </section>
         @endif
-
+      @if ($bannerNews->count() > 0)
+    <section class="news-banner">
+        <div class="banner-carousel">
+            @foreach ($bannerNews as $banner)
+                <div class="banner-item">
+                    <a href="{{ route('news.detail.home', $banner->id) }}">
+                        <img
+                            src="{{ asset('storage/' . $banner->image) }}"
+                            alt="{{ $banner->name }}"
+                            class="banner-image"
+                        >
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    </section>
+@endif
         <section>
             <h2 class="section-title">Tất Cả Tin Tức</h2>
             <div class="news-grid">
-                @foreach($news as $item)
-                <article class="news-card">
-                    <div class="news-image-container">
-                        @if($item->image)
-                        <img
-                            src="{{ asset('storage/' .$item->image) }}"
-                            alt="{{ $item->name }}"
-                            class="news-image"
-                            loading="lazy"
-                        >
-                        @endif
-                    </div>
-                    <div class="news-content">
-                        <a href="{{ route('news.detail.home', $item->id) }}" class="news-title">
-                            {{ $item->name }}
-                        </a>
-                        <p class="news-description">
-                            {{ Str::limit(strip_tags($item->description), 150) }}
-                        </p>
-                        <div class="news-meta">
-                            <span class="news-date">
-                                <i class="far fa-calendar"></i>
-                                {{ $item->created_at->format('d/m/Y') }}
-                            </span>
-                            @if($item->website)
-                            <a href="{{ $item->website }}" class="news-source" target="_blank">
-                                <i class="fas fa-external-link-alt"></i>
-                                <span>Xem nguồn</span>
-                            </a>
+                @foreach ($news as $item)
+                    <article class="news-card">
+                        <div class="news-image-container">
+                            @if ($item->image)
+                                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}"
+                                    class="news-image" loading="lazy">
                             @endif
                         </div>
-                    </div>
-                </article>
+                        <div class="news-content">
+                            <a href="{{ route('news.detail.home', $item->id) }}" class="news-title">
+                                {{ $item->name }}
+                            </a>
+                            <p class="news-description">
+                                {{ Str::limit(strip_tags($item->description), 150) }}
+                            </p>
+                            <div class="news-meta">
+                                <span class="news-date">
+                                    <i class="far fa-calendar"></i>
+                                    {{ $item->created_at->format('d/m/Y') }}
+                                </span>
+                                @if ($item->website)
+                                    <a href="{{ $item->website }}" class="news-source" target="_blank">
+                                        <i class="fas fa-external-link-alt"></i>
+                                        <span>Xem nguồn</span>
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                    </article>
                 @endforeach
             </div>
 
@@ -339,7 +393,7 @@
     <script>
         // Handle smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
@@ -378,5 +432,7 @@
             observer.observe(card);
         });
     </script>
+
 </body>
+
 </html>
