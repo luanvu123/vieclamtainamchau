@@ -110,7 +110,7 @@
             font-size: 28px;
         }
     </style>
-    <div class="container">
+    <section class="hotlines-section">
         <div class="sidebar">
             <div class="menu-section">
                 <div class="menu-title">Quản lý đăng tuyển dụng</div>
@@ -229,5 +229,5 @@
             </div>
 
         </div>
-    </div>
+    </section>
 @endsection

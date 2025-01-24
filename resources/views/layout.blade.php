@@ -20,7 +20,10 @@
             font-family: Arial, sans-serif;
 
         }
+body {
+    overflow-x: hidden;
 
+}
         a {
             text-decoration: none;
         }
@@ -77,7 +80,7 @@
             /* Tạo bóng */
             color: white;
             /* Màu chữ nếu cần nổi bật */
-            
+
         }
 
         .logo {
@@ -1959,6 +1962,55 @@
         }
 
         /* Responsive Styles */
+.nav {
+    position: relative;
+}
+
+.nav .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.nav .dropdown-menu-hot {
+    display: none;
+    position: absolute;
+    background-color: #ff0000;
+    padding: 10px;
+    z-index: 1;
+    min-width: 150px;
+    list-style: none;
+}
+
+.nav .dropdown-menu-hot li a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 5px 10px;
+}
+
+.nav .dropdown-menu-hot li a:hover {
+    background-color: #cc0000;
+}
+
+.nav .dropdown .dropdown-arrow {
+    display: inline-block;
+    margin-left: 5px;
+    cursor: pointer;
+    border: solid #000;
+    border-width: 0 3px 3px 0;
+    padding: 3px;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.nav .dropdown.show .dropdown-arrow {
+    transform: rotate(-135deg);
+}
+
+.nav .dropdown.show .dropdown-menu-hot {
+    display: block;
+}
+
     </style>
 </head>
 
@@ -2036,32 +2088,34 @@
             </div>
         </div>
         <nav class="nav">
-            <ul>
-                <li><a href="{{ route('/') }}">Trang chủ</a></li>
-                <li><a href="{{ route('site.countries') }}">Việc làm</a></li>
-                @if (isset($genre_home) && $genre_home->count() > 0)
-                    @foreach ($genre_home as $genre)
-                        <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
+    <ul>
+        <li><a href="{{ route('/') }}">Trang chủ</a></li>
+        <li><a href="{{ route('site.countries') }}">Việc làm</a></li>
+        @if (isset($genre_home) && $genre_home->count() > 0)
+            @foreach ($genre_home as $genre)
+                <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
+            @endforeach
+        @endif
+        <li class="dropdown">
+            <a href="#">Du học nghề</span></a>
+
+            <ul class="dropdown-menu-hot">
+                @if (isset($categoryHot) && $categoryHot->count() > 0)
+                    @foreach ($categoryHot as $hotCategory)
+                        <li>
+                            <a href="{{ route('category.show', $hotCategory->slug) }}">{{ $hotCategory->name }}</a>
+                        </li>
                     @endforeach
+                @else
+                    <li><a href="#">Không có du học nghề</a></li>
                 @endif
-                <li class="dropdown">
-                    <a href="#">Du học nghề</a>
-                    <ul class="dropdown-menu">
-                        @if (isset($categoryHot) && $categoryHot->count() > 0)
-                            @foreach ($categoryHot as $hotCategory)
-                                <li><a
-                                        href="{{ route('category.show', $hotCategory->slug) }}">{{ $hotCategory->name }}</a>
-                                </li>
-                            @endforeach
-                        @else
-                            <li><a href="#">Không có du học nghề</a></li>
-                        @endif
-                    </ul>
-                </li>
-                <li><a href="{{ route('news.home') }}">Tin tức</a></li>
-                <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
             </ul>
-        </nav>
+        </li>
+        <li><a href="{{ route('news.home') }}">Tin tức</a></li>
+        <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
+    </ul>
+</nav>
+
     </header>
     @if (!Auth::guard('employer')->check() && !Auth::guard('candidate')->check())
         <div class="warning-modal" id="warningModal">
@@ -2435,7 +2489,25 @@
         CKEDITOR.replace('summary5');
         CKEDITOR.replace('description');
     </script>
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+    const dropdownLink = document.querySelector(".dropdown > a");
+    const dropdown = document.querySelector(".dropdown");
 
+    dropdownLink.addEventListener("click", function (event) {
+        event.preventDefault(); // Prevent the default link behavior
+        event.stopPropagation(); // Prevent click from propagating to the document
+        dropdown.classList.toggle("show");
+    });
+
+    // Hide dropdown if clicked outside
+    document.addEventListener("click", function () {
+        dropdown.classList.remove("show");
+    });
+});
+
+
+</script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('warningModal');
@@ -2512,6 +2584,7 @@
             });
         </script>
     @endif
+
 </body>
 
 </html>
