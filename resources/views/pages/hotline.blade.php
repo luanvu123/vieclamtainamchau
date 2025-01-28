@@ -1,8 +1,6 @@
 @extends('layout')
 
 @section('content')
-    
-
     <!-- Section: Hotline -->
     <section class="hotlines-section">
         <!-- Job Seekers Column -->
