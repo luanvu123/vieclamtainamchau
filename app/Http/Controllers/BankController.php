@@ -61,7 +61,7 @@ class BankController extends Controller
 
     public function edit(Bank $bank)
     {
-        if ($bank->user_id !== Auth::id()) {
+        if ($bank->user_id != Auth::id()) {
         abort(403, 'Unauthorized action.');
     }
 
@@ -70,7 +70,7 @@ class BankController extends Controller
 
    public function update(Request $request, Bank $bank)
 {
-    if ($bank->user_id !== Auth::id()) {
+    if ($bank->user_id != Auth::id()) {
         abort(403, 'Unauthorized action.');
     }
 
@@ -116,7 +116,7 @@ class BankController extends Controller
 
     public function destroy(Bank $bank)
     {
-       if ($bank->user_id !== Auth::id()) {
+       if ($bank->user_id != Auth::id()) {
         abort(403, 'Unauthorized action.');
     }
         $bank->delete();

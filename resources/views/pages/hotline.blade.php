@@ -414,6 +414,10 @@
                     'Tư vấn cho người tìm việc' : 'Tư vấn cho Nhà tuyển dụng';
                 formData.append('type_title', typeTitle);
 
+                // Show loading state
+                submitButton.disabled = true;
+                submitButton.textContent = 'Đang gửi...';
+
                 fetch('/supports', {
                         method: 'POST',
                         headers: {
@@ -435,9 +439,13 @@
                     .catch(error => {
                         console.error('Error:', error);
                         alert('Đã xảy ra lỗi khi gửi thông tin tư vấn.');
+                    })
+                    .finally(() => {
+                        // Reset button state
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Gửi thông tin';
                     });
             });
-
         });
     </script>
 @endsection
