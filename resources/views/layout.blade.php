@@ -20,10 +20,12 @@
             font-family: Arial, sans-serif;
 
         }
-body {
-    overflow-x: hidden;
 
-}
+        body {
+            overflow-x: hidden;
+
+        }
+
         a {
             text-decoration: none;
         }
@@ -133,6 +135,147 @@ body {
             font-size: 12px;
             font-weight: bold;
             z-index: 1;
+        }
+
+        .advertisement-container {
+            display: flex;
+            gap: 2rem;
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .ad-content {
+            flex: 2;
+        }
+
+        .news-list {
+            background: #fff;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .news-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .news-image {
+            width: 400px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .news-text h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .news-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .news-links a {
+            color: #333;
+            text-decoration: none;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .news-links a:hover {
+            color: #007bff;
+        }
+
+        .category-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .category-btn {
+            padding: 1rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .category-btn.green {
+            background-color: #4CAF50;
+        }
+
+        .category-btn.purple {
+            background-color: #9C27B0;
+        }
+
+        .category-btn.blue {
+            background-color: #2196F3;
+        }
+
+        .ad-banners {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ad-banner img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .advertisement-container {
+                flex-direction: column;
+            }
+
+            .news-item {
+                flex-direction: column;
+            }
+
+            .news-image {
+                width: 100%;
+                height: 200px;
+            }
+
+            .ad-banners {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .ad-banner {
+                flex: 1;
+                min-width: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .category-buttons {
+                gap: 0.5rem;
+            }
+
+            .category-btn {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .ad-banner {
+                min-width: 100%;
+            }
         }
 
         .category-card.hot-effect:hover {
@@ -567,7 +710,92 @@ body {
             color: white;
             padding: 3rem 2rem 1rem;
         }
+ .pagination-container {
+                    margin-top: 20px;
+                }
 
+                .pagination {
+                    display: flex;
+                    list-style: none;
+                    padding: 0;
+                    justify-content: center;
+                    gap: 5px;
+                }
+
+                .pagination li {
+                    display: inline-block;
+                }
+
+                .pagination li a,
+                .pagination li span {
+                    padding: 8px 12px;
+                    border: 1px solid #ddd;
+                    color: #333;
+                    text-decoration: none;
+                    border-radius: 4px;
+                }
+
+                .pagination li.active span {
+                    background-color: #007bff;
+                    color: white;
+                    border-color: #007bff;
+                }
+
+                .pagination li a:hover {
+                    background-color: #f8f9fa;
+                }
+
+                .news-links a {
+                    display: block;
+                    padding: 8px 0;
+                    border-bottom: 1px solid #eee;
+                    transition: color 0.3s ease;
+                }
+
+                .news-links a:hover {
+                    color: #007bff;
+                }
+
+                .news-image {
+                    transition: opacity 0.3s ease;
+                }
+                  .search-container {
+                    margin-bottom: 20px;
+                }
+
+                .search-input {
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #ddd;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    transition: border-color 0.3s ease;
+                }
+
+                .search-input:focus {
+                    border-color: #ff0000;
+                    outline: none;
+                }
+
+                /* Hide/Show news links */
+                .news-link.hidden {
+                    display: none;
+                }
+
+                /* No results message */
+                .no-results {
+                    padding: 20px;
+                    text-align: center;
+                    color: #666;
+                    font-style: italic;
+                    display: none;
+                }
+
+                /* Highlight matching text */
+                .highlight {
+                    background-color: #fff3cd;
+                    padding: 2px;
+                }
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1962,55 +2190,54 @@ body {
         }
 
         /* Responsive Styles */
-.nav {
-    position: relative;
-}
+        .nav {
+            position: relative;
+        }
 
-.nav .dropdown {
-    position: relative;
-    display: inline-block;
-}
+        .nav .dropdown {
+            position: relative;
+            display: inline-block;
+        }
 
-.nav .dropdown-menu-hot {
-    display: none;
-    position: absolute;
-    background-color: #ff0000;
-    padding: 10px;
-    z-index: 1;
-    min-width: 150px;
-    list-style: none;
-}
+        .nav .dropdown-menu-hot {
+            display: none;
+            position: absolute;
+            background-color: #ff0000;
+            padding: 10px;
+            z-index: 1;
+            min-width: 150px;
+            list-style: none;
+        }
 
-.nav .dropdown-menu-hot li a {
-    color: #fff;
-    text-decoration: none;
-    display: block;
-    padding: 5px 10px;
-}
+        .nav .dropdown-menu-hot li a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            padding: 5px 10px;
+        }
 
-.nav .dropdown-menu-hot li a:hover {
-    background-color: #cc0000;
-}
+        .nav .dropdown-menu-hot li a:hover {
+            background-color: #cc0000;
+        }
 
-.nav .dropdown .dropdown-arrow {
-    display: inline-block;
-    margin-left: 5px;
-    cursor: pointer;
-    border: solid #000;
-    border-width: 0 3px 3px 0;
-    padding: 3px;
-    transform: rotate(45deg);
-    transition: transform 0.2s ease;
-}
+        .nav .dropdown .dropdown-arrow {
+            display: inline-block;
+            margin-left: 5px;
+            cursor: pointer;
+            border: solid #000;
+            border-width: 0 3px 3px 0;
+            padding: 3px;
+            transform: rotate(45deg);
+            transition: transform 0.2s ease;
+        }
 
-.nav .dropdown.show .dropdown-arrow {
-    transform: rotate(-135deg);
-}
+        .nav .dropdown.show .dropdown-arrow {
+            transform: rotate(-135deg);
+        }
 
-.nav .dropdown.show .dropdown-menu-hot {
-    display: block;
-}
-
+        .nav .dropdown.show .dropdown-menu-hot {
+            display: block;
+        }
     </style>
 </head>
 
@@ -2022,10 +2249,13 @@ body {
         @endif
         <div class="header-top">
             <div class="logo">
-                <img src="{{ asset('frontend/img/logo.png') }}" style="width:200px;height:200px;" alt="Logo">
+                <img src="{{ asset('storage/' . ($info_layout->logo ?? 'frontend/img/logo.png')) }}"
+                    style="width:200px;height:200px;" alt="Logo">
                 <div class="modal-title-group" style="margin-left: 120px;">
-                    <div class="modal-title" style="color: white">VIỆC LÀM TẠI NĂM CHÂU TRÊN THẾ GIỚI</div>
-                    <div class="modal-subtitle" style="color: white">JOBS IN FIVE CONTINENTS OF THE WORLD</div>
+                    <div class="modal-title" style="color: white">
+                        {{ $info_layout->title ?? 'VIỆC LÀM TẠI NĂM CHÂU TRÊN THẾ GIỚI' }}</div>
+                    <div class="modal-subtitle" style="color: white">
+                        {{ $info_layout->subtitle ?? 'JOBS IN FIVE CONTINENTS OF THE WORLD' }}</div>
                 </div>
             </div>
             <div class="header-actions">
@@ -2088,33 +2318,37 @@ body {
             </div>
         </div>
         <nav class="nav">
-    <ul>
-        <li><a href="{{ route('/') }}">Trang chủ</a></li>
-        <li><a href="{{ route('site.countries') }}">Việc làm</a></li>
-        @if (isset($genre_home) && $genre_home->count() > 0)
-            @foreach ($genre_home as $genre)
-                <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
-            @endforeach
-        @endif
-        <li class="dropdown">
-            <a href="#">Du học nghề</span></a>
-
-            <ul class="dropdown-menu-hot">
-                @if (isset($categoryHot) && $categoryHot->count() > 0)
-                    @foreach ($categoryHot as $hotCategory)
-                        <li>
-                            <a href="{{ route('category.show', $hotCategory->slug) }}">{{ $hotCategory->name }}</a>
-                        </li>
+            <ul>
+                <li><a href="{{ route('/') }}">Trang chủ</a></li>
+                <li><a href="{{ route('site.countries') }}">Việc làm</a></li>
+                @if (isset($genre_home) && $genre_home->count() > 0)
+                    @foreach ($genre_home as $genre)
+                        @if ($genre->slug === 'du-hoc-nghe')
+                            <li class="dropdown">
+                                <a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a>
+                                <ul class="dropdown-menu-hot">
+                                    @if (isset($categoryHot) && $categoryHot->count() > 0)
+                                        @foreach ($categoryHot as $hotCategory)
+                                            <li>
+                                                <a
+                                                    href="{{ route('category.show', $hotCategory->slug) }}">{{ $hotCategory->name }}</a>
+                                            </li>
+                                        @endforeach
+                                    @else
+                                        <li><a href="#">Không có du học nghề</a></li>
+                                    @endif
+                                </ul>
+                            </li>
+                        @else
+                            <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
+                        @endif
                     @endforeach
-                @else
-                    <li><a href="#">Không có du học nghề</a></li>
                 @endif
+
+                <li><a href="{{ route('news.home') }}">Tin tức</a></li>
+                <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
             </ul>
-        </li>
-        <li><a href="{{ route('news.home') }}">Tin tức</a></li>
-        <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
-    </ul>
-</nav>
+        </nav>
 
     </header>
     @if (!Auth::guard('employer')->check() && !Auth::guard('candidate')->check())
@@ -2387,18 +2621,16 @@ body {
             <div class="footer-contact">
                 <h3>HỖ TRỢ KỸ THUẬT</h3>
                 <ul>
-                    <li><i class="fas fa-phone"></i> Số đt/fax: +8467 9957 052</li>
-                    <li><i class="fas fa-envelope"></i> vietnamvision@gmail.com</li>
-                    <li><i class="fas fa-clock"></i> Copyright 2014-2024 Việc Làm Năm Châu</li>
+                    <li><i class="fas fa-phone"></i> Số đt/fax: {{ $info_layout->phone ?? '+8467 9957 052' }}</li>
+                    <li><i class="fas fa-envelope"></i> {{ $info_layout->gmail ?? 'vietnamvision@gmail.com' }}</li>
+                    <li><i class="fas fa-clock"></i>
+                        {{ $info_layout->copyright ?? 'Copyright 2014-2024 Việc Làm Năm Châu' }}</li>
                 </ul>
             </div>
 
             <div class="footer-company">
-                <h3>Báo Online Việc Làm Tại Năm Châu</h3>
-                <p>Trực thuộc (C) Công Ty Ltd</p>
-                <p>GPĐKKD: 3702914394</p>
-                <p>Địa chỉ: Số 367/373 Lý Thường Kiệt, Phường 8</p>
-                <p>Contact@namchauoverseas.com</p>
+                <h3>{{ $info_layout->newspaper ?? 'Trực thuộc (C) Công Ty Ltd' }}</h3>
+                {!! $info_layout->footer_company !!}
             </div>
         </div>
 
@@ -2417,19 +2649,19 @@ body {
 
 
             <div class="social-links">
-                <a href="#" class="social-link">
-                    <i class="fab fa-facebook-f"></i>
-                    <span>Follow Us on Facebook</span>
-                </a>
-                <a href="#" class="social-link">
-                    <i class="fab fa-youtube"></i>
-                    <span>Youtube</span>
-                </a>
-                <a href="#" class="social-link">
-                    <i class="fas fa-handshake"></i>
-                    <span>Partners</span>
-                </a>
-            </div>
+    <a href="{{ $info_layout->url_facebook ?? '#' }}" class="social-link">
+        <i class="fab fa-facebook-f"></i>
+        <span>Follow Us on Facebook</span>
+    </a>
+    <a href="{{ $info_layout->url_youtube ?? '#' }}" class="social-link">
+        <i class="fab fa-youtube"></i>
+        <span>Youtube</span>
+    </a>
+    <a href="{{ $info_layout->url_partner ?? '#' }}" class="social-link">
+        <i class="fas fa-handshake"></i>
+        <span>Partners</span>
+    </a>
+</div>
         </div>
     </footer>
 
@@ -2489,25 +2721,23 @@ body {
         CKEDITOR.replace('summary5');
         CKEDITOR.replace('description');
     </script>
-<script>
-   document.addEventListener("DOMContentLoaded", function () {
-    const dropdownLink = document.querySelector(".dropdown > a");
-    const dropdown = document.querySelector(".dropdown");
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const dropdownLink = document.querySelector(".dropdown > a");
+            const dropdown = document.querySelector(".dropdown");
 
-    dropdownLink.addEventListener("click", function (event) {
-        event.preventDefault(); // Prevent the default link behavior
-        event.stopPropagation(); // Prevent click from propagating to the document
-        dropdown.classList.toggle("show");
-    });
+            dropdownLink.addEventListener("click", function(event) {
+                event.preventDefault(); // Prevent the default link behavior
+                event.stopPropagation(); // Prevent click from propagating to the document
+                dropdown.classList.toggle("show");
+            });
 
-    // Hide dropdown if clicked outside
-    document.addEventListener("click", function () {
-        dropdown.classList.remove("show");
-    });
-});
-
-
-</script>
+            // Hide dropdown if clicked outside
+            document.addEventListener("click", function() {
+                dropdown.classList.remove("show");
+            });
+        });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('warningModal');

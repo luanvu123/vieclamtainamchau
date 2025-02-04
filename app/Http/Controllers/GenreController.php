@@ -61,9 +61,7 @@ class GenreController extends Controller
 
     public function update(Request $request, Genre $genre)
     {
-        if ($genre->user_id != Auth::id()) {
-            abort(403);
-        }
+       
 
         $request->validate([
             'name' => 'required|string|max:255',

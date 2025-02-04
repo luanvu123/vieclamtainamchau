@@ -8,7 +8,7 @@
         <p>{{ session('success') }}</p>
     @endif
 
-    <table id="user-table">
+    <table  class="table"  id="user-table">
         <thead>
             <tr>
                 <th>ID</th>

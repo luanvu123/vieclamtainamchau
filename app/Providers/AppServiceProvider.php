@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\View;
 use App\Models\Employer;
 use App\Models\Candidate;
 use App\Models\Category;
+use App\Models\Info;
 use App\Models\JobPosting;
 use App\Models\OnlineVisitor;
 use App\Models\Support;
@@ -75,10 +76,12 @@ class AppServiceProvider extends ServiceProvider
 
         // Optionally, you can share other data like genres as shown in your existing code
         view()->composer('*', function ($view) {
-            $genre_home = Genre::where('status', 'active')->get();
+            $genre_home = Genre::where('status', 'active')->orderBy('updated_at', 'asc')->get();
             $view->with('genre_home', $genre_home);
             $categoryHot = Category::where('isHot', 1)->where('status', 'active')->get();
             $view->with('categoryHot', $categoryHot);
         });
+        $info_layout = Info::first();
+        View::share('info_layout', $info_layout);
     }
 }

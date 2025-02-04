@@ -7,6 +7,7 @@ use App\Models\Country;
 use App\Models\Employer;
 use App\Models\Genre;
 use App\Models\JobPosting;
+use App\Models\Location;
 use App\Models\News;
 use App\Models\OnlineVisitor;
 use Illuminate\Http\Request;
@@ -19,7 +20,15 @@ class SiteController extends Controller
     }
     public function hotline()
     {
-        return view('pages.hotline');
+        $locations = Location::where('status', 'active')->orderBy('updated_at', 'desc')->get();
+        $defaultLocation = $locations->first(); // Lấy địa điểm mới nhất
+
+        return view('pages.hotline', compact('locations', 'defaultLocation'));
+    }
+    public function getLocations()
+    {
+        $locations = Location::where('status', 'active')->get();
+        return response()->json($locations);
     }
     public function countries()
     {
@@ -29,45 +38,47 @@ class SiteController extends Controller
     }
     public function news()
     {
-        // Lấy tin tức được kích hoạt, sắp xếp mới nhất và phân trang
-        $news = News::where('status', true)
-            ->where('isBanner', false)
-            ->orderBy('created_at', 'desc')
-            ->paginate(12);
-        $outstandingNews = News::where('status', true)
-            ->where('isOutstanding', true)
-            ->orderBy('created_at', 'desc')
-            ->take(5) // Lấy 5 tin nổi bật
-            ->get();
-        $bannerNews = News::where('isBanner', true)
-            ->orderBy('created_at', 'desc')
-            ->where('status', true)
-            ->take(3) // Limit to 3 banner news items
+        // Get featured/outstanding news
+        $outstandingNews = News::where('status', 1)
+            ->where('isOutstanding', 1)
+            ->first();
+        $promotion = News::where('status', 1)
+            ->where('isOutstanding', 1)
+            ->take(3)
             ->get();
 
-        return view('pages.news', compact('news', 'outstandingNews', 'bannerNews'));
+        $newsList = News::where('status', 1)
+            ->where('isOutstanding', 0)
+            ->where('isBanner', 0)
+            ->paginate(6); // Show 6 items per page
+
+        // Get banner news
+        $bannerNews = News::where('status', 1)
+            ->where('isBanner', 1)
+            ->get();
+
+        return view('pages.news', compact('outstandingNews', 'newsList', 'bannerNews', 'promotion'));
     }
 
     public function newsDetail($id)
     {
-        try {
-            // Lấy chi tiết tin tức
-            $news = News::where('status', true)
-            
-                ->findOrFail($id);
+        // Get the specific news
+        $news = News::findOrFail($id);
 
-            // Lấy tin tức liên quan (cùng trạng thái active, không bao gồm tin hiện tại)
-            $relatedNews = News::where('status', true)
-            ->where('isBanner', false)
-                ->where('id', '!=', $id)
-                ->latest()
-                ->take(6) // Lấy 6 tin liên quan
-                ->get();
+        // Get banner news for right sidebar
+        $bannerNews = News::where('status', 1)
+            ->where('isBanner', 1)
+            ->get();
 
-            return view('pages.news-detail', compact('news', 'relatedNews'));
-        } catch (\Exception $e) {
-            abort(404); // Trả về trang 404 nếu không tìm thấy tin tức
-        }
+        // Get related news (optional)
+        $relatedNews = News::where('status', 1)
+            ->where('id', '!=', $id)
+            ->where('isOutstanding', 0)
+            ->where('isBanner', 0)
+            ->take(5)
+            ->get();
+
+        return view('pages.news-detail', compact('news', 'bannerNews', 'relatedNews'));
     }
     public function country($slug)
     {
@@ -88,9 +99,12 @@ class SiteController extends Controller
     {
         $categories = Category::where('status', 'active')->where('isHot', 0)->get();
         $genres = Genre::with(['jobPostings' => function ($query) {
-            $query->with(['employer', 'countries']) // Nạp cả employer và countries
+            $query->with(['employer', 'countries'])
                 ->where('status', 'active')
                 ->where('closing_date', '>', now())
+                 ->whereHas('employer', function ($query) {
+                $query->where('IsHome', 1); // Filter job postings where employer IsHome is 1
+            })
                 ->latest();
         }])->get();
         OnlineVisitor::trackVisitor($request->ip());

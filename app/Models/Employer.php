@@ -52,6 +52,7 @@ class Employer extends Authenticatable
         'IsFramingeffect',
         'IsHoteffect',
         'isVerifyEmail',
+        'IsHome',
         'level',
         'mst',
         'scale',
@@ -67,7 +68,8 @@ class Employer extends Authenticatable
         'IsBasicnews_updated_at',
         'isUrgentrecruitment_updated_at',
         'IsPartner_updated_at',
-        'IsHoteffect_updated_at'
+        'IsHoteffect_updated_at',
+        'IsHome_updated_at'
     ];
 
     /**
@@ -99,6 +101,7 @@ class Employer extends Authenticatable
         'IsDarkredeffect' => 'boolean',
         'IsFramingeffect' => 'boolean',
         'IsHoteffect' => 'boolean',
+        'IsHome' => 'boolean',
         'isVerifyEmail' => 'boolean',
         'IsBasicnews_updated_at',
         'isUrgentrecruitment_updated_at',
@@ -108,6 +111,7 @@ class Employer extends Authenticatable
         'isUrgentrecruitment_updated_at' => 'datetime',
         'IsPartner_updated_at' => 'datetime',
         'IsHoteffect_updated_at' => 'datetime',
+        'IsHome_updated_at'=> 'datetime',
     ];
 
     /**

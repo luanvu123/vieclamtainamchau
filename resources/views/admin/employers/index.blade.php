@@ -119,6 +119,22 @@
                                                     @endif
                                                 </div>
                                             @endif
+                                            @if ($employer->IsHome)
+                                                <div class="feature-item">
+                                                    <i class="fas fa-home text-primary"></i> Trang chủ
+                                                    @if ($employer->IsHome_updated_at)
+                                                        <div class="service-time">
+                                                            <small class="text-muted">
+                                                                <i class="fas fa-clock"></i>
+                                                                {{ $employer->IsHome_updated_at->format('H:i d/m/Y') }}
+                                                                <span class="d-block ms-3">
+                                                                    {{ $employer->IsHome_updated_at->diffForHumans() }}
+                                                                </span>
+                                                            </small>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            @endif
 
                                             @if ($employer->isUrgentrecruitment)
                                                 <div class="feature-item">

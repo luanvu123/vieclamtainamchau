@@ -1,6 +1,30 @@
 @extends('layout')
 @section('content')
-
+<section class="hero">
+        <div class="search-bar">
+            <form action="{{ route('site.search') }}" method="GET">
+                <input type="text" name="keyword" placeholder="Nhập từ khóa tìm kiếm" value="{{ request('keyword') }}">
+                <select name="category">
+                    <option value="">Lựa chọn nghề nghiệp</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->slug }}"
+                            {{ request('category') == $category->slug ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <select name="country">
+                    <option value="">Nhập thị trường</option>
+                    @foreach ($countries as $country)
+                        <option value="{{ $country->slug }}" {{ request('country') == $country->slug ? 'selected' : '' }}>
+                            {{ $country->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <button class="search-btn" type="submit">Tìm kiếm</button>
+            </form>
+        </div>
+    </section>
     <section class="job-categories">
     @if ($jobPostings->count() > 0)
         <div class="category-grid">

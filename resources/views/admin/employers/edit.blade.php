@@ -185,6 +185,28 @@
                                         @endif
                                     </div>
                                 </div>
+<div class="col-md-3">
+    <div class="service-card">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="IsHome"
+                value="1" {{ $employer->IsHome ? 'checked' : '' }}>
+            <label class="form-check-label">
+                <i class="fas fa-home text-primary"></i> Trang chủ
+            </label>
+        </div>
+        @if ($employer->IsHome_updated_at)
+            <div class="service-update-info">
+                <small class="text-muted">
+                    <i class="fas fa-clock"></i>
+                    {{ $employer->IsHome_updated_at->format('H:i d/m/Y') }}
+                    <span class="d-block ms-3">
+                        {{ $employer->IsHome_updated_at->diffForHumans() }}
+                    </span>
+                </small>
+            </div>
+        @endif
+    </div>
+</div>
 
                                 <div class="col-md-3">
                                     <div class="service-card">

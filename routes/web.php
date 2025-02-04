@@ -14,11 +14,13 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\Employer\EmployerProfileController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployerManageController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InfoController;
 use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SiteController;
@@ -40,6 +42,7 @@ Route::get('/search', [SiteController::class, 'search'])->name('site.search')->m
 Route::post('/supports', [SupportController::class, 'store'])->name('supports.store');
 Route::get('/tin-tuc', [SiteController::class, 'news'])->name('news.home');
 Route::get('/tin-tuc/{id}', [SiteController::class, 'newsDetail'])->name('news.detail.home');
+
 Auth::routes();
 
 
@@ -58,6 +61,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
     Route::resource('news', NewsController::class);
+    Route::resource('locations', LocationController::class);
+    Route::get('/admin/info/edit', [InfoController::class, 'edit'])->name('info.edit');
+    Route::put('/admin/info/update', [InfoController::class, 'update'])->name('info.update');
+
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::resource('countries', CountryController::class);
     Route::resource('categories', CategoryController::class);

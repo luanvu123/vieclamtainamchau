@@ -1,207 +1,200 @@
 @extends('layout')
 
 @section('content')
-    <!-- Section: News -->
-    <section class="news-section">
-        <div class="news-header">
-            <div class="news-tabs">
-                <a href="#" class="tab active">Tin Nổi Bật</a>
-                <a href="#" class="tab">Việc Làm</a>
-                <a href="#" class="tab">Bất Động Sản Úc</a>
-                <a href="#" class="tab">Hỏi Đáp</a>
+    <section class="advertisement-container">
+        <!-- Left Content -->
+        <div class="ad-content">
+            <div class="search-container">
+                <input type="text" id="newsSearch" class="search-input" placeholder="Tìm kiếm tin tức...">
             </div>
-            <a href="#" class="view-more">Xem thêm tin tức →</a>
-        </div>
+            <div class="news-list">
+                @if ($outstandingNews)
+                    <div class="news-item">
+                        <img src="{{ asset('storage/' . $outstandingNews->image) }}" alt="{{ $outstandingNews->name }}"
+                            id="previewImage" class="news-image">
+                        <div class="news-text">
+                            <h3>
+                                <a href="{{ route('news.detail.home', $outstandingNews->id) }}">
+                                    {{ $outstandingNews->name }}
+                                </a>
+                            </h3>
+                            <span class="news-date">{{ $outstandingNews->created_at->diffForHumans() }}</span>
+                            <div class="news-links">
+                                @foreach ($newsList as $news)
+                                    <a href="{{ route('news.detail.home', $news->id) }}" class="news-link"
+                                        data-image="{{ asset('storage/' . $news->image) }}">
+                                        {{ $news->name }}
+                                    </a>
+                                @endforeach
+                            </div>
 
-        <div class="news-content">
-            <div class="main-news">
-                <div class="news-item featured">
-                    <img src="{{ asset('frontend/img/workers-image.png') }}" alt="Top 10 ngành nghề">
-                    <div class="news-details">
-                        <h3>10 ngành nghề được tăng lương nhiều nhất năm 2024</h3>
-                        <div class="news-meta">
-                            <span class="date">26/12/2024</span>
+                            <!-- Pagination -->
+                            <div class="pagination-container">
+                                {{ $newsList->links() }}
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const previewImage = document.getElementById('previewImage');
+                    const defaultImage = previewImage.src;
+                    let currentImage = defaultImage;
 
-            <div class="news-list">
-                <a href="#" class="news-link">10 ngành nghề được tăng lương nhiều nhất năm 2024</a>
-                <a href="#" class="news-link">Những ngành nghề được tăng lương nhiều nhất tại Úc</a>
-                <a href="#" class="news-link">Nghề lái xe Forklift và cơ hội có thu nhập cao tại Úc</a>
-                <a href="#" class="news-link">Tiềm năng nghề massage tại Úc, mức lương của nghề massage là bao
-                    nhiêu?</a>
-                <a href="#" class="news-link">Tại sao việc làm chạy bàn, phụ bếp chưa bao giờ hết HOT tại Úc</a>
-                <a href="#" class="news-link">Làm nail ở Úc: Nghề phổ biến nhất cho các chị em Việt tại xứ sở chuột
-                    túi</a>
+                    // Store original image URL
+                    const originalImageSrc = previewImage.src;
+
+                    // Add hover effect for news links
+                    document.querySelectorAll('.news-link').forEach(link => {
+                        link.addEventListener('mouseenter', function() {
+                            const newImage = this.getAttribute('data-image');
+                            if (newImage) {
+                                // Save current image before changing
+                                currentImage = previewImage.src;
+
+                                // Fade out effect
+                                previewImage.style.opacity = '0';
+
+                                setTimeout(() => {
+                                    previewImage.src = newImage;
+                                    previewImage.style.opacity = '1';
+                                }, 300);
+                            }
+                        });
+
+                        link.addEventListener('mouseleave', function() {
+                            // Fade out effect
+                            previewImage.style.opacity = '0';
+
+                            setTimeout(() => {
+                                // Return to original main news image
+                                previewImage.src = originalImageSrc;
+                                previewImage.style.opacity = '1';
+                            }, 300);
+                        });
+                    });
+                });
+            </script>
+
+            <!-- Promotion Section -->
+            <div class="category-buttons">
+                @php
+                    $colors = ['green', 'purple', 'blue'];
+                @endphp
+
+                @foreach ($promotion as $key => $promo)
+                    <a href="{{ route('news.detail.home', $promo->id) }}"
+                        class="category-btn {{ $colors[$key] ?? 'green' }}">
+                        {{ $promo->name }}
+                    </a>
+                @endforeach
             </div>
         </div>
 
-        <div class="promotion-cards">
-            <div class="promo-card green">
-                <h3>Tăng cơ hội tiếp cận khách hàng mùa lễ hội từ quảng cáo</h3>
-            </div>
-            <div class="promo-card purple">
-                <h3>Tìm hiểu về đầu tư Bất Động Sản cho công dân Việt Nam tại Úc</h3>
-            </div>
-            <div class="promo-card blue">
-                <h3>Social Media Marketing – Chia Khóa Thành Công Của Doanh Nghiệp Thời Đại Số</h3>
-            </div>
+        <!-- Banner News Section -->
+        <div class="ad-banners">
+            @foreach ($bannerNews as $banner)
+                <div class="ad-banner">
+                    <a href="{{ $banner->website }}" target="_blank">
+                        <img src="{{ asset('storage/' . $banner->image) }}" alt="{{ $banner->name }}">
+                    </a>
+                </div>
+            @endforeach
         </div>
     </section>
-
-    <style>
-        .news-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .news-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .news-tabs {
-            display: flex;
-            gap: 20px;
-        }
-
-        .tab {
-            text-decoration: none;
-            color: #333;
-            padding: 5px 0;
-        }
-
-        .tab.active {
-            color: #28a745;
-            border-bottom: 2px solid #28a745;
-        }
-
-        .view-more {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .news-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .main-news {
-            position: relative;
-        }
-
-        .news-item.featured {
-            position: relative;
-            height: 100%;
-        }
-
-        .news-item.featured img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .news-details {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 20px;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-            color: white;
-            border-radius: 0 0 8px 8px;
-        }
-
-        .news-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .news-link {
-            text-decoration: none;
-            color: #333;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .news-link:hover {
-            color: #28a745;
-        }
-
-        .promotion-cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .promo-card {
-            padding: 20px;
-            border-radius: 8px;
-            color: white;
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-        }
-
-        .promo-card.green {
-            background-color: #28a745;
-        }
-
-        .promo-card.purple {
-            background-color: #6f42c1;
-        }
-
-        .promo-card.blue {
-            background-color: #007bff;
-        }
-
-        .promo-card h3 {
-            margin: 0;
-            font-size: 16px;
-        }
-
-        @media (max-width: 768px) {
-            .news-content {
-                grid-template-columns: 1fr;
-            }
-
-            .promotion-cards {
-                grid-template-columns: 1fr;
-            }
-
-            .news-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-
-            .news-tabs {
-                overflow-x: auto;
-                width: 100%;
-                padding-bottom: 10px;
-            }
-        }
-    </style>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Tab switching functionality
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
+            // Add hover effects to category buttons
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            categoryButtons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.opacity = '0.9';
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.transition = 'all 0.3s ease';
                 });
+
+                button.addEventListener('mouseleave', function() {
+                    this.style.opacity = '1';
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Add smooth scroll for news links
+            const newsLinks = document.querySelectorAll('.news-links a');
+            newsLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    if (href !== '#') {
+                        window.location.href = href;
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('newsSearch');
+            const newsLinks = document.querySelectorAll('.news-link');
+
+            // Create no results message element
+            const noResults = document.createElement('div');
+            noResults.className = 'no-results';
+            noResults.textContent = 'Không tìm thấy kết quả phù hợp';
+            document.querySelector('.news-links').appendChild(noResults);
+
+            function highlightText(text, searchTerm) {
+                if (!searchTerm) return text;
+                const regex = new RegExp(`(${searchTerm})`, 'gi');
+                return text.replace(regex, '<span class="highlight">$1</span>');
+            }
+
+            let searchTimeout;
+
+            searchInput.addEventListener('input', function() {
+                // Clear previous timeout
+                clearTimeout(searchTimeout);
+
+                // Set new timeout for search (debouncing)
+                searchTimeout = setTimeout(() => {
+                    const searchTerm = this.value.toLowerCase().trim();
+                    let hasResults = false;
+
+                    newsLinks.forEach(link => {
+                        const newsTitle = link.textContent.toLowerCase();
+                        const matches = newsTitle.includes(searchTerm);
+
+                        if (matches) {
+                            hasResults = true;
+                            link.classList.remove('hidden');
+                            // Highlight matching text
+                            if (searchTerm) {
+                                link.innerHTML = highlightText(link.textContent,
+                                    searchTerm);
+                            } else {
+                                link.textContent = link.textContent; // Reset highlighting
+                            }
+                        } else {
+                            link.classList.add('hidden');
+                        }
+                    });
+
+                    // Show/hide no results message
+                    noResults.style.display = hasResults ? 'none' : 'block';
+
+                }, 300); // 300ms delay for better performance
+            });
+
+            // Reset search when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.search-container') && !searchInput.value) {
+                    newsLinks.forEach(link => {
+                        link.classList.remove('hidden');
+                        link.textContent = link.textContent; // Reset highlighting
+                    });
+                    noResults.style.display = 'none';
+                }
             });
         });
     </script>

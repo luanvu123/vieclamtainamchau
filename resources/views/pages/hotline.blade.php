@@ -9,12 +9,12 @@
 
             <div class="hotline-info">
                 <span class="hotline-label job-seekers">Hotline hỗ trợ</span>
-                <span class="hotline-number job-seekers">0567 012 132</span>
+                <span class="hotline-number job-seekers">{{ $info_layout->number_job_seeker_1 ?? '0567 012 132' }}</span>
             </div>
 
             <div class="hotline-info">
                 <span class="hotline-label job-seekers">Hotline hỗ trợ kỹ thuật</span>
-                <span class="hotline-number job-seekers">0567 012 132</span>
+                <span class="hotline-number job-seekers">{{ $info_layout->number_job_seeker_2 ?? '0567 012 132' }}</span>
             </div>
 
             <button class="consult-button job-seekers">Tư vấn cho người tìm việc</button>
@@ -29,22 +29,70 @@
 
             <div class="hotline-info">
                 <span class="hotline-label employers">Hotline hỗ trợ</span>
-                <span class="hotline-number employers">0567 012 132</span>
+                <span class="hotline-number employers">{{ $info_layout->number_employer_1 ?? '0567 012 132' }}</span>
             </div>
 
             <div class="hotline-info">
                 <span class="hotline-label employers">Hotline hỗ trợ kỹ thuật</span>
-                <span class="hotline-number employers">0567 012 132</span>
+                <span class="hotline-number employers">{{ $info_layout->number_employer_2 ?? '0567 012 132' }}</span>
             </div>
 
             <button class="consult-button employers">Tư vấn cho Nhà tuyển dụng</button>
         </div>
+        <div class="divider"></div>
+        <div class="hotline-column">
+            <label for="location-select">Chọn địa điểm:</label>
+            <select id="location-select">
+                @foreach ($locations as $location)
+                    <option value="{{ $location->id }}" data-description="{!! $location->description !!}"
+                        {{ $defaultLocation->id == $location->id ? 'selected' : '' }}>
+                        {{ $location->name }}
+                    </option>
+                @endforeach
+            </select>
+
+            <div id="location-info" class="hotline-info">
+                <span class="hotline-info">
+                    {!! $defaultLocation->description ?? 'Không có thông tin.' !!}
+                </span>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const locationSelect = document.getElementById("location-select");
+                const locationInfo = document.querySelector("#location-info .hotline-info");
+
+                function updateDescription() {
+                    let selectedOption = locationSelect.options[locationSelect.selectedIndex];
+                    locationInfo.innerHTML = selectedOption.getAttribute("data-description") || "Không có thông tin.";
+                }
+                updateDescription();
+                locationSelect.addEventListener("change", updateDescription);
+            });
+        </script>
+
     </section>
     <style>
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+        }
+
+        .hotline-info {
+            margin-top: 1rem;
+        }
+
+        .hotline-info .hotline-label {
+            margin-bottom: 0.25rem;
+        }
+
+        .hotline-info .hotline-number {
+            display: block;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #333;
         }
 
         .hero {
@@ -231,6 +279,12 @@
         .submit-button.job-seekers {
             background-color: #ff0000;
             color: white;
+        }
+
+        .hotline-column {
+            flex: 1 1 33.33%;
+            max-width: 33.33%;
+            padding: 0 1rem;
         }
 
         .submit-button.employers {

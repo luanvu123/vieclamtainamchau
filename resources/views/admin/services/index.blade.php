@@ -27,7 +27,7 @@
                         @endif
                     </td>
                     <td>{{ $service->price }} VND</td>
-                    <td>{{ $service->description }}</td>
+                    <td>{!! $service->description !!}</td>
                     <td>{{ $service->status == 'active' ? 'Hoạt động' : 'Ngừng hoạt động' }}</td>
                     <td>
                         <a href="{{ route('services.edit', $service->id) }}" class="btn btn-warning">Chỉnh sửa</a>

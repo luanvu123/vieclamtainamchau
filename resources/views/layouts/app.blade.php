@@ -144,7 +144,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     $segment = Request::segment(1);
                                 @endphp
                                 <li
-                                    class="treeview {{ Request::is('users*') || Request::is('cv_templates*') || Request::is('countries*') || Request::is('genres*') || Request::is('roles*') || Request::is('categories*') ? 'active' : '' }}">
+                                    class="treeview {{ Request::is('users*') || Request::is('cv_templates*') || Request::is('countries*') || Request::is('genres*') || Request::is('locations*') || Request::is('roles*') || Request::is('categories*') ? 'active' : '' }}">
                                     <a href="#">
                                         <img src="{{ asset('backend_admin/images/9165478_unbox_package_icon.svg') }}"
                                             alt="Google" width="20" height="20">
@@ -182,6 +182,13 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                                     alt="Google" width="20" height="20"> Danh mục
                                             </a>
                                         </li>
+                                        <li class="treeview {{ Request::is('locations*') ? 'active' : '' }}">
+                                            <a href="{{ route('locations.index') }}">
+                                                <img src="{{ asset('backend_admin/images/register-svgrepo-com.svg') }}"
+                                                    alt="Google" width="20" height="20">
+                                                <span> Địa điểm tư vấn </span>
+                                            </a>
+                                        </li>
 
                                     </ul>
                                 </li>
@@ -213,7 +220,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     <a href="{{ route('support-manage.index') }}">
                                         <img src="{{ asset('backend_admin/images/support-svgrepo-com.svg') }}"
                                             alt="Google" width="20" height="20"> Hỗ trợ
-                                             @if ($supportCountTwoHour > 0)
+                                        @if ($supportCountTwoHour > 0)
                                             <span class="label label-primary pull-right">{{ $supportCountTwoHour }}
                                                 New</span>
                                         @endif
@@ -244,14 +251,19 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     </a>
                                 </li>
 
-                                  <li class="treeview {{ Request::is('news*') ? 'active' : '' }}">
+                                <li class="treeview {{ Request::is('news*') ? 'active' : '' }}">
                                     <a href="{{ route('news.index') }}">
                                         <img src="{{ asset('backend_admin/images/newspaper-news-svgrepo-com.svg') }}"
                                             alt="Google" width="20" height="20">
                                         <span> Tin tức</span>
                                     </a>
                                 </li>
-
+                                <li class="{{ Request::is('admin/info/edit*') ? 'active' : '' }}">
+                                    <a href="{{ route('info.edit') }}">
+                                        <img src="{{ asset('backend_admin/images/5355692_code_coding_development_programming_web_icon.svg') }}"
+                                            alt="Google" width="20" height="20"> Quản lý giao diện
+                                    </a>
+                                </li>
 
                             </ul>
                         </div>
@@ -496,7 +508,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <script>
         CKEDITOR.replace('summary2');
         CKEDITOR.replace('summary6');
-         CKEDITOR.replace('description');
+        CKEDITOR.replace('description');
     </script>
 
     <script src="{{ asset('backend_admin/js/utils.js') }}"></script>

@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-<section class="hero">
+    <section class="hero">
         <div class="search-bar">
             <form action="{{ route('site.search') }}" method="GET">
                 <input type="text" name="keyword" placeholder="Nhập từ khóa tìm kiếm" value="{{ request('keyword') }}">
@@ -35,7 +35,8 @@
                     @foreach ($chunk as $country)
                         <div class="country-item">
                             <a href="{{ route('country.show', $country->slug) }}">
-                                <img src="{{ asset('storage/' . $country->image) }}" alt="{{ $country->name }}" class="flag">
+                                <img src="{{ asset('storage/' . $country->image) }}" alt="{{ $country->name }}"
+                                    class="flag">
                                 <span class="country-name">{{ $country->name }}</span>
                             </a>
                         </div>
@@ -45,45 +46,6 @@
         </div>
     </section>
 
-    <!-- Section: Hotline -->
-    <section class="hotlines-section">
-        <!-- Job Seekers Column -->
-        <div class="hotline-column">
-            <h2 class="hotline-title job-seekers">Hotline cho người tìm việc</h2>
-
-            <div class="hotline-info">
-                <span class="hotline-label job-seekers">Hotline hỗ trợ</span>
-                <span class="hotline-number job-seekers">0567 012 132</span>
-            </div>
-
-            <div class="hotline-info">
-                <span class="hotline-label job-seekers">Hotline hỗ trợ kỹ thuật</span>
-                <span class="hotline-number job-seekers">0567 012 132</span>
-            </div>
-
-            <button class="consult-button job-seekers">Tư vấn cho người tìm việc</button>
-        </div>
-
-        <!-- Divider -->
-        <div class="divider"></div>
-
-        <!-- Employers Column -->
-        <div class="hotline-column">
-            <h2 class="hotline-title employers">Hotline cho Nhà tuyển dụng</h2>
-
-            <div class="hotline-info">
-                <span class="hotline-label employers">Hotline hỗ trợ</span>
-                <span class="hotline-number employers">0567 012 132</span>
-            </div>
-
-            <div class="hotline-info">
-                <span class="hotline-label employers">Hotline hỗ trợ kỹ thuật</span>
-                <span class="hotline-number employers">0567 012 132</span>
-            </div>
-
-            <button class="consult-button employers">Tư vấn cho Nhà tuyển dụng</button>
-        </div>
-    </section>
     <style>
         /* Modal styles */
         .modal {
@@ -306,125 +268,4 @@
             }
         }
     </style>
-
-    <!-- Modal HTML -->
-    <div id="consultModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Tư vấn</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="consultForm">
-                <div class="form-group">
-                    <label>Số điện thoại</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-phone"></i>
-                        <input type="tel" name="phone" required placeholder="Nhập số điện thoại">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Email</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" name="email" required placeholder="Nhập email">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Mô tả</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-comment-alt"></i>
-                        <textarea name="description-info" required placeholder="Nhập mô tả"></textarea>
-                    </div>
-                </div>
-
-                <button type="submit" class="submit-button">Gửi thông tin</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get modal elements
-            const modal = document.getElementById('consultModal');
-            const closeBtn = modal.querySelector('.close-modal');
-            const form = document.getElementById('consultForm');
-            const modalTitle = modal.querySelector('.modal-title');
-            const submitButton = modal.querySelector('.submit-button');
-
-            // Get consultation buttons
-            const jobSeekerBtn = document.querySelector('.consult-button.job-seekers');
-            const employerBtn = document.querySelector('.consult-button.employers');
-
-            // Function to open modal
-            function openModal(type) {
-                modal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-
-                if (type === 'job-seekers') {
-                    modalTitle.textContent = 'Tư vấn cho người tìm việc';
-                    modalTitle.className = 'modal-title job-seekers';
-                    submitButton.className = 'submit-button job-seekers';
-                } else {
-                    modalTitle.textContent = 'Tư vấn cho Nhà tuyển dụng';
-                    modalTitle.className = 'modal-title employers';
-                    submitButton.className = 'submit-button employers';
-                }
-            }
-
-            // Function to close modal
-            function closeModal() {
-                modal.style.display = 'none';
-                document.body.style.overflow = '';
-                form.reset();
-            }
-
-            // Event listeners
-            jobSeekerBtn.addEventListener('click', () => openModal('job-seekers'));
-            employerBtn.addEventListener('click', () => openModal('employers'));
-            closeBtn.addEventListener('click', closeModal);
-
-            // Close modal when clicking outside
-            window.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-
-            // Handle form submission
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const formData = new FormData(form);
-                const typeTitle = modalTitle.classList.contains('job-seekers') ?
-                    'Tư vấn cho người tìm việc' : 'Tư vấn cho Nhà tuyển dụng';
-                formData.append('type_title', typeTitle);
-
-                fetch('/supports', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .getAttribute('content'),
-                        },
-                        body: formData,
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Failed to submit consultation');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        alert(data.message);
-                        closeModal();
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Đã xảy ra lỗi khi gửi thông tin tư vấn.');
-                    });
-            });
-
-        });
-    </script>
 @endsection

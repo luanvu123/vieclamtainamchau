@@ -135,6 +135,7 @@ class EmployerManageController extends Controller
             'isUrgentrecruitment' => 'boolean',
             'IsPartner' => 'boolean',
             'IsHoteffect' => 'boolean',
+            'IsHome' => 'boolean',
             'user_id' => 'nullable|exists:users,id',
         ]);
 
@@ -145,7 +146,8 @@ class EmployerManageController extends Controller
             'isUrgentrecruitment',
             'IsPartner',
             'IsHoteffect',
-            'isVerifyCompany'
+            'isVerifyCompany',
+            'IsHome'
         ];
 
         foreach ($booleanFields as $field) {
