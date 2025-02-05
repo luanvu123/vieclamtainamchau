@@ -78,7 +78,7 @@ Route::group(['middleware' => ['auth']], function () {
     ]);
 });
 
-
+Route::get('/candidate/check-application/{jobPostingId}', [ApplicationController::class, 'checkApplicationStatus'])->name('candidate.check-application')->middleware('candidate');
 Route::prefix('candidate')->name('candidate.')->group(function () {
 
     Route::get('/applications', [CandidateProfileController::class, 'applications'])->middleware('candidate')->name('applications');

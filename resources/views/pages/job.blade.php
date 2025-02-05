@@ -526,8 +526,8 @@
 
     <div class="job-card">
         <!-- Company Logo -->
-        <img src="{{ asset('storage/' .$jobPosting->employer->avatar) }}"
-            alt="{{ $jobPosting->employer->company_name }}" class="company-logo">
+        <img src="{{ asset('storage/' . $jobPosting->employer->avatar) }}" alt="{{ $jobPosting->employer->company_name }}"
+            class="company-logo">
 
         <!-- Job Header Section -->
         <div class="job-header">
@@ -552,11 +552,128 @@
 
 
 
-            <!-- Action Buttons -->
-            <div class="buttons">
-                <button class="apply-btn" onclick="applyJob({{ $jobPosting->id }})">Nộp hồ sơ</button>
-                {{-- <button class="save-btn" onclick="toggleSaveJob({{ $jobPosting->id }})">♡</button> --}}
-            </div>
+           <div class="buttons">
+    <div id="applicationStatus_{{ $jobPosting->id }}">
+        <!-- Sẽ được JavaScript cập nhật -->
+    </div>
+    <button class="apply-btn" onclick="applyJob({{ $jobPosting->id }})">Nộp hồ sơ</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        checkApplicationStatus({{ $jobPosting->id }});
+    });
+
+    function checkApplicationStatus(jobId) {
+        fetch(`/candidate/check-application/${jobId}`)
+            .then(response => response.json())
+            .then(data => {
+                const statusDiv = document.getElementById(`applicationStatus_${jobId}`);
+                if (data.hasApplied) {
+                    const applicationDate = new Date(data.applicationDate).toLocaleDateString('vi-VN');
+                    const lastUpdateDate = data.lastUpdateDate
+                        ? new Date(data.lastUpdateDate).toLocaleDateString('vi-VN')
+                        : null;
+
+                    statusDiv.innerHTML = `
+                        <div class="application-status">
+                            Đã nộp hồ sơ - Ngày nộp: ${applicationDate}
+                            ${lastUpdateDate ? `<br>Cập nhật lần cuối: ${lastUpdateDate}` : ''}
+                        </div>`;
+
+                    const applyBtn = document.querySelector('.apply-btn');
+                    applyBtn.textContent = 'Nộp lại hồ sơ';
+                }
+            })
+            .catch(error => console.error('Error checking application status:', error));
+    }
+
+    function applyJob(jobId) {
+        document.getElementById('jobPostingId').value = jobId;
+        document.getElementById('applicationModal').style.display = 'block';
+    }
+
+    // Đóng modal
+    document.querySelector('.close').onclick = function () {
+        document.getElementById('applicationModal').style.display = 'none';
+    };
+
+    window.onclick = function (event) {
+        if (event.target == document.getElementById('applicationModal')) {
+            document.getElementById('applicationModal').style.display = 'none';
+        }
+    };
+
+    // Xử lý gửi form
+    document.getElementById('applicationForm').onsubmit = function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch('{{ route('candidate.apply') }}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+                    document.getElementById('applicationModal').style.display = 'none';
+                    document.getElementById('applicationForm').reset();
+                    checkApplicationStatus(document.getElementById('jobPostingId').value);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                alert('Có lỗi xảy ra, vui lòng thử lại');
+            });
+    };
+</script>
+<style>
+    .application-status-container {
+        margin-bottom: 1rem;
+    }
+
+    .application-status {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        padding: 1rem;
+    }
+
+    .status-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .status-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .status-item i {
+        color: #0d6efd;
+        width: 20px;
+    }
+
+    .status-item span {
+        color: #495057;
+        font-size: 0.9rem;
+    }
+
+    .apply-btn.reapply {
+        background-color: #198754;
+    }
+
+    .apply-btn.reapply:hover {
+        background-color: #146c43;
+    }
+</style>
         </div>
 
         <!-- Tabs -->
@@ -650,7 +767,9 @@
                     </div>
 
                 </div>
-                <iframe src="https://www.google.com/maps/embed?pb={{ $jobPosting->employer->map_url }}" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb={{ $jobPosting->employer->map_url }}" width="600"
+                    height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
                 <div class="other-jobs-section">
                     <h2 class="section-title">Việc làm khác từ công ty</h2>
 
@@ -715,63 +834,197 @@
             </div>
         </div>
     </div>
-    <!-- Add this to your view file -->
-    <div id="applicationModal" class="modal" style="display: none;">
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Application Modal -->
+    <div id="applicationModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Nộp hồ sơ ứng tuyển</h2>
             <form id="applicationForm" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="job_posting_id" id="jobPostingId">
-
                 <div class="form-group">
                     <label for="cv">CV của bạn (PDF, DOC, DOCX)*</label>
                     <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" required>
                 </div>
-
                 <div class="form-group">
                     <label for="introduction">Giới thiệu bản thân (không bắt buộc)</label>
                     <textarea id="introduction" name="introduction" rows="4"></textarea>
                 </div>
-
                 <button type="submit" class="submit-btn">Nộp hồ sơ</button>
             </form>
         </div>
     </div>
 
     <style>
+        /* Modal Styles */
         .modal {
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
         }
 
         .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
+            background-color: #fff;
+            padding: 2rem;
             border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
         }
 
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+
+        /* Close Button */
         .close {
-            float: right;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.5rem;
+            color: #666;
             cursor: pointer;
+            transition: color 0.3s ease;
         }
 
+        .close:hover {
+            color: #333;
+        }
+
+        /* Form Styles */
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        /* Button Styles */
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .submit-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Application Status Styles */
+        .application-status {
+            background-color: #e8f4ff;
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .application-status i {
+            color: #007bff;
+        }
+
+        /* Success Message Animation */
+        .success-message {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .success-message.show {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 
@@ -953,5 +1206,123 @@
                     alert('Có lỗi xảy ra, vui lòng thử lại');
                 });
         };
+    </script>
+    <script>
+        // Show modal with animation
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+        }
+
+        // Hide modal with animation
+        function hideModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        // Show loading spinner
+        function showLoading() {
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.style.display = 'flex';
+        }
+
+        // Hide loading spinner
+        function hideLoading() {
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.style.display = 'none';
+        }
+
+        function applyJob(jobId) {
+            document.getElementById('jobPostingId').value = jobId;
+            showModal('applicationModal');
+        }
+
+        // Close modal when clicking on X or outside
+        document.querySelector('.close').onclick = function() {
+            hideModal('applicationModal');
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('applicationModal')) {
+                hideModal('applicationModal');
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('applicationForm').onsubmit = function(e) {
+            e.preventDefault();
+
+            // Disable submit button
+            const submitBtn = this.querySelector('.submit-btn');
+            submitBtn.disabled = true;
+
+            showLoading();
+            const formData = new FormData(this);
+
+            fetch('{{ route('candidate.apply') }}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    hideLoading();
+                    if (data.status === 'success') {
+                        // Show success message with animation
+                        const successMessage = document.createElement('div');
+                        successMessage.className = 'success-message';
+                        successMessage.innerHTML = data.message;
+                        document.querySelector('.modal-content').appendChild(successMessage);
+
+                        setTimeout(() => {
+                            successMessage.classList.add('show');
+                        }, 10);
+
+                        setTimeout(() => {
+                            hideModal('applicationModal');
+                            document.getElementById('applicationForm').reset();
+                            checkApplicationStatus(document.getElementById('jobPostingId').value);
+                        }, 2000);
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    hideLoading();
+                    alert('Có lỗi xảy ra, vui lòng thử lại');
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                });
+        };
+
+        // File input validation
+        document.getElementById('cv').onchange = function() {
+            const file = this.files[0];
+            const maxSize = 2 * 1024 * 1024; // 2MB
+            const allowedTypes = ['application/pdf', 'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            ];
+
+            if (file.size > maxSize) {
+                alert('File không được vượt quá 2MB');
+                this.value = '';
+                return;
+            }
+
+            if (!allowedTypes.includes(file.type)) {
+                alert('Chỉ chấp nhận file PDF, DOC, DOCX');
+                this.value = '';
+                return;
+            }
+        }
     </script>
 @endsection

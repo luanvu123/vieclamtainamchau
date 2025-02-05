@@ -40,7 +40,7 @@ class CandidateProfileController extends Controller
         // Lấy danh sách ứng tuyển với eager loading
         $applications = Application::with(['jobPosting', 'jobPosting.employer'])
             ->where('candidate_id', $candidate->id)
-            ->latest() // Sắp xếp theo thời gian mới nhất
+           ->orderBy('updated_at', 'desc')
             ->paginate(10); // Phân trang, mỗi trang 10 items
 
         return view('candidate.applications', compact('applications'));

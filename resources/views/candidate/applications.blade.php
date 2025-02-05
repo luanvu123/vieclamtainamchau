@@ -4,7 +4,6 @@
 
 @section('content')
     <style>
-        /* Container styling */
         .container {
             width: 100%;
             max-width: 1200px;
@@ -12,178 +11,190 @@
             padding: 20px;
         }
 
-        .menu-title {
-            font-size: 16px;
+        /* Container styling */
+        /* Applications Container Styles */
+        .applications-container {
+            padding: 1.5rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        /* Card Styles */
+        .applications-container .card {
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .applications-container .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .applications-container .card-body {
+            padding: 1.5rem;
+        }
+
+        .applications-container .card-title {
+            color: #2d3436;
+            font-size: 1.25rem;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 0.5rem;
         }
 
-        .menu-section {
-            margin-bottom: 25px;
+        /* Company Info Styles */
+        .applications-container .company-info {
+            color: #636e72;
+            font-size: 1rem;
         }
 
-        .menu-item {
+        /* Job Details Styles */
+        .applications-container .job-details {
+            padding: 1rem 0;
+            border-top: 1px solid #edf2f7;
+            border-bottom: 1px solid #edf2f7;
+            margin: 1rem 0;
+        }
+
+        .applications-container .job-details i {
+            color: #0984e3;
+            margin-right: 0.5rem;
+            width: 16px;
+        }
+
+        .applications-container .job-details p {
+            margin-bottom: 0.5rem;
+            color: #636e72;
+            font-size: 0.95rem;
+        }
+
+        /* Application Info Styles */
+        .applications-container .application-info {
+            font-size: 0.95rem;
+        }
+
+        .applications-container .application-info p {
+            margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
-            padding: 12px 15px;
-            color: #555;
-            text-decoration: none;
-            border-radius: 8px;
-            margin-bottom: 5px;
-            transition: all 0.3s ease;
+            gap: 0.5rem;
         }
 
-        .menu-item:hover {
-            background: #f5f5f5;
-            color: #2563eb;
-        }
-
-        .menu-item i {
-            margin-right: 12px;
-            font-size: 18px;
-        }
-
-        .card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-3px);
-        }
-
-        .card-title {
-            color: #1a1a1a;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .company-info {
-            color: #666;
-            font-size: 15px;
-        }
-
-        .job-details {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-        }
-
-        .job-details i {
-            color: #2563eb;
-            margin-right: 8px;
-        }
-
-        .application-info {
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-        }
-
-        .badge {
-            padding: 8px 15px;
+        /* Badge Styles */
+        .applications-container .badge {
+            padding: 0.5em 1em;
             font-weight: 500;
-            border-radius: 6px;
-        }
-
-        .btn-view-job {
-            background: #ee0505;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 6px;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 15px;
-            transition: background 0.3s ease;
-        }
-
-        .btn-view-job:hover {
-            background: #e93306;
-            color: white;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-
-            .auth-card {
-                padding: 20px;
-                margin: 20px auto;
-            }
-
-            .auth-header h2 {
-                font-size: 20px;
-            }
-
-            .header-icon {
-                font-size: 28px;
-            }
-
-            .form-group {
-                margin-bottom: 15px;
-            }
-
-            .btn {
-                width: 100%;
-                padding: 10px 20px;
-            }
-        }
-
-        .card {
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-title {
-            color: #2c3e50;
-            font-weight: bold;
-        }
-
-        .company-info {
-            color: #7f8c8d;
-        }
-
-        .badge {
-            padding: 8px 12px;
+            font-size: 0.85rem;
             border-radius: 4px;
         }
 
-        .job-details i {
-            margin-right: 8px;
-            color: #3498db;
+        .applications-container .bg-warning {
+            background-color: #ffd43b !important;
+            color: #664d03;
         }
 
-        @media (max-width: 480px) {
-            .auth-card {
-                padding: 15px;
-                margin: 10px auto;
+        .applications-container .bg-success {
+            background-color: #40c057 !important;
+            color: #ffffff;
+        }
+
+        .applications-container .bg-danger {
+            background-color: #fa5252 !important;
+            color: #ffffff;
+        }
+
+        /* Button Styles */
+        .applications-container .view-cv-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #4dabf7;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-right: 1rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .applications-container .view-cv-btn:hover {
+            background-color: #339af0;
+            text-decoration: none;
+            color: white;
+        }
+
+        .applications-container .btn-view-job {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #e9ecef;
+            color: #495057;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .applications-container .btn-view-job:hover {
+            background-color: #dee2e6;
+            color: #212529;
+            text-decoration: none;
+        }
+
+        .applications-container .btn-view-job i {
+            margin-right: 0.5rem;
+        }
+
+        /* Pagination Styles */
+        .applications-container .pagination {
+            margin-top: 2rem;
+        }
+
+        .applications-container .page-link {
+            color: #0984e3;
+            padding: 0.5rem 1rem;
+            margin: 0 0.25rem;
+            border-radius: 4px;
+        }
+
+        .applications-container .page-item.active .page-link {
+            background-color: #0984e3;
+            border-color: #0984e3;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .applications-container {
+                padding: 1rem;
             }
 
-            .header-icon {
-                font-size: 24px;
+            .applications-container .card-body {
+                padding: 1rem;
             }
 
-            .form-control {
-                font-size: 14px;
-                padding: 8px 10px;
+            .applications-container .job-details .row>div {
+                margin-bottom: 0.5rem;
             }
 
-            .btn {
-                font-size: 14px;
+            .applications-container .application-info {
+                flex-direction: column;
             }
 
-            .form-group label i {
-                width: 16px;
-                font-size: 14px;
+            .applications-container .view-cv-btn,
+            .applications-container .btn-view-job {
+                display: block;
+                text-align: center;
+                margin-bottom: 0.5rem;
             }
+        }
+
+        /* Alert Styles */
+        .applications-container .alert {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 0;
+        }
+
+        .applications-container .alert-info {
+            background-color: #e7f5ff;
+            border-color: #74c0fc;
+            color: #1864ab;
         }
     </style>
     <div class="container">
@@ -191,15 +202,15 @@
             <div class="menu-title">Quản lý CV</div>
             <div class="menu-section">
 
-                <a href="{{ route('candidate.cv.white')}}" class="menu-item">
-                     <i>📄</i>
-                     <span>Mẫu CV cổ điển</span>
-                 </a>
-                  <a href="{{ route('candidate.cv.black')}}" class="menu-item">
-                     <i>📄</i>
-                     <span>Mẫu CV hiện đại</span>
-                 </a>
-                  <a href="{{ route('candidate.cv.logistic') }}" class="menu-item">
+                <a href="{{ route('candidate.cv.white') }}" class="menu-item">
+                    <i>📄</i>
+                    <span>Mẫu CV cổ điển</span>
+                </a>
+                <a href="{{ route('candidate.cv.black') }}" class="menu-item">
+                    <i>📄</i>
+                    <span>Mẫu CV hiện đại</span>
+                </a>
+                <a href="{{ route('candidate.cv.logistic') }}" class="menu-item">
                     <i>📄</i>
                     <span>Mẫu CV Xuất khẩu LD</span>
                 </a>
@@ -247,11 +258,13 @@
                                         </p>
                                         <p><strong>Ngày ứng tuyển:</strong> {{ $application->created_at->format('d/m/Y') }}
                                         </p>
+                                         <p><strong>Ngày cập nhật:</strong> {{ $application->updated_at->format('d/m/Y') }}
+                                        </p>
                                         @if ($application->cv_path)
-                                           <a href="{{ asset('storage/' . $application->cv_path) }}" target="_blank"
-                                            class="view-cv-btn">
-                                            Xem CV
-                                        </a>
+                                            <a href="{{ asset('storage/' . $application->cv_path) }}" target="_blank"
+                                                class="view-cv-btn">
+                                                Xem CV
+                                            </a>
                                         @endif
                                         @if ($application->introduction)
                                             <p><strong>Giới thiệu:</strong> {{ $application->introduction }}</p>
