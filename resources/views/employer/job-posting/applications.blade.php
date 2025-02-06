@@ -65,7 +65,7 @@
                                     <td>
                                         <a href="{{ asset('storage/' . $application->cv_path) }}" target="_blank"
                                             class="view-cv-btn">
-                                             CV
+                                            CV
                                         </a>
                                     </td>
                                     <td>
@@ -318,5 +318,48 @@
                     alert('Có lỗi xảy ra, vui lòng thử lại');
                 });
         }
+    </script>
+    <script>
+        document.querySelectorAll('.view-cv-btn').forEach(btn => {
+            btn.addEventListener('click', async function(e) {
+                // Không chặn hành vi mặc định của thẻ a để vẫn mở CV trong tab mới
+
+                const row = this.closest('tr');
+                const statusSelect = row.querySelector('.status-select');
+                const statusBadge = row.querySelector('.status-badge');
+
+                // Chỉ cập nhật nếu status là pending
+                if (statusSelect.value === 'pending') {
+                    try {
+                        const applicationId = row.querySelector('.save-btn').dataset.applicationId;
+
+                        const response = await fetch('/employer/applications/update-view', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({
+                                id: applicationId
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            // Cập nhật UI
+                            statusSelect.value = 'reviewed';
+                            statusBadge.className = 'status-badge status-reviewed';
+                            statusBadge.textContent = 'Reviewed';
+                        } else {
+                            console.error(data.message);
+                        }
+                    } catch (error) {
+                        console.error('Lỗi:', error);
+                    }
+                }
+            });
+        });
     </script>
 @endsection

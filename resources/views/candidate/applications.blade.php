@@ -215,13 +215,27 @@
                     <span>Mẫu CV Xuất khẩu LD</span>
                 </a>
             </div>
+
             <div class="menu-section">
                 <div class="menu-title">Quản lý ứng tuyển</div>
+                <a href="{{ route('candidate.profile.edit') }}" class="menu-item">
+                    <i>📊</i>
+                    <span>Cập nhật hồ sơ & CV</span>
+                </a>
                 <a href="{{ route('candidate.applications') }}" class="menu-item">
                     <i>👥</i>
                     <span>Hồ sơ đã nộp</span>
                 </a>
+                <a href="{{ route('news.home') }}" class="menu-item">
+                    <i>❤️</i>
+                    <span>Cẩm nang nghề nghiệp</span>
+                </a>
+                 <a href="{{ route('candidate.notifications') }}" class="menu-item">
+                     <i>📋</i>
+                     <span>Thông báo</span>
+                 </a>
             </div>
+
         </div>
         @if ($applications->count() > 0)
             <div class="applications-container">

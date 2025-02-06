@@ -14,6 +14,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ApplicationStatusChanged;
+use App\Models\Notification;
 
 class JobPostingController extends Controller
 {
@@ -223,6 +226,23 @@ class JobPostingController extends Controller
         return view('employer.job-posting.applications', compact('jobPosting', 'applications'));
     }
 
+    private function createNotification($application, $status)
+    {
+        $jobTitle = $application->jobPosting->title;
+        $companyName = $application->jobPosting->employer->company_name;
+
+        $title = "Cập nhật trạng thái ứng tuyển";
+        $message = "Đơn ứng tuyển của bạn cho vị trí {$jobTitle} tại {$companyName} đã được cập nhật thành " .
+            ucfirst($status);
+
+        Notification::create([
+            'candidate_id' => $application->candidate_id,
+            'title' => $title,
+            'message' => $message,
+            'type' => 'application_status',
+            'link' => route('candidate.applications')
+        ]);
+    }
     public function updateApplicationStatus(Request $request, $id)
     {
         $request->validate([
@@ -231,16 +251,39 @@ class JobPostingController extends Controller
 
         $application = Application::findOrFail($id);
 
-        // Verify employer owns this job posting
+        // Kiểm tra nhà tuyển dụng có quyền cập nhật đơn này không
         if ($application->jobPosting->employer_id !== Auth::guard('employer')->id()) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
+        // Danh sách trạng thái hợp lệ theo thứ tự
+        $validTransitions = [
+            'pending' => ['reviewed'],
+            'reviewed' => ['accepted', 'rejected'],
+            'accepted' => ['rejected'],
+            'rejected' => [] // Không thể thay đổi trạng thái khi đã bị từ chối
+        ];
+
+        // Kiểm tra trạng thái có hợp lệ không
+        if (!in_array($request->status, $validTransitions[$application->status])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không thể cập nhật trạng thái ngược lại'
+            ], 400);
+        }
+
+        // Cập nhật trạng thái
         $application->update(['status' => $request->status]);
+
+        // Tạo thông báo
+        $this->createNotification($application, $request->status);
+
+        // Gửi email thông báo cho ứng viên
+        Mail::to($application->candidate->email)->send(new ApplicationStatusChanged($application));
 
         return response()->json([
             'success' => true,
-            'message' => 'Cập nhật trạng thái thành công'
+            'message' => 'Cập nhật trạng thái thành công và đã gửi email thông báo'
         ]);
     }
     public function toggleSave($id)
@@ -291,5 +334,27 @@ class JobPostingController extends Controller
     {
         $employer = Auth::guard('employer')->user();
         return view('employer.job-posting.service-active', compact('employer'));
+    }
+    public function updateApplicationView(Request $request)
+    {
+        $application = Application::findOrFail($request->id);
+
+        if ($application->status === 'pending') {
+            $application->status = 'reviewed';
+            $application->save();
+
+            // Gửi email thông báo cho ứng viên
+            Mail::to($application->candidate->email)->send(new ApplicationStatusChanged($application));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Cập nhật trạng thái thành công và đã gửi email thông báo'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Không thể cập nhật trạng thái'
+        ]);
     }
 }

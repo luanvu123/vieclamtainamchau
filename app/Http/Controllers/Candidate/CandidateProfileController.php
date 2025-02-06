@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Candidate;
 
 use App\Http\Controllers\Controller;
 use App\Models\Application;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -19,7 +20,33 @@ class CandidateProfileController extends Controller
         $candidate = Auth::guard('candidate')->user();
         return view('candidate.profile', compact('candidate'));
     }
+public function notify()
+{
+    $candidate = Auth::guard('candidate')->user();
+    $notifications = Notification::where('candidate_id', $candidate->id)
+                                ->orderBy('created_at', 'desc')
+                                ->paginate(10);
 
+    return view('candidate.notify', compact('notifications'));
+}
+
+public function markNotificationAsRead($id)
+{
+    $notification = Notification::where('candidate_id', Auth::guard('candidate')->id())
+                              ->findOrFail($id);
+
+    $notification->update(['is_read' => true]);
+
+    return response()->json(['success' => true]);
+}
+
+public function clearAllNotifications()
+{
+    Notification::where('candidate_id', Auth::guard('candidate')->id())
+                ->update(['is_read' => true]);
+
+    return redirect()->back()->with('success', 'Đã đánh dấu tất cả thông báo là đã đọc');
+}
     public function cvWhite()
     {
         return view('candidate.cv_white');

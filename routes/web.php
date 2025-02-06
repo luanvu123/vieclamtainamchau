@@ -80,7 +80,12 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::get('/candidate/check-application/{jobPostingId}', [ApplicationController::class, 'checkApplicationStatus'])->name('candidate.check-application')->middleware('candidate');
 Route::prefix('candidate')->name('candidate.')->group(function () {
-
+    Route::get('/notifications', [CandidateProfileController::class, 'notify'])
+        ->name('notifications');
+    Route::post('/notifications/{id}/mark-as-read', [CandidateProfileController::class, 'markNotificationAsRead'])
+        ->name('notifications.mark-as-read');
+    Route::post('/notifications/clear-all', [CandidateProfileController::class, 'clearAllNotifications'])
+        ->name('notifications.clear-all');
     Route::get('/applications', [CandidateProfileController::class, 'applications'])->middleware('candidate')->name('applications');
     Route::get('register', [CandidateAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [CandidateAuthController::class, 'register'])->name('register.submit');
@@ -131,7 +136,8 @@ Route::prefix('employer')->name('employer.')->group(function () {
         [EmployerManageController::class, 'updateJobPosting']
     )
         ->name('admin.job-postings.update');
-
+    Route::post('applications/update-view', [JobPostingController::class, 'updateApplicationView'])
+        ->name('applications.update-view');
     Route::get('job-posting/{id}/applications', [JobPostingController::class, 'viewApplications'])
         ->name('job-posting.applications')->middleware('employer');
     Route::put('applications/{id}/status', [JobPostingController::class, 'updateApplicationStatus'])

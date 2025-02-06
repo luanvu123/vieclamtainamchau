@@ -234,11 +234,24 @@
 
             <div class="menu-section">
                 <div class="menu-title">Quản lý ứng tuyển</div>
+                <a href="{{ route('candidate.profile.edit') }}" class="menu-item">
+                    <i>📊</i>
+                    <span>Cập nhật hồ sơ & CV</span>
+                </a>
                 <a href="{{ route('candidate.applications') }}" class="menu-item">
                     <i>👥</i>
                     <span>Hồ sơ đã nộp</span>
                 </a>
+                <a href="{{ route('news.home') }}" class="menu-item">
+                    <i>❤️</i>
+                    <span>Cẩm nang nghề nghiệp</span>
+                </a>
+                <a href="{{ route('candidate.notifications') }}" class="menu-item">
+                    <i>📋</i>
+                    <span>Thông báo</span>
+                </a>
             </div>
+
         </div>
         <div class="auth-card">
             <div class="auth-header text-center">
@@ -277,7 +290,8 @@
 
                 <div class="form-group">
                     <label for="dob"><i class="fas fa-birthday-cake"></i> Ngày sinh</label>
-                   <input type="date" class="form-control" id="dob" name="dob" value="{{ old('dob', $candidate->dob ? $candidate->dob->format('Y-m-d') : '') }}" required>
+                    <input type="date" class="form-control" id="dob" name="dob"
+                        value="{{ old('dob', $candidate->dob ? $candidate->dob->format('Y-m-d') : '') }}" required>
 
                 </div>
 
@@ -334,8 +348,33 @@
 
                 <div class="form-group">
                     <label for="desired_level"><i class="fas fa-star"></i> Mong muốn cấp độ</label>
-                    <input type="text" class="form-control" id="desired_level" name="desired_level"
-                        value="{{ old('desired_level', $candidate->desired_level) }}" required>
+                    <select class="form-control" id="desired_level" name="desired_level" required>
+                        <option value="">-- Chọn cấp độ mong muốn --</option>
+                        <option value="Quản lý cấp cao"
+                            {{ old('desired_level', $candidate->desired_level) == 'Quản lý cấp cao' ? 'selected' : '' }}>
+                            Quản lý cấp cao
+                        </option>
+                        <option value="Quản lý cấp trung"
+                            {{ old('desired_level', $candidate->desired_level) == 'Quản lý cấp trung' ? 'selected' : '' }}>
+                            Quản lý cấp trung
+                        </option>
+                        <option value="Quản lý nhóm - giám sát"
+                            {{ old('desired_level', $candidate->desired_level) == 'Quản lý nhóm - giám sát' ? 'selected' : '' }}>
+                            Quản lý nhóm - giám sát
+                        </option>
+                        <option value="Chuyên gia"
+                            {{ old('desired_level', $candidate->desired_level) == 'Chuyên gia' ? 'selected' : '' }}>
+                            Chuyên gia
+                        </option>
+                        <option value="Chuyên viên - Nhân viên"
+                            {{ old('desired_level', $candidate->desired_level) == 'Chuyên viên - Nhân viên' ? 'selected' : '' }}>
+                            Chuyên viên - Nhân viên
+                        </option>
+                        <option value="Cộng tác viên"
+                            {{ old('desired_level', $candidate->desired_level) == 'Cộng tác viên' ? 'selected' : '' }}>
+                            Cộng tác viên
+                        </option>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -346,8 +385,33 @@
 
                 <div class="form-group">
                     <label for="education_level"><i class="fas fa-graduation-cap"></i> Trình độ học vấn</label>
-                    <input type="text" class="form-control" id="education_level" name="education_level"
-                        value="{{ old('education_level', $candidate->education_level) }}" required>
+                    <select class="form-control" id="education_level" name="education_level" required>
+                        <option value="">-- Chọn trình độ học vấn --</option>
+                        <option value="Trên đại học"
+                            {{ old('education_level', $candidate->education_level) == 'Trên đại học' ? 'selected' : '' }}>
+                            Trên đại học
+                        </option>
+                        <option value="Đại học"
+                            {{ old('education_level', $candidate->education_level) == 'Đại học' ? 'selected' : '' }}>
+                            Đại học
+                        </option>
+                        <option value="Cao đẳng"
+                            {{ old('education_level', $candidate->education_level) == 'Cao đẳng' ? 'selected' : '' }}>
+                            Cao đẳng
+                        </option>
+                        <option value="Trung cấp"
+                            {{ old('education_level', $candidate->education_level) == 'Trung cấp' ? 'selected' : '' }}>
+                            Trung cấp
+                        </option>
+                        <option value="Trung học"
+                            {{ old('education_level', $candidate->education_level) == 'Trung học' ? 'selected' : '' }}>
+                            Trung học
+                        </option>
+                        <option value="Chứng chỉ nghề"
+                            {{ old('education_level', $candidate->education_level) == 'Chứng chỉ nghề' ? 'selected' : '' }}>
+                            Chứng chỉ nghề
+                        </option>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -358,15 +422,44 @@
 
                 <div class="form-group">
                     <label for="working_form"><i class="fas fa-building"></i> Hình thức làm việc</label>
-                    <input type="text" class="form-control" id="working_form" name="working_form"
-                        value="{{ old('working_form', $candidate->working_form) }}" required>
+                    <select class="form-control" id="working_form" name="working_form" required>
+                        <option value="">-- Chọn hình thức làm việc --</option>
+                        <option value="Toàn thời gian cố định"
+                            {{ old('working_form', $candidate->working_form) == 'Toàn thời gian cố định' ? 'selected' : '' }}>
+                            Toàn thời gian cố định
+                        </option>
+                        <option value="Toàn thời gian tạm thời"
+                            {{ old('working_form', $candidate->working_form) == 'Toàn thời gian tạm thời' ? 'selected' : '' }}>
+                            Toàn thời gian tạm thời
+                        </option>
+                        <option value="Bán thời gian cố định"
+                            {{ old('working_form', $candidate->working_form) == 'Bán thời gian cố định' ? 'selected' : '' }}>
+                            Bán thời gian cố định
+                        </option>
+                        <option value="Bán thời gian tạm thời"
+                            {{ old('working_form', $candidate->working_form) == 'Bán thời gian tạm thời' ? 'selected' : '' }}>
+                            Bán thời gian tạm thời
+                        </option>
+                        <option value="Theo hợp đồng tư vấn"
+                            {{ old('working_form', $candidate->working_form) == 'Theo hợp đồng tư vấn' ? 'selected' : '' }}>
+                            Theo hợp đồng tư vấn
+                        </option>
+                        <option value="Thực tập"
+                            {{ old('working_form', $candidate->working_form) == 'Thực tập' ? 'selected' : '' }}>
+                            Thực tập
+                        </option>
+                        <option value="Khác"
+                            {{ old('working_form', $candidate->working_form) == 'Khác' ? 'selected' : '' }}>
+                            Khác
+                        </option>
+                    </select>
                 </div>
 
                 <div class="form-group">
-    <label for="skill"><i class="fas fa-cogs"></i> Kỹ năng</label>
-    <input type="text" class="form-control" id="skill" name="skill"
-        value="{{ old('skill', $candidate->skill) }}" required>
-</div>
+                    <label for="skill"><i class="fas fa-cogs"></i> Kỹ năng</label>
+                    <input type="text" class="form-control" id="skill" name="skill"
+                        value="{{ old('skill', $candidate->skill) }}" required>
+                </div>
 
                 <div class="form-group">
                     <label for="avatar_candidate"><i class="fas fa-camera"></i> Ảnh đại diện</label>
