@@ -49,7 +49,7 @@
             @endforeach
         </div>
     @else
-        <p>Hiện tại không có bài đăng tuyển dụng nào tại {{ $country->name }}.</p>
+        <p>Hiện tại không có bài đăng tuyển dụng nào tại quốc gia này.</p>
     @endif
 </section>
 @endsection

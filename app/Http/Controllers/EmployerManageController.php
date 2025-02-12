@@ -96,7 +96,7 @@ class EmployerManageController extends Controller
             'status' => 'required|in:active,inactive,pending,rejected',
             'categories' => 'required|array',
             'countries' => 'required|array',
-            'genres' => 'required|array'
+            'genres' => 'nullable|array'
         ]);
 
         $jobPosting->update($request->except(['categories', 'countries', 'genres']));
