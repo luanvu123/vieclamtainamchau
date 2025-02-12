@@ -10,10 +10,7 @@
                 @csrf
                 @method('PUT')
 
-                <div class="mb-3">
-                    <label for="title" class="form-label">Email</label>
-                    <input class="search-field" type="text" name="email" value="{{ $employer->email }}" readonly>
-                </div>
+
 
                 <div class="mb-3">
                     <label for="title" class="form-label">Tiêu đề</label>
@@ -26,7 +23,7 @@
 
                 <div class="mb-3">
                     <label for="type" class="form-label">Loại công việc</label>
-                    <select id="type" name="type" class="form-select" required>
+                    <select id="type" name="type" class="form-control" required>
                         <option value="fulltime" {{ $jobPosting->type == 'fulltime' ? 'selected' : '' }}>Fulltime
                         </option>
                         <option value="parttime" {{ $jobPosting->type == 'parttime' ? 'selected' : '' }}>Parttime
@@ -137,9 +134,9 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="application_email_url" class="form-label">Email ứng tuyển</label>
+                    <label for="application_email_url" class="form-label">Email</label>
                     <input type="email" id="application_email_url" name="application_email_url" class="form-control"
-                        value="{{ old('application_email_url', $jobPosting->application_email_url) }}" required>
+                        value="{{ old('application_email_url', $jobPosting->employer->email) }}" required readonly>
                     @error('application_email_url')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -210,7 +207,7 @@
 
                 <div class="mb-3">
                     <label for="status" class="form-label">Trạng thái</label>
-                    <select id="status" name="status" class="form-select" required>
+                    <select id="status" name="status" class="form-control" required>
                         <option value="active" {{ $jobPosting->status == 'active' ? 'selected' : '' }}>
                             Đang hoạt động
                         </option>
@@ -229,10 +226,7 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
-                    <label for="title" class="form-label">Email công ty</label>
-                    <input class="search-field" type="text" value="{{ $employer->email }}" readonly>
-                </div>
+
 
 
 

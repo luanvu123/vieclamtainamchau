@@ -35,7 +35,7 @@
         </div>
         <div class="mb-3">
             <label for="status" class="form-label">Trạng thái</label>
-            <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
+            <select class="form-control @error('status') is-invalid @enderror" id="status" name="status" required>
                 <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Hoạt động</option>
                 <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Không hoạt động</option>
             </select>
@@ -45,7 +45,7 @@
         </div>
         <div class="mb-3">
             <label for="isOutstanding" class="form-label">Nổi bật</label>
-            <select class="form-select @error('isOutstanding') is-invalid @enderror" id="isOutstanding" name="isOutstanding" required>
+            <select class="form-control @error('isOutstanding') is-invalid @enderror" id="isOutstanding" name="isOutstanding" required>
                 <option value="1" {{ old('isOutstanding') == 1 ? 'selected' : '' }}>Có</option>
                 <option value="0" {{ old('isOutstanding') == 0 ? 'selected' : '' }}>Không</option>
             </select>
@@ -55,7 +55,7 @@
         </div>
          <div class="mb-3">
             <label for="isBanner" class="form-label">Quảng cáo</label>
-            <select class="form-select @error('isBanner') is-invalid @enderror" id="isBanner" name="isBanner" required>
+            <select class="form-control @error('isBanner') is-invalid @enderror" id="isBanner" name="isBanner" required>
                 <option value="1" {{ old('isBanner') == 1 ? 'selected' : '' }}>Có</option>
                 <option value="0" {{ old('isBanner') == 0 ? 'selected' : '' }}>Không</option>
             </select>

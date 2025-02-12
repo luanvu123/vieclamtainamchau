@@ -42,83 +42,65 @@
                 <h2>Danh sách ứng viên - {{ $jobPosting->title }}</h2>
 
                 <div class="applications-table-container">
-                    <table class="applications-table" id="user-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tên ứng viên</th>
-                                <th>Email</th>
-                                <th>Ngày nộp</th>
-                                <th>CV</th>
-                                <th>Giới thiệu</th>
-                                <th>Trạng thái</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($applications as $key=> $application)
-                                <tr data-application-id="{{ $application->id }}">
-                                    <td>{{ $key }}</td>
-                                    <td>{{ $application->candidate->name }}</td>
-                                    <td>{{ $application->candidate->email }}</td>
-                                    <td>{{ $application->created_at->format('d/m/Y H:i') }}</td>
-                                    <td>
-                                        <a href="{{ asset('storage/' . $application->cv_path) }}" target="_blank"
-                                            class="view-cv-btn">
-                                            CV
-                                        </a>
-                                    </td>
-                                    <td>
-                                        @if ($application->introduction)
-                                            <button onclick="showIntroduction('{{ $application->id }}')"
-                                                class="view-intro-btn">
-                                                Xem
-                                            </button>
-                                        @else
-                                            <span class="no-intro">Không có</span>
-                                        @endif
-                                    </td>
-                                    <td class="status-cell">
-                                        <span class="status-badge status-{{ $application->status }}">
-                                            {{ ucfirst($application->status) }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <select class="status-select"
-                                            onchange="updateStatus('{{ $application->id }}', this.value)">
-                                            <option value="pending"
-                                                {{ $application->status == 'pending' ? 'selected' : '' }}>
-                                                Đang chờ
-                                            </option>
-                                            <option value="reviewed"
-                                                {{ $application->status == 'reviewed' ? 'selected' : '' }}>
-                                                Đã xem
-                                            </option>
-                                            <option value="accepted"
-                                                {{ $application->status == 'accepted' ? 'selected' : '' }}>
-                                                Chấp nhận
-                                            </option>
-                                            <option value="rejected"
-                                                {{ $application->status == 'rejected' ? 'selected' : '' }}>
-                                                Từ chối
-                                            </option>
-                                        </select>
-                                        <button onclick="toggleSave('{{ $application->id }}')"
-                                            class="save-btn {{ $application->saved ? 'saved' : '' }}"
-                                            data-application-id="{{ $application->id }}">
-                                            {{ $application->saved ? 'Đã lưu' : 'Lưu' }}
-                                        </button>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="no-applications">
-                                        Chưa có ứng viên nào ứng tuyển.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                   @if($applications->count())
+    <table class="applications-table" id="user-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Tên ứng viên</th>
+                <th>Email</th>
+                <th>Ngày nộp</th>
+                <th>CV</th>
+                <th>Giới thiệu</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($applications as $key => $application)
+                <tr data-application-id="{{ $application->id }}">
+                    <td>{{ $key + 1 }}</td>
+                    <td>{{ $application->candidate->name }}</td>
+                    <td>{{ $application->candidate->email }}</td>
+                    <td>{{ $application->created_at->format('d/m/Y H:i') }}</td>
+                    <td>
+                        <a href="{{ asset('storage/' . $application->cv_path) }}" target="_blank" class="view-cv-btn">
+                            CV
+                        </a>
+                    </td>
+                    <td>
+                        @if ($application->introduction)
+                            <button onclick="showIntroduction('{{ $application->id }}')" class="view-intro-btn">
+                                Xem
+                            </button>
+                        @else
+                            <span class="no-intro">Không có</span>
+                        @endif
+                    </td>
+                    <td class="status-cell">
+                        <span class="status-badge status-{{ $application->status }}">
+                            {{ ucfirst($application->status) }}
+                        </span>
+                    </td>
+                    <td>
+                        <select class="status-select" onchange="updateStatus('{{ $application->id }}', this.value)">
+                            <option value="pending" {{ $application->status == 'pending' ? 'selected' : '' }}>Đang chờ</option>
+                            <option value="reviewed" {{ $application->status == 'reviewed' ? 'selected' : '' }}>Đã xem</option>
+                            <option value="accepted" {{ $application->status == 'accepted' ? 'selected' : '' }}>Chấp nhận</option>
+                            <option value="rejected" {{ $application->status == 'rejected' ? 'selected' : '' }}>Từ chối</option>
+                        </select>
+                        <button onclick="toggleSave('{{ $application->id }}')" class="save-btn {{ $application->saved ? 'saved' : '' }}" data-application-id="{{ $application->id }}">
+                            {{ $application->saved ? 'Đã lưu' : 'Lưu' }}
+                        </button>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+@else
+    <p class="no-applications">Chưa có ứng viên nào ứng tuyển.</p>
+@endif
+
                 </div>
             </div>
         </div>

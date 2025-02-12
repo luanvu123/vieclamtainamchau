@@ -142,16 +142,16 @@
                          @enderror
                      </div>
 
-                     <!-- Number of Recruits -->
-                     <div class="mb-3">
-                         <label for="number_of_recruits" class="form-label">Số lượng tuyển dụng</label>
-                         <input type="number" id="number_of_recruits" name="number_of_recruits"
-                             class="form-control @error('number_of_recruits') is-invalid @enderror"
-                             value="{{ old('number_of_recruits') }}">
-                         @error('number_of_recruits')
-                             <span class="text-danger">{{ $message }}</span>
-                         @enderror
-                     </div>
+                   <!-- Number of Recruits -->
+<div class="mb-3">
+    <label for="number_of_recruits" class="form-label">Số lượng tuyển dụng</label>
+    <input type="number" id="number_of_recruits" name="number_of_recruits"
+        class="form-control @error('number_of_recruits') is-invalid @enderror"
+        value="{{ old('number_of_recruits') }}" min="1">
+    @error('number_of_recruits')
+        <span class="text-danger">{{ $message }}</span>
+    @enderror
+</div>
 
                      <!-- Sex -->
                      <div class="mb-3">
