@@ -2381,7 +2381,55 @@
             display: block;
         }
 
+ .nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+    }
 
+    .nav li {
+        position: relative;
+    }
+
+    .nav a {
+        display: block;
+        padding: 10px 15px;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* Dropdown styles */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fc0000;
+        min-width: 200px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        z-index: 1000;
+    }
+
+    .dropdown-content a {
+        color: #333;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #880404;
+    }
+
+    /* Show dropdown on hover */
+    .nav li:hover .dropdown-content {
+        display: block;
+    }
+
+    /* Dropdown arrow */
+    .dropdown-arrow {
+        display: inline-block;
+        margin-left: 5px;
+    }
     </style>
 </head>
 
@@ -2462,22 +2510,34 @@
             </div>
         </div>
         <nav class="nav">
-            <ul>
-                <li><a href="{{ route('/') }}">Trang chủ</a></li>
-                @if (isset($genre_home) && $genre_home->count() > 0)
-                    @foreach ($genre_home as $genre)
-                        <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
-                    @endforeach
-                @endif
+    <ul>
+        <li><a href="{{ route('/') }}">Trang chủ</a></li>
+        @if (isset($genre_home) && $genre_home->count() > 0)
+            @foreach ($genre_home as $genre)
+                <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
+            @endforeach
+        @endif
+        <li><a href="{{ route('site.study-abroad') }}">Du học nghề</a></li>
+<li>
+    <a href="{{ route('site.language-training') }}">
+        Đơn vị đào tạo ngôn ngữ
+        <span class="dropdown-arrow">▼</span>
+    </a>
+    @if(isset($languageTrainings_app) && $languageTrainings_app->count() > 0)
+        <div class="dropdown-content">
+            @foreach($languageTrainings_app as $training)
+                <a href="{{ route('site.language-training.detail', $training->slug) }}">
+                    {{ $training->name }}
+                </a>
+            @endforeach
+        </div>
+    @endif
+</li>
+        <li><a href="{{ route('news.home') }}">Tin tức</a></li>
+        <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
+    </ul>
+</nav>
 
-                <li><a href="{{ route('site.study-abroad') }}">Du học nghề</a></li>
-                <li><a href="">Đơn vị đào tạo ngôn ngữ</a></li>
-
-
-                <li><a href="{{ route('news.home') }}">Tin tức</a></li>
-                <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
-            </ul>
-        </nav>
 
     </header>
     @if (!Auth::guard('employer')->check() && !Auth::guard('candidate')->check())

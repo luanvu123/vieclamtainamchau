@@ -254,17 +254,24 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                 <li class="{{ Request::is('study-abroads*') ? 'active' : '' }}">
                                     <a href="{{ route('study-abroads.index') }}">
                                         <img src="{{ asset('backend_admin/images/image-svgrepo-com.svg') }}"
-                                             width="20" height="20">
+                                            width="20" height="20">
                                         <span> Du học nghề</span>
                                     </a>
                                 </li>
-                                 <li class="{{ Request::is('register-study*') ? 'active' : '' }}">
-                                            <a href="{{ route('register-study.index') }}">
-                                                <img src="{{ asset('backend_admin/images/email2-svgrepo-com.svg') }}"
-                                                    width="20" height="20"> Đăng kí du học nghề
-                                            </a>
-                                        </li>
-                                 <li class="treeview {{ Request::is('language-trainings*') ? 'active' : '' }}">
+                                <li class="{{ Request::is('register-study*') ? 'active' : '' }}">
+                                    <a href="{{ route('register-study.index') }}">
+                                        <img src="{{ asset('backend_admin/images/email2-svgrepo-com.svg') }}"
+                                            width="20" height="20">
+                                        Đăng kí du học nghề
+                                        @if ($registerStudyCountTwoHour > 0)
+                                            <span
+                                                class="label label-primary pull-right">{{ $registerStudyCountTwoHour }}
+                                                New</span>
+                                        @endif
+                                    </a>
+                                </li>
+
+                                <li class="treeview {{ Request::is('language-trainings*') ? 'active' : '' }}">
                                     <a href="{{ route('language-trainings.index') }}">
                                         <img src="{{ asset('backend_admin/images/report-comment-svgrepo-com.svg') }}"
                                             alt="Google" width="20" height="20"> Đơn vị đào tạo ngôn ngữ

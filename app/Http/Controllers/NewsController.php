@@ -9,7 +9,7 @@ class NewsController extends Controller
 {
     public function index()
     {
-        $news = News::paginate(10); // Hiển thị 10 bản ghi mỗi trang
+        $news = News::all(); // Hiển thị 10 bản ghi mỗi trang
         return view('admin.news.index', compact('news'));
     }
 
@@ -27,7 +27,6 @@ class NewsController extends Controller
             'description' => 'nullable|string',
             'website' => 'nullable|url',
             'status' => 'required|boolean',
-            'isOutstanding' => 'required|boolean',
             'isBanner'=>'required|boolean',
         ]);
 
@@ -60,7 +59,6 @@ class NewsController extends Controller
             'description' => 'nullable|string',
             'website' => 'nullable|url',
             'status' => 'required|boolean',
-            'isOutstanding' => 'required|boolean',
             'isBanner'=>'required|boolean',
         ]);
 

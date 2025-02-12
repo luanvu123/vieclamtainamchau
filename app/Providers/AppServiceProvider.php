@@ -10,7 +10,9 @@ use App\Models\Candidate;
 use App\Models\Category;
 use App\Models\Info;
 use App\Models\JobPosting;
+use App\Models\LanguageTraining;
 use App\Models\OnlineVisitor;
+use App\Models\RegisterStudy;
 use App\Models\Support;
 use Carbon\Carbon;
 
@@ -64,6 +66,11 @@ class AppServiceProvider extends ServiceProvider
 
         // Đếm số người đang online (5 phút qua)
         $onlineVisitors = OnlineVisitor::where('last_active', '>=', now()->subMinutes(5))->count();
+        // Count the number of register study records created in the last 2 hours
+$registerStudyCountTwoHour = RegisterStudy::where('created_at', '>=', Carbon::now()->subHours(2))->count();
+
+// Chia sẻ biến này với tất cả các view
+View::share('registerStudyCountTwoHour', $registerStudyCountTwoHour);
 
         // Chia sẻ thông tin với tất cả các view
         view()->share('totalVisitors', $totalVisitors);
@@ -80,8 +87,11 @@ class AppServiceProvider extends ServiceProvider
             $view->with('genre_home', $genre_home);
             $categoryHot = Category::where('isHot', 1)->where('status', 'active')->get();
             $view->with('categoryHot', $categoryHot);
+             $languageTrainings_app = LanguageTraining::where('status', 1)->get();
+            $view->with('languageTrainings_app', $languageTrainings_app);
         });
         $info_layout = Info::first();
         View::share('info_layout', $info_layout);
+
     }
 }

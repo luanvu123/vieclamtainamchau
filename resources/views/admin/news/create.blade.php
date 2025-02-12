@@ -43,16 +43,7 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-        <div class="mb-3">
-            <label for="isOutstanding" class="form-label">Nổi bật</label>
-            <select class="form-control @error('isOutstanding') is-invalid @enderror" id="isOutstanding" name="isOutstanding" required>
-                <option value="1" {{ old('isOutstanding') == 1 ? 'selected' : '' }}>Có</option>
-                <option value="0" {{ old('isOutstanding') == 0 ? 'selected' : '' }}>Không</option>
-            </select>
-            @error('isOutstanding')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
+       
          <div class="mb-3">
             <label for="isBanner" class="form-label">Quảng cáo</label>
             <select class="form-control @error('isBanner') is-invalid @enderror" id="isBanner" name="isBanner" required>

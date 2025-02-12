@@ -15,7 +15,7 @@ class News extends Model
         'description',
         'website',
         'status',
-        'isOutstanding',
+      
         'isBanner'
     ];
 }

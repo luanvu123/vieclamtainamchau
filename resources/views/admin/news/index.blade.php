@@ -18,7 +18,6 @@
                 <th>Mô tả</th>
                 <th>Website</th>
                 <th>Trạng thái</th>
-                <th>Nổi bật</th>
                 <th>Quảng cáo</th>
                 <th>Hành động</th>
             </tr>
@@ -38,7 +37,6 @@
                     <td>{{ \Illuminate\Support\Str::limit($item->description, 50) }}</td>
                     <td><a href="{{ $item->website }}" target="_blank">{{ $item->website }}</a></td>
                     <td>{{ $item->status ? 'Hoạt động' : 'Không hoạt động' }}</td>
-                    <td>{{ $item->isOutstanding ? 'Có' : 'Không' }}</td>
                      <td>{{ $item->isBanner ? 'Có' : 'Không' }}</td>
                     <td>
                         <a href="{{ route('news.show', $item->id) }}" class="btn btn-info btn-sm">Xem</a>

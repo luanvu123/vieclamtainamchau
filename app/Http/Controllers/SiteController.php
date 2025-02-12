@@ -7,6 +7,7 @@ use App\Models\Country;
 use App\Models\Employer;
 use App\Models\Genre;
 use App\Models\JobPosting;
+use App\Models\LanguageTraining;
 use App\Models\Location;
 use App\Models\News;
 use App\Models\OnlineVisitor;
@@ -15,6 +16,7 @@ use App\Models\StudyAbroad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+
 class SiteController extends Controller
 {
     public function about()
@@ -37,14 +39,13 @@ class SiteController extends Controller
     {
 
         $promotion = News::where('status', 1)
-            ->where('isOutstanding', 0)
             ->where('isBanner', 0)
             ->paginate(10);
         $bannerNews = News::where('status', 1)
             ->where('isBanner', 1)
             ->get();
 
-        return view('pages.news', compact( 'bannerNews', 'promotion'));
+        return view('pages.news', compact('bannerNews', 'promotion'));
     }
 
     public function newsDetail($id)
@@ -60,7 +61,6 @@ class SiteController extends Controller
         // Get related news (optional)
         $relatedNews = News::where('status', 1)
             ->where('id', '!=', $id)
-            ->where('isOutstanding', 0)
             ->where('isBanner', 0)
             ->take(5)
             ->get();
@@ -223,50 +223,71 @@ class SiteController extends Controller
 
 
 
-public function studyShow($slug)
-{
-    // Tìm bài viết theo slug với eager loading cho countries và categories
-    $study = StudyAbroad::where('slug', $slug)
-        ->where('status', 1)
-        ->with(['countries', 'categories'])
-        ->firstOrFail();
+    public function studyShow($slug)
+    {
+        // Tìm bài viết theo slug với eager loading cho countries và categories
+        $study = StudyAbroad::where('slug', $slug)
+            ->where('status', 1)
+            ->with(['countries', 'categories'])
+            ->firstOrFail();
 
-    // Lấy các bài viết liên quan cùng danh mục
-    $relatedStudies = StudyAbroad::where('status', 1)
-        ->whereHas('categories', function($query) use ($study) {
-            $query->whereIn('categories.id', $study->categories->pluck('id'));
-        })
-        ->where('id', '!=', $study->id)
-        ->limit(3)
-        ->get();
+        // Lấy các bài viết liên quan cùng danh mục
+        $relatedStudies = StudyAbroad::where('status', 1)
+            ->whereHas('categories', function ($query) use ($study) {
+                $query->whereIn('categories.id', $study->categories->pluck('id'));
+            })
+            ->where('id', '!=', $study->id)
+            ->limit(3)
+            ->get();
 
-    return view('pages.studyabroad_detail', compact('study', 'relatedStudies'));
-}
-
-  public function studyIndex(Request $request)
-{
-    $query = StudyAbroad::where('status', 1)->with(['countries', 'categories']);
-
-    if ($request->has('category_id') && $request->category_id != '') {
-        $query->whereHas('categories', function ($q) use ($request) {
-            $q->where('categories.id', $request->category_id); // Chỉ định rõ bảng categories
-        });
+        return view('pages.studyabroad_detail', compact('study', 'relatedStudies'));
     }
 
-    if ($request->has('country_id') && $request->country_id != '') {
-        $query->whereHas('countries', function ($q) use ($request) {
-            $q->where('countries.id', $request->country_id); // Chỉ định rõ bảng countries
-        });
+    public function studyIndex(Request $request)
+    {
+        $query = StudyAbroad::where('status', 1)->with(['countries', 'categories']);
+
+        if ($request->has('category_id') && $request->category_id != '') {
+            $query->whereHas('categories', function ($q) use ($request) {
+                $q->where('categories.id', $request->category_id); // Chỉ định rõ bảng categories
+            });
+        }
+
+        if ($request->has('country_id') && $request->country_id != '') {
+            $query->whereHas('countries', function ($q) use ($request) {
+                $q->where('countries.id', $request->country_id); // Chỉ định rõ bảng countries
+            });
+        }
+
+        $studyAbroads = $query->paginate(3);
+
+        $categories = Category::where('status', 1)->get();
+        $countries = Country::where('status', 1)->get();
+
+        return view('pages.studyabroad', compact('studyAbroads', 'categories', 'countries'));
     }
 
-    $studyAbroads = $query->paginate(3);
+    public function indexLanguageTrainings()
+    {
+        $languageTrainings = LanguageTraining::where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate(9);
 
-    $categories = Category::where('status', 1)->get();
-    $countries = Country::where('status', 1)->get();
+        return view('pages.index_languageTrainings', compact('languageTrainings'));
+    }
 
-    return view('pages.studyabroad', compact('studyAbroads', 'categories', 'countries'));
-}
+    public function detailLanguageTrainings($slug)
+    {
+        $languageTraining = LanguageTraining::where('slug', $slug)
+            ->where('status', 1)
+            ->firstOrFail();
 
+        // Lấy các đơn vị đào tạo khác
+        $relatedTrainings = LanguageTraining::where('status', 1)
+            ->where('id', '!=', $languageTraining->id)
+            ->limit(3)
+            ->get();
 
-
+        return view('pages.detail_languageTrainings', compact('languageTraining', 'relatedTrainings'));
+    }
 }
