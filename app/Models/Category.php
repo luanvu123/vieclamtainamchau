@@ -24,4 +24,9 @@ class Category extends Model
     {
         return $this->belongsToMany(JobPosting::class, 'category_job_posting');
     }
+    public function studyAbroads()
+{
+    return $this->belongsToMany(StudyAbroad::class, 'category_study_abroad');
+}
+
 }

@@ -368,6 +368,145 @@
             color: #fff;
         }
 
+        .promotion-section {
+            margin: 1rem 0;
+        }
+
+        .promotion-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            list-style: none;
+        }
+
+        .pagination .page-item {
+            margin: 0 5px;
+        }
+
+        .pagination .page-item a {
+            display: block;
+            padding: 8px 12px;
+            color: #007bff;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .pagination .page-item.active a {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .promotion-card {
+            display: flex;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .promotion-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .promotion-image {
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+        }
+
+        .promotion-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .promotion-content {
+            padding: 1rem;
+            flex-grow: 1;
+        }
+
+        .promotion-title {
+            margin: 0 0 0.5rem 0;
+        }
+
+        .promotion-title a {
+            color: #22c55e;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .promotion-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .promotion-location,
+        .promotion-time {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-tag {
+            padding: 0.25rem 0.5rem;
+            background-color: #f3f4f6;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .promotion-actions {
+            margin-left: auto;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: #666;
+        }
+
+        .favorite-btn:hover {
+            color: #ef4444;
+        }
+
+        .pagination-container {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        @media (max-width: 640px) {
+            .promotion-card {
+                flex-direction: column;
+            }
+
+            .promotion-image {
+                width: 100%;
+                height: 200px;
+            }
+
+            .promotion-details {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
         .auth-btn.logout {
             background: #dc3545;
             color: #fff;
@@ -710,92 +849,95 @@
             color: white;
             padding: 3rem 2rem 1rem;
         }
- .pagination-container {
-                    margin-top: 20px;
-                }
 
-                .pagination {
-                    display: flex;
-                    list-style: none;
-                    padding: 0;
-                    justify-content: center;
-                    gap: 5px;
-                }
+        .pagination-container {
+            margin-top: 20px;
+        }
 
-                .pagination li {
-                    display: inline-block;
-                }
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            justify-content: center;
+            gap: 5px;
+        }
 
-                .pagination li a,
-                .pagination li span {
-                    padding: 8px 12px;
-                    border: 1px solid #ddd;
-                    color: #333;
-                    text-decoration: none;
-                    border-radius: 4px;
-                }
+        .pagination li {
+            display: inline-block;
+        }
 
-                .pagination li.active span {
-                    background-color: #007bff;
-                    color: white;
-                    border-color: #007bff;
-                }
+        .pagination li a,
+        .pagination li span {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
+        }
 
-                .pagination li a:hover {
-                    background-color: #f8f9fa;
-                }
+        .pagination li.active span {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
 
-                .news-links a {
-                    display: block;
-                    padding: 8px 0;
-                    border-bottom: 1px solid #eee;
-                    transition: color 0.3s ease;
-                }
+        .pagination li a:hover {
+            background-color: #f8f9fa;
+        }
 
-                .news-links a:hover {
-                    color: #007bff;
-                }
+        .news-links a {
+            display: block;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            transition: color 0.3s ease;
+        }
 
-                .news-image {
-                    transition: opacity 0.3s ease;
-                }
-                  .search-container {
-                    margin-bottom: 20px;
-                }
+        .news-links a:hover {
+            color: #007bff;
+        }
 
-                .search-input {
-                    width: 100%;
-                    padding: 12px;
-                    border: 2px solid #ddd;
-                    border-radius: 8px;
-                    font-size: 16px;
-                    transition: border-color 0.3s ease;
-                }
+        .news-image {
+            transition: opacity 0.3s ease;
+        }
 
-                .search-input:focus {
-                    border-color: #ff0000;
-                    outline: none;
-                }
+        .search-container {
+            margin-bottom: 20px;
+        }
 
-                /* Hide/Show news links */
-                .news-link.hidden {
-                    display: none;
-                }
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
 
-                /* No results message */
-                .no-results {
-                    padding: 20px;
-                    text-align: center;
-                    color: #666;
-                    font-style: italic;
-                    display: none;
-                }
+        .search-input:focus {
+            border-color: #ff0000;
+            outline: none;
+        }
 
-                /* Highlight matching text */
-                .highlight {
-                    background-color: #fff3cd;
-                    padding: 2px;
-                }
+        /* Hide/Show news links */
+        .news-link.hidden {
+            display: none;
+        }
+
+        /* No results message */
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            display: none;
+        }
+
+        /* Highlight matching text */
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px;
+        }
+
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -2238,6 +2380,8 @@
         .nav .dropdown.show .dropdown-menu-hot {
             display: block;
         }
+
+
     </style>
 </head>
 
@@ -2322,9 +2466,13 @@
                 <li><a href="{{ route('/') }}">Trang chủ</a></li>
                 @if (isset($genre_home) && $genre_home->count() > 0)
                     @foreach ($genre_home as $genre)
-                            <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
+                        <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
                     @endforeach
                 @endif
+
+                <li><a href="{{ route('site.study-abroad') }}">Du học nghề</a></li>
+                <li><a href="">Đơn vị đào tạo ngôn ngữ</a></li>
+
 
                 <li><a href="{{ route('news.home') }}">Tin tức</a></li>
                 <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
@@ -2630,19 +2778,19 @@
 
 
             <div class="social-links">
-    <a href="{{ $info_layout->url_facebook ?? '#' }}" class="social-link">
-        <i class="fab fa-facebook-f"></i>
-        <span>Follow Us on Facebook</span>
-    </a>
-    <a href="{{ $info_layout->url_youtube ?? '#' }}" class="social-link">
-        <i class="fab fa-youtube"></i>
-        <span>Youtube</span>
-    </a>
-    <a href="{{ $info_layout->url_partner ?? '#' }}" class="social-link">
-        <i class="fas fa-handshake"></i>
-        <span>Partners</span>
-    </a>
-</div>
+                <a href="{{ $info_layout->url_facebook ?? '#' }}" class="social-link">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Follow Us on Facebook</span>
+                </a>
+                <a href="{{ $info_layout->url_youtube ?? '#' }}" class="social-link">
+                    <i class="fab fa-youtube"></i>
+                    <span>Youtube</span>
+                </a>
+                <a href="{{ $info_layout->url_partner ?? '#' }}" class="social-link">
+                    <i class="fas fa-handshake"></i>
+                    <span>Partners</span>
+                </a>
+            </div>
         </div>
     </footer>
 

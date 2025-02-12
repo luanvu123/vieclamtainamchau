@@ -17,11 +17,14 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\StudyAbroadController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployerManageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\JobPostingController;
+use App\Http\Controllers\LanguageTrainingController;
+use App\Http\Controllers\RegisterStudyController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\SupportController;
@@ -42,6 +45,10 @@ Route::get('/search', [SiteController::class, 'search'])->name('site.search')->m
 Route::post('/supports', [SupportController::class, 'store'])->name('supports.store');
 Route::get('/tin-tuc', [SiteController::class, 'news'])->name('news.home');
 Route::get('/tin-tuc/{id}', [SiteController::class, 'newsDetail'])->name('news.detail.home');
+Route::post('/register-consult', [SiteController::class, 'registerConsult'])->name('register.consult');
+Route::get('/study-abroad/{id}/details', [SiteController::class, 'getStudyDetails']);
+Route::get('/study-abroad', [SiteController::class, 'studyIndex'])->name('site.study-abroad');
+Route::get('/study-abroad/{slug}', [SiteController::class, 'studyShow'])->name('study-abroad.show');
 
 Auth::routes();
 
@@ -51,6 +58,11 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('services', ServiceController::class);
+    Route::resource('study-abroads', StudyAbroadController::class);
+    Route::resource('language-trainings', LanguageTrainingController::class);
+    Route::resource('register-study', RegisterStudyController::class);
+
+
     Route::resource('manage/employers', EmployerManageController::class, [
         'as' => 'manage'
     ]);

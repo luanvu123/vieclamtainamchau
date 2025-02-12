@@ -236,7 +236,7 @@
                     @endforeach
                 </select>
                 <select name="country">
-                    <option value="">Nhập thị trường</option>
+                    <option value="">Tất cả các quốc gia</option>
                     @foreach ($countries as $country)
                         <option value="{{ $country->slug }}" {{ request('country') == $country->slug ? 'selected' : '' }}>
                             {{ $country->name }}

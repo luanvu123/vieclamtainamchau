@@ -7,65 +7,6 @@
             <div class="search-container">
                 <input type="text" id="newsSearch" class="search-input" placeholder="Tìm kiếm tin tức...">
             </div>
-            <div class="news-list">
-                @if ($outstandingNews)
-                    <div class="news-item">
-                        <img src="{{ asset('storage/' . $outstandingNews->image) }}" alt="{{ $outstandingNews->name }}"
-                            id="previewImage" class="news-image">
-                        <div class="news-text">
-                            <div class="news-links">
-                                @foreach ($newsList as $news)
-                                    <a href="{{ route('news.detail.home', $news->id) }}" class="news-link"
-                                        data-image="{{ asset('storage/' . $news->image) }}">
-                                        {{ $news->name }}
-                                    </a>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                @endif
-            </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const previewImage = document.getElementById('previewImage');
-                    const defaultImage = previewImage.src;
-                    let currentImage = defaultImage;
-
-                    // Store original image URL
-                    const originalImageSrc = previewImage.src;
-
-                    // Add hover effect for news links
-                    document.querySelectorAll('.news-link').forEach(link => {
-                        link.addEventListener('mouseenter', function() {
-                            const newImage = this.getAttribute('data-image');
-                            if (newImage) {
-                                // Save current image before changing
-                                currentImage = previewImage.src;
-
-                                // Fade out effect
-                                previewImage.style.opacity = '0';
-
-                                setTimeout(() => {
-                                    previewImage.src = newImage;
-                                    previewImage.style.opacity = '1';
-                                }, 300);
-                            }
-                        });
-
-                        link.addEventListener('mouseleave', function() {
-                            // Fade out effect
-                            previewImage.style.opacity = '0';
-
-                            setTimeout(() => {
-                                // Return to original main news image
-                                previewImage.src = originalImageSrc;
-                                previewImage.style.opacity = '1';
-                            }, 300);
-                        });
-                    });
-                });
-            </script>
-
             <!-- Promotion Section -->
             <div class="category-buttons">
                 <!-- Promotion Section -->
@@ -106,150 +47,7 @@
                             @endfor
                         </ul>
                     </div>
-
-
                 </div>
-
-                <style>
-                    .promotion-section {
-                        margin: 1rem 0;
-                    }
-
-                    .promotion-list {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 1rem;
-                    }
-
-                    .pagination {
-                        display: flex;
-                        justify-content: center;
-                        padding: 10px;
-                        list-style: none;
-                    }
-
-                    .pagination .page-item {
-                        margin: 0 5px;
-                    }
-
-                    .pagination .page-item a {
-                        display: block;
-                        padding: 8px 12px;
-                        color: #007bff;
-                        text-decoration: none;
-                        border: 1px solid #ddd;
-                        border-radius: 5px;
-                    }
-
-                    .pagination .page-item.active a {
-                        background-color: #007bff;
-                        color: white;
-                        border-color: #007bff;
-                    }
-
-                    .promotion-card {
-                        display: flex;
-                        background: #fff;
-                        border-radius: 8px;
-                        overflow: hidden;
-                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-                        transition: transform 0.2s;
-                    }
-
-                    .promotion-card:hover {
-                        transform: translateY(-2px);
-                    }
-
-                    .promotion-image {
-                        width: 120px;
-                        height: 120px;
-                        flex-shrink: 0;
-                    }
-
-                    .promotion-image img {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                    }
-
-                    .promotion-content {
-                        padding: 1rem;
-                        flex-grow: 1;
-                    }
-
-                    .promotion-title {
-                        margin: 0 0 0.5rem 0;
-                    }
-
-                    .promotion-title a {
-                        color: #22c55e;
-                        text-decoration: none;
-                        font-size: 1.1rem;
-                        font-weight: 600;
-                    }
-
-                    .promotion-details {
-                        display: flex;
-                        flex-wrap: wrap;
-                        gap: 1rem;
-                        align-items: center;
-                        font-size: 0.9rem;
-                        color: #666;
-                    }
-
-                    .promotion-location,
-                    .promotion-time {
-                        display: flex;
-                        align-items: center;
-                        gap: 0.5rem;
-                    }
-
-                    .status-tag {
-                        padding: 0.25rem 0.5rem;
-                        background-color: #f3f4f6;
-                        border-radius: 4px;
-                        font-size: 0.8rem;
-                    }
-
-                    .promotion-actions {
-                        margin-left: auto;
-                    }
-
-                    .favorite-btn {
-                        background: none;
-                        border: none;
-                        cursor: pointer;
-                        padding: 0.5rem;
-                        color: #666;
-                    }
-
-                    .favorite-btn:hover {
-                        color: #ef4444;
-                    }
-
-                    .pagination-container {
-                        margin-top: 1rem;
-                        display: flex;
-                        justify-content: center;
-                    }
-
-                    @media (max-width: 640px) {
-                        .promotion-card {
-                            flex-direction: column;
-                        }
-
-                        .promotion-image {
-                            width: 100%;
-                            height: 200px;
-                        }
-
-                        .promotion-details {
-                            flex-direction: column;
-                            align-items: flex-start;
-                            gap: 0.5rem;
-                        }
-                    }
-                </style>
             </div>
         </div>
 
@@ -359,4 +157,25 @@
             });
         });
     </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("newsSearch");
+        const promotionCards = document.querySelectorAll(".promotion-card");
+
+        searchInput.addEventListener("input", function () {
+            const searchTerm = this.value.trim().toLowerCase();
+
+            promotionCards.forEach(card => {
+                const title = card.querySelector(".promotion-title a").textContent.trim().toLowerCase();
+
+                if (title.includes(searchTerm) || searchTerm === "") {
+                    card.style.display = "block"; // Hiển thị nếu tìm thấy từ khóa
+                } else {
+                    card.style.display = "none"; // Ẩn nếu không khớp
+                }
+            });
+        });
+    });
+</script>
+
 @endsection

@@ -13,4 +13,9 @@ class Country extends Model
     {
         return $this->belongsToMany(JobPosting::class, 'country_job_posting');
     }
+    public function studyAbroads()
+{
+    return $this->belongsToMany(StudyAbroad::class, 'country_study_abroad');
+}
+
 }

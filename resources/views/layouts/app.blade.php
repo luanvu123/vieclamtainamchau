@@ -251,6 +251,26 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     </a>
                                 </li>
 
+                                <li class="{{ Request::is('study-abroads*') ? 'active' : '' }}">
+                                    <a href="{{ route('study-abroads.index') }}">
+                                        <img src="{{ asset('backend_admin/images/image-svgrepo-com.svg') }}"
+                                             width="20" height="20">
+                                        <span> Du học nghề</span>
+                                    </a>
+                                </li>
+                                 <li class="{{ Request::is('register-study*') ? 'active' : '' }}">
+                                            <a href="{{ route('register-study.index') }}">
+                                                <img src="{{ asset('backend_admin/images/email2-svgrepo-com.svg') }}"
+                                                    width="20" height="20"> Đăng kí du học nghề
+                                            </a>
+                                        </li>
+                                 <li class="treeview {{ Request::is('language-trainings*') ? 'active' : '' }}">
+                                    <a href="{{ route('language-trainings.index') }}">
+                                        <img src="{{ asset('backend_admin/images/report-comment-svgrepo-com.svg') }}"
+                                            alt="Google" width="20" height="20"> Đơn vị đào tạo ngôn ngữ
+                                    </a>
+                                </li>
+
                                 <li class="treeview {{ Request::is('news*') ? 'active' : '' }}">
                                     <a href="{{ route('news.index') }}">
                                         <img src="{{ asset('backend_admin/images/newspaper-news-svgrepo-com.svg') }}"
