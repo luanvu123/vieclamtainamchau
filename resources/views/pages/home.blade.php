@@ -1,6 +1,6 @@
 @extends('layout')
 @section('content')
-    
+
     <section class="hero">
         <div class="search-bar">
             <form action="{{ route('site.search') }}" method="GET">
@@ -44,7 +44,6 @@
 
 
     <section class="job-categories">
-
         @foreach ($genres as $genre)
             @if ($genre->jobPostings->count() > 0)
                 <section class="job-categories">
@@ -96,68 +95,70 @@
                 </section>
             @endif
         @endforeach
+    </section>
 
-        <section class="partners">
-            <h2>CÁC ĐỐI TÁC</h2>
-            <div class="partner-grid">
-                @if ($employerIsPartner->count() > 0)
-                    @foreach ($employerIsPartner as $partner)
-                        <div class="partner-logo">
-                            <img src="{{ asset('storage/' . $partner->avatar) }}" alt="{{ $partner->company_name }}"
-                                onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
-                            <div class="partner-info">
-                                <h3>{{ $partner->company_name }}</h3>
-                                <div class="position-count">
-                                    <i class="fas fa-briefcase"></i>
-                                    <span>{{ $partner->job_postings_count }} vị trí đang tuyển</span>
-                                </div>
+    
+    <section class="partners">
+        <h2>CÁC ĐỐI TÁC</h2>
+        <div class="partner-grid">
+            @if ($employerIsPartner->count() > 0)
+                @foreach ($employerIsPartner as $partner)
+                    <div class="partner-logo">
+                        <img src="{{ asset('storage/' . $partner->avatar) }}" alt="{{ $partner->company_name }}"
+                            onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
+                        <div class="partner-info">
+                            <h3>{{ $partner->company_name }}</h3>
+                            <div class="position-count">
+                                <i class="fas fa-briefcase"></i>
+                                <span>{{ $partner->job_postings_count }} vị trí đang tuyển</span>
                             </div>
                         </div>
+                    </div>
+                @endforeach
+            @else
+                <p>Hiện tại chưa có đối tác nào.</p>
+            @endif
+        </div>
+    </section>
+
+
+    <section class="keywords-section">
+        <h2>TỪ KHÓA TÌM VIỆC LÀM PHỔ BIẾN TẠI VIỆC LÀM NĂM CHÂU</h2>
+        <div class="keywords-container">
+            <div class="keyword-column">
+                <h3>Việc làm theo ngành nghề</h3>
+                <ul class="keyword-list">
+                    @foreach ($categories as $categoryItem)
+                        <li>
+                            <a href="{{ route('category.show', $categoryItem->slug) }}">{{ $categoryItem->name }}</a>
+                        </li>
                     @endforeach
-                @else
-                    <p>Hiện tại chưa có đối tác nào.</p>
-                @endif
+                </ul>
             </div>
-        </section>
 
-
-        <section class="keywords-section">
-            <h2>TỪ KHÓA TÌM VIỆC LÀM PHỔ BIẾN TẠI VIỆC LÀM NĂM CHÂU</h2>
-            <div class="keywords-container">
-                <div class="keyword-column">
-                    <h3>Việc làm theo ngành nghề</h3>
-                    <ul class="keyword-list">
-                        @foreach ($categories as $categoryItem)
-                            <li>
-                                <a href="{{ route('category.show', $categoryItem->slug) }}">{{ $categoryItem->name }}</a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-
-                <div class="keyword-column">
-                    <h3>Việc làm tại quốc gia</h3>
-                    <ul class="keyword-list">
-                        @foreach ($countries as $country)
-                            <li>
-                                <a href="{{ route('country.show', $country->slug) }}">{{ $country->name }}</a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-
-                <div class="keyword-column">
-                    <h3>Việc làm danh mục</h3>
-                    <ul class="keyword-list">
-                        @foreach ($genres as $genre)
-                            <li>
-                                <a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-
+            <div class="keyword-column">
+                <h3>Việc làm tại quốc gia</h3>
+                <ul class="keyword-list">
+                    @foreach ($countries as $country)
+                        <li>
+                            <a href="{{ route('country.show', $country->slug) }}">{{ $country->name }}</a>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
-        </section>
-        <!-- End Cart Area  -->
-    @endsection
+
+            <div class="keyword-column">
+                <h3>Việc làm danh mục</h3>
+                <ul class="keyword-list">
+                    @foreach ($genres as $genre)
+                        <li>
+                            <a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+
+        </div>
+    </section>
+    <!-- End Cart Area  -->
+@endsection

@@ -2320,28 +2320,9 @@
         <nav class="nav">
             <ul>
                 <li><a href="{{ route('/') }}">Trang chủ</a></li>
-                <li><a href="{{ route('site.countries') }}">Việc làm</a></li>
                 @if (isset($genre_home) && $genre_home->count() > 0)
                     @foreach ($genre_home as $genre)
-                        @if ($genre->slug === 'du-hoc-nghe')
-                            <li class="dropdown">
-                                <a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a>
-                                <ul class="dropdown-menu-hot">
-                                    @if (isset($categoryHot) && $categoryHot->count() > 0)
-                                        @foreach ($categoryHot as $hotCategory)
-                                            <li>
-                                                <a
-                                                    href="{{ route('category.show', $hotCategory->slug) }}">{{ $hotCategory->name }}</a>
-                                            </li>
-                                        @endforeach
-                                    @else
-                                        <li><a href="#">Không có du học nghề</a></li>
-                                    @endif
-                                </ul>
-                            </li>
-                        @else
                             <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
-                        @endif
                     @endforeach
                 @endif
 

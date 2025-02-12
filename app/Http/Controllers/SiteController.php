@@ -30,12 +30,6 @@ class SiteController extends Controller
         $locations = Location::where('status', 'active')->get();
         return response()->json($locations);
     }
-    public function countries()
-    {
-        $categories = Category::where('status', 'active')->where('isHot', 0)->get();
-        $countries = Country::where('status', true)->get();
-        return view('pages.flag', compact('countries', 'categories'));
-    }
     public function news()
     {
         // Get featured/outstanding news

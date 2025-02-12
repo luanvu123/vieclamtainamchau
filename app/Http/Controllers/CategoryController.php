@@ -32,7 +32,6 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
-             'isHot'=>'nullable'
         ]);
 
           $slug = Str::slug($request->name);
@@ -52,7 +51,6 @@ class CategoryController extends Controller
             'image' => $imagePath,
             'status' => $request->status ?? 1,
             'slug' => Str::slug($request->name),
-            'isHot' => $request->isHot ?? 0,
         ]);
 
         return redirect()->route('categories.index')->with('success', 'Danh mục đã được tạo thành công.');
@@ -82,7 +80,6 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'status' => 'required|in:active,inactive',
-            'isHot'=>'nullable'
         ]);
  $slug = Str::slug($request->name);
 
@@ -100,7 +97,6 @@ class CategoryController extends Controller
             'image' => $imagePath,
             'status' => $request->status,
             'slug' => Str::slug($request->name),
-            'isHot' => $request->isHot ?? 0,
         ]);
         return redirect()->route('categories.index')->with('success', 'Danh mục đã được cập nhật.');
     }

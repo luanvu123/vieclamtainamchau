@@ -49,8 +49,6 @@ Auth::routes();
 
 
 
-Route::get('/danh-sach-cac-quoc-gia', [SiteController::class, 'countries'])->name('site.countries')->middleware('candidate');
-
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('services', ServiceController::class);
     Route::resource('manage/employers', EmployerManageController::class, [
