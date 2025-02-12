@@ -8,7 +8,7 @@
             "{{ Str::limit(request('keyword'), 50) }}"
         @endif
         @if (request('category'))
-            trong danh mục "{{ Str::limit($categories->firstWhere('slug', request('category'))->name ?? 'Không xác định', 40) }}"
+            trong ngành nghề "{{ Str::limit($categories->firstWhere('slug', request('category'))->name ?? 'Không xác định', 40) }}"
         @endif
         @if (request('country'))
             tại quốc gia "{{ Str::limit($countries->firstWhere('slug', request('country'))->name ?? 'Không xác định', 40) }}"

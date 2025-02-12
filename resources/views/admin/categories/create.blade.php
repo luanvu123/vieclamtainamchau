@@ -6,18 +6,13 @@
         <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
-                <label for="name" class="form-label">Tên danh mục</label>
+                <label for="name" class="form-label">Tên ngành nghề</label>
                 <input type="text" name="name" class="form-control" id="name" required>
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Hình ảnh</label>
                 <input type="file" name="image" class="form-control" id="image">
             </div>
-            <div class="mb-3">
-                <label for="isHot">Du học nghề</label>
-                <input type="checkbox" id="isHot" name="isHot" value="1">
-            </div>
-
             <button type="submit" class="btn btn-success">Thêm</button>
         </form>
     </div>

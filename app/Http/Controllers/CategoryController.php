@@ -53,7 +53,7 @@ class CategoryController extends Controller
             'slug' => Str::slug($request->name),
         ]);
 
-        return redirect()->route('categories.index')->with('success', 'Danh mục đã được tạo thành công.');
+        return redirect()->route('categories.index')->with('success', 'Ngành nghề đã được tạo thành công.');
     }
 
     public function show(Category $category)
@@ -98,7 +98,7 @@ class CategoryController extends Controller
             'status' => $request->status,
             'slug' => Str::slug($request->name),
         ]);
-        return redirect()->route('categories.index')->with('success', 'Danh mục đã được cập nhật.');
+        return redirect()->route('categories.index')->with('success', 'Ngành nghề đã được cập nhật.');
     }
 
 
@@ -110,6 +110,6 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        return redirect()->route('categories.index')->with('success', 'Danh mục đã được xóa.');
+        return redirect()->route('categories.index')->with('success', 'Ngành nghề đã được xóa.');
     }
 }

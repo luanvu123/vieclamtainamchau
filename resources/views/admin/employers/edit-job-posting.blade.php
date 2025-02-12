@@ -191,7 +191,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="genres" class="form-label">Danh mục XKLD (nếu có)</label>
+                    <label for="genres" class="form-label">Danh mục XKLD</label>
                     <select id="genres" name="genres[]" class="form-select" multiple>
                         @foreach ($genres as $genre)
                             <option value="{{ $genre->id }}"

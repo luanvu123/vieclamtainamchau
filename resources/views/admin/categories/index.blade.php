@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <h1>Danh sách ngành nghề</h1>
-        <a href="{{ route('categories.create') }}" class="btn btn-primary mb-3">Thêm danh mục mới</a>
+        <a href="{{ route('categories.create') }}" class="btn btn-primary mb-3">Thêm ngành nghề mới</a>
 
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>

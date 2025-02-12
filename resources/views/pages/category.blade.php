@@ -56,7 +56,7 @@
                 {{ $jobPostings->links() }}
             </div>
         @else
-            <p>Hiện tại không có bài đăng tuyển dụng nào trong danh mục này.</p>
+            <p>Hiện tại không có bài đăng tuyển dụng nào trong ngành nghề này.</p>
         @endif
     </section>
 @endsection
