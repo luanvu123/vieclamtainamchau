@@ -5,7 +5,7 @@
 
     <p><strong>ID:</strong> {{ $location->id }}</p>
     <p><strong>Tên:</strong> {{ $location->name }}</p>
-    <p><strong>Mô tả:</strong> {{ $location->description }}</p>
+    <p><strong>Địa chỉ cụ thể:</strong> {{ $location->description }}</p>
     <p><strong>Trạng thái:</strong> {{ $location->status == 'active' ? 'Hoạt động' : 'Không hoạt động' }}</p>
 
     <a href="{{ route('locations.edit', $location) }}" class="btn btn-warning">Chỉnh sửa</a>

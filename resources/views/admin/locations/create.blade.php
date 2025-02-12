@@ -22,7 +22,7 @@
         </div>
 
         <div class="form-group">
-            <label for="description">Mô tả:</label>
+            <label for="description">Địa chỉ cụ thể:</label>
             <textarea name="description" id="description" class="form-control" placeholder="Nhập mô tả"></textarea>
         </div>
 

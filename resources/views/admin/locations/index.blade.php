@@ -13,7 +13,7 @@
             <tr>
                 <th>ID</th>
                 <th>Tên</th>
-                <th>Mô tả</th>
+                <th>Địa chỉ cụ thể</th>
                 <th>Trạng thái</th>
                 <th>Hành động</th>
             </tr>

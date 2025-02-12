@@ -41,16 +41,21 @@ class SiteController extends Controller
         // Get featured/outstanding news
         $outstandingNews = News::where('status', 1)
             ->where('isOutstanding', 1)
+            ->where('isBanner', 0)
             ->first();
         $promotion = News::where('status', 1)
-            ->where('isOutstanding', 1)
-            ->take(3)
-            ->get();
-
-        $newsList = News::where('status', 1)
             ->where('isOutstanding', 0)
             ->where('isBanner', 0)
-            ->paginate(6); // Show 6 items per page
+            ->paginate(10);
+
+
+
+
+        $newsList = News::where('status', 1)
+            ->where('isOutstanding', 1)
+            ->where('isBanner', 0)
+            ->take(6)
+            ->get();
 
         // Get banner news
         $bannerNews = News::where('status', 1)
@@ -102,9 +107,9 @@ class SiteController extends Controller
             $query->with(['employer', 'countries'])
                 ->where('status', 'active')
                 ->where('closing_date', '>', now())
-                 ->whereHas('employer', function ($query) {
-                $query->where('IsHome', 1); // Filter job postings where employer IsHome is 1
-            })
+                ->whereHas('employer', function ($query) {
+                    $query->where('IsHome', 1); // Filter job postings where employer IsHome is 1
+                })
                 ->latest();
         }])->get();
         OnlineVisitor::trackVisitor($request->ip());

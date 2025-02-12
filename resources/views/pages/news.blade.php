@@ -13,12 +13,6 @@
                         <img src="{{ asset('storage/' . $outstandingNews->image) }}" alt="{{ $outstandingNews->name }}"
                             id="previewImage" class="news-image">
                         <div class="news-text">
-                            <h3>
-                                <a href="{{ route('news.detail.home', $outstandingNews->id) }}">
-                                    {{ $outstandingNews->name }}
-                                </a>
-                            </h3>
-                            <span class="news-date">{{ $outstandingNews->created_at->diffForHumans() }}</span>
                             <div class="news-links">
                                 @foreach ($newsList as $news)
                                     <a href="{{ route('news.detail.home', $news->id) }}" class="news-link"
@@ -26,11 +20,6 @@
                                         {{ $news->name }}
                                     </a>
                                 @endforeach
-                            </div>
-
-                            <!-- Pagination -->
-                            <div class="pagination-container">
-                                {{ $newsList->links() }}
                             </div>
                         </div>
                     </div>
@@ -79,16 +68,188 @@
 
             <!-- Promotion Section -->
             <div class="category-buttons">
-                @php
-                    $colors = ['green', 'purple', 'blue'];
-                @endphp
+                <!-- Promotion Section -->
+                <div class="promotion-section">
+                    <div class="promotion-list">
+                        @foreach ($promotion as $promo)
+                            <div class="promotion-card">
+                                <div class="promotion-image">
+                                    <img src="{{ asset('storage/' . $promo->image) }}" alt="{{ $promo->name }}">
+                                </div>
+                                <div class="promotion-content">
+                                    <h3 class="promotion-title">
+                                        <a href="{{ route('news.detail.home', $promo->id) }}">
+                                            {{ $promo->name }}
+                                        </a>
+                                    </h3>
+                                    <div class="promotion-details">
+                                        <div class="promotion-location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            {{ $promo->website ?? 'Website' }}
+                                        </div>
+                                        <div class="promotion-time">
+                                            <i class="far fa-clock"></i>
+                                            {{ $promo->created_at->diffForHumans() }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
 
-                @foreach ($promotion as $key => $promo)
-                    <a href="{{ route('news.detail.home', $promo->id) }}"
-                        class="category-btn {{ $colors[$key] ?? 'green' }}">
-                        {{ $promo->name }}
-                    </a>
-                @endforeach
+                    <div class="pagination-container">
+                        <ul class="pagination">
+                            @for ($i = 1; $i <= $promotion->lastPage(); $i++)
+                                <li class="page-item {{ $i == $promotion->currentPage() ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $promotion->url($i) }}">{{ $i }}</a>
+                                </li>
+                            @endfor
+                        </ul>
+                    </div>
+
+
+                </div>
+
+                <style>
+                    .promotion-section {
+                        margin: 1rem 0;
+                    }
+
+                    .promotion-list {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 1rem;
+                    }
+
+                    .pagination {
+                        display: flex;
+                        justify-content: center;
+                        padding: 10px;
+                        list-style: none;
+                    }
+
+                    .pagination .page-item {
+                        margin: 0 5px;
+                    }
+
+                    .pagination .page-item a {
+                        display: block;
+                        padding: 8px 12px;
+                        color: #007bff;
+                        text-decoration: none;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                    }
+
+                    .pagination .page-item.active a {
+                        background-color: #007bff;
+                        color: white;
+                        border-color: #007bff;
+                    }
+
+                    .promotion-card {
+                        display: flex;
+                        background: #fff;
+                        border-radius: 8px;
+                        overflow: hidden;
+                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                        transition: transform 0.2s;
+                    }
+
+                    .promotion-card:hover {
+                        transform: translateY(-2px);
+                    }
+
+                    .promotion-image {
+                        width: 120px;
+                        height: 120px;
+                        flex-shrink: 0;
+                    }
+
+                    .promotion-image img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+
+                    .promotion-content {
+                        padding: 1rem;
+                        flex-grow: 1;
+                    }
+
+                    .promotion-title {
+                        margin: 0 0 0.5rem 0;
+                    }
+
+                    .promotion-title a {
+                        color: #22c55e;
+                        text-decoration: none;
+                        font-size: 1.1rem;
+                        font-weight: 600;
+                    }
+
+                    .promotion-details {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 1rem;
+                        align-items: center;
+                        font-size: 0.9rem;
+                        color: #666;
+                    }
+
+                    .promotion-location,
+                    .promotion-time {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    }
+
+                    .status-tag {
+                        padding: 0.25rem 0.5rem;
+                        background-color: #f3f4f6;
+                        border-radius: 4px;
+                        font-size: 0.8rem;
+                    }
+
+                    .promotion-actions {
+                        margin-left: auto;
+                    }
+
+                    .favorite-btn {
+                        background: none;
+                        border: none;
+                        cursor: pointer;
+                        padding: 0.5rem;
+                        color: #666;
+                    }
+
+                    .favorite-btn:hover {
+                        color: #ef4444;
+                    }
+
+                    .pagination-container {
+                        margin-top: 1rem;
+                        display: flex;
+                        justify-content: center;
+                    }
+
+                    @media (max-width: 640px) {
+                        .promotion-card {
+                            flex-direction: column;
+                        }
+
+                        .promotion-image {
+                            width: 100%;
+                            height: 200px;
+                        }
+
+                        .promotion-details {
+                            flex-direction: column;
+                            align-items: flex-start;
+                            gap: 0.5rem;
+                        }
+                    }
+                </style>
             </div>
         </div>
 
