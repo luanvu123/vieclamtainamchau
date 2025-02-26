@@ -123,6 +123,8 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
     Route::post('reset-password', [CandidateForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 });
 
+
+
 Route::prefix('employer')->name('employer.')->group(function () {
     // Authentication Routes
     Route::get('job-posting/find-candidate', [JobPostingController::class, 'findCandidate'])

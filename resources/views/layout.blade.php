@@ -10,6 +10,11 @@
         href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
     <!-- Thêm Toastr CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+ <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
+
+
 
     <title>Vieclamtainamchau</title>
     <style>
@@ -341,6 +346,27 @@
             border-radius: 50%;
             object-fit: cover;
         }
+.search-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+    color: #666;
+}
+
+.search-btn:hover {
+    transform: scale(1.1);
+    color: #007bff;
+}
+
+.search-btn svg {
+    width: 20px;
+    height: 20px;
+}
 
         .auth-name {
             font-size: 1rem;
@@ -783,7 +809,7 @@
         }
 
         .partner-logo img {
-            max-width: 100px;
+            max-width: 60px;
         }
 
         .keywords-section {
@@ -1134,10 +1160,10 @@
         }
 
         .partner-logo img {
-            width: 120px;
-            height: 80px;
-            object-fit: contain;
-            margin-bottom: 1rem;
+                width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
         }
 
         .partner-info {
@@ -1275,7 +1301,7 @@
             }
 
             .partner-logo img {
-                width: 100px;
+                width: 60px;
                 height: 60px;
             }
 
@@ -2203,35 +2229,37 @@
         }
 
         /* Styling cho navigation chính */
-        .nav {
-            background-color: #ff0c0c;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+      .nav {
+    background-color: #ff0c0c;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+}
 
-        .nav ul {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
+.nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
-        .nav>ul>li {
-            position: relative;
-        }
+.nav ul li {
+    position: relative;
+}
 
-        .nav ul li a {
-            color: #ffffff;
-            display: block;
-            padding: 15px 20px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
+.nav ul li a {
+    color: #ffffff;
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
 
-        .nav>ul>li>a:hover {
-            background-color: #f5f5f5;
-            color: #2563eb;
-            /* màu xanh khi hover */
-        }
+.nav ul li a:hover {
+    background-color: #f5f5f5;
+    color: #2563eb;
+}
+
 
         /* Styling cho dropdown */
         .dropdown-menu {
@@ -2381,55 +2409,48 @@
             display: block;
         }
 
- .nav ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-    }
+        .nav li {
+            position: relative;
+        }
 
-    .nav li {
-        position: relative;
-    }
+        .nav a {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: inherit;
+        }
 
-    .nav a {
-        display: block;
-        padding: 10px 15px;
-        text-decoration: none;
-        color: inherit;
-    }
+        /* Dropdown styles */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fc0000;
+            min-width: 200px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
 
-    /* Dropdown styles */
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #fc0000;
-        min-width: 200px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        z-index: 1000;
-    }
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
 
-    .dropdown-content a {
-        color: #333;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-    }
+        .dropdown-content a:hover {
+            background-color: #880404;
+        }
 
-    .dropdown-content a:hover {
-        background-color: #880404;
-    }
+        /* Show dropdown on hover */
+        .nav li:hover .dropdown-content {
+            display: block;
+        }
 
-    /* Show dropdown on hover */
-    .nav li:hover .dropdown-content {
-        display: block;
-    }
-
-    /* Dropdown arrow */
-    .dropdown-arrow {
-        display: inline-block;
-        margin-left: 5px;
-    }
+        /* Dropdown arrow */
+        .dropdown-arrow {
+            display: inline-block;
+            margin-left: 5px;
+        }
     </style>
 </head>
 
@@ -2510,33 +2531,33 @@
             </div>
         </div>
         <nav class="nav">
-    <ul>
-        <li><a href="{{ route('/') }}">Trang chủ</a></li>
-        @if (isset($genre_home) && $genre_home->count() > 0)
-            @foreach ($genre_home as $genre)
-                <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
-            @endforeach
-        @endif
-        <li><a href="{{ route('site.study-abroad') }}">Du học nghề</a></li>
-<li>
-    <a href="{{ route('site.language-training') }}">
-        Đơn vị đào tạo ngôn ngữ
-        <span class="dropdown-arrow">▼</span>
-    </a>
-    @if(isset($languageTrainings_app) && $languageTrainings_app->count() > 0)
-        <div class="dropdown-content">
-            @foreach($languageTrainings_app as $training)
-                <a href="{{ route('site.language-training.detail', $training->slug) }}">
-                    {{ $training->name }}
-                </a>
-            @endforeach
-        </div>
-    @endif
-</li>
-        <li><a href="{{ route('news.home') }}">Tin tức</a></li>
-        <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
-    </ul>
-</nav>
+            <ul>
+                <li><a href="{{ route('/') }}">Trang chủ</a></li>
+                @if (isset($genre_home) && $genre_home->count() > 0)
+                    @foreach ($genre_home as $genre)
+                        <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
+                    @endforeach
+                @endif
+                <li><a href="{{ route('site.study-abroad') }}">Du học nghề</a></li>
+                <li>
+                    <a href="{{ route('site.language-training') }}">
+                        Đơn vị đào tạo ngôn ngữ
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    @if (isset($languageTrainings_app) && $languageTrainings_app->count() > 0)
+                        <div class="dropdown-content">
+                            @foreach ($languageTrainings_app as $training)
+                                <a href="{{ route('site.language-training.detail', $training->slug) }}">
+                                    {{ $training->name }}
+                                </a>
+                            @endforeach
+                        </div>
+                    @endif
+                </li>
+                <li><a href="{{ route('news.home') }}">Tin tức</a></li>
+                <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
+            </ul>
+        </nav>
 
 
     </header>
@@ -2891,7 +2912,9 @@
             }
         });
     </script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
     <script>
         new MultiSelectTag('countries') // id
     </script>

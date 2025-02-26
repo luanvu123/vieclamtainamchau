@@ -266,7 +266,7 @@
         }
 
         .partner-logo img {
-            max-width: 100px;
+            max-width: 60px;
         }
 
         .keywords-section {
@@ -516,10 +516,11 @@
         }
 
         .partner-logo img {
-            width: 120px;
-            height: 80px;
-            object-fit: contain;
-            margin-bottom: 1rem;
+               width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+
         }
 
         .partner-info {
@@ -615,7 +616,7 @@
             }
 
             .partner-logo img {
-                width: 100px;
+                width: 60px;
                 height: 60px;
             }
 

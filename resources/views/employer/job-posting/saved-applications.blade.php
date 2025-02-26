@@ -174,7 +174,6 @@
                             <tr>
                                 <th>#</th>
                                 <th>Tên ứng viên</th>
-                                <th>Email</th>
                                 <th>Vị trí ứng tuyển</th>
                                 <th>Ngày nộp</th>
                                 <th>CV</th>
@@ -187,8 +186,8 @@
                             @foreach ($savedApplications as $key=> $application)
                                 <tr data-application-id="{{ $application->id }}">
                                     <td>{{ $key }}</td>
-                                    <td>{{ $application->candidate->name }}</td>
-                                    <td>{{ $application->candidate->email }}</td>
+                                    <td>{{ $application->candidate->name }} -  {{ $application->candidate->email }}</td>
+
                                     <td>{{ $application->jobPosting->title }}</td>
                                     <td>{{ $application->created_at->format('d/m/Y H:i') }}</td>
                                     <td>

@@ -22,7 +22,13 @@
                         </option>
                     @endforeach
                 </select>
-                <button class="search-btn" type="submit">Tìm kiếm</button>
+               <button class="search-btn" type="submit">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+</button>
+
             </form>
         </div>
     </section>
@@ -512,7 +518,7 @@
                         <img src="{{ asset('storage/' . $partner->avatar) }}" alt="{{ $partner->company_name }}"
                             onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
                         <div class="partner-info">
-                            <h3>{{ $partner->company_name }}</h3>
+                            <h5>{{ $partner->company_name }}</h5>
                             <div class="position-count">
                                 <i class="fas fa-briefcase"></i>
                                 <span>{{ $partner->job_postings_count }} vị trí đang tuyển</span>

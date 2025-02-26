@@ -1,6 +1,6 @@
 @extends('layout')
 @section('content')
-     <section class="hotlines-section">
+    <section class="hotlines-section">
         <div class="sidebar">
             <div class="menu-section">
                 <div class="menu-title">Quản lý đăng tuyển dụng</div>
@@ -53,7 +53,7 @@
                     <tbody>
                         @foreach ($jobPostings as $key => $job)
                             <tr>
-                                <td>{{$key}}</td>
+                                <td>{{ $key }}</td>
                                 <td>{{ $job->title }}</td>
                                 <td>{{ $job->closing_date }}</td>
                                 <td>{{ $job->views }}</td>
