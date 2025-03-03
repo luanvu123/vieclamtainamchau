@@ -242,13 +242,17 @@
                     <i>👥</i>
                     <span>Hồ sơ đã nộp</span>
                 </a>
-                <a href="{{ route('news.home') }}" class="menu-item">
+                <a href="{{ route('candidate.saved.jobs') }}" class="menu-item">
                     <i>❤️</i>
-                    <span>Cẩm nang nghề nghiệp</span>
+                    <span>Hồ sơ đã lưu</span>
                 </a>
                 <a href="{{ route('candidate.notifications') }}" class="menu-item">
                     <i>📋</i>
                     <span>Thông báo</span>
+                </a>
+                 <a href="{{ route('saved.study.abroad') }}" class="menu-item">
+                    <i>❤️</i>
+                    <span>Du học nghề đã lưu</span>
                 </a>
             </div>
 

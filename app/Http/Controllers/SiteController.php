@@ -131,32 +131,23 @@ class SiteController extends Controller
 
         return view('pages.genre', compact('genre', 'genres', 'categories', 'countries', 'jobsByCountry'));
     }
-  public function job($slug)
-{
-    $jobPosting = JobPosting::where('slug', $slug)
-        ->with('employer')
-        ->firstOrFail();
+    public function job($slug)
+    {
+        $jobPosting = JobPosting::where('slug', $slug)
+            ->with('employer')
+            ->firstOrFail();
+        $jobPosting->increment('views');
+        $orderJob = JobPosting::where('employer_id', $jobPosting->employer_id)
+            ->where('slug', '!=', $slug)
+            ->where('status', 'active')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
 
-    $jobPosting->increment('views');
+        $categories = Category::where('status', 'active')->where('isHot', 0)->get();
 
-    $orderJob = JobPosting::where('employer_id', $jobPosting->employer_id)
-        ->where('slug', '!=', $slug)
-        ->where('status', 'active')
-        ->orderBy('created_at', 'desc')
-        ->limit(5)
-        ->get();
-
-    $categories = Category::where('status', 'active')
-        ->where('isHot', 0)
-        ->get();
-
-    // Eager load savedJobPostings nếu user đã đăng nhập
-    if (auth()->guard('candidate')->check()) {
-        auth()->guard('candidate')->user()->load('savedJobPostings');
+        return view('pages.job', compact('jobPosting', 'categories', 'orderJob'));
     }
-
-    return view('pages.job', compact('jobPosting', 'categories', 'orderJob'));
-}
     public function category($slug)
     {
         $categories = Category::where('status', 'active')->where('isHot', 0)->get();

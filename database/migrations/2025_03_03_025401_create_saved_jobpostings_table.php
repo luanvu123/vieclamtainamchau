@@ -13,7 +13,7 @@ class CreateSavedJobpostingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('saved_jobpostings', function (Blueprint $table) {
+        Schema::create('saved_job_postings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('candidate_id');
             $table->unsignedBigInteger('job_posting_id');

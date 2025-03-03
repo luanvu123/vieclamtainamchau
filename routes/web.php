@@ -17,6 +17,7 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SavedJobController;
+use App\Http\Controllers\SavedStudyAbroadController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StudyAbroadController;
 use Illuminate\Support\Facades\Route;
@@ -99,8 +100,20 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
     Route::post('/notifications/clear-all', [CandidateProfileController::class, 'clearAllNotifications'])
         ->name('notifications.clear-all');
     Route::get('/applications', [CandidateProfileController::class, 'applications'])->middleware('candidate')->name('applications');
- Route::post('/save-job/{jobPostingId}', [SavedJobController::class, 'toggleSave'])->name('save.job');
-Route::get('/saved-jobs', [SavedJobController::class, 'savedJobs'])->middleware('candidate')->name('saved.jobs');
+    Route::post('/save-job/{jobPostingId}', [SavedJobController::class, 'toggleSave'])
+        ->middleware('candidate')
+        ->name('save.job');
+
+    Route::get('/jobs/{jobPostingId}/check-saved', [SavedJobController::class, 'checkSaved'])
+        ->middleware('candidate')
+        ->name('check.saved.job');
+
+         Route::post('/save-study-abroad/{studyAbroadId}', [SavedStudyAbroadController::class, 'toggleSave'])->middleware('candidate')->name('save.study.abroad');
+    Route::get('/study-abroad/{studyAbroadId}/check-saved', [SavedStudyAbroadController::class, 'checkSaved'])->middleware('candidate')->name('check.saved.study.abroad');
+    Route::get('/saved-study-abroad', [SavedStudyAbroadController::class, 'savedStudyAbroad'])->middleware('candidate')->name('saved.study.abroad');
+
+    Route::get('/saved-jobs', [SavedJobController::class, 'savedJobs'])->middleware('candidate')->name('saved.jobs');
+
     Route::get('register', [CandidateAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [CandidateAuthController::class, 'register'])->name('register.submit');
     Route::get('login', [CandidateAuthController::class, 'showLoginForm'])->name('login');

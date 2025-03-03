@@ -1,37 +1,58 @@
 <?php
-// Trong file app/Http/Controllers/SavedJobController.php
 
 namespace App\Http\Controllers;
 
+use App\Models\SavedJobPosting;
 use Illuminate\Http\Request;
 use App\Models\JobPosting;
 use Illuminate\Support\Facades\Auth;
 
 class SavedJobController extends Controller
 {
-    public function toggleSave($jobPostingId)
+   public function toggleSave($jobPostingId)
     {
-        $candidate = Auth::guard('candidate')->user();
+        $candidateId = Auth::guard('candidate')->id();
 
-        if (!$candidate) {
-            return response()->json(['error' => 'Bạn cần đăng nhập để thực hiện chức năng này'], 401);
+        if (!$candidateId) {
+            return response()->json(['success' => false, 'error' => 'Unauthorized'], 401);
         }
 
-        $jobPosting = JobPosting::findOrFail($jobPostingId);
+        // Kiểm tra xem công việc đã được lưu chưa
+        $savedJob = SavedJobPosting::where('candidate_id', $candidateId)
+            ->where('job_posting_id', $jobPostingId)
+            ->first();
 
-        // Kiểm tra xem tin tuyển dụng đã được lưu chưa
-        $exists = $candidate->savedJobPostings()->where('job_posting_id', $jobPostingId)->exists();
-
-        if ($exists) {
-            // Nếu đã lưu, bỏ lưu
-            $candidate->savedJobPostings()->detach($jobPostingId);
-            return response()->json(['saved' => false, 'message' => 'Đã bỏ lưu tin tuyển dụng']);
+        if ($savedJob) {
+            // Nếu đã lưu, xóa khỏi danh sách
+            $savedJob->delete();
+            return response()->json(['success' => true, 'saved' => false, 'message' => 'Đã xóa khỏi danh sách yêu thích!']);
         } else {
-            // Nếu chưa lưu, lưu tin
-            $candidate->savedJobPostings()->attach($jobPostingId);
-            return response()->json(['saved' => true, 'message' => 'Đã lưu tin tuyển dụng']);
+            // Nếu chưa lưu, thêm vào danh sách
+            SavedJobPosting::create([
+                'candidate_id' => $candidateId,
+                'job_posting_id' => $jobPostingId
+            ]);
+
+            return response()->json(['success' => true, 'saved' => true, 'message' => 'Đã thêm vào danh sách yêu thích!']);
         }
     }
+
+    // Kiểm tra xem công việc đã được lưu hay chưa
+    public function checkSaved($jobPostingId)
+    {
+        $candidateId = Auth::guard('candidate')->id();
+
+        if (!$candidateId) {
+            return response()->json(['success' => false, 'error' => 'Unauthorized'], 401);
+        }
+
+        $isSaved = SavedJobPosting::where('candidate_id', $candidateId)
+            ->where('job_posting_id', $jobPostingId)
+            ->exists();
+
+        return response()->json(['success' => true, 'saved' => $isSaved]);
+    }
+
 
     public function savedJobs()
     {

@@ -64,14 +64,17 @@ class Candidate extends Authenticatable
         'email_verified_at' => 'datetime',
         'dob' => 'date',
     ];
-     public function categories()
+    public function categories()
     {
         return $this->belongsToMany(Category::class, 'candidate_category');
     }
-      public function savedJobPostings()
+    public function savedJobPostings()
     {
-        return $this->belongsToMany(JobPosting::class, 'saved_jobpostings')
-                    ->withTimestamps();
+        return $this->belongsToMany(JobPosting::class, 'saved_job_postings')
+            ->withTimestamps();
+    }
+    public function savedStudyAbroad()
+    {
+        return $this->hasMany(SavedStudyAbroad::class, 'candidate_id');
     }
 }
-

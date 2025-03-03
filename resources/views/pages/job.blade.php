@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-   
+
     <style>
         /* Reset & General Styles */
         * {
@@ -553,17 +553,45 @@
 
 
 
-            <!-- Cập nhật lại nút và script để đảm bảo chức năng hoạt động đúng -->
             <div class="buttons">
                 <div id="applicationStatus_{{ $jobPosting->id }}">
                     <!-- Sẽ được JavaScript cập nhật -->
                 </div>
                 <button class="apply-btn" onclick="applyJob({{ $jobPosting->id }})">Nộp hồ sơ</button>
-                <button class="save-job-btn" id="saveJobBtn_{{ $jobPosting->id }}"
-                    onclick="saveJob({{ $jobPosting->id }})">
-                    <i class="far fa-heart"></i> Thêm yêu thích
+                <button class="save-btn" onclick="toggleSaveJob({{ $jobPosting->id }})">
+                    ♡
                 </button>
             </div>
+
+            <script>
+                function toggleSaveJob(jobPostingId) {
+                    fetch(`candidate/save-job/${jobPostingId}`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.saved) {
+                                alert('Đã thêm vào danh sách yêu thích!');
+                            } else {
+                                alert('Đã xóa khỏi danh sách yêu thích!');
+                            }
+                        })
+                        .catch(error => console.error('Lỗi:', error));
+                }
+            </script>
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1041,88 +1069,81 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-                // Tab switching functionality
-                const tabs = document.querySelectorAll('.tab');
-                const tabContents = document.querySelectorAll('.tab-content');
+            // Tab switching functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
 
-                tabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        // Remove active class from all tabs and contents
-                        tabs.forEach(t => t.classList.remove('active'));
-                        tabContents.forEach(content => content.classList.remove('active'));
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
 
-                        // Add active class to clicked tab and corresponding content
-                        tab.classList.add('active');
-                        const tabId = tab.getAttribute('data-tab');
-                        document.getElementById(tabId).classList.add('active');
-                    });
+                    // Add active class to clicked tab and corresponding content
+                    tab.classList.add('active');
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
                 });
+            });
 
-                // Job application functionality
 
 
-                // Save/Unsave job functionality
-                window.toggleSaveJob = function(jobId) {
-                    @auth
-                    const saveBtn = document.querySelector('.save-btn');
 
-                    fetch(`/jobs/${jobId}/toggle-save`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            window.toggleSaveJob = function(jobId) {
+                fetch(`/candidate/save-job/${jobId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const saveBtn = document.querySelector(`.save-btn`);
+                            if (data.saved) {
+                                saveBtn.innerHTML = '❤️';
+                                saveBtn.classList.add('saved');
+                            } else {
+                                saveBtn.innerHTML = '♡';
+                                saveBtn.classList.remove('saved');
                             }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Toggle heart icon
-                                if (data.saved) {
-                                    saveBtn.innerHTML = '❤️';
-                                    saveBtn.classList.add('saved');
-                                } else {
-                                    saveBtn.innerHTML = '♡';
-                                    saveBtn.classList.remove('saved');
-                                }
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Có lỗi xảy ra khi lưu công việc.');
-                        });
-                @else
-                    window.location.href = '{{ route('login') }}';
-                @endauth
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Lỗi:', error);
+                        alert('Có lỗi xảy ra khi lưu công việc.');
+                    });
             };
 
-            // Check if job is saved on page load
-            @auth fetch(`/jobs/{{ $jobPosting->id }}/check-saved`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.saved) {
-                    document.querySelector('.save-btn').innerHTML = '❤️';
-                    document.querySelector('.save-btn').classList.add('saved');
-                }
-            });
-        @endauth
+            // Kiểm tra xem công việc đã được lưu hay chưa khi tải trang
+            fetch(`/candidate/jobs/{{ $jobPosting->id }}/check-saved`)
+                .then(response => response.json())
+                .then(data => {
+                    const saveBtn = document.querySelector(`.save-btn`);
+                    if (data.saved) {
+                        saveBtn.innerHTML = '❤️';
+                        saveBtn.classList.add('saved');
+                    }
+                });
 
-        // Image gallery modal
-        const galleryItems = document.querySelectorAll('.gallery-item img');
-        galleryItems.forEach(img => {
-        img.addEventListener('click', () => {
-            // Create modal
-            const modal = document.createElement('div');
-            modal.classList.add('gallery-modal');
-            modal.innerHTML = `
+            // Image gallery modal
+            const galleryItems = document.querySelectorAll('.gallery-item img');
+            galleryItems.forEach(img => {
+                img.addEventListener('click', () => {
+                    // Create modal
+                    const modal = document.createElement('div');
+                    modal.classList.add('gallery-modal');
+                    modal.innerHTML = `
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <img src="${img.src}" alt="${img.alt}">
                 </div>
             `;
 
-            // Add modal styles
-            const style = document.createElement('style');
-            style.textContent = `
+                    // Add modal styles
+                    const style = document.createElement('style');
+                    style.textContent = `
                 .gallery-modal {
                     display: flex;
                     position: fixed;
@@ -1154,22 +1175,22 @@
                     cursor: pointer;
                 }
             `;
-            document.head.appendChild(style);
+                    document.head.appendChild(style);
 
-            // Add modal to body
-            document.body.appendChild(modal);
+                    // Add modal to body
+                    document.body.appendChild(modal);
 
-            // Close modal functionality
-            modal.querySelector('.close').addEventListener('click', () => {
-                modal.remove();
+                    // Close modal functionality
+                    modal.querySelector('.close').addEventListener('click', () => {
+                        modal.remove();
+                    });
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.remove();
+                        }
+                    });
+                });
             });
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.remove();
-                }
-            });
-        });
-        });
         });
     </script>
     <script>

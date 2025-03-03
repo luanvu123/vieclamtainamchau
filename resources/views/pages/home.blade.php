@@ -22,12 +22,13 @@
                         </option>
                     @endforeach
                 </select>
-               <button class="search-btn" type="submit">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"></circle>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-    </svg>
-</button>
+                <button class="search-btn" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
 
             </form>
         </div>
@@ -118,7 +119,10 @@
                                 {{ now()->locale('vi')->translatedFormat('j F, Y') }}
                             </div>
 
-                            <h3>{{ $study->name }}</h3>
+                            <h3>{{ $study->name }}
+                                 <button class="save-btn" data-id="{{ $study->id }}"
+                                        onclick="toggleSaveStudyAbroad({{ $study->id }})"class="btn-detail">♡</button>
+                            </h3>
                             <div class="job-details">
                                 {{ $study->short_detail }}
 
@@ -134,6 +138,8 @@
                                 </span>
                                 <div class="action-buttons">
                                     <button class="btn-participate" onclick="showRegisterPopup()">THAM GIA</button>
+
+
                                     <a href="{{ route('study-abroad.show', $study->slug) }}" class="btn-detail">XEM CHI
                                         TIẾT</a>
                                 </div>
@@ -571,5 +577,57 @@
 
         </div>
     </section>
+
+    <script>
+        window.toggleSaveStudyAbroad = function(studyAbroadId) {
+            document.querySelectorAll(".save-btn").forEach(button => {
+                button.addEventListener("click", function() {
+                    const studyAbroadId = this.dataset.id;
+                    toggleSaveStudyAbroad(studyAbroadId);
+                });
+            });
+
+            fetch(`/candidate/save-study-abroad/${studyAbroadId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const saveBtn = document.querySelector(`.save-btn[data-id="${studyAbroadId}"]`);
+                        if (data.saved) {
+                            saveBtn.innerHTML = '❤️';
+                            saveBtn.classList.add('saved');
+                        } else {
+                            saveBtn.innerHTML = '♡';
+                            saveBtn.classList.remove('saved');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                    alert('Có lỗi xảy ra khi lưu chương trình du học.');
+                });
+        };
+
+        // Kiểm tra nếu chương trình đã được lưu
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".save-btn").forEach(button => {
+                const studyAbroadId = button.dataset.id;
+
+                fetch(`/candidate/study-abroad/${studyAbroadId}/check-saved`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.saved) {
+                            button.innerHTML = '❤️';
+                            button.classList.add('saved');
+                        }
+                    });
+            });
+        });
+    </script>
     <!-- End Cart Area  -->
 @endsection
