@@ -376,7 +376,7 @@
                      <i>📋</i>
                      <span>Thông báo</span>
                  </a>
-                  <a href="{{ route('saved.study.abroad') }}" class="menu-item">
+                  <a href="{{ route('candidate.saved.study.abroad') }}" class="menu-item">
                     <i>❤️</i>
                     <span>Du học nghề đã lưu</span>
                 </a>
