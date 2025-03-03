@@ -68,5 +68,10 @@ class Candidate extends Authenticatable
     {
         return $this->belongsToMany(Category::class, 'candidate_category');
     }
+      public function savedJobPostings()
+    {
+        return $this->belongsToMany(JobPosting::class, 'saved_jobpostings')
+                    ->withTimestamps();
+    }
 }
 

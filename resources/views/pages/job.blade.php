@@ -1,6 +1,7 @@
 @extends('layout')
 
 @section('content')
+   
     <style>
         /* Reset & General Styles */
         * {
@@ -552,128 +553,137 @@
 
 
 
-           <div class="buttons">
-    <div id="applicationStatus_{{ $jobPosting->id }}">
-        <!-- Sẽ được JavaScript cập nhật -->
-    </div>
-    <button class="apply-btn" onclick="applyJob({{ $jobPosting->id }})">Nộp hồ sơ</button>
-</div>
+            <!-- Cập nhật lại nút và script để đảm bảo chức năng hoạt động đúng -->
+            <div class="buttons">
+                <div id="applicationStatus_{{ $jobPosting->id }}">
+                    <!-- Sẽ được JavaScript cập nhật -->
+                </div>
+                <button class="apply-btn" onclick="applyJob({{ $jobPosting->id }})">Nộp hồ sơ</button>
+                <button class="save-job-btn" id="saveJobBtn_{{ $jobPosting->id }}"
+                    onclick="saveJob({{ $jobPosting->id }})">
+                    <i class="far fa-heart"></i> Thêm yêu thích
+                </button>
+            </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        checkApplicationStatus({{ $jobPosting->id }});
-    });
 
-    function checkApplicationStatus(jobId) {
-        fetch(`/candidate/check-application/${jobId}`)
-            .then(response => response.json())
-            .then(data => {
-                const statusDiv = document.getElementById(`applicationStatus_${jobId}`);
-                if (data.hasApplied) {
-                    const applicationDate = new Date(data.applicationDate).toLocaleDateString('vi-VN');
-                    const lastUpdateDate = data.lastUpdateDate
-                        ? new Date(data.lastUpdateDate).toLocaleDateString('vi-VN')
-                        : null;
 
-                    statusDiv.innerHTML = `
+
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    checkApplicationStatus({{ $jobPosting->id }});
+                });
+
+                function checkApplicationStatus(jobId) {
+                    fetch(`/candidate/check-application/${jobId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const statusDiv = document.getElementById(`applicationStatus_${jobId}`);
+                            if (data.hasApplied) {
+                                const applicationDate = new Date(data.applicationDate).toLocaleDateString('vi-VN');
+                                const lastUpdateDate = data.lastUpdateDate ?
+                                    new Date(data.lastUpdateDate).toLocaleDateString('vi-VN') :
+                                    null;
+
+                                statusDiv.innerHTML = `
                         <div class="application-status">
                             Đã nộp hồ sơ - Ngày nộp: ${applicationDate}
                             ${lastUpdateDate ? `<br>Cập nhật lần cuối: ${lastUpdateDate}` : ''}
                         </div>`;
 
-                    const applyBtn = document.querySelector('.apply-btn');
-                    applyBtn.textContent = 'Nộp lại hồ sơ';
+                                const applyBtn = document.querySelector('.apply-btn');
+                                applyBtn.textContent = 'Nộp lại hồ sơ';
+                            }
+                        })
+                        .catch(error => console.error('Error checking application status:', error));
                 }
-            })
-            .catch(error => console.error('Error checking application status:', error));
-    }
 
-    function applyJob(jobId) {
-        document.getElementById('jobPostingId').value = jobId;
-        document.getElementById('applicationModal').style.display = 'block';
-    }
+                function applyJob(jobId) {
+                    document.getElementById('jobPostingId').value = jobId;
+                    document.getElementById('applicationModal').style.display = 'block';
+                }
 
-    // Đóng modal
-    document.querySelector('.close').onclick = function () {
-        document.getElementById('applicationModal').style.display = 'none';
-    };
-
-    window.onclick = function (event) {
-        if (event.target == document.getElementById('applicationModal')) {
-            document.getElementById('applicationModal').style.display = 'none';
-        }
-    };
-
-    // Xử lý gửi form
-    document.getElementById('applicationForm').onsubmit = function (e) {
-        e.preventDefault();
-
-        const formData = new FormData(this);
-
-        fetch('{{ route('candidate.apply') }}', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    alert(data.message);
+                // Đóng modal
+                document.querySelector('.close').onclick = function() {
                     document.getElementById('applicationModal').style.display = 'none';
-                    document.getElementById('applicationForm').reset();
-                    checkApplicationStatus(document.getElementById('jobPostingId').value);
-                } else {
-                    alert(data.message);
+                };
+
+                window.onclick = function(event) {
+                    if (event.target == document.getElementById('applicationModal')) {
+                        document.getElementById('applicationModal').style.display = 'none';
+                    }
+                };
+
+                // Xử lý gửi form
+                document.getElementById('applicationForm').onsubmit = function(e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(this);
+
+                    fetch('{{ route('candidate.apply') }}', {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                alert(data.message);
+                                document.getElementById('applicationModal').style.display = 'none';
+                                document.getElementById('applicationForm').reset();
+                                checkApplicationStatus(document.getElementById('jobPostingId').value);
+                            } else {
+                                alert(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            alert('Có lỗi xảy ra, vui lòng thử lại');
+                        });
+                };
+            </script>
+            <style>
+                .application-status-container {
+                    margin-bottom: 1rem;
                 }
-            })
-            .catch(error => {
-                alert('Có lỗi xảy ra, vui lòng thử lại');
-            });
-    };
-</script>
-<style>
-    .application-status-container {
-        margin-bottom: 1rem;
-    }
 
-    .application-status {
-        background-color: #f8f9fa;
-        border: 1px solid #e9ecef;
-        border-radius: 6px;
-        padding: 1rem;
-    }
+                .application-status {
+                    background-color: #f8f9fa;
+                    border: 1px solid #e9ecef;
+                    border-radius: 6px;
+                    padding: 1rem;
+                }
 
-    .status-item {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 0.5rem;
-    }
+                .status-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    margin-bottom: 0.5rem;
+                }
 
-    .status-item:last-child {
-        margin-bottom: 0;
-    }
+                .status-item:last-child {
+                    margin-bottom: 0;
+                }
 
-    .status-item i {
-        color: #0d6efd;
-        width: 20px;
-    }
+                .status-item i {
+                    color: #0d6efd;
+                    width: 20px;
+                }
 
-    .status-item span {
-        color: #495057;
-        font-size: 0.9rem;
-    }
+                .status-item span {
+                    color: #495057;
+                    font-size: 0.9rem;
+                }
 
-    .apply-btn.reapply {
-        background-color: #198754;
-    }
+                .apply-btn.reapply {
+                    background-color: #198754;
+                }
 
-    .apply-btn.reapply:hover {
-        background-color: #146c43;
-    }
-</style>
+                .apply-btn.reapply:hover {
+                    background-color: #146c43;
+                }
+            </style>
         </div>
 
         <!-- Tabs -->
@@ -1325,4 +1335,5 @@
             }
         }
     </script>
+
 @endsection

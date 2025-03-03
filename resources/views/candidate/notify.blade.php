@@ -380,7 +380,7 @@
 
         </div>
 
-        <div class="container mx-auto px-4 py-6">
+       <div class="main-content">
             <div class="bg-white rounded-lg shadow">
                 <div class="p-4 border-b flex justify-between items-center">
                     <h2 class="text-xl font-semibold">Thông báo</h2>

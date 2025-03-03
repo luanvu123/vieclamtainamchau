@@ -65,4 +65,9 @@ class JobPosting extends Model
     {
         return $this->hasMany(Application::class);
     }
+      public function savedByCandidates()
+    {
+        return $this->belongsToMany(Candidate::class, 'saved_jobpostings')
+                    ->withTimestamps();
+    }
 }

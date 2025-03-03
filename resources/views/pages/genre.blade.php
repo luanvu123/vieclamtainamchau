@@ -221,6 +221,18 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+        .custom-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.countries-container .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
     </style>
     <section class="hero">
         <div class="search-bar">
@@ -271,19 +283,19 @@
         <h1>Bài đăng tuyển dụng trong thể loại: {{ $genre->name }}</h1>
         <br>
         <div class="countries-container">
-            @foreach ($countries->chunk(8) as $chunk)
-                <div class="row">
-                    @foreach ($chunk as $country)
-                        <div class="country-item" data-country-id="{{ $country->id }}">
-                            <a href="javascript:void(0)">
-                                <img src="{{ asset('storage/' . $country->image) }}" alt="{{ $country->name }}"
-                                    class="flag">
-                                <span class="country-name">{{ $country->name }}</span>
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
-            @endforeach
+           @foreach ($countries->chunk(8) as $chunk)
+    <div class="custom-row">
+        @foreach ($chunk as $country)
+            <div class="country-item" data-country-id="{{ $country->id }}">
+                <a href="javascript:void(0)">
+                    <img src="{{ asset('storage/' . $country->image) }}" alt="{{ $country->name }}" class="flag">
+                    <span class="country-name">{{ $country->name }}</span>
+                </a>
+            </div>
+        @endforeach
+    </div>
+@endforeach
+
         </div>
     </section>
 
