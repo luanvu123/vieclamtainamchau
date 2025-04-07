@@ -25,6 +25,7 @@ use App\Http\Controllers\EmployerManageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\JobPostingController;
+use App\Http\Controllers\LaborexportController;
 use App\Http\Controllers\LanguageTrainingController;
 use App\Http\Controllers\RegisterStudyController;
 use App\Http\Controllers\RoleController;
@@ -61,6 +62,7 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('services', ServiceController::class);
+     Route::resource('labor-exports', LaborexportController::class);
     Route::resource('study-abroads', StudyAbroadController::class);
     Route::resource('language-trainings', LanguageTrainingController::class);
     Route::resource('register-study', RegisterStudyController::class);

@@ -56,9 +56,6 @@
         </tbody>
     </table>
 
-    <!-- Phân trang -->
-    <div class="d-flex justify-content-center">
-        {{ $news->links() }}
-    </div>
+    
 </div>
 @endsection

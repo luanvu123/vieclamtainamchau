@@ -9,8 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="keywords"
-        content="Glance Design Dashboard Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+    <meta name="keywords" content="Glance Design Dashboard Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
 SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
     <script type="application/x-javascript">
         addEventListener("load", function() {
@@ -60,7 +59,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <link rel="stylesheet" href="{{ asset('backend_admin/css/dropzone.min.css') }}">
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#owl-demo').owlCarousel({
                 items: 3,
                 lazyLoad: true,
@@ -124,9 +123,8 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                 <span class="icon-bar"></span>
                             </button>
                             <h1>
-                                <a class="navbar-brand" href="{{ url('/') }}"><span
-                                        class="fa fa-area-chart"></span> HOME<span
-                                        class="dashboard_text">Vieclamtainamchau
+                                <a class="navbar-brand" href="{{ url('/') }}"><span class="fa fa-area-chart"></span>
+                                    HOME<span class="dashboard_text">Vieclamtainamchau
                                         Admin</span></a>
                             </h1>
                         </div>
@@ -144,7 +142,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     $segment = Request::segment(1);
                                 @endphp
                                 <li
-                                    class="treeview {{ Request::is('users*') || Request::is('cv_templates*') || Request::is('countries*') || Request::is('genres*') || Request::is('locations*') || Request::is('roles*') || Request::is('categories*') ? 'active' : '' }}">
+                                    class="treeview {{ Request::is('users*') || Request::is('cv_templates*') || Request::is('countries*') || Request::is('genres*') || Request::is('locations*') || Request::is('roles*') || Request::is('news*') || Request::is('language-trainings*') || Request::is('categories*') ? 'active' : '' }}">
                                     <a href="#">
                                         <img src="{{ asset('backend_admin/images/9165478_unbox_package_icon.svg') }}"
                                             alt="Google" width="20" height="20">
@@ -189,111 +187,127 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                                 <span> Địa điểm tư vấn </span>
                                             </a>
                                         </li>
+                                        <li class="treeview {{ Request::is('language-trainings*') ? 'active' : '' }}">
+                                            <a href="{{ route('language-trainings.index') }}">
+                                                <img src="{{ asset('backend_admin/images/report-comment-svgrepo-com.svg') }}"
+                                                    alt="Google" width="20" height="20"> Đơn vị đào tạo ngôn ngữ
+                                            </a>
+                                        </li>
 
+                                        <li class="treeview {{ Request::is('news*') ? 'active' : '' }}">
+                                            <a href="{{ route('news.index') }}">
+                                                <img src="{{ asset('backend_admin/images/newspaper-news-svgrepo-com.svg') }}"
+                                                    alt="Google" width="20" height="20">
+                                                <span> Tin tức</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
+
                                 <li
-                                    class="treeview {{ Request::is('manage/employers') || Request::is('employer/admin/employers*') ? 'active' : '' }}">
+                                    class="treeview  {{ Request::is('manage/employers') || Request::is('employer/admin/employers*') || Request::is('banks*') || Request::is('manage/job-postings') || Request::is('services*') ||Request::is('labor-exports*') ? 'active' : '' }}">
                                     <a href="{{ route('manage.employers.index') }}">
-                                        <img src="{{ asset('backend_admin/images/company-portal-svgrepo-com.svg') }}"
-                                            alt="Google" width="20" height="20">
-                                        <span> Nhà tuyển dụng</span>
+                                        <i class="fa fa-table"></i> <span>Nhà tuyển dụng</span>
                                         @if ($employerCountTwoHour > 0)
-                                            <span
-                                                class="label label-primary pull-right">{{ $employerCountTwoHour }}</span>
+                                            <span class="label label-primary pull-right">{{ $employerCountTwoHour }}</span>
                                         @endif
+                                          @if ($jobPostingCountTwoHour > 0)
+                                                    <span class="label label-primary pull-right">{{ $jobPostingCountTwoHour }}
+                                                        New</span>
+                                                @endif
+                                        <i class="fa fa-angle-left pull-right"></i>
                                     </a>
-                                </li>
 
-                                <li class="treeview {{ Request::is('candidate-manage*') ? 'active' : '' }}">
-                                    <a href="{{ route('candidate-manage.index') }}">
-                                        <img src="{{ asset('backend_admin/images/candidate-for-elections-svgrepo-com.svg') }}"
-                                            alt="Google" width="20" height="20">
-                                        <span> Ứng viên</span>
-                                        @if ($candidateCountTwoHour > 0)
-                                            <span class="label label-primary pull-right">{{ $candidateCountTwoHour }}
-                                            </span>
-                                        @endif
-                                    </a>
+                                    <ul class="treeview-menu">
+                                        <li class="{{ Request::is('banks*') ? 'active' : '' }}">
+                                            <a href="{{ route('banks.index') }}">
+                                                <img src="{{ asset('backend_admin/images/3018587_admin_administrator_ajax_options_permission_icon.svg') }}"
+                                                    alt="Google" width="20" height="20"> Thông tin thanh
+                                                toán
+                                            </a>
+                                        </li>
+                                        <li class="{{ Request::is('manage/job-postings') ? 'active' : '' }}">
+                                            <a href="{{ route('manage.employers.indexJobPosting') }}">
+                                                <img src="{{ asset('backend_admin/images/file-document-svgrepo-com.svg') }}"
+                                                    alt="Google" width="20" height="20"> Chiến dịch tuyển dụng
+                                                @if ($jobPostingCountTwoHour > 0)
+                                                    <span class="label label-primary pull-right">{{ $jobPostingCountTwoHour }}
+                                                        New</span>
+                                                @endif
+                                            </a>
+                                        </li>
+                                        <li class="{{ Request::is('services*') ? 'active' : '' }}">
+                                            <a href="{{ route('services.index') }}">
+                                                <img src="{{ asset('backend_admin/images/shopping-cart-reversed-svgrepo-com.svg') }}"
+                                                    alt="Google" width="20" height="20"> Danh sách dịch vụ
+                                            </a>
+                                        </li>
                                 </li>
-                                <li class="treeview {{ Request::is('support-manage*') ? 'active' : '' }}">
-                                    <a href="{{ route('support-manage.index') }}">
-                                        <img src="{{ asset('backend_admin/images/support-svgrepo-com.svg') }}"
-                                            alt="Google" width="20" height="20"> Hỗ trợ
-                                        @if ($supportCountTwoHour > 0)
-                                            <span class="label label-primary pull-right">{{ $supportCountTwoHour }}
-                                                New</span>
-                                        @endif
-
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is('banks*') ? 'active' : '' }}">
-                                    <a href="{{ route('banks.index') }}">
-                                        <img src="{{ asset('backend_admin/images/3018587_admin_administrator_ajax_options_permission_icon.svg') }}"
-                                            alt="Google" width="20" height="20"> Thông tin thanh
-                                        toán
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is('services*') ? 'active' : '' }}">
-                                    <a href="{{ route('services.index') }}">
-                                        <img src="{{ asset('backend_admin/images/shopping-cart-reversed-svgrepo-com.svg') }}"
-                                            alt="Google" width="20" height="20"> Danh sách dịch vụ
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is('manage/job-postings') ? 'active' : '' }}">
-                                    <a href="{{ route('manage.employers.indexJobPosting') }}">
-                                        <img src="{{ asset('backend_admin/images/file-document-svgrepo-com.svg') }}"
-                                            alt="Google" width="20" height="20"> Chiến dịch tuyển dụng
-                                        @if ($jobPostingCountTwoHour > 0)
-                                            <span class="label label-primary pull-right">{{ $jobPostingCountTwoHour }}
-                                                New</span>
-                                        @endif
-                                    </a>
-                                </li>
-
-                                <li class="{{ Request::is('study-abroads*') ? 'active' : '' }}">
-                                    <a href="{{ route('study-abroads.index') }}">
-                                        <img src="{{ asset('backend_admin/images/image-svgrepo-com.svg') }}"
+                                <li class="treeview {{ Request::is('labor-exports*') ? 'active' : '' }}">
+                                    <a href="{{ route('labor-exports.index') }}">
+                                        <img src="{{ asset('backend_admin/images/register-svgrepo-com.svg') }}" alt="Google"
                                             width="20" height="20">
-                                        <span> Du học nghề</span>
+                                        <span> Xuất khẩu lao động </span>
                                     </a>
                                 </li>
-                                <li class="{{ Request::is('register-study*') ? 'active' : '' }}">
-                                    <a href="{{ route('register-study.index') }}">
-                                        <img src="{{ asset('backend_admin/images/email2-svgrepo-com.svg') }}"
-                                            width="20" height="20">
-                                        Đăng kí du học nghề
-                                        @if ($registerStudyCountTwoHour > 0)
-                                            <span
-                                                class="label label-primary pull-right">{{ $registerStudyCountTwoHour }}
-                                                New</span>
-                                        @endif
-                                    </a>
-                                </li>
-
-                                <li class="treeview {{ Request::is('language-trainings*') ? 'active' : '' }}">
-                                    <a href="{{ route('language-trainings.index') }}">
-                                        <img src="{{ asset('backend_admin/images/report-comment-svgrepo-com.svg') }}"
-                                            alt="Google" width="20" height="20"> Đơn vị đào tạo ngôn ngữ
-                                    </a>
-                                </li>
-
-                                <li class="treeview {{ Request::is('news*') ? 'active' : '' }}">
-                                    <a href="{{ route('news.index') }}">
-                                        <img src="{{ asset('backend_admin/images/newspaper-news-svgrepo-com.svg') }}"
-                                            alt="Google" width="20" height="20">
-                                        <span> Tin tức</span>
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is('admin/info/edit*') ? 'active' : '' }}">
-                                    <a href="{{ route('info.edit') }}">
-                                        <img src="{{ asset('backend_admin/images/5355692_code_coding_development_programming_web_icon.svg') }}"
-                                            alt="Google" width="20" height="20"> Quản lý giao diện
-                                    </a>
-                                </li>
-
                             </ul>
+                            </li>
+
+                            <li class="treeview {{ Request::is('candidate-manage*') ? 'active' : '' }}">
+                                <a href="{{ route('candidate-manage.index') }}">
+                                    <img src="{{ asset('backend_admin/images/candidate-for-elections-svgrepo-com.svg') }}"
+                                        alt="Google" width="20" height="20">
+                                    <span> Ứng viên</span>
+                                    @if ($candidateCountTwoHour > 0)
+                                        <span class="label label-primary pull-right">{{ $candidateCountTwoHour }}
+                                        </span>
+                                    @endif
+                                </a>
+                            </li>
+                            <li class="treeview {{ Request::is('support-manage*') ? 'active' : '' }}">
+                                <a href="{{ route('support-manage.index') }}">
+                                    <img src="{{ asset('backend_admin/images/support-svgrepo-com.svg') }}" alt="Google"
+                                        width="20" height="20"> Hỗ trợ
+                                    @if ($supportCountTwoHour > 0)
+                                        <span class="label label-primary pull-right">{{ $supportCountTwoHour }}
+                                            New</span>
+                                    @endif
+
+                                </a>
+                            </li>
+
+
+
+
+                            <li class="{{ Request::is('study-abroads*') ? 'active' : '' }}">
+                                <a href="{{ route('study-abroads.index') }}">
+                                    <img src="{{ asset('backend_admin/images/image-svgrepo-com.svg') }}" width="20"
+                                        height="20">
+                                    <span> Du học nghề</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('register-study*') ? 'active' : '' }}">
+                                <a href="{{ route('register-study.index') }}">
+                                    <img src="{{ asset('backend_admin/images/email2-svgrepo-com.svg') }}" width="20"
+                                        height="20">
+                                    Đăng kí du học nghề
+                                    @if ($registerStudyCountTwoHour > 0)
+                                        <span class="label label-primary pull-right">{{ $registerStudyCountTwoHour }}
+                                            New</span>
+                                    @endif
+                                </a>
+                            </li>
+
+
+                            <li class="{{ Request::is('admin/info/edit*') ? 'active' : '' }}">
+                                <a href="{{ route('info.edit') }}">
+                                    <img src="{{ asset('backend_admin/images/5355692_code_coding_development_programming_web_icon.svg') }}"
+                                        alt="Google" width="20" height="20"> Quản lý giao diện
+                                </a>
+
+                                </ul>
                         </div>
+
                         <!-- /.navbar-collapse -->
                     </nav>
                 </aside>
@@ -329,8 +343,8 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                         <div class="profile_img">
                                             <span class="prfil-img">
                                                 @if (Auth::user()->avatar)
-                                                    <img style="width: 40px;height: 40px;border-radius: 50%;object-fit: cover;"src="{{ asset('storage/' . Auth::user()->avatar) }}"
-                                                        alt="">
+                                                    <img style="width: 40px;height: 40px;border-radius: 50%;object-fit: cover;"
+                                                        src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="">
                                                 @else
                                                     <img style="width: 40px;height: 40px;border-radius: 50%;object-fit: cover;"
                                                         src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&amp;s=300"
@@ -348,14 +362,12 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     </a>
                                     <ul class="dropdown-menu drp-mnu">
                                         <li>
-                                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                                onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                                     document.getElementById('logout-form').submit();">
                                                 <i class="fa fa-sign-out"></i> Đăng xuất
                                             </a>
 
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                                class="d-none">
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                                 @csrf
                                             </form>
                                         </li>
@@ -450,8 +462,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                     <script src="{{ asset('backend_admin/js/amcharts.js') }}"></script>
                     <script src="{{ asset('backend_admin/js/serial.js') }}"></script>
                     <script src="{{ asset('backend_admin/js/export.min.js') }}"></script>
-                    <link rel="stylesheet" href="{{ asset('backend_admin/css/export.css') }}" type="text/css"
-                        media="all" />
+                    <link rel="stylesheet" href="{{ asset('backend_admin/css/export.css') }}" type="text/css" media="all" />
                     <script src="{{ asset('backend_admin/js/light.js') }}"></script>
                     <!-- for amcharts js -->
                     <script src="{{ asset('backend_admin/js/index1.js') }}"></script>
@@ -496,7 +507,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             showLeftPush = document.getElementById('showLeftPush'),
             body = document.body;
 
-        showLeftPush.onclick = function() {
+        showLeftPush.onclick = function () {
             classie.toggle(this, 'active');
             classie.toggle(body, 'cbp-spmenu-push-toright');
             classie.toggle(menuLeft, 'cbp-spmenu-open');
@@ -521,14 +532,15 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <script src="{{ asset('backend_admin/js/bootstrap.js') }}"></script>
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
 
     <!-- Include DataTables JavaScript -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#user-table').DataTable();
         });
     </script>

@@ -267,6 +267,12 @@
                 min-width: 300px;
             }
         }
+@media (min-width: 992px) {
+    .footer-contact {
+        width: 400px;
+        margin-left: -33px;
+    }
+}
 
         @media (max-width: 480px) {
             .category-buttons {

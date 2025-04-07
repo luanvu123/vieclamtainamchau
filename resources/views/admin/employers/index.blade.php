@@ -55,8 +55,7 @@
                                     <td class="text-center">
                                         <div class="avatar-container">
                                             <img src="{{ asset('storage/' . $employer->avatar) }}" alt="Logo"
-                                                class="rounded-circle"
-                                                style="width: 50px; height: 50px; object-fit: cover;">
+                                                class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
                                             <!-- Show "New" if the employer was created within the last 2 hours -->
                                             @if ($employer->created_at >= \Carbon\Carbon::now()->subHours(2))
                                                 <span class="new-badge">New</span>
@@ -73,9 +72,11 @@
                                         <div><i class="fas fa-phone"></i> {{ $employer->phone }}</div>
                                         <div><i class="fas fa-map-marker-alt"></i> {{ $employer->address }}</div>
                                         <div><i class="fas fa-calendar-plus"></i> Ngày tạo:
-                                            {{ $employer->created_at->format('d/m/Y H:i') }}</div>
+                                            {{ $employer->created_at->format('d/m/Y H:i') }}
+                                        </div>
                                         <div><i class="fas fa-calendar-check"></i> Ngày cập nhật:
-                                            {{ $employer->updated_at->format('d/m/Y H:i') }}</div>
+                                            {{ $employer->updated_at->format('d/m/Y H:i') }}
+                                        </div>
                                     </td>
 
                                     <td>
@@ -94,8 +95,7 @@
                                         </div>
 
                                         <div>
-                                            <span
-                                                class="badge {{ $employer->isVerifyCompany ? 'bg-success' : 'bg-warning' }}">
+                                            <span class="badge {{ $employer->isVerifyCompany ? 'bg-success' : 'bg-warning' }}">
                                                 <i class="fas fa-building"></i>
                                                 {{ $employer->isVerifyCompany ? 'Đã xác thực số điện thoại' : 'Chưa xác thực số điện thoại' }}
                                             </span>
@@ -198,8 +198,8 @@
                                                 class="btn btn-warning btn-sm" title="Chỉnh sửa">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#deleteModal{{ $employer->id }}" title="Xóa">
+                                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                                data-target="#deleteModal{{ $employer->id }}" title="Xóa">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -220,8 +220,7 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
                                                             data-bs-dismiss="modal">Hủy</button>
-                                                        <form
-                                                            action="{{ route('manage.employers.destroy', $employer->id) }}"
+                                                        <form action="{{ route('manage.employers.destroy', $employer->id) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('DELETE')
@@ -241,6 +240,13 @@
             </div>
         </div>
     </div>
+  <script>
+    $(document).ready(function () {
+        $(".btn-secondary").click(function () {
+            $(".modal").modal("hide");
+        });
+    });
+</script>
 
     @push('styles')
         <style>
@@ -276,7 +282,7 @@
 
     @push('scripts')
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 $('#employersTable').DataTable({
                     language: {
                         url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Vietnamese.json"

@@ -181,4 +181,17 @@ class EmployerManageController extends Controller
         return redirect()->route('manage.employers.edit', $employer)
             ->with('success', 'Thông tin nhà tuyển dụng đã được cập nhật thành công.');
     }
+    public function destroy(Employer $employer)
+{
+    try {
+        $employerName = $employer->company_name;
+        $employer->delete();
+
+        return redirect()->route('manage.employers.index')
+            ->with('success', "Đã xóa nhà tuyển dụng \"$employerName\" thành công");
+    } catch (\Exception $e) {
+        return redirect()->route('manage.employers.index')
+            ->with('error', 'Không thể xóa nhà tuyển dụng. Vui lòng thử lại sau.');
+    }
+}
 }
