@@ -43,7 +43,7 @@
 
                     @foreach ($services as $service)
 
-                        <div class="pricing-card">
+                        <div class="pricing-card" data-service-id="{{ $service->id }}">
                             <div class="pricing-image">
                                 <img src="{{ $service->image ? asset('storage/' . $service->image) : asset('backend/images/banner-01.jpg') }}"
                                     alt="{{ $service->name }}">
@@ -71,15 +71,16 @@
 
                                     <div class="pricing-column">
                                         <div class="pricing-label">Thời lượng</div>
-                                        <div>
+                                        <select class="week-selector">
                                             @if ($service->weeks->count())
                                                 @foreach ($service->weeks as $week)
-                                                    <div>{{ $week->number_of_weeks }} tuần</div>
+                                                    <option value="{{ $week->number_of_weeks }}">{{ $week->number_of_weeks }} tuần
+                                                    </option>
                                                 @endforeach
                                             @else
-                                                <div>Không có dữ liệu</div>
+                                                <option value="1">1 tuần</option>
                                             @endif
-                                        </div>
+                                        </select>
                                     </div>
 
                                     <div class="pricing-column">
@@ -109,45 +110,49 @@
                 </div>
 
                 <div class="cart-items">
-                    <div class="cart-item">
-                        <div class="cart-item-info">
-                            <div class="cart-item-name">Tin cơ bản</div>
-                            <div class="cart-item-duration">4 tuần</div>
+                    @foreach ($carts as $cart)
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <div class="cart-item-name">{{ $cart->service->name }}</div>
+                                <div class="cart-item-duration">{{ $cart->number_of_weeks }} tuần</div>
+                            </div>
+
+                            <div class="cart-item-quantity">
+                                <button class="quantity-btn" disabled>-</button>
+                                <input type="text" class="quantity-input" value="{{ $cart->quantity }}" readonly
+                                    style="width: 40px;">
+                                <button class="quantity-btn" disabled>+</button>
+                                <span style="margin-left: 5px;">tin</span>
+                            </div>
+
+
+                            <div class="cart-item-price">
+                                ₫{{ number_format($cart->total_price, 0) }} <br>
+                                <small>(${{ number_format($cart->total_price * $exchangeRate, 2) }})</small>
+                            </div>
+                            <button class="delete-item" data-id="{{ $cart->id }}">🗑️</button>
+
                         </div>
-
-                        <div class="cart-item-quantity">
-                            <button class="quantity-btn">-</button>
-                            <input type="text" class="quantity-input" value="2" style="width: 40px;">
-                            <button class="quantity-btn">+</button>
-                            <span style="margin-left: 5px;">tin</span>
-                        </div>
-
-                        <div class="cart-item-price">₫3,440,000</div>
-                        <button class="delete-item">🗑️</button>
-                    </div>
-
-                    <div class="cart-item">
-                        <div class="cart-item-info">
-                            <div class="cart-item-name">Trang chủ - Tuyển gấp</div>
-                            <div class="cart-item-duration">2 tuần</div>
-                        </div>
-
-                        <div class="cart-item-quantity">
-                            <button class="quantity-btn">-</button>
-                            <input type="text" class="quantity-input" value="1" style="width: 40px;">
-                            <button class="quantity-btn">+</button>
-                            <span style="margin-left: 5px;">tin</span>
-                        </div>
-
-                        <div class="cart-item-price">₫6,520,000</div>
-                        <button class="delete-item">🗑️</button>
-                    </div>
+                    @endforeach
                 </div>
+
+
+                @php
+                    $totalVND = $carts->sum('total_price');
+                    $totalUSD = $totalVND * $exchangeRate;
+                @endphp
 
                 <div class="cart-footer">
-                    <div class="cart-total">Tổng giá (Chưa bao gồm thuế VAT): <span>₫9,960,000</span></div>
+                    <div class="cart-total">
+                        Tổng giá (Chưa bao gồm thuế VAT):
+                        <span>
+                            ₫{{ number_format($totalVND, 0) }}
+                            ( ${{ number_format($totalUSD, 2) }} )
+                        </span>
+                    </div>
                     <button class="checkout-btn">Đặt mua</button>
                 </div>
+
             </div>
 
             <button class="cart-button">
@@ -176,7 +181,279 @@
                 cartModal.style.display = 'block';
                 overlay.style.display = 'block';
             </script>
+            <script>
+                // JavaScript for cart functionality
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Cart modal elements
+                    const cartBtn = document.querySelector('.cart-button');
+                    const closeBtn = document.querySelector('.close-btn');
+                    const cartModal = document.getElementById('cartModal');
+                    const overlay = document.getElementById('overlay');
+                    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+                    // Initialize cart display
+                    updateCartButton();
+
+                    // Handle opening and closing cart modal
+                    if (cartBtn) {
+                        cartBtn.addEventListener('click', () => {
+                            cartModal.style.display = 'block';
+                            overlay.style.display = 'block';
+                        });
+                    }
+
+                    if (closeBtn) {
+                        closeBtn.addEventListener('click', () => {
+                            cartModal.style.display = 'none';
+                            overlay.style.display = 'none';
+                        });
+                    }
+
+                    // Add to cart button click handlers
+                    addToCartButtons.forEach(button => {
+                        button.addEventListener('click', function (e) {
+                            const card = this.closest('.pricing-card');
+                            const serviceId = card.dataset.serviceId;
+                            const quantityInput = card.querySelector('.quantity-input');
+                            const quantity = parseInt(quantityInput.value);
+                            const weekSelector = card.querySelector('.week-selector');
+                            const numberOfWeeks = weekSelector ? parseInt(weekSelector.value) : 1;
+
+                            // Add visual effect - button animation
+                            this.classList.add('adding');
+
+                            // AJAX call to add to cart
+                            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                            fetch('/employer/add-to-cart', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': csrfToken
+                                },
+                                body: JSON.stringify({
+                                    service_id: serviceId,
+                                    quantity: quantity,
+                                    number_of_weeks: numberOfWeeks
+                                })
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        // Show success notification
+                                        showNotification(data.message);
+
+                                        // Update cart count
+                                        updateCartCountDisplay(data.cart_count);
+
+                                        // Animate item flying to cart
+                                        animateAddToCart(card, cartBtn);
+
+                                        // Reset button state after animation
+                                        setTimeout(() => {
+                                            this.classList.remove('adding');
+                                        }, 1000);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error adding to cart:', error);
+                                    this.classList.remove('adding');
+                                    showNotification('Có lỗi xảy ra, vui lòng thử lại sau', 'error');
+                                });
+                        });
+                    });
+
+                    // Function to animate item flying to cart
+                    function animateAddToCart(sourceElement, targetElement) {
+                        // Create a clone of the service image
+                        const serviceImage = sourceElement.querySelector('.pricing-image img');
+                        const imgClone = document.createElement('img');
+                        imgClone.src = serviceImage.src;
+                        imgClone.classList.add('flying-item');
+
+                        // Calculate positions
+                        const sourceRect = serviceImage.getBoundingClientRect();
+                        const targetRect = targetElement.getBoundingClientRect();
+
+                        // Position the clone at the source position
+                        imgClone.style.width = '50px';
+                        imgClone.style.height = '50px';
+                        imgClone.style.position = 'fixed';
+                        imgClone.style.top = sourceRect.top + 'px';
+                        imgClone.style.left = sourceRect.left + 'px';
+                        imgClone.style.zIndex = '9999';
+                        imgClone.style.borderRadius = '50%';
+                        imgClone.style.opacity = '0.8';
+                        imgClone.style.transition = 'all 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28)';
+
+                        // Add the clone to the DOM
+                        document.body.appendChild(imgClone);
+
+                        // Start the animation after a small delay to ensure the transition works
+                        setTimeout(() => {
+                            imgClone.style.top = targetRect.top + 'px';
+                            imgClone.style.left = targetRect.left + 'px';
+                            imgClone.style.width = '20px';
+                            imgClone.style.height = '20px';
+                            imgClone.style.opacity = '0.2';
+
+                            // Shake the cart button
+                            targetElement.classList.add('cart-shake');
+
+                            // Remove the clone and the shake effect after animation completes
+                            setTimeout(() => {
+                                imgClone.remove();
+                                targetElement.classList.remove('cart-shake');
+                            }, 800);
+                        }, 10);
+                    }
+
+                    // Function to show notification
+                    function showNotification(message, type = 'success') {
+                        const notification = document.createElement('div');
+                        notification.className = `notification ${type}`;
+                        notification.innerHTML = message;
+                        document.body.appendChild(notification);
+
+                        // Show notification
+                        setTimeout(() => {
+                            notification.style.opacity = '1';
+                            notification.style.transform = 'translateY(0)';
+                        }, 10);
+
+                        // Auto hide after delay
+                        setTimeout(() => {
+                            notification.style.opacity = '0';
+                            notification.style.transform = 'translateY(-20px)';
+
+                            // Remove from DOM after fade out
+                            setTimeout(() => {
+                                notification.remove();
+                            }, 500);
+                        }, 3000);
+                    }
+
+                    // Function to update cart count display
+                    function updateCartCountDisplay(count) {
+                        const cartCountElements = document.querySelectorAll('.cart-count');
+                        cartCountElements.forEach(element => {
+                            element.textContent = `(${count})`;
+                        });
+
+                        if (cartBtn) {
+                            cartBtn.innerHTML = `<i>🛒</i> ${count} sản phẩm <span style="margin-left: 5px;">▲</span>`;
+                        }
+                    }
+
+                    // Function to update cart button visibility based on cart contents
+                    function updateCartButton() {
+                        fetch('/employer/get-cart-count', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                updateCartCountDisplay(data.cart_count);
+
+                                if (cartBtn) {
+                                    if (data.cart_count > 0) {
+                                        cartBtn.style.display = 'flex';
+                                    } else {
+                                        cartBtn.style.display = 'none';
+                                    }
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error fetching cart count:', error);
+                            });
+                    }
+
+                    // Quantity control buttons
+                    const quantityBtns = document.querySelectorAll('.quantity-btn');
+                    quantityBtns.forEach(btn => {
+                        btn.addEventListener('click', function () {
+                            const input = this.parentElement.querySelector('.quantity-input');
+                            let value = parseInt(input.value);
+
+                            if (this.textContent === '+') {
+                                value++;
+                            } else if (this.textContent === '-' && value > 1) {
+                                value--;
+                            }
+
+                            input.value = value;
+                        });
+                    });
+                });
+            </script>
             <style>
+                /* Add to cart effects */
+                .add-to-cart {
+                    transition: all 0.3s ease;
+                }
+
+                .add-to-cart.adding {
+                    background-color: #4CAF50;
+                    transform: scale(0.95);
+                }
+
+                .cart-shake {
+                    animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+                }
+
+                @keyframes shake {
+
+                    10%,
+                    90% {
+                        transform: translate3d(-1px, 0, 0);
+                    }
+
+                    20%,
+                    80% {
+                        transform: translate3d(2px, 0, 0);
+                    }
+
+                    30%,
+                    50%,
+                    70% {
+                        transform: translate3d(-2px, 0, 0);
+                    }
+
+                    40%,
+                    60% {
+                        transform: translate3d(2px, 0, 0);
+                    }
+                }
+
+                /* Notification styling */
+                .notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 15px 25px;
+                    background-color: #4CAF50;
+                    color: white;
+                    border-radius: 4px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                    z-index: 10000;
+                    opacity: 0;
+                    transform: translateY(-20px);
+                    transition: all 0.3s ease;
+                }
+
+                .notification.error {
+                    background-color: #f44336;
+                }
+
+                /* Flying item animation */
+                .flying-item {
+                    object-fit: cover;
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                }
+
                 .services {
                     display: flex;
                     justify-content: space-between;
@@ -488,4 +765,35 @@
             </style>
         </div>
     </section>
+    <script>
+        document.querySelectorAll('.delete-item').forEach(button => {
+            button.addEventListener('click', function () {
+                const cartId = this.dataset.id;
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const cartItem = this.closest('.cart-item');
+
+                if (confirm('Bạn có chắc chắn muốn xoá dịch vụ này khỏi giỏ hàng?')) {
+                    fetch(`/employer/cart/${cartId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                showNotification(data.message);
+                                cartItem.remove();
+                                // Cập nhật lại tổng giỏ hàng nếu cần
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Lỗi khi xoá dịch vụ:', error);
+                            showNotification('Có lỗi xảy ra, vui lòng thử lại sau.', 'error');
+                        });
+                }
+            });
+        });
+
+    </script>
 @endsection

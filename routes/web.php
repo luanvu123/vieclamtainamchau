@@ -149,6 +149,10 @@ Route::prefix('employer')->name('employer.')->group(function () {
         ->name('job-posting.find-candidate')->middleware('employer');
     Route::get('/services', [JobPostingController::class, 'services'])->name('services')->middleware('employer');
      Route::post('/add-to-cart', [JobPostingController::class, 'addToCart'])->name('addToCart')->middleware('employer');
+     // web.php
+Route::delete('/cart/{id}', [JobPostingController::class, 'removeFromCart'])->name('removeFromCart')->middleware('employer');
+
+     Route::get('/get-cart-count', [JobPostingController::class, 'getCartCount'])->name('getCartCount')->middleware('employer');
     Route::get('register', [EmployerAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [EmployerAuthController::class, 'register'])->name('register.submit');
     Route::get('login', [EmployerAuthController::class, 'showLoginForm'])->name('login');

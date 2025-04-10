@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Application;
 use App\Models\Bank;
 use App\Models\Candidate;
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Genre;
@@ -315,20 +316,46 @@ class JobPostingController extends Controller
 
         return view('employer.job-posting.saved-applications', compact('savedApplications'));
     }
-   public function services()
-{
-    $services = Service::with('weeks')
-        ->where('status', Service::STATUS_ACTIVE)
-        ->orderBy('created_at', 'desc')
-        ->get();
+    public function services()
+    {
+        $services = Service::with('weeks')
+            ->where('status', Service::STATUS_ACTIVE)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-    $banks = Bank::where('status', '1')
-        ->orderBy('created_at', 'desc')
-        ->get();
+        $banks = Bank::where('status', '1')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-    return view('employer.job-posting.services', compact('services', 'banks'));
-}
-public function addToCart(Request $request)
+        $employerId = Auth::guard('employer')->id();
+        $carts = Cart::getEmployerCart($employerId);
+
+        // Tỷ giá cố định hoặc lấy từ bảng config
+        $exchangeRate = 0.000042; // 1 VND = 0.000042 USD (ví dụ)
+
+        return view('employer.job-posting.services', compact('services', 'banks', 'carts', 'exchangeRate'));
+    }
+    public function removeFromCart($id)
+    {
+        $cart = Cart::where('id', $id)
+            ->where('employer_id', Auth::guard('employer')->id())
+            ->firstOrFail();
+
+        $cart->delete();
+
+        return response()->json(['success' => true, 'message' => 'Đã xoá dịch vụ khỏi giỏ hàng.']);
+    }
+
+    public function getCartCount()
+    {
+        $employerId = Auth::guard('employer')->user()->id;
+        $cartCount = Cart::where('employer_id', $employerId)->sum('quantity');
+
+        return response()->json([
+            'cart_count' => $cartCount
+        ]);
+    }
+  public function addToCart(Request $request)
 {
     $validated = $request->validate([
         'service_id' => 'required|exists:services,id',
@@ -337,21 +364,21 @@ public function addToCart(Request $request)
     ]);
 
     $service = Service::findOrFail($validated['service_id']);
-    $employerId = Auth::guard('employer')->user()->employer->id; // Assuming you have employer authentication
+    $employerId = Auth::guard('employer')->id();
 
-    // Check if this service is already in cart
+    // Kiểm tra xem có cart giống service_id và number_of_weeks hay không
     $cart = Cart::where('employer_id', $employerId)
-               ->where('service_id', $validated['service_id'])
-               ->where('number_of_weeks', $validated['number_of_weeks'])
-               ->first();
+        ->where('service_id', $validated['service_id'])
+        ->where('number_of_weeks', $validated['number_of_weeks'])
+        ->first();
 
     if ($cart) {
-        // Update existing cart item
+        // Nếu trùng cả service_id và number_of_weeks => gộp quantity
         $cart->quantity += $validated['quantity'];
-        $cart->total_price = $service->price * $cart->quantity * $validated['number_of_weeks'];
+        $cart->total_price = $service->price * $cart->quantity * $cart->number_of_weeks;
         $cart->save();
     } else {
-        // Create new cart item
+        // Nếu number_of_weeks khác => tạo mới
         Cart::create([
             'employer_id' => $employerId,
             'service_id' => $validated['service_id'],
@@ -361,7 +388,6 @@ public function addToCart(Request $request)
         ]);
     }
 
-    // Get updated cart count
     $cartCount = Cart::where('employer_id', $employerId)->sum('quantity');
 
     return response()->json([
@@ -370,6 +396,8 @@ public function addToCart(Request $request)
         'cart_count' => $cartCount
     ]);
 }
+
+
     public function serviceActive()
     {
         $employer = Auth::guard('employer')->user();
