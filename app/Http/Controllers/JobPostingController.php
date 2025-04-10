@@ -315,18 +315,61 @@ class JobPostingController extends Controller
 
         return view('employer.job-posting.saved-applications', compact('savedApplications'));
     }
-    public function services()
-    {
-        $services = Service::where('status', Service::STATUS_ACTIVE)
-            ->orderBy('created_at', 'desc')
-            ->get();
+   public function services()
+{
+    $services = Service::with('weeks')
+        ->where('status', Service::STATUS_ACTIVE)
+        ->orderBy('created_at', 'desc')
+        ->get();
 
-        $banks = Bank::where('status', '1')
-            ->orderBy('created_at', 'desc')
-            ->get();
+    $banks = Bank::where('status', '1')
+        ->orderBy('created_at', 'desc')
+        ->get();
 
-        return view('employer.job-posting.services', compact('services', 'banks'));
+    return view('employer.job-posting.services', compact('services', 'banks'));
+}
+public function addToCart(Request $request)
+{
+    $validated = $request->validate([
+        'service_id' => 'required|exists:services,id',
+        'quantity' => 'required|integer|min:1',
+        'number_of_weeks' => 'required|in:1,2,4',
+    ]);
+
+    $service = Service::findOrFail($validated['service_id']);
+    $employerId = Auth::guard('employer')->user()->employer->id; // Assuming you have employer authentication
+
+    // Check if this service is already in cart
+    $cart = Cart::where('employer_id', $employerId)
+               ->where('service_id', $validated['service_id'])
+               ->where('number_of_weeks', $validated['number_of_weeks'])
+               ->first();
+
+    if ($cart) {
+        // Update existing cart item
+        $cart->quantity += $validated['quantity'];
+        $cart->total_price = $service->price * $cart->quantity * $validated['number_of_weeks'];
+        $cart->save();
+    } else {
+        // Create new cart item
+        Cart::create([
+            'employer_id' => $employerId,
+            'service_id' => $validated['service_id'],
+            'quantity' => $validated['quantity'],
+            'number_of_weeks' => $validated['number_of_weeks'],
+            'total_price' => $service->price * $validated['quantity'] * $validated['number_of_weeks'],
+        ]);
     }
+
+    // Get updated cart count
+    $cartCount = Cart::where('employer_id', $employerId)->sum('quantity');
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Dịch vụ đã được thêm vào giỏ hàng',
+        'cart_count' => $cartCount
+    ]);
+}
     public function serviceActive()
     {
         $employer = Auth::guard('employer')->user();

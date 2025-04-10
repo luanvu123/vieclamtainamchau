@@ -27,6 +27,16 @@
             <label for="description">Mô tả</label>
             <textarea name="description" class="form-control" required>{{ $service->description }}</textarea>
         </div>
+         <div class="form-group">
+            <label>Chọn số tuần áp dụng:</label><br>
+            @foreach([1, 2, 4] as $week)
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input" name="number_of_weeks[]" value="{{ $week }}"
+                        {{ in_array($week, $service->weeks->pluck('number_of_weeks')->toArray()) ? 'checked' : '' }}>
+                    <label class="form-check-label">{{ $week }} tuần</label>
+                </div>
+            @endforeach
+        </div>
         <div class="form-group">
             <label for="status">Trạng thái</label>
             <select name="status" class="form-control" required>

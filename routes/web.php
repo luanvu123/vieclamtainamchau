@@ -148,6 +148,7 @@ Route::prefix('employer')->name('employer.')->group(function () {
     Route::get('job-posting/find-candidate', [JobPostingController::class, 'findCandidate'])
         ->name('job-posting.find-candidate')->middleware('employer');
     Route::get('/services', [JobPostingController::class, 'services'])->name('services')->middleware('employer');
+     Route::post('/add-to-cart', [JobPostingController::class, 'addToCart'])->name('addToCart')->middleware('employer');
     Route::get('register', [EmployerAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [EmployerAuthController::class, 'register'])->name('register.submit');
     Route::get('login', [EmployerAuthController::class, 'showLoginForm'])->name('login');

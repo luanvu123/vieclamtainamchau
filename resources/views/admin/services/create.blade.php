@@ -22,6 +22,15 @@
             <textarea name="description" class="form-control" required></textarea>
         </div>
         <div class="form-group">
+    <label for="number_of_weeks">Số tuần</label>
+    <select name="number_of_weeks[]" class="form-control" multiple required>
+        <option value="1">1 tuần</option>
+        <option value="2">2 tuần</option>
+        <option value="4">4 tuần</option>
+    </select>
+</div>
+
+        <div class="form-group">
             <label for="status">Trạng thái</label>
             <select name="status" class="form-control" required>
                 <option value="active">Hoạt động</option>
