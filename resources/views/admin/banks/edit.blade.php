@@ -20,6 +20,10 @@
             <label for="name">Tên ngân hàng:</label>
             <input type="text" name="name" id="name" class="form-control" value="{{ $bank->name }}" required>
         </div>
+<div class="form-group">
+    <label for="account_name">Chủ tài khoản:</label>
+    <input type="text" name="account_name" id="account_name" class="form-control" value="{{ old('account_name', $bank->account_name) }}" required>
+</div>
 
         <div class="form-group">
             <label for="branch">Chi nhánh:</label>

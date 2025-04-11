@@ -30,7 +30,8 @@ class JobPosting extends Model
         'area',
         'city',
         'isHot',
-        'views'
+        'views',
+         'order_id',
     ];
 
     /**
@@ -70,4 +71,9 @@ class JobPosting extends Model
         return $this->belongsToMany(Candidate::class, 'saved_job_postings')
                     ->withTimestamps();
     }
+    public function order()
+{
+    return $this->belongsTo(Order::class);
+}
+
 }

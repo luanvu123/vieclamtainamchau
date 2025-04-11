@@ -152,4 +152,9 @@ class Employer extends Authenticatable
 
         return Carbon::parse($timestamp)->diffInDays(now());
     }
+    public function orders()
+{
+    return $this->hasMany(Order::class);
+}
+
 }

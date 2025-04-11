@@ -7,11 +7,15 @@ use App\Models\Country;
 use App\Models\Employer;
 use App\Models\Genre;
 use App\Models\JobPosting;
+use App\Models\OrderDetail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Models\Order;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class EmployerManageController extends Controller
 {
@@ -194,4 +198,90 @@ class EmployerManageController extends Controller
             ->with('error', 'Không thể xóa nhà tuyển dụng. Vui lòng thử lại sau.');
     }
 }
+   public function orders()
+    {
+        $orders = Order::with(['employer', 'orderDetails.service'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('admin.orders.index', compact('orders'));
+    }
+
+
+    public function showOrder($id)
+    {
+        $order = Order::with(['employer', 'orderDetails.service'])
+            ->findOrFail($id);
+
+        return view('admin.orders.show', compact('order'));
+    }
+
+
+    public function updateOrderStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:Đã thanh toán,Chưa thanh toán',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $order = Order::findOrFail($id);
+            $order->status = $request->status;
+            $order->save();
+
+            // If marking as paid, update the expiring date for all details
+            if ($request->status == 'Đã thanh toán') {
+                $orderDate = Carbon::now();
+                foreach ($order->orderDetails as $detail) {
+                    $expiringDate = $orderDate->copy()->addWeeks($detail->number_of_weeks);
+                    $detail->expiring_date = $expiringDate;
+                    $detail->save();
+                }
+            }
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Trạng thái đơn hàng đã được cập nhật.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Update the order detail's number of active.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateOrderDetailActive(Request $request, $id)
+    {
+        $request->validate([
+            'number_of_active' => 'required|integer|min:0',
+        ]);
+
+        try {
+            $orderDetail = OrderDetail::findOrFail($id);
+
+            // Ensure number_of_active doesn't exceed quantity
+            $numberActive = min($request->number_of_active, $orderDetail->quantity);
+
+            $orderDetail->number_of_active = $numberActive;
+            $orderDetail->save();
+
+            return redirect()->back()->with('success', 'Số lượng tin đang hoạt động đã được cập nhật.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
+        }
+    }
+
+
+    public function orderDetails()
+    {
+        $orderDetails = OrderDetail::with(['order.employer', 'service'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        return view('admin.order_details.index', compact('orderDetails'));
+    }
 }

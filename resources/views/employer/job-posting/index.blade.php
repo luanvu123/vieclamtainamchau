@@ -20,6 +20,10 @@
                     <i>❤️</i>
                     <span>Dịch vụ đã mua</span>
                 </a>
+                 <a href="{{ route('employer.orders.index') }}" class="menu-item">
+        <i>🧾</i>
+        <span>Lịch sử đơn hàng</span>
+    </a>
             </div>
 
             <div class="menu-section">

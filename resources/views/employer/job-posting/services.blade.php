@@ -20,6 +20,10 @@
                     <i>❤️</i>
                     <span>Dịch vụ đã mua</span>
                 </a>
+                 <a href="{{ route('employer.orders.index') }}" class="menu-item">
+        <i>🧾</i>
+        <span>Lịch sử đơn hàng</span>
+    </a>
             </div>
 
             <div class="menu-section">
@@ -387,6 +391,56 @@
                             input.value = value;
                         });
                     });
+
+                      const checkoutBtn = document.querySelector('.checkout-btn');
+        if (checkoutBtn) {
+            checkoutBtn.addEventListener('click', function() {
+                // Show loading state
+                checkoutBtn.textContent = 'Đang xử lý...';
+                checkoutBtn.disabled = true;
+
+                // Send checkout request
+                fetch('{{ route("employer.orders.checkout") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success message
+                        alert(data.message);
+
+                        // Redirect to order page
+                        if (data.redirect) {
+                            window.location.href = data.redirect;
+                        } else {
+                            // Refresh the page if no redirect URL
+                            window.location.reload();
+                        }
+                    } else {
+                        // Show error message
+                        alert(data.message || 'Đã xảy ra lỗi khi xử lý đơn hàng.');
+
+                        // Reset button state
+                        checkoutBtn.textContent = 'Đặt mua';
+                        checkoutBtn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Đã xảy ra lỗi khi xử lý đơn hàng.');
+
+                    // Reset button state
+                    checkoutBtn.textContent = 'Đặt mua';
+                    checkoutBtn.disabled = false;
+                });
+            });
+        }
                 });
             </script>
             <style>

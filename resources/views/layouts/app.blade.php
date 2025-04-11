@@ -205,7 +205,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                 </li>
 
                                 <li
-                                    class="treeview  {{ Request::is('manage/employers') || Request::is('employer/admin/employers*') || Request::is('banks*') || Request::is('manage/job-postings') || Request::is('services*') ||Request::is('labor-exports*') ? 'active' : '' }}">
+                                    class="treeview  {{ Request::is('manage/employers') || Request::is('employer/admin/employers*') || Request::is('banks*') || Request::is('manage/job-postings') ||Request::is('manage/orders*')|| Request::is('services*') ||Request::is('labor-exports*') ? 'active' : '' }}">
                                     <a href="{{ route('manage.employers.index') }}">
                                         <i class="fa fa-table"></i> <span>Nhà tuyển dụng</span>
                                         @if ($employerCountTwoHour > 0)
@@ -240,6 +240,13 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                             <a href="{{ route('services.index') }}">
                                                 <img src="{{ asset('backend_admin/images/shopping-cart-reversed-svgrepo-com.svg') }}"
                                                     alt="Google" width="20" height="20"> Danh sách dịch vụ
+                                            </a>
+                                        </li>
+                                         <li class="{{ Request::is('manage/orders*') ? 'active' : '' }}">
+                                            <a href="{{ route('manage.orders.index') }}">
+                                                <img src="{{ asset('backend_admin/images/order-1-svgrepo-com.svg') }}"
+                                                    alt="Google" width="20" height="20"> Mua tin
+
                                             </a>
                                         </li>
                                 </li>

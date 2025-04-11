@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ApplicationStatusChanged;
 use App\Models\Notification;
-
+use Carbon\Carbon;
+use App\Models\OrderDetail;
 class JobPostingController extends Controller
 {
     public function __construct()
@@ -26,19 +27,25 @@ class JobPostingController extends Controller
         $this->middleware('employer');
     }
 
-    public function findCandidate()
-    {
-        $employer = Auth::guard('employer')->user();
+   public function findCandidate()
+{
+    $employer = Auth::guard('employer')->user();
 
-        if ($employer->isUrgentrecruitment == 0) {
-            // Chuyển thông báo lỗi qua session
-            return redirect()->back()->with('error', 'Bạn chưa mua dịch vụ xem thông tin ứng viên.');
-        }
+    // Lọc các orderDetails có service.name = 'Tìm ứng viên', expiring_date hợp lệ, order.status = 'Đã thanh toán'
+    $validOrderDetails = OrderDetail::whereHas('order', function ($query) use ($employer) {
+            $query->where('employer_id', $employer->id)
+                  ->where('status', 'Đã thanh toán');
+        })
+        ->whereHas('service', function ($query) {
+            $query->where('name', 'Tìm ứng viên');
+        })
+        ->whereDate('expiring_date', '>=', Carbon::today())
+        ->get();
 
-        $candidates = Candidate::where('is_public', 1)->get();
+    $candidates = Candidate::where('is_public', 1)->get();
 
-        return view('employer.job-posting.find_candidate', compact('candidates'));
-    }
+    return view('employer.job-posting.find_candidate', compact('candidates', 'validOrderDetails'));
+}
 
 
 
@@ -51,12 +58,30 @@ class JobPostingController extends Controller
     }
     public function create()
     {
-        $categories = Category::where('status', 'active')->get(); // Lấy danh sách danh mục
-        $countries = Country::where('status', 'active')->get(); // Lấy danh sách quốc gia
-        $genres = Genre::where('status', 'active')->get(); // Lấy danh sách thể loại
+        $categories = Category::where('status', 'active')->get();
+        $countries = Country::where('status', 'active')->get();
+        $genres = Genre::where('status', 'active')->get();
         $employer = Auth::guard('employer')->user();
 
-        return view('employer.job-posting.create', compact('categories', 'countries', 'employer', 'genres'));
+        $basicServiceDetails = OrderDetail::whereHas('order', function ($query) use ($employer) {
+            $query->where('employer_id', $employer->id)
+                ->where('status', 'Đã thanh toán');
+        })
+            ->whereHas('service', function ($query) {
+                $query->where('name', 'Tin cơ bản');
+            })
+            ->whereDate('expiring_date', '>=', Carbon::today())
+            ->where('number_of_active', '>', 0)
+            ->with(['service'])
+            ->get();
+
+        return view('employer.job-posting.create', compact(
+            'categories',
+            'countries',
+            'employer',
+            'genres',
+            'basicServiceDetails'
+        ));
     }
     public function store(Request $request)
     {
@@ -87,22 +112,43 @@ class JobPostingController extends Controller
             'genres.*' => 'exists:genres,id',
         ]);
 
-        $jobPosting = JobPosting::create([
-            'employer_id' => auth('employer')->id(),
-            'title' => $validated['title'],
-            'slug' => Str::slug($validated['title']),
-            'type' => $validated['type'],
-            'age_range' => $validated['age_range'],
-            'location' => $validated['location'],
-            'description' => $validated['description'],
-            'closing_date' => $validated['closing_date'],
-            'salary' => $validated['salary'],
-            'experience' => $validated['experience'],
-            'rank' => $validated['rank'],
-            'number_of_recruits' => $validated['number_of_recruits'],
-            'sex' => $validated['sex'],
-            'skills_required' => $validated['skills_required'],
-        ]);
+        $orderDetail = OrderDetail::whereHas('order', function ($query) use ($employer) {
+            $query->where('employer_id', $employer->id)
+                ->where('status', 'Đã thanh toán');
+        })
+            ->whereHas('service', function ($query) {
+                $query->where('name', 'Tin cơ bản');
+            })
+            ->where('number_of_active', '>', 0)
+            ->whereDate('expiring_date', '>=', Carbon::today())
+            ->orderBy('expiring_date')
+            ->first();
+
+        if ($orderDetail) {
+            $orderDetail->decrement('number_of_active');
+
+
+            $jobPosting = JobPosting::create([
+                'employer_id' => $employer->id,
+                'order_id' => $orderDetail->order_id,
+                'title' => $validated['title'],
+                'slug' => Str::slug($validated['title']),
+                'type' => $validated['type'],
+                'age_range' => $validated['age_range'],
+                'location' => $validated['location'],
+                'description' => $validated['description'],
+                'closing_date' => $validated['closing_date'],
+                'salary' => $validated['salary'],
+                'experience' => $validated['experience'],
+                'rank' => $validated['rank'],
+                'number_of_recruits' => $validated['number_of_recruits'],
+                'sex' => $validated['sex'],
+                'skills_required' => $validated['skills_required'],
+            ]);
+        } else {
+            return redirect()->back()->with('error', 'Không tìm thấy gói Tin cơ bản hợp lệ.');
+        }
+
 
         if (!empty($validated['categories'])) {
             $jobPosting->categories()->sync($validated['categories']);
@@ -355,47 +401,47 @@ class JobPostingController extends Controller
             'cart_count' => $cartCount
         ]);
     }
-  public function addToCart(Request $request)
-{
-    $validated = $request->validate([
-        'service_id' => 'required|exists:services,id',
-        'quantity' => 'required|integer|min:1',
-        'number_of_weeks' => 'required|in:1,2,4',
-    ]);
+    public function addToCart(Request $request)
+    {
+        $validated = $request->validate([
+            'service_id' => 'required|exists:services,id',
+            'quantity' => 'required|integer|min:1',
+            'number_of_weeks' => 'required|in:1,2,4',
+        ]);
 
-    $service = Service::findOrFail($validated['service_id']);
-    $employerId = Auth::guard('employer')->id();
+        $service = Service::findOrFail($validated['service_id']);
+        $employerId = Auth::guard('employer')->id();
 
-    // Kiểm tra xem có cart giống service_id và number_of_weeks hay không
-    $cart = Cart::where('employer_id', $employerId)
-        ->where('service_id', $validated['service_id'])
-        ->where('number_of_weeks', $validated['number_of_weeks'])
-        ->first();
+        // Kiểm tra xem có cart giống service_id và number_of_weeks hay không
+        $cart = Cart::where('employer_id', $employerId)
+            ->where('service_id', $validated['service_id'])
+            ->where('number_of_weeks', $validated['number_of_weeks'])
+            ->first();
 
-    if ($cart) {
-        // Nếu trùng cả service_id và number_of_weeks => gộp quantity
-        $cart->quantity += $validated['quantity'];
-        $cart->total_price = $service->price * $cart->quantity * $cart->number_of_weeks;
-        $cart->save();
-    } else {
-        // Nếu number_of_weeks khác => tạo mới
-        Cart::create([
-            'employer_id' => $employerId,
-            'service_id' => $validated['service_id'],
-            'quantity' => $validated['quantity'],
-            'number_of_weeks' => $validated['number_of_weeks'],
-            'total_price' => $service->price * $validated['quantity'] * $validated['number_of_weeks'],
+        if ($cart) {
+            // Nếu trùng cả service_id và number_of_weeks => gộp quantity
+            $cart->quantity += $validated['quantity'];
+            $cart->total_price = $service->price * $cart->quantity * $cart->number_of_weeks;
+            $cart->save();
+        } else {
+            // Nếu number_of_weeks khác => tạo mới
+            Cart::create([
+                'employer_id' => $employerId,
+                'service_id' => $validated['service_id'],
+                'quantity' => $validated['quantity'],
+                'number_of_weeks' => $validated['number_of_weeks'],
+                'total_price' => $service->price * $validated['quantity'] * $validated['number_of_weeks'],
+            ]);
+        }
+
+        $cartCount = Cart::where('employer_id', $employerId)->sum('quantity');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Dịch vụ đã được thêm vào giỏ hàng',
+            'cart_count' => $cartCount
         ]);
     }
-
-    $cartCount = Cart::where('employer_id', $employerId)->sum('quantity');
-
-    return response()->json([
-        'success' => true,
-        'message' => 'Dịch vụ đã được thêm vào giỏ hàng',
-        'cart_count' => $cartCount
-    ]);
-}
 
 
     public function serviceActive()

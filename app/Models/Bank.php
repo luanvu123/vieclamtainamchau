@@ -19,6 +19,7 @@ class Bank extends Model
         'image',
         'logo_bank',
         'status',
+        'account_name',
     ];
 
     public function user()

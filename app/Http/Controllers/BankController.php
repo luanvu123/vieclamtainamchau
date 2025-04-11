@@ -37,6 +37,8 @@ class BankController extends Controller
         'image' => 'nullable|image|max:2048',
         'logo_bank' => 'nullable|image|max:2048',
         'status' => 'nullable|in:0,1',
+        'account_name' => 'required|string|max:255',
+
     ]);
 
     $bank = new Bank($request->all());
@@ -83,6 +85,8 @@ class BankController extends Controller
         'image' => 'nullable|image|max:2048',
         'logo_bank' => 'nullable|image|max:2048',
         'status' => 'nullable|in:0,1',
+        'account_name' => 'required|string|max:255',
+
     ]);
 
     $bank->fill($request->all());

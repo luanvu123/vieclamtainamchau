@@ -27,6 +27,7 @@ use App\Http\Controllers\InfoController;
 use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\LaborexportController;
 use App\Http\Controllers\LanguageTrainingController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RegisterStudyController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SiteController;
@@ -62,7 +63,7 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('services', ServiceController::class);
-     Route::resource('labor-exports', LaborexportController::class);
+    Route::resource('labor-exports', LaborexportController::class);
     Route::resource('study-abroads', StudyAbroadController::class);
     Route::resource('language-trainings', LanguageTrainingController::class);
     Route::resource('register-study', RegisterStudyController::class);
@@ -71,6 +72,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('manage/employers', EmployerManageController::class, [
         'as' => 'manage'
     ]);
+    Route::get('manage/orders', [EmployerManageController::class, 'orders'])->name('manage.orders.index');
+    Route::get('manage/orders/{id}', [EmployerManageController::class, 'showOrder'])->name('manage.orders.show');
+    Route::post('manage/orders/{id}/status', [EmployerManageController::class, 'updateOrderStatus'])->name('manage.orders.updateStatus');
+
+    // Routes for order details
+    Route::get('manage/order-details', [EmployerManageController::class, 'orderDetails'])->name('manage.orderDetails.index');
+    Route::post('manage/order-details/{id}/active', [EmployerManageController::class, 'updateOrderDetailActive'])->name('manage.orderDetails.updateActive');
+
     Route::get('manage/job-postings', [EmployerManageController::class, 'indexJobPosting'])->name('manage.employers.indexJobPosting');
     Route::resource('banks', BankController::class);
     Route::resource('roles', RoleController::class);
@@ -110,7 +119,7 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
         ->middleware('candidate')
         ->name('check.saved.job');
 
-         Route::post('/save-study-abroad/{studyAbroadId}', [SavedStudyAbroadController::class, 'toggleSave'])->middleware('candidate')->name('save.study.abroad');
+    Route::post('/save-study-abroad/{studyAbroadId}', [SavedStudyAbroadController::class, 'toggleSave'])->middleware('candidate')->name('save.study.abroad');
     Route::get('/study-abroad/{studyAbroadId}/check-saved', [SavedStudyAbroadController::class, 'checkSaved'])->middleware('candidate')->name('check.saved.study.abroad');
     Route::get('/saved-study-abroad', [SavedStudyAbroadController::class, 'savedStudyAbroad'])->middleware('candidate')->name('saved.study.abroad');
 
@@ -148,11 +157,11 @@ Route::prefix('employer')->name('employer.')->group(function () {
     Route::get('job-posting/find-candidate', [JobPostingController::class, 'findCandidate'])
         ->name('job-posting.find-candidate')->middleware('employer');
     Route::get('/services', [JobPostingController::class, 'services'])->name('services')->middleware('employer');
-     Route::post('/add-to-cart', [JobPostingController::class, 'addToCart'])->name('addToCart')->middleware('employer');
-     // web.php
-Route::delete('/cart/{id}', [JobPostingController::class, 'removeFromCart'])->name('removeFromCart')->middleware('employer');
+    Route::post('/add-to-cart', [JobPostingController::class, 'addToCart'])->name('addToCart')->middleware('employer');
+    // web.php
+    Route::delete('/cart/{id}', [JobPostingController::class, 'removeFromCart'])->name('removeFromCart')->middleware('employer');
 
-     Route::get('/get-cart-count', [JobPostingController::class, 'getCartCount'])->name('getCartCount')->middleware('employer');
+    Route::get('/get-cart-count', [JobPostingController::class, 'getCartCount'])->name('getCartCount')->middleware('employer');
     Route::get('register', [EmployerAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [EmployerAuthController::class, 'register'])->name('register.submit');
     Route::get('login', [EmployerAuthController::class, 'showLoginForm'])->name('login');
@@ -198,4 +207,9 @@ Route::delete('/cart/{id}', [JobPostingController::class, 'removeFromCart'])->na
     Route::post('forget-password', [EmployerForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
     Route::get('reset-password/{token}', [EmployerForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
     Route::post('reset-password', [EmployerForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+
+    Route::post('/orders/checkout', [OrderController::class, 'checkout'])->name('orders.checkout')->middleware('employer');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index')->middleware('employer');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show')->middleware('employer');
+    Route::post('/orders/{id}/mark-as-paid', [OrderController::class, 'markAsPaid'])->name('orders.markAsPaid')->middleware('employer');
 });
