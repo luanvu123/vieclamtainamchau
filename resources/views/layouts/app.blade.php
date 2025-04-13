@@ -205,20 +205,38 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                 </li>
 
                                 <li
-                                    class="treeview  {{ Request::is('manage/employers') || Request::is('employer/admin/employers*') || Request::is('banks*') || Request::is('manage/job-postings') ||Request::is('manage/orders*')|| Request::is('services*') ||Request::is('labor-exports*') ? 'active' : '' }}">
+                                    class="treeview  {{ Request::is('manage/employers') || Request::is('employer/admin/employers*') || Request::is('banks*') || Request::is('manage/job-postings') || Request::is('manage/orders*') || Request::is('services*') || Request::is('labor-exports*') ? 'active' : '' }}">
                                     <a href="{{ route('manage.employers.index') }}">
                                         <i class="fa fa-table"></i> <span>Nhà tuyển dụng</span>
                                         @if ($employerCountTwoHour > 0)
                                             <span class="label label-primary pull-right">{{ $employerCountTwoHour }}</span>
                                         @endif
-                                          @if ($jobPostingCountTwoHour > 0)
-                                                    <span class="label label-primary pull-right">{{ $jobPostingCountTwoHour }}
-                                                        New</span>
+                                        @if ($jobPostingCountTwoHour > 0)
+                                            <span class="label label-primary pull-right">{{ $jobPostingCountTwoHour }}
+                                            </span>
+                                        @endif
+                                        @if ($orderCountTwoHour > 0)
+                                            <span class="label label-primary pull-right">{{ $orderCountTwoHour }} </span>
+                                        @endif
+                                          @if ($employerCountTwoHour > 0)
+                                                    <span class="label label-primary pull-right">{{ $employerCountTwoHour }}
+                                                        </span>
                                                 @endif
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </a>
 
                                     <ul class="treeview-menu">
+                                        <li class="{{ Request::routeIs('manage.employers.*') ? 'active' : '' }}">
+    <a href="{{ route('manage.employers.index') }}">
+        <img src="{{ asset('backend_admin/images/3018587_admin_administrator_ajax_options_permission_icon.svg') }}"
+             alt="Google" width="20" height="20">
+        Danh sách NTD
+           @if ($employerCountTwoHour > 0)
+                                                    <span class="label label-primary pull-right">{{ $employerCountTwoHour }}
+                                                        </span>
+                                                @endif
+    </a>
+</li>
                                         <li class="{{ Request::is('banks*') ? 'active' : '' }}">
                                             <a href="{{ route('banks.index') }}">
                                                 <img src="{{ asset('backend_admin/images/3018587_admin_administrator_ajax_options_permission_icon.svg') }}"
@@ -242,14 +260,17 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                                     alt="Google" width="20" height="20"> Danh sách dịch vụ
                                             </a>
                                         </li>
-                                         <li class="{{ Request::is('manage/orders*') ? 'active' : '' }}">
+                                        <li class="{{ Request::is('manage/orders*') ? 'active' : '' }}">
                                             <a href="{{ route('manage.orders.index') }}">
                                                 <img src="{{ asset('backend_admin/images/order-1-svgrepo-com.svg') }}"
                                                     alt="Google" width="20" height="20"> Mua tin
-
+                                                @if ($orderCountTwoHour > 0)
+                                                    <span class="label label-primary pull-right">{{ $orderCountTwoHour }}
+                                                        New</span>
+                                                @endif
                                             </a>
                                         </li>
-                                </li>
+
                                 <li class="treeview {{ Request::is('labor-exports*') ? 'active' : '' }}">
                                     <a href="{{ route('labor-exports.index') }}">
                                         <img src="{{ asset('backend_admin/images/register-svgrepo-com.svg') }}" alt="Google"
@@ -370,7 +391,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     <ul class="dropdown-menu drp-mnu">
                                         <li>
                                             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                                     document.getElementById('logout-form').submit();">
+                                                                             document.getElementById('logout-form').submit();">
                                                 <i class="fa fa-sign-out"></i> Đăng xuất
                                             </a>
 

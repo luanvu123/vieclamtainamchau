@@ -38,7 +38,9 @@
                         @foreach ($orders as $order)
                             <tr>
                                 <td>{{ $order->id }}</td>
-                                <td>{{ $order->order_key }}</td>
+                                <td>{{ $order->order_key }} @if ($order->created_at >= now()->subHours(2))
+        <span class="badge badge-danger ml-1">New</span>
+    @endif</td>
                                 <td>{{ $order->employer->name }}</td>
                                 <td>₫{{ number_format($order->total_price, 0) }}</td>
                                 <td>
