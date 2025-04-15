@@ -26,6 +26,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\LaborexportController;
+use App\Http\Controllers\LanguageTrainingController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RegisterStudyController;
 use App\Http\Controllers\RoleController;
@@ -152,6 +153,7 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
 
 
 Route::prefix('employer')->name('employer.')->group(function () {
+     Route::resource('languagetrainings', LanguageTrainingController::class);
     // Authentication Routes
     Route::get('job-posting/find-candidate', [JobPostingController::class, 'findCandidate'])
         ->name('job-posting.find-candidate')->middleware('employer');

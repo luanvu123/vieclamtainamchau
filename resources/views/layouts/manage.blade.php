@@ -10,11 +10,11 @@
         href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
     <!-- Thêm Toastr CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
- <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap JS -->
 
- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <title>Vieclamtainamchau</title>
     <style>
@@ -120,6 +120,30 @@
             padding: 0.5rem 1rem;
             border: 1px solid #ddd;
             border-radius: 4px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu-item i {
+            margin-right: 8px;
+        }
+
+        .menu-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .menu-item.active {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
         }
 
         .category-card.hot-effect {
@@ -267,12 +291,13 @@
                 min-width: 300px;
             }
         }
-@media (min-width: 992px) {
-    .footer-contact {
-        width: 400px;
-        margin-left: -33px;
-    }
-}
+
+        @media (min-width: 992px) {
+            .footer-contact {
+                width: 400px;
+                margin-left: -33px;
+            }
+        }
 
         @media (max-width: 480px) {
             .category-buttons {
@@ -352,27 +377,28 @@
             border-radius: 50%;
             object-fit: cover;
         }
-.search-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s;
-    color: #666;
-}
 
-.search-btn:hover {
-    transform: scale(1.1);
-    color: #007bff;
-}
+        .search-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+            color: #666;
+        }
 
-.search-btn svg {
-    width: 20px;
-    height: 20px;
-}
+        .search-btn:hover {
+            transform: scale(1.1);
+            color: #007bff;
+        }
+
+        .search-btn svg {
+            width: 20px;
+            height: 20px;
+        }
 
         .auth-name {
             font-size: 1rem;
@@ -1166,10 +1192,10 @@
         }
 
         .partner-logo img {
-                width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 4px;
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
         }
 
         .partner-info {
@@ -2235,36 +2261,36 @@
         }
 
         /* Styling cho navigation chính */
-      .nav {
-    background-color: #ff0c0c;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: center;
-}
+        .nav {
+            background-color: #ff0c0c;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+        }
 
-.nav ul {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+        .nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-.nav ul li {
-    position: relative;
-}
+        .nav ul li {
+            position: relative;
+        }
 
-.nav ul li a {
-    color: #ffffff;
-    display: block;
-    padding: 15px 20px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
+        .nav ul li a {
+            color: #ffffff;
+            display: block;
+            padding: 15px 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
 
-.nav ul li a:hover {
-    background-color: #f5f5f5;
-    color: #2563eb;
-}
+        .nav ul li a:hover {
+            background-color: #f5f5f5;
+            color: #2563eb;
+        }
 
 
         /* Styling cho dropdown */
@@ -2472,9 +2498,11 @@
                     style="width:200px;height:200px;" alt="Logo">
                 <div class="modal-title-group" style="margin-left: 120px;">
                     <div class="modal-title" style="color: white">
-                        {{ $info_layout->title ?? 'VIỆC LÀM TẠI NĂM CHÂU TRÊN THẾ GIỚI' }}</div>
+                        {{ $info_layout->title ?? 'VIỆC LÀM TẠI NĂM CHÂU TRÊN THẾ GIỚI' }}
+                    </div>
                     <div class="modal-subtitle" style="color: white">
-                        {{ $info_layout->subtitle ?? 'JOBS IN FIVE CONTINENTS OF THE WORLD' }}</div>
+                        {{ $info_layout->subtitle ?? 'JOBS IN FIVE CONTINENTS OF THE WORLD' }}
+                    </div>
                 </div>
             </div>
             <div class="header-actions">
@@ -2799,9 +2827,63 @@
                 </ul>
             </div>
         @endif
+        <section class="hotlines-section">
+            <div class="sidebar">
+                <div class="menu-section">
+                    <div class="menu-title">Quản lý đăng tuyển dụng</div>
+                    <a href="{{ route('employer.job-posting.create') }}"
+                        class="menu-item {{ request()->routeIs('employer.job-posting.create') ? 'active' : '' }}">
+                        <i>+</i>
+                        <span>Tạo tin tuyển dụng</span>
+                    </a>
+                    <a href="{{ route('employer.job-posting.index') }}"
+                        class="menu-item {{ request()->routeIs('employer.job-posting.index') ? 'active' : '' }}">
+                        <i>📋</i>
+                        <span>Quản lý tin đăng</span>
+                    </a>
+                    <a href="{{ route('employer.services') }}"
+                        class="menu-item {{ request()->routeIs('employer.services') ? 'active' : '' }}">
+                        <i>📊</i>
+                        <span>Mua dịch vụ</span>
+                    </a>
+                    <a href="{{ route('employer.service-active') }}"
+                        class="menu-item {{ request()->routeIs('employer.service-active') ? 'active' : '' }}">
+                        <i>❤️</i>
+                        <span>Dịch vụ đã mua</span>
+                    </a>
+                    <a href="{{ route('employer.orders.index') }}"
+                        class="menu-item {{ request()->routeIs('employer.orders.index') ? 'active' : '' }}">
+                        <i>🧾</i>
+                        <span>Lịch sử đơn hàng</span>
+                    </a>
+
+                    <a href="{{ route('employer.languagetrainings.index') }}"
+                        class="menu-item {{ request()->is('employer/languagetrainings*') ? 'active' : '' }}">
+                        <i>🌐</i>
+                        <span>Đào tạo ngoại ngữ</span>
+                    </a>
+                </div>
 
 
-        @yield('content')
+                <div class="menu-section">
+                    <div class="menu-title">Quản lý ứng viên</div>
+                    <a href="{{ route('employer.saved-applications') }}"
+                        class="menu-item {{ request()->routeIs('employer.saved-applications') ? 'active' : '' }}">
+                        <i>👥</i>
+                        <span>Hồ sơ ứng tuyển</span>
+                    </a>
+                    <a href="{{ route('employer.job-posting.find-candidate') }}"
+                        class="menu-item {{ request()->routeIs('employer.job-posting.find-candidate') ? 'active' : '' }}">
+                        <i>🔍</i>
+                        <span>Tìm ứng viên mới</span>
+                    </a>
+                </div>
+
+            </div>
+
+
+            @yield('content')
+        </section>
     </main>
 
     <footer class="footer">
@@ -2860,8 +2942,9 @@
                     }, 'google_translate_element');
                 }
             </script>
-            <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
-            </script>
+            <script type="text/javascript"
+                src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+                </script>
 
 
             <div class="social-links">
@@ -2902,13 +2985,13 @@
         });
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const warningModal = document.getElementById("warningModal");
             const closeModal = document.getElementById("closeModal");
 
             if (warningModal && closeModal) {
                 // Đóng modal
-                closeModal.addEventListener("click", function() {
+                closeModal.addEventListener("click", function () {
                     warningModal.style.display = "none";
                     document.body.classList.remove("modal-active");
                 });
@@ -2918,9 +3001,10 @@
             }
         });
     </script>
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
     <script>
         new MultiSelectTag('countries') // id
     </script>
@@ -2940,35 +3024,35 @@
         CKEDITOR.replace('description');
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const dropdownLink = document.querySelector(".dropdown > a");
             const dropdown = document.querySelector(".dropdown");
 
-            dropdownLink.addEventListener("click", function(event) {
+            dropdownLink.addEventListener("click", function (event) {
                 event.preventDefault(); // Prevent the default link behavior
                 event.stopPropagation(); // Prevent click from propagating to the document
                 dropdown.classList.toggle("show");
             });
 
             // Hide dropdown if clicked outside
-            document.addEventListener("click", function() {
+            document.addEventListener("click", function () {
                 dropdown.classList.remove("show");
             });
         });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const modal = document.getElementById('warningModal');
             if (modal) {
                 // Prevent closing on click outside
-                modal.addEventListener('click', function(e) {
+                modal.addEventListener('click', function (e) {
                     if (e.target === modal) {
                         e.preventDefault();
                     }
                 });
 
                 // Prevent closing with Escape key
-                document.addEventListener('keydown', function(e) {
+                document.addEventListener('keydown', function (e) {
                     if (e.key === 'Escape') {
                         e.preventDefault();
                     }
@@ -2977,11 +3061,11 @@
         });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             if (!document.querySelector('.site-overlay')) return;
 
             // Chặn sự kiện click trên toàn trang trừ nút đăng nhập/đăng ký
-            document.addEventListener('click', function(e) {
+            document.addEventListener('click', function (e) {
                 // Kiểm tra xem element được click có phải là nút đăng nhập/đăng ký không
                 const isAuthButton = e.target.closest('.auth-btn') ||
                     e.target.closest('.auth-group') ||
@@ -3020,14 +3104,14 @@
     <!-- Include DataTables JavaScript -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#user-table').DataTable();
         });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @if (session('error'))
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 toastr.error("{{ session('error') }}", "Lỗi!");
             });
         </script>

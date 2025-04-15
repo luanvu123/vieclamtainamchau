@@ -1,44 +1,7 @@
-@extends('layout')
+@extends('layouts.manage')
 
 @section('content')
-    <section class="hotlines-section">
-        <div class="sidebar">
-            <div class="menu-section">
-                <div class="menu-title">Quản lý đăng tuyển dụng</div>
-                <a href="{{ route('employer.job-posting.create') }}" class="menu-item">
-                    <i>+</i>
-                    <span>Tạo tin tuyển dụng</span>
-                </a>
-                <a href="{{ route('employer.job-posting.index') }}" class="menu-item">
-                    <i>📋</i>
-                    <span>Quản lý tin đăng</span>
-                </a>
-                <a href="{{ route('employer.services') }}" class="menu-item">
-                    <i>📊</i>
-                    <span>Mua dịch vụ</span>
-                </a>
-                <a href="{{ route('employer.service-active') }}" class="menu-item">
-                    <i>❤️</i>
-                    <span>Dịch vụ đã mua</span>
-                </a>
-                <a href="{{ route('employer.orders.index') }}" class="menu-item">
-                    <i>🧾</i>
-                    <span>Lịch sử đơn hàng</span>
-                </a>
-            </div>
 
-            <div class="menu-section">
-                <div class="menu-title">Quản lý ứng viên</div>
-                <a href="{{ route('employer.saved-applications') }}" class="menu-item">
-                    <i>👥</i>
-                    <span>Hồ sơ ứng tuyển</span>
-                </a>
-                <a href="{{ route('employer.job-posting.find-candidate') }}" class="menu-item">
-                    <i>🔍</i>
-                    <span>Tìm ứng viên mới</span>
-                </a>
-            </div>
-        </div>
 
         <div class="main-content">
 
@@ -190,8 +153,7 @@
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Introduction Modal -->
+         <!-- Introduction Modal -->
     <div id="introductionModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -199,6 +161,8 @@
             <div id="introductionText"></div>
         </div>
     </div>
+
+
 
 
     <style>
