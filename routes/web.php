@@ -26,13 +26,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\LaborexportController;
-use App\Http\Controllers\LanguageTrainingController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RegisterStudyController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\SupportManageController;
+use App\Http\Controllers\TypeLanguageTrainingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
@@ -65,9 +65,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('services', ServiceController::class);
     Route::resource('labor-exports', LaborexportController::class);
     Route::resource('study-abroads', StudyAbroadController::class);
-    Route::resource('language-trainings', LanguageTrainingController::class);
     Route::resource('register-study', RegisterStudyController::class);
-
+    Route::resource('typeLanguagetrainings', TypeLanguageTrainingController::class);
 
     Route::resource('manage/employers', EmployerManageController::class, [
         'as' => 'manage'

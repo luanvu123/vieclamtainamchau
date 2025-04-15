@@ -187,18 +187,20 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                                 <span> Địa điểm tư vấn </span>
                                             </a>
                                         </li>
-                                        <li class="treeview {{ Request::is('language-trainings*') ? 'active' : '' }}">
-                                            <a href="{{ route('language-trainings.index') }}">
-                                                <img src="{{ asset('backend_admin/images/report-comment-svgrepo-com.svg') }}"
-                                                    alt="Google" width="20" height="20"> Đơn vị đào tạo ngôn ngữ
-                                            </a>
-                                        </li>
+
 
                                         <li class="treeview {{ Request::is('news*') ? 'active' : '' }}">
                                             <a href="{{ route('news.index') }}">
                                                 <img src="{{ asset('backend_admin/images/newspaper-news-svgrepo-com.svg') }}"
                                                     alt="Google" width="20" height="20">
                                                 <span> Tin tức</span>
+                                            </a>
+                                        </li>
+                                          <li class="treeview {{ Request::is('typeLanguagetrainings*') ? 'active' : '' }}">
+                                            <a href="{{ route('typeLanguagetrainings.index') }}">
+                                                <img src="{{ asset('backend_admin/images/newspaper-news-svgrepo-com.svg') }}"
+                                                    alt="Google" width="20" height="20">
+                                                <span> Quốc gia du học nghề</span>
                                             </a>
                                         </li>
                                     </ul>

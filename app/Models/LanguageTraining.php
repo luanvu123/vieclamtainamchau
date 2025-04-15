@@ -1,25 +1,36 @@
 <?php
+// app/Models/LanguageTraining.php
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+
 class LanguageTraining extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'description', 'status'];
-     public static function boot()
+    protected $table = 'language_training';
+
+    protected $fillable = [
+        'type_language_training_id',
+        'employer_id',
+        'slug',
+        'name',
+        'start_date',
+        'end_date',
+        'status',
+        'description',
+        'image'
+    ];
+
+    public function typeLanguageTraining()
     {
-        parent::boot();
+        return $this->belongsTo(TypeLanguageTraining::class);
+    }
 
-        static::creating(function ($languageTraining) {
-            $languageTraining->slug = Str::slug($languageTraining->name);
-        });
-
-        static::updating(function ($languageTraining) {
-            $languageTraining->slug = Str::slug($languageTraining->name);
-        });
+    public function employer()
+    {
+        return $this->belongsTo(Employer::class);
     }
 }

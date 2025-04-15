@@ -10,7 +10,6 @@ use App\Models\Candidate;
 use App\Models\Category;
 use App\Models\Info;
 use App\Models\JobPosting;
-use App\Models\LanguageTraining;
 use App\Models\OnlineVisitor;
 use App\Models\Order;
 use App\Models\RegisterStudy;
@@ -90,8 +89,6 @@ class AppServiceProvider extends ServiceProvider
             $view->with('genre_home', $genre_home);
             $categoryHot = Category::where('isHot', 1)->where('status', 'active')->get();
             $view->with('categoryHot', $categoryHot);
-            $languageTrainings_app = LanguageTraining::where('status', 1)->get();
-            $view->with('languageTrainings_app', $languageTrainings_app);
         });
         $info_layout = Info::first();
         View::share('info_layout', $info_layout);

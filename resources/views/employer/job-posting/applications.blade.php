@@ -21,10 +21,10 @@
                     <i>❤️</i>
                     <span>Dịch vụ đã mua</span>
                 </a>
-                 <a href="{{ route('employer.orders.index') }}" class="menu-item">
-        <i>🧾</i>
-        <span>Lịch sử đơn hàng</span>
-    </a>
+                <a href="{{ route('employer.orders.index') }}" class="menu-item">
+                    <i>🧾</i>
+                    <span>Lịch sử đơn hàng</span>
+                </a>
             </div>
 
             <div class="menu-section">
@@ -71,8 +71,7 @@
                                             <button class="info-btn"
                                                 onclick="showCandidateInfo('{{ $application->candidate->id }}')">Chi
                                                 tiết</button>
-                                            <div id="candidateInfo{{ $application->candidate->id }}"
-                                                class="candidate-info-popup">
+                                            <div id="candidateInfo{{ $application->candidate->id }}" class="candidate-info-popup">
                                                 <div class="info-content">
                                                     <span class="close-info">&times;</span>
                                                     <h3>Thông tin ứng viên</h3>
@@ -129,8 +128,8 @@
                                                         @if ($application->candidate->linkedin)
                                                             <div class="info-item">
                                                                 <strong>LinkedIn:</strong> <a
-                                                                    href="{{ $application->candidate->linkedin }}"
-                                                                    target="_blank">Xem profile</a>
+                                                                    href="{{ $application->candidate->linkedin }}" target="_blank">Xem
+                                                                    profile</a>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -146,8 +145,7 @@
                                         </td>
                                         <td>
                                             @if ($application->introduction)
-                                                <button onclick="showIntroduction('{{ $application->id }}')"
-                                                    class="view-intro-btn">
+                                                <button onclick="showIntroduction('{{ $application->id }}')" class="view-intro-btn">
                                                     Xem
                                                 </button>
                                             @else
@@ -162,17 +160,17 @@
                                         <td>
                                             <select class="status-select"
                                                 onchange="updateStatus('{{ $application->id }}', this.value)">
-                                                <option value="pending"
-                                                    {{ $application->status == 'pending' ? 'selected' : '' }}>Đang chờ
+                                                <option value="pending" {{ $application->status == 'pending' ? 'selected' : '' }}>Đang
+                                                    chờ
                                                 </option>
-                                                <option value="reviewed"
-                                                    {{ $application->status == 'reviewed' ? 'selected' : '' }}>Đã xem
+                                                <option value="reviewed" {{ $application->status == 'reviewed' ? 'selected' : '' }}>Đã
+                                                    xem
                                                 </option>
-                                                <option value="accepted"
-                                                    {{ $application->status == 'accepted' ? 'selected' : '' }}>Chấp nhận
+                                                <option value="accepted" {{ $application->status == 'accepted' ? 'selected' : '' }}>
+                                                    Chấp nhận
                                                 </option>
-                                                <option value="rejected"
-                                                    {{ $application->status == 'rejected' ? 'selected' : '' }}>Từ chối
+                                                <option value="rejected" {{ $application->status == 'rejected' ? 'selected' : '' }}>Từ
+                                                    chối
                                                 </option>
                                             </select>
                                             <button onclick="toggleSave('{{ $application->id }}')"
@@ -640,11 +638,11 @@
         }
 
         // Close modal
-        document.querySelector('.close').onclick = function() {
+        document.querySelector('.close').onclick = function () {
             document.getElementById('introductionModal').style.display = 'none';
         }
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == document.getElementById('introductionModal')) {
                 document.getElementById('introductionModal').style.display = 'none';
             }
@@ -652,15 +650,15 @@
 
         function updateStatus(applicationId, newStatus) {
             fetch(`{{ url('employer/applications') }}/${applicationId}/status`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        status: newStatus
-                    })
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    status: newStatus
                 })
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -668,10 +666,10 @@
                         const statusCell = document.querySelector(
                             `tr[data-application-id="${applicationId}"] .status-cell`);
                         statusCell.innerHTML = `
-                <span class="status-badge status-${newStatus}">
-                    ${newStatus.charAt(0).toUpperCase() + newStatus.slice(1)}
-                </span>
-            `;
+                    <span class="status-badge status-${newStatus}">
+                        ${newStatus.charAt(0).toUpperCase() + newStatus.slice(1)}
+                    </span>
+                `;
                     } else {
                         alert('Có lỗi xảy ra khi cập nhật trạng thái');
                     }
@@ -684,12 +682,12 @@
     <script>
         function toggleSave(applicationId) {
             fetch(`{{ url('employer/applications') }}/${applicationId}/toggle-save`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
-                })
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -712,7 +710,7 @@
     </script>
     <script>
         document.querySelectorAll('.view-cv-btn').forEach(btn => {
-            btn.addEventListener('click', async function(e) {
+            btn.addEventListener('click', async function (e) {
                 // Không chặn hành vi mặc định của thẻ a để vẫn mở CV trong tab mới
 
                 const row = this.closest('tr');
@@ -761,11 +759,11 @@
         }
 
         // Close modals when clicking on X
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Close introduction modal
             const closeIntro = document.querySelector('#introductionModal .close');
             if (closeIntro) {
-                closeIntro.addEventListener('click', function() {
+                closeIntro.addEventListener('click', function () {
                     document.getElementById('introductionModal').style.display = 'none';
                 });
             }
@@ -773,15 +771,15 @@
             // Close all candidate info popups
             const closeInfoButtons = document.querySelectorAll('.close-info');
             closeInfoButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     this.closest('.candidate-info-popup').style.display = 'none';
                 });
             });
 
             // Close modals when clicking outside
-            window.addEventListener('click', function(event) {
+            window.addEventListener('click', function (event) {
                 if (event.target.classList.contains('modal') || event.target.classList.contains(
-                        'candidate-info-popup')) {
+                    'candidate-info-popup')) {
                     event.target.style.display = 'none';
                 }
             });
