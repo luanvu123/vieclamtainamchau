@@ -14,6 +14,7 @@ use App\Models\OnlineVisitor;
 use App\Models\Order;
 use App\Models\RegisterStudy;
 use App\Models\Support;
+use App\Models\TypeLanguageTraining;
 use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
@@ -82,6 +83,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('jobPostingCountTwoHour', $jobPostingCountTwoHour);
         View::share('supportCountTwoHour', $supportCountTwoHour);
         View::share('orderCountTwoHour', $orderCountTwoHour);
+         View::share('TypeLanguageTraining_app', TypeLanguageTraining::where('status', 1)->get());
 
         // Optionally, you can share other data like genres as shown in your existing code
         view()->composer('*', function ($view) {
@@ -89,6 +91,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with('genre_home', $genre_home);
             $categoryHot = Category::where('isHot', 1)->where('status', 'active')->get();
             $view->with('categoryHot', $categoryHot);
+               $typeLanguageTraining_app = TypeLanguageTraining::where('status', true)->orderBy('name')->get();
+        $view->with('typeLanguageTraining_app', $typeLanguageTraining_app);
         });
         $info_layout = Info::first();
         View::share('info_layout', $info_layout);

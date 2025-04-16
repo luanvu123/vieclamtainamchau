@@ -33,4 +33,9 @@ class LanguageTraining extends Model
     {
         return $this->belongsTo(Employer::class);
     }
+    public function candidateRegistrations()
+{
+    return $this->hasMany(CandidateLanguageTraining::class, 'language_training_id');
+}
+
 }

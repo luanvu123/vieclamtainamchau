@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Candidate;
 
 use App\Http\Controllers\Controller;
 use App\Models\Application;
+use App\Models\CandidateLanguageTraining;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -19,6 +20,30 @@ class CandidateProfileController extends Controller
     {
         $candidate = Auth::guard('candidate')->user();
         return view('candidate.profile', compact('candidate'));
+    }
+     public function registerTraining(Request $request)
+    {
+        $candidateId = Auth::guard('candidate')->id();
+
+        // Check nếu đã đăng ký
+        $exists = CandidateLanguageTraining::where('candidate_id', $candidateId)
+            ->where('language_training_id', $request->language_training_id)
+            ->exists();
+
+        if ($exists) {
+            return back()->with('error', 'Bạn đã đăng ký khóa học này rồi.');
+        }
+
+        CandidateLanguageTraining::create([
+            'candidate_id' => $candidateId,
+            'language_training_id' => $request->language_training_id,
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'note' => $request->note,
+        ]);
+
+        return back()->with('success', 'Đăng ký thành công!');
     }
 public function notify()
 {

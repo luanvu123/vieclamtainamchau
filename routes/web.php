@@ -54,8 +54,10 @@ Route::post('/register-consult', [SiteController::class, 'registerConsult'])->na
 Route::get('/study-abroad/{id}/details', [SiteController::class, 'getStudyDetails']);
 Route::get('/study-abroad', [SiteController::class, 'studyIndex'])->name('site.study-abroad');
 Route::get('/study-abroad/{slug}', [SiteController::class, 'studyShow'])->name('study-abroad.show');
-Route::get('/language-training', [SiteController::class, 'indexLanguageTrainings'])->name('site.language-training');
 Route::get('/language-training/{slug}', [SiteController::class, 'detailLanguageTrainings'])->name('site.language-training.detail');
+Route::get('/language-training/type/{type:slug}', [SiteController::class, 'filterByType'])->name('site.language-training');
+
+
 Auth::routes();
 
 
@@ -104,6 +106,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::get('/candidate/check-application/{jobPostingId}', [ApplicationController::class, 'checkApplicationStatus'])->name('candidate.check-application')->middleware('candidate');
 Route::prefix('candidate')->name('candidate.')->group(function () {
+    Route::post('/language-training/register', [CandidateProfileController::class, 'registerTraining'])->name('site.language-training.register');
     Route::get('/notifications', [CandidateProfileController::class, 'notify'])
         ->name('notifications');
     Route::post('/notifications/{id}/mark-as-read', [CandidateProfileController::class, 'markNotificationAsRead'])
@@ -153,7 +156,13 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
 
 
 Route::prefix('employer')->name('employer.')->group(function () {
+    Route::get('languagetrainings/{id}/candidates', [LanguageTrainingController::class, 'showCandidates'])->name('languagetrainings.candidates');
+    Route::delete('candidate-registrations/{id}', [LanguageTrainingController::class, 'destroyCandidateRegistration'])
+    ->name('languagetrainings.candidate.destroy');
+
+
      Route::resource('languagetrainings', LanguageTrainingController::class);
+     Route::post('send-message', [JobPostingController::class, 'sendMessage'])->name('send-message');
     // Authentication Routes
     Route::get('job-posting/find-candidate', [JobPostingController::class, 'findCandidate'])
         ->name('job-posting.find-candidate')->middleware('employer');
@@ -213,4 +222,5 @@ Route::prefix('employer')->name('employer.')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index')->middleware('employer');
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show')->middleware('employer');
     Route::post('/orders/{id}/mark-as-paid', [OrderController::class, 'markAsPaid'])->name('orders.markAsPaid')->middleware('employer');
+
 });

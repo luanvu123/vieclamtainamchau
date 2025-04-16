@@ -14,34 +14,41 @@
     @endif
 
     <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Tên</th>
-                <th>Loại</th>
-                <th>Ngày bắt đầu</th>
-                <th>Ngày kết thúc</th>
-                <th>Trạng thái</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($languageTrainings as $training)
-                <tr>
-                    <td>{{ $training->name }}</td>
-                    <td>{{ $training->typeLanguageTraining->name ?? '---' }}</td>
-                    <td>{{ $training->start_date }}</td>
-                    <td>{{ $training->end_date }}</td>
-                    <td>{{ $training->status ? 'Hiển thị' : 'Ẩn' }}</td>
-                    <td>
-                        <a href="{{ route('employer.languagetrainings.edit', $training->id) }}" class="btn btn-sm btn-warning">Sửa</a>
-                        <form action="{{ route('employer.languagetrainings.destroy', $training->id) }}" method="POST" style="display:inline;">
-                            @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-danger" onclick="return confirm('Bạn chắc chắn muốn xóa?')">Xóa</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
+       <thead>
+    <tr>
+        <th>Tên</th>
+        <th>Loại</th>
+        <th>Ngày bắt đầu</th>
+        <th>Ngày kết thúc</th>
+        <th>Trạng thái</th>
+        <th>Ứng viên đăng ký</th>
+        <th>Hành động</th>
+    </tr>
+</thead>
+<tbody>
+    @foreach($languageTrainings as $training)
+        <tr>
+            <td>{{ $training->name }}</td>
+            <td>{{ $training->typeLanguageTraining->name ?? '---' }}</td>
+            <td>{{ $training->start_date }}</td>
+            <td>{{ $training->end_date }}</td>
+            <td>{{ $training->status ? 'Hiển thị' : 'Ẩn' }}</td>
+            <td>
+                <a href="{{ route('employer.languagetrainings.candidates', $training->id) }}" class="btn btn-info btn-sm">
+                    Xem ({{ $training->candidateRegistrations->count() }})
+                </a>
+            </td>
+            <td>
+                <a href="{{ route('employer.languagetrainings.edit', $training->id) }}" class="btn btn-sm btn-warning">Sửa</a>
+                <form action="{{ route('employer.languagetrainings.destroy', $training->id) }}" method="POST" style="display:inline;">
+                    @csrf @method('DELETE')
+                    <button class="btn btn-sm btn-danger" onclick="return confirm('Bạn chắc chắn muốn xóa?')">Xóa</button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
+</tbody>
+
     </table>
 
         </div>

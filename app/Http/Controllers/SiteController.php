@@ -13,6 +13,7 @@ use App\Models\News;
 use App\Models\OnlineVisitor;
 use App\Models\RegisterStudy;
 use App\Models\StudyAbroad;
+use App\Models\TypeLanguageTraining;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -85,15 +86,17 @@ class SiteController extends Controller
     public function index(Request $request)
     {
         $categories = Category::where('status', 'active')->where('isHot', 0)->get();
-        $genres = Genre::with(['jobPostings' => function ($query) {
-            $query->with(['employer', 'countries'])
-                ->where('status', 'active')
-                ->where('closing_date', '>', now())
-                ->whereHas('employer', function ($query) {
-                    $query->where('IsHome', 1); // Filter job postings where employer IsHome is 1
-                })
-                ->latest();
-        }])->get();
+        $genres = Genre::with([
+            'jobPostings' => function ($query) {
+                $query->with(['employer', 'countries'])
+                    ->where('status', 'active')
+                    ->where('closing_date', '>', now())
+                    ->whereHas('employer', function ($query) {
+                        $query->where('IsHome', 1); // Filter job postings where employer IsHome is 1
+                    })
+                    ->latest();
+            }
+        ])->get();
         OnlineVisitor::trackVisitor($request->ip());
         $countries = Country::where('status', 'active')->get(); // Lấy quốc gia từ bảng Country
         $employerIsPartner = Employer::where('isPartner', 1)->withCount('jobPostings')->get();
@@ -110,12 +113,14 @@ class SiteController extends Controller
         $countries = Country::where('status', 'active')->get();
 
         $genre = Genre::where('slug', $slug)
-            ->with(['jobPostings' => function ($query) {
-                $query->with(['employer', 'countries'])
-                    ->where('status', 'active')
-                    ->where('closing_date', '>', now())
-                    ->latest();
-            }])
+            ->with([
+                'jobPostings' => function ($query) {
+                    $query->with(['employer', 'countries'])
+                        ->where('status', 'active')
+                        ->where('closing_date', '>', now())
+                        ->latest();
+                }
+            ])
             ->firstOrFail();
 
         // Nhóm jobs theo country
@@ -278,16 +283,18 @@ class SiteController extends Controller
 
     public function detailLanguageTrainings($slug)
     {
-        $languageTraining = LanguageTraining::where('slug', $slug)
-            ->where('status', 1)
+        $training = LanguageTraining::where('slug', $slug)
+            ->where('status', true)
+            ->with('typeLanguageTraining')
             ->firstOrFail();
 
-        // Lấy các đơn vị đào tạo khác
-        $relatedTrainings = LanguageTraining::where('status', 1)
-            ->where('id', '!=', $languageTraining->id)
-            ->limit(3)
-            ->get();
-
-        return view('pages.detail_languageTrainings', compact('languageTraining', 'relatedTrainings'));
+        return view('pages.detail_languageTrainings', compact('training'));
     }
+
+    public function filterByType(TypeLanguageTraining $type)
+    {
+        $trainings = $type->languageTrainings()->where('status', true)->paginate(10);
+        return view('pages.index_languageTrainings', compact('type', 'trainings'));
+    }
+   
 }

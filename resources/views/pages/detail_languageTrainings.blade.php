@@ -1,81 +1,106 @@
 @extends('layout')
 
 @section('content')
-<div class="language-training-detail">
-    <div class="breadcrumb">
-        <a href="{{ route('site.language-training') }}">Đơn vị đào tạo ngôn ngữ</a>
-        <span> / </span>
-        <span>{{ $languageTraining->name }}</span>
-    </div>
+<style>
+    .header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
-    <h1>{{ $languageTraining->name }}</h1>
+    .header h1 {
+        color: #e63946;
+        font-size: 36px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+    }
 
-    <div class="description">
-        {!! $languageTraining->description !!}
-    </div>
+    .course-detail {
+        background-color: white;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 40px;
+    }
 
-    @if($relatedTrainings->count() > 0)
-        <div class="related-section">
-            <h2>Các đơn vị đào tạo khác</h2>
-            <div class="related-grid">
-                @foreach($relatedTrainings as $training)
-                    <a href="{{ route('site.language-training.detail', $training->slug) }}"
-                       class="related-card">
-                        <h3>{{ $training->name }}</h3>
-                        <p>{{ Str::limit($training->description, 100) }}</p>
-                    </a>
-                @endforeach
-            </div>
-        </div>
-    @endif
+    .course-detail img {
+        max-width: 100%;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .course-description p {
+        line-height: 1.8;
+        font-size: 16px;
+        color: #333;
+        text-align: justify;
+    }
+
+    .course-actions {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .course-actions .btn {
+        margin: 0 10px;
+    }
+</style>
+
+<!-- Section: Hotline -->
+<div class="header">
+    <h1>Chi tiết khóa học: {{ $training->name }}</h1>
 </div>
 
-<style>
-.language-training-detail {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
+<section class="hotlines-section">
+    <div class="course-detail">
+        <img src="{{ $training->image ? asset('storage/' . $training->image) : '/api/placeholder/600/400' }}" alt="{{ $training->name }}">
+        <div class="course-description">
+            {!! $training->description !!}
+        </div>
 
-.breadcrumb {
-    margin-bottom: 20px;
-}
+        <div class="course-actions">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registerModal{{ $training->id }}">
+                Đăng ký tư vấn
+            </button>
 
-.breadcrumb a {
-    color: #007bff;
-    text-decoration: none;
-}
+        </div>
+    </div>
 
-.description {
-    line-height: 1.6;
-    margin: 20px 0;
-}
-
-.related-section {
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-}
-
-.related-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.related-card {
-    background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.3s ease;
-}
-
-.related-card:hover {
-    transform: translateY(-5px);
-}
-</style>
+    <!-- Modal -->
+    <div class="modal fade" id="registerModal{{ $training->id }}" tabindex="-1" aria-labelledby="registerModalLabel{{ $training->id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" action="{{ route('candidate.site.language-training.register') }}" method="POST">
+                @csrf
+                <input type="hidden" name="language_training_id" value="{{ $training->id }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel{{ $training->id }}">Đăng ký tư vấn - {{ $training->name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Họ và tên</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" name="phone" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="note" class="form-label">Ghi chú (tuỳ chọn)</label>
+                        <textarea class="form-control" name="note" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
 @endsection

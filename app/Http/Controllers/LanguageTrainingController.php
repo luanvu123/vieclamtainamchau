@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\CandidateLanguageTraining;
 use App\Models\LanguageTraining;
 use App\Models\TypeLanguageTraining;
 use Illuminate\Http\Request;
@@ -14,13 +15,17 @@ class LanguageTrainingController extends Controller
         $this->middleware('employer');
     }
 
-    public function index()
-    {
-        $employerId = Auth::guard('employer')->id();
-        $languageTrainings = LanguageTraining::where('employer_id', $employerId)->get();
+  public function index()
+{
+    $employerId = Auth::guard('employer')->id();
 
-        return view('employer.languagetrainings.index', compact('languageTrainings'));
-    }
+    $languageTrainings = LanguageTraining::with('candidateRegistrations.candidate') // load candidate luôn
+        ->where('employer_id', $employerId)
+        ->get();
+
+    return view('employer.languagetrainings.index', compact('languageTrainings'));
+}
+
 
     public function create()
     {
@@ -115,5 +120,30 @@ class LanguageTrainingController extends Controller
             abort(403);
         }
     }
+    public function showCandidates($id)
+{
+    $training = LanguageTraining::with('candidateRegistrations')->findOrFail($id);
+
+    // Optional: Kiểm tra quyền employer
+    if ($training->employer_id != Auth::guard('employer')->id()) {
+        abort(403);
+    }
+
+    return view('employer.languagetrainings.candidates', compact('training'));
+}
+public function destroyCandidateRegistration($id)
+{
+    $registration = CandidateLanguageTraining::findOrFail($id);
+
+    // Kiểm tra quyền: chỉ employer tạo khóa học đó mới được xoá
+    $training = $registration->training;
+    if ($training->employer_id !== Auth::guard('employer')->id()) {
+        abort(403, 'Bạn không có quyền xóa đăng ký này');
+    }
+
+    $registration->delete();
+
+    return redirect()->back()->with('success', 'Xóa đăng ký thành công');
+}
 }
 

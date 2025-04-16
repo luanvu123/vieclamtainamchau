@@ -2572,17 +2572,16 @@
                         <li><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></li>
                     @endforeach
                 @endif
-                <li><a href="{{ route('site.study-abroad') }}">Du học nghề</a></li>
                 <li>
-                    <a href="{{ route('site.language-training') }}">
+                    <a href="#">
                         Đơn vị đào tạo ngôn ngữ
                         <span class="dropdown-arrow">▼</span>
                     </a>
-                    @if (isset($languageTrainings_app) && $languageTrainings_app->count() > 0)
+                    @if (isset($typeLanguageTraining_app) && $typeLanguageTraining_app->count())
                         <div class="dropdown-content">
-                            @foreach ($languageTrainings_app as $training)
-                                <a href="{{ route('site.language-training.detail', $training->slug) }}">
-                                    {{ $training->name }}
+                            @foreach ($typeLanguageTraining_app as $type)
+                                <a href="{{ route('site.language-training', ['type' => $type->slug]) }}">
+                                    {{ $type->name }}
                                 </a>
                             @endforeach
                         </div>
