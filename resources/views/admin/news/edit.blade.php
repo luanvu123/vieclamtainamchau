@@ -1,63 +1,45 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>Chỉnh sửa tin tức</h1>
-    <form action="{{ route('news.update', $news->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+<div class="container mt-4">
+    <h2>Chỉnh sửa tin tức</h2>
+
+    <form action="{{ route('news-manage.update', $news->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf @method('PUT')
+
         <div class="mb-3">
-            <label for="name" class="form-label">Tên</label>
-            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $news->name) }}" required>
-            @error('name')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            <label class="form-label">Tên</label>
+            <input type="text" name="name" class="form-control" value="{{ $news->name }}" required>
         </div>
+
         <div class="mb-3">
-            <label for="image" class="form-label">Hình ảnh</label>
-            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image">
-            @if ($news->image)
-                <img src="{{ asset('storage/' . $news->image) }}" alt="{{ $news->name }}" class="img-thumbnail mt-2" style="max-width: 200px;">
+            <label class="form-label">Ảnh hiện tại</label><br>
+            @if($news->image)
+                <img src="{{ asset('storage/' . $news->image) }}" width="100"><br><br>
             @endif
-            @error('image')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            <input type="file" name="image" class="form-control">
         </div>
+
         <div class="mb-3">
-            <label for="description" class="form-label">Mô tả</label>
-            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description">{!! old('description', $news->description) !!}</textarea>
-            @error('description')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            <label class="form-label">Website</label>
+            <input type="url" name="website" class="form-control" value="{{ $news->website }}">
         </div>
+
         <div class="mb-3">
-            <label for="website" class="form-label">Website</label>
-            <input type="url" class="form-control @error('website') is-invalid @enderror" id="website" name="website" value="{{ old('website', $news->website) }}">
-            @error('website')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            <label class="form-label">Mô tả</label>
+            <textarea name="description" class="form-control" rows="4">{{ $news->description }}</textarea>
         </div>
+
         <div class="mb-3">
-            <label for="status" class="form-label">Trạng thái</label>
-            <select class="form-control @error('status') is-invalid @enderror" id="status" name="status" required>
-                <option value="1" {{ old('status', $news->status) == 1 ? 'selected' : '' }}>Hoạt động</option>
-                <option value="0" {{ old('status', $news->status) == 0 ? 'selected' : '' }}>Không hoạt động</option>
+            <label class="form-label">Trạng thái</label>
+            <select name="status" class="form-control">
+                <option value="active" {{ $news->status == 'active' ? 'selected' : '' }}>Hoạt động</option>
+                <option value="inactive" {{ $news->status == 'inactive' ? 'selected' : '' }}>Không hoạt động</option>
             </select>
-            @error('status')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
         </div>
-         <div class="mb-3">
-            <label for="isOutstanding" class="form-label">Quảng cáo</label>
-            <select class="form-control @error('isBanner') is-invalid @enderror" id="isBanner" name="isBanner" required>
-                <option value="1" {{ old('isBanner', $news->isBanner) == 1 ? 'selected' : '' }}>Có</option>
-                <option value="0" {{ old('isBanner', $news->isBanner) == 0 ? 'selected' : '' }}>Không</option>
-            </select>
-            @error('isBanner')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-        <button type="submit" class="btn btn-primary">Cập nhật</button>
+
+        <button class="btn btn-success">Cập nhật</button>
+        <a href="{{ route('news-manage.index') }}" class="btn btn-secondary">Quay lại</a>
     </form>
 </div>
 @endsection

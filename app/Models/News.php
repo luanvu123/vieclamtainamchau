@@ -15,7 +15,6 @@ class News extends Model
         'description',
         'website',
         'status',
-      
-        'isBanner'
+        'employer_id',
     ];
 }

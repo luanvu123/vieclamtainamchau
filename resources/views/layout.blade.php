@@ -3037,6 +3037,59 @@
             });
         </script>
     @endif
+    <script>
+        @if (session('success'))
+            toastMessage("{{ session('success') }}", 'success');
+        @endif
+
+        @if (session('error'))
+            toastMessage("{{ session('error') }}", 'error');
+        @endif
+
+        function toastMessage(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+    </script>
+
+    <style>
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            color: #fff;
+            border-radius: 4px;
+            z-index: 9999;
+            font-size: 15px;
+            animation: slideDown 0.5s ease;
+        }
+
+        .toast-success {
+            background-color: #28a745;
+        }
+
+        .toast-error {
+            background-color: #dc3545;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 
 </body>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Advertise;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Employer;
@@ -36,18 +37,14 @@ class SiteController extends Controller
         $locations = Location::where('status', 'active')->get();
         return response()->json($locations);
     }
-    public function news()
-    {
+  public function news()
+{
+    $promotion = News::where('status', 1)->paginate(10);
 
-        $promotion = News::where('status', 1)
-            ->where('isBanner', 0)
-            ->paginate(10);
-        $bannerNews = News::where('status', 1)
-            ->where('isBanner', 1)
-            ->get();
+    $bannerNews = Advertise::where('status', 1)->latest()->get(); // hoặc điều kiện tùy theo nhu cầu
 
-        return view('pages.news', compact('bannerNews', 'promotion'));
-    }
+    return view('pages.news', compact('promotion', 'bannerNews'));
+}
 
     public function newsDetail($id)
     {
@@ -201,30 +198,7 @@ class SiteController extends Controller
         $countries = Country::where('status', 'active')->get();
         return view('pages.search', compact('jobPostings', 'categories', 'countries'));
     }
-    public function registerConsult(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'address' => 'nullable|string|max:255',
-            'program' => 'required|exists:study_abroads,id'
-        ]);
 
-        try {
-            RegisterStudy::create([
-                'name' => $validated['name'],
-                'phone' => $validated['phone'],
-                'address' => $validated['address'],
-                'study_abroad_id' => $validated['program'],
-                'status' => 'pending'
-            ]);
-
-            return back()->with('success', 'Đăng ký tư vấn thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Có lỗi xảy ra khi đăng ký. Vui lòng thử lại sau.')
-                ->withInput();
-        }
-    }
 
 
 
@@ -296,5 +270,5 @@ class SiteController extends Controller
         $trainings = $type->languageTrainings()->where('status', true)->paginate(10);
         return view('pages.index_languageTrainings', compact('type', 'trainings'));
     }
-   
+
 }

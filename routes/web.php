@@ -12,6 +12,8 @@ use App\Http\Controllers\Auth\EmployerResetPasswordController;
 use App\Http\Controllers\Candidate\CandidateProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\AdvertiseController;
+use App\Http\Controllers\AdvertisesManageController;
 use App\Http\Controllers\Employer\EmployerProfileController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\LocationController;
@@ -27,10 +29,13 @@ use App\Http\Controllers\InfoController;
 use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\LaborexportController;
 use App\Http\Controllers\LanguageTrainingController;
+use App\Http\Controllers\LanguageTrainingManageController;
+use App\Http\Controllers\NewsManageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RegisterStudyController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\StudyAbroadManageController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\SupportManageController;
 use App\Http\Controllers\TypeLanguageTrainingController;
@@ -50,7 +55,6 @@ Route::get('/search', [SiteController::class, 'search'])->name('site.search')->m
 Route::post('/supports', [SupportController::class, 'store'])->name('supports.store');
 Route::get('/tin-tuc', [SiteController::class, 'news'])->name('news.home');
 Route::get('/tin-tuc/{id}', [SiteController::class, 'newsDetail'])->name('news.detail.home');
-Route::post('/register-consult', [SiteController::class, 'registerConsult'])->name('register.consult');
 Route::get('/study-abroad/{id}/details', [SiteController::class, 'getStudyDetails']);
 Route::get('/study-abroad', [SiteController::class, 'studyIndex'])->name('site.study-abroad');
 Route::get('/study-abroad/{slug}', [SiteController::class, 'studyShow'])->name('study-abroad.show');
@@ -65,9 +69,13 @@ Auth::routes();
 
 
 Route::group(['middleware' => ['auth']], function () {
+     Route::resource('news-manage', NewsManageController::class);
+      Route::resource('advertises-manage', AdvertisesManageController::class);
+      Route::resource('language-training-manage', LanguageTrainingManageController::class);
+       Route::resource('study-abroad-manage', StudyAbroadManageController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('labor-exports', LaborexportController::class);
-    Route::resource('study-abroads', StudyAbroadController::class);
+
     Route::resource('register-study', RegisterStudyController::class);
     Route::resource('typeLanguagetrainings', TypeLanguageTrainingController::class);
 
@@ -86,7 +94,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('banks', BankController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
-    Route::resource('news', NewsController::class);
     Route::resource('locations', LocationController::class);
     Route::get('/admin/info/edit', [InfoController::class, 'edit'])->name('info.edit');
     Route::put('/admin/info/update', [InfoController::class, 'update'])->name('info.update');
@@ -106,6 +113,10 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::get('/candidate/check-application/{jobPostingId}', [ApplicationController::class, 'checkApplicationStatus'])->name('candidate.check-application')->middleware('candidate');
 Route::prefix('candidate')->name('candidate.')->group(function () {
+    Route::post('/register-study-abroad/{studyAbroadId}', [SavedStudyAbroadController::class, 'registerConsultation'])
+        ->middleware('candidate')
+        ->name('register.study.abroad');
+
     Route::post('/language-training/register', [CandidateProfileController::class, 'registerTraining'])->name('site.language-training.register');
     Route::get('/notifications', [CandidateProfileController::class, 'notify'])
         ->name('notifications');
@@ -156,13 +167,23 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
 
 
 Route::prefix('employer')->name('employer.')->group(function () {
+    Route::get('job-posting-export', [JobPostingController::class, 'indexExport'])
+        ->name('job-posting.export')
+        ->middleware('employer');
+
+    Route::resource('news', NewsController::class);
+    Route::resource('advertises', AdvertiseController::class);
+    Route::resource('study-abroads', StudyAbroadController::class);
+    Route::get('study-abroads/{id}/candidates', [StudyAbroadController::class, 'showCandidates'])
+        ->name('study-abroads.candidates');
+
     Route::get('languagetrainings/{id}/candidates', [LanguageTrainingController::class, 'showCandidates'])->name('languagetrainings.candidates');
     Route::delete('candidate-registrations/{id}', [LanguageTrainingController::class, 'destroyCandidateRegistration'])
-    ->name('languagetrainings.candidate.destroy');
+        ->name('languagetrainings.candidate.destroy');
 
 
-     Route::resource('languagetrainings', LanguageTrainingController::class);
-     Route::post('send-message', [JobPostingController::class, 'sendMessage'])->name('send-message');
+    Route::resource('languagetrainings', LanguageTrainingController::class);
+    Route::post('send-message', [JobPostingController::class, 'sendMessage'])->name('send-message');
     // Authentication Routes
     Route::get('job-posting/find-candidate', [JobPostingController::class, 'findCandidate'])
         ->name('job-posting.find-candidate')->middleware('employer');

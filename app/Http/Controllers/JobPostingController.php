@@ -27,35 +27,65 @@ class JobPostingController extends Controller
         $this->middleware('employer');
     }
 
-   public function findCandidate()
-{
-    $employer = Auth::guard('employer')->user();
-
-    // Lọc các orderDetails có service.name = 'Tìm ứng viên', expiring_date hợp lệ, order.status = 'Đã thanh toán'
-    $validOrderDetails = OrderDetail::whereHas('order', function ($query) use ($employer) {
-            $query->where('employer_id', $employer->id)
-                  ->where('status', 'Đã thanh toán');
-        })
-        ->whereHas('service', function ($query) {
-            $query->where('name', 'Tìm ứng viên');
-        })
-        ->whereDate('expiring_date', '>=', Carbon::today())
-        ->get();
-
-    $candidates = Candidate::where('is_public', 1)->get();
-
-    return view('employer.job-posting.find_candidate', compact('candidates', 'validOrderDetails'));
-}
-
-
-
-    public function index()
+    public function findCandidate()
     {
         $employer = Auth::guard('employer')->user();
-        $jobPostings = JobPosting::where('employer_id', $employer->id)->get();
+
+        // Lọc các orderDetails có service.name = 'Tìm ứng viên', expiring_date hợp lệ, order.status = 'Đã thanh toán'
+        $validOrderDetails = OrderDetail::whereHas('order', function ($query) use ($employer) {
+            $query->where('employer_id', $employer->id)
+                ->where('status', 'Đã thanh toán');
+        })
+            ->whereHas('service', function ($query) {
+                $query->where('name', 'Tìm ứng viên');
+            })
+            ->whereDate('expiring_date', '>=', Carbon::today())
+            ->get();
+
+        $candidates = Candidate::where('is_public', 1)->get();
+
+        return view('employer.job-posting.find_candidate', compact('candidates', 'validOrderDetails'));
+    }
+
+
+
+    public function index(Request $request)
+    {
+        $employer = Auth::guard('employer')->user();
+
+        $query = JobPosting::with('genres')
+            ->where('employer_id', $employer->id)
+            ->whereHas('genres', function ($q) {
+                $q->where('slug', 'viec-lam');
+            });
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $jobPostings = $query->get();
 
         return view('employer.job-posting.index', compact('jobPostings'));
     }
+public function indexExport(Request $request)
+{
+    $employer = Auth::guard('employer')->user();
+
+    $query = JobPosting::with('genres')
+        ->where('employer_id', $employer->id)
+        ->whereHas('genres', function ($q) {
+            $q->where('slug', 'xuat-khau-lao-dong');
+        });
+
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    $jobPostings = $query->get();
+
+    return view('employer.job-posting.export', compact('jobPostings'));
+}
+
     public function create()
     {
         $categories = Category::where('status', 'active')->get();
@@ -174,6 +204,7 @@ class JobPostingController extends Controller
                 ->with('error', 'Bạn không có quyền chỉnh sửa bài đăng này');
         }
 
+
         $categories = Category::where('status', 'active')->get();
         $countries = Country::where('status', 'active')->get();
         $genres = Genre::where('status', 'active')->get();
@@ -189,14 +220,18 @@ class JobPostingController extends Controller
 
     public function update(Request $request, $id)
     {
+          $employer = Auth::guard('employer')->user();
         $jobPosting = JobPosting::findOrFail($id);
 
-        // Check if the job posting belongs to the authenticated employer
-        if ($jobPosting->employer_id !== auth()->id()) {
+          if ($jobPosting->employer_id != $employer->id) {
             return redirect()->route('employer.job-posting.index')
                 ->with('error', 'Bạn không có quyền cập nhật bài đăng này');
         }
-
+ // Không cho chỉnh sửa nếu trạng thái là active
+    if ($jobPosting->status === 'active') {
+        return redirect()->back()
+            ->with('error', 'Tin đăng đang hoạt động và không thể chỉnh sửa');
+    }
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|in:fulltime,parttime,intern,freelance',

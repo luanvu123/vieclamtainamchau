@@ -45,7 +45,7 @@ class EmployerAuthController extends Controller
 
         Mail::to($employer->email)->send(new EmployerVerificationMail($employer));
 
-        return redirect()->route('employer.register')
+        return redirect()->route('/')
             ->with('success', 'Vui lòng kiểm tra email để xác thực tài khoản của bạn.');
     }
 

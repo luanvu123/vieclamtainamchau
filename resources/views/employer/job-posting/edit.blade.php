@@ -134,17 +134,6 @@
                              <span class="text-danger">{{ $message }}</span>
                          @enderror
                      </div>
-
-                     <div class="mb-3">
-                         <label for="application_email_url" class="form-label">Email ứng tuyển</label>
-                         <input type="email" id="application_email_url" name="application_email_url"
-                             class="form-control"
-                             value="{{ old('application_email_url', $jobPosting->application_email_url) }}" required>
-                         @error('application_email_url')
-                             <span class="text-danger">{{ $message }}</span>
-                         @enderror
-                     </div>
-
                      <div class="mb-3">
                          <label for="closing_date" class="form-label">Hạn chót</label>
                          <input type="date" id="closing_date" name="closing_date" class="form-control"

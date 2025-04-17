@@ -1,10 +1,13 @@
-@extends('layouts.app')
-
+@extends('layouts.manage')
 @section('content')
-    <div class="container">
+
+
+    <div class="main-content">
+
+
         <h2>Chỉnh sửa chương trình du học</h2>
 
-        <form action="{{ route('study-abroads.update', $studyAbroad->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('employer.study-abroads.update', $studyAbroad->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -34,13 +37,6 @@
                 @endif
             </div>
 
-            <div class="mb-3">
-                <label for="status" class="form-label">Trạng thái</label>
-                <select class="form-control" id="status" name="status">
-                    <option value="1" {{ $studyAbroad->status ? 'selected' : '' }}>Hoạt động</option>
-                    <option value="0" {{ !$studyAbroad->status ? 'selected' : '' }}>Không hoạt động</option>
-                </select>
-            </div>
 
             <div class="mb-3">
                 <label for="categories" class="form-label">Ngành nghề</label>
@@ -73,4 +69,5 @@
             <button type="submit" class="btn btn-primary">Cập nhật</button>
         </form>
     </div>
+
 @endsection

@@ -10,7 +10,7 @@ class StudyAbroad extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'description', 'image', 'status', 'short_detail'];
+    protected $fillable = ['name', 'slug', 'description', 'image', 'status', 'short_detail', 'employer_id'];
 
     public static function boot()
     {
@@ -35,12 +35,18 @@ class StudyAbroad extends Model
     {
         return $this->belongsToMany(Country::class, 'country_study_abroad');
     }
-    public function registrations()
-    {
-        return $this->hasMany(RegisterStudy::class);
-    }
     public function savedByCandidates()
     {
         return $this->hasMany(SavedStudyAbroad::class, 'study_abroad_id');
     }
+    public function employer()
+{
+    return $this->belongsTo(Employer::class);
+}
+public function candidatesToday()
+{
+    return $this->hasMany(CandidateStudyAbroad::class, 'study_abroad_id')
+                ->where('created_at', '>=', now()->subDay());
+}
+
 }

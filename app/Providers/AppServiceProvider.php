@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Advertise;
 use App\Models\Genre;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
@@ -10,9 +11,12 @@ use App\Models\Candidate;
 use App\Models\Category;
 use App\Models\Info;
 use App\Models\JobPosting;
+use App\Models\LanguageTraining;
+use App\Models\News;
 use App\Models\OnlineVisitor;
 use App\Models\Order;
 use App\Models\RegisterStudy;
+use App\Models\StudyAbroad;
 use App\Models\Support;
 use App\Models\TypeLanguageTraining;
 use Carbon\Carbon;
@@ -68,11 +72,6 @@ class AppServiceProvider extends ServiceProvider
 
         // Đếm số người đang online (5 phút qua)
         $onlineVisitors = OnlineVisitor::where('last_active', '>=', now()->subMinutes(5))->count();
-        // Count the number of register study records created in the last 2 hours
-        $registerStudyCountTwoHour = RegisterStudy::where('created_at', '>=', Carbon::now()->subHours(2))->count();
-
-        // Chia sẻ biến này với tất cả các view
-        View::share('registerStudyCountTwoHour', $registerStudyCountTwoHour);
 
         // Chia sẻ thông tin với tất cả các view
         view()->share('totalVisitors', $totalVisitors);
@@ -83,19 +82,33 @@ class AppServiceProvider extends ServiceProvider
         View::share('jobPostingCountTwoHour', $jobPostingCountTwoHour);
         View::share('supportCountTwoHour', $supportCountTwoHour);
         View::share('orderCountTwoHour', $orderCountTwoHour);
-         View::share('TypeLanguageTraining_app', TypeLanguageTraining::where('status', 1)->get());
+        View::share('TypeLanguageTraining_app', TypeLanguageTraining::where('status', 1)->get());
 
         // Optionally, you can share other data like genres as shown in your existing code
         view()->composer('*', function ($view) {
+            $twoHoursAgo = Carbon::now()->subHours(2);
+
             $genre_home = Genre::where('status', 'active')->orderBy('updated_at', 'asc')->get();
-            $view->with('genre_home', $genre_home);
             $categoryHot = Category::where('isHot', 1)->where('status', 'active')->get();
-            $view->with('categoryHot', $categoryHot);
-               $typeLanguageTraining_app = TypeLanguageTraining::where('status', true)->orderBy('name')->get();
-        $view->with('typeLanguageTraining_app', $typeLanguageTraining_app);
+            $typeLanguageTraining_app = TypeLanguageTraining::where('status', true)->orderBy('name')->get();
+            $languagetrainingCountTwoHour = LanguageTraining::where('created_at', '>=', $twoHoursAgo)->count();
+            $newsCountTwoHour = News::where('created_at', '>=', $twoHoursAgo)->count();
+            $advertisesCountTwoHour = Advertise::where('created_at', '>=', $twoHoursAgo)->count();
+            $studyabroadCountTwoHour = StudyAbroad::where('created_at', '>=', $twoHoursAgo)->count();
+
+
+            $view->with(compact(
+                'genre_home',
+                'categoryHot',
+                'typeLanguageTraining_app',
+                'languagetrainingCountTwoHour',
+                'newsCountTwoHour',
+                'advertisesCountTwoHour',
+                'studyabroadCountTwoHour'
+            ));
         });
-        $info_layout = Info::first();
-        View::share('info_layout', $info_layout);
+
+        View::share('info_layout', Info::first());
 
     }
 }

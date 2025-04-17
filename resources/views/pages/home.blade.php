@@ -8,8 +8,7 @@
                 <select name="category">
                     <option value="">Lựa chọn nghề nghiệp</option>
                     @foreach ($categories as $category)
-                        <option value="{{ $category->slug }}"
-                            {{ request('category') == $category->slug ? 'selected' : '' }}>
+                        <option value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'selected' : '' }}>
                             {{ $category->name }}
                         </option>
                     @endforeach
@@ -58,12 +57,10 @@
 
                     <div class="category-grid">
                         @foreach ($genre->jobPostings as $job)
-                            <div
-                                class="category-card {{ $job->employer && $job->employer->IsHoteffect ? 'hot-effect' : '' }}">
+                            <div class="category-card {{ $job->employer && $job->employer->IsHoteffect ? 'hot-effect' : '' }}">
                                 @if ($job->employer && $job->employer->avatar)
                                     <a href="{{ route('job.show', $job->slug) }}">
-                                        <img src="{{ asset('storage/' . $job->employer->avatar) }}"
-                                            alt="{{ $job->employer->company_name }}"
+                                        <img src="{{ asset('storage/' . $job->employer->avatar) }}" alt="{{ $job->employer->company_name }}"
                                             onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
                                     </a>
                                 @else
@@ -104,6 +101,7 @@
         @endforeach
     </section>
 
+
     <section class="job-categories2">
         <h2 class="section-title">Du học nghề</h2>
         <div class="slider-container">
@@ -120,28 +118,26 @@
                             </div>
 
                             <h3>{{ $study->name }}
-                                 <button class="save-btn" data-id="{{ $study->id }}"
-                                        onclick="toggleSaveStudyAbroad({{ $study->id }})"class="btn-detail">♡</button>
+                                <button class="save-btn" onclick="toggleSaveStudyAbroad({{ $study->id }})">♡</button>
                             </h3>
+
                             <div class="job-details">
                                 {{ $study->short_detail }}
-
                             </div>
+
                             <div class="job-footer">
                                 <span class="location">
                                     <i class="fas fa-map-marker-alt"></i>
                                     @foreach ($study->countries as $country)
-                                        {{ $country->name }}@if (!$loop->last)
-                                            ,
-                                        @endif
+                                        {{ $country->name }}@if (!$loop->last), @endif
                                     @endforeach
                                 </span>
+
                                 <div class="action-buttons">
-                                    <button class="btn-participate" onclick="showRegisterPopup()">THAM GIA</button>
+                                    <button class="btn-participate" onclick="showRegisterPopup({{ $study->id }})">THAM
+                                        GIA</button>
 
-
-                                    <a href="{{ route('study-abroad.show', $study->slug) }}" class="btn-detail">XEM CHI
-                                        TIẾT</a>
+                                    <a href="{{ route('study-abroad.show', $study->slug) }}" class="btn-detail">XEM CHI TIẾT</a>
                                 </div>
                             </div>
                         </div>
@@ -157,33 +153,28 @@
             </div>
         </div>
     </section>
-    <div id="registerPopup" class="popup">
+
+    <!-- ✅ Popup Form -->
+    <div id="registerPopup" class="popup" style="display: none;">
         <div class="popup-content">
             <span class="close-btn" onclick="closeRegisterPopup()">&times;</span>
             <h2>ĐĂNG KÝ TƯ VẤN</h2>
-            <form id="registerForm" action="{{ route('register.consult') }}" method="POST">
+            <form id="registerForm" method="POST">
                 @csrf
                 <div class="form-group">
-                    <input type="text" name="name" placeholder="Họ và Tên" required>
+                    <input type="text" name="name" placeholder="Họ và tên" required>
                 </div>
                 <div class="form-group">
-                    <input type="tel" name="phone" placeholder="Số điện thoại" required>
+                    <input type="text" name="phone" placeholder="Số điện thoại" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" name="address" placeholder="Địa chỉ của bạn">
+                    <input type="text" name="address" placeholder="Địa chỉ">
                 </div>
-                <div class="form-group">
-                    <select name="program" required>
-                        <option value="">Tư vấn du học nghề</option>
-                        @foreach ($studyAbroads as $study)
-                            <option value="{{ $study->id }}">{{ $study->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <button type="submit" class="submit-btn">XÁC NHẬN</button>
+                <button type="submit" class="submit-btn">Xác nhận</button>
             </form>
         </div>
     </div>
+
 
     <!-- Detail Popup -->
     <div id="detailPopup" class="popup">
@@ -434,16 +425,16 @@
                 .then(response => response.json())
                 .then(data => {
                     contentDiv.innerHTML = `
-                <h2>${data.name}</h2>
-                <div class="detail-image">
-                    <img src="${data.image}" alt="${data.name}">
-                </div>
-                <div class="detail-info">
-                    <h3>Chi tiết chương trình</h3>
-                    ${data.description}
+                        <h2>${data.name}</h2>
+                        <div class="detail-image">
+                            <img src="${data.image}" alt="${data.name}">
+                        </div>
+                        <div class="detail-info">
+                            <h3>Chi tiết chương trình</h3>
+                            ${data.description}
 
-                </div>
-            `;
+                        </div>
+                    `;
                     popup.style.display = 'block';
                 });
         }
@@ -453,7 +444,7 @@
         }
 
         // Close popups when clicking outside
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             const registerPopup = document.getElementById('registerPopup');
             const detailPopup = document.getElementById('detailPopup');
             if (event.target == registerPopup) {
@@ -465,7 +456,7 @@
         }
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const slider = document.querySelector('.slider');
             const slides = document.querySelectorAll('.job-card');
             const dots = document.querySelectorAll('.nav-dot');
@@ -579,21 +570,21 @@
     </section>
 
     <script>
-        window.toggleSaveStudyAbroad = function(studyAbroadId) {
+        window.toggleSaveStudyAbroad = function (studyAbroadId) {
             document.querySelectorAll(".save-btn").forEach(button => {
-                button.addEventListener("click", function() {
+                button.addEventListener("click", function () {
                     const studyAbroadId = this.dataset.id;
                     toggleSaveStudyAbroad(studyAbroadId);
                 });
             });
 
             fetch(`/candidate/save-study-abroad/${studyAbroadId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
-                })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -614,7 +605,7 @@
         };
 
         // Kiểm tra nếu chương trình đã được lưu
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll(".save-btn").forEach(button => {
                 const studyAbroadId = button.dataset.id;
 
@@ -629,5 +620,22 @@
             });
         });
     </script>
+    <script>
+        function showRegisterPopup(studyAbroadId) {
+            const popup = document.getElementById('registerPopup');
+            const form = document.getElementById('registerForm');
+
+            // Gán action route động đúng với route Laravel
+            const actionRoute = `/candidate/register-study-abroad/${studyAbroadId}`;
+            form.action = actionRoute;
+
+            popup.style.display = 'block';
+        }
+
+        function closeRegisterPopup() {
+            document.getElementById('registerPopup').style.display = 'none';
+        }
+    </script>
+
     <!-- End Cart Area  -->
 @endsection

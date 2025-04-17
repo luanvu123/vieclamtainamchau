@@ -142,7 +142,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     $segment = Request::segment(1);
                                 @endphp
                                 <li
-                                    class="treeview {{ Request::is('users*') || Request::is('cv_templates*') || Request::is('countries*') || Request::is('genres*') || Request::is('locations*') || Request::is('roles*') || Request::is('news*') || Request::is('language-trainings*') || Request::is('categories*') ? 'active' : '' }}">
+                                    class="treeview {{ Request::is('users*') || Request::is('cv_templates*') || Request::is('countries*') || Request::is('genres*') || Request::is('locations*') || Request::is('roles*')  || Request::is('language-trainings*') || Request::is('categories*') ? 'active' : '' }}">
                                     <a href="#">
                                         <img src="{{ asset('backend_admin/images/9165478_unbox_package_icon.svg') }}"
                                             alt="Google" width="20" height="20">
@@ -189,18 +189,12 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                         </li>
 
 
-                                        <li class="treeview {{ Request::is('news*') ? 'active' : '' }}">
-                                            <a href="{{ route('news.index') }}">
-                                                <img src="{{ asset('backend_admin/images/newspaper-news-svgrepo-com.svg') }}"
-                                                    alt="Google" width="20" height="20">
-                                                <span> Tin tức</span>
-                                            </a>
-                                        </li>
+
                                           <li class="treeview {{ Request::is('typeLanguagetrainings*') ? 'active' : '' }}">
                                             <a href="{{ route('typeLanguagetrainings.index') }}">
                                                 <img src="{{ asset('backend_admin/images/newspaper-news-svgrepo-com.svg') }}"
                                                     alt="Google" width="20" height="20">
-                                                <span> Quốc gia du học nghề</span>
+                                                <span>Ngôn ngữ đào tạo</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -249,7 +243,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                         <li class="{{ Request::is('manage/job-postings') ? 'active' : '' }}">
                                             <a href="{{ route('manage.employers.indexJobPosting') }}">
                                                 <img src="{{ asset('backend_admin/images/file-document-svgrepo-com.svg') }}"
-                                                    alt="Google" width="20" height="20"> Chiến dịch tuyển dụng
+                                                    alt="Google" width="20" height="20">Việc làm
                                                 @if ($jobPostingCountTwoHour > 0)
                                                     <span class="label label-primary pull-right">{{ $jobPostingCountTwoHour }}
                                                         New</span>
@@ -282,6 +276,67 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                 </li>
                             </ul>
                             </li>
+<li class="treeview {{ Request::is('news*') || Request::is('advertises*') ? 'active' : '' }}">
+    <a href="{{ route('news-manage.index') }}">
+        <i class="fa fa-newspaper"></i> <span>Tin tức & Quảng cáo</span>
+        @if ($newsCountTwoHour > 0)
+            <span class="label label-primary pull-right">{{ $newsCountTwoHour }}</span>
+        @endif
+        @if ($advertisesCountTwoHour > 0)
+            <span class="label label-primary pull-right">{{ $advertisesCountTwoHour }}</span>
+        @endif
+        <i class="fa fa-angle-left pull-right"></i>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::is('news*') ? 'active' : '' }}">
+            <a href="{{ route('news-manage.index') }}">
+                <i class="fa fa-list"></i> Danh sách tin tức
+                @if ($newsCountTwoHour > 0)
+                    <span class="label label-primary pull-right">{{ $newsCountTwoHour }}</span>
+                @endif
+            </a>
+        </li>
+        <li class="{{ Request::is('advertises*') ? 'active' : '' }}">
+            <a href="{{ route('advertises-manage.index') }}">
+                <i class="fa fa-bullhorn"></i> Danh sách quảng cáo
+                @if ($advertisesCountTwoHour > 0)
+                    <span class="label label-primary pull-right">{{ $advertisesCountTwoHour }}</span>
+                @endif
+            </a>
+        </li>
+    </ul>
+</li>
+<li class="treeview {{ Request::is('language-training-manage*') || Request::is('study-abroad-manage*') ? 'active' : '' }}">
+    <a href="#">
+        <i class="fa fa-language"></i> <span> Đào tạo Ngoại ngữ & Du học nghề</span>
+        @if ($languagetrainingCountTwoHour > 0 || $studyabroadCountTwoHour > 0)
+            <span class="label label-primary pull-right">
+                {{ $languagetrainingCountTwoHour + $studyabroadCountTwoHour }}
+            </span>
+        @endif
+        <i class="fa fa-angle-left pull-right"></i>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::is('language-training-manage*') ? 'active' : '' }}">
+            <a href="{{ route('language-training-manage.index') }}">
+                <i class="fa fa-list"></i> Danh sách đào tạo
+                @if ($languagetrainingCountTwoHour > 0)
+                    <span class="label label-primary pull-right">{{ $languagetrainingCountTwoHour }}</span>
+                @endif
+            </a>
+        </li>
+        <li class="{{ Request::is('study-abroad-manage*') ? 'active' : '' }}">
+            <a href="{{ route('study-abroad-manage.index') }}">
+                <i class="fa fa-plane"></i> Du học nghề
+                @if ($studyabroadCountTwoHour > 0)
+                    <span class="label label-primary pull-right">{{ $studyabroadCountTwoHour }}</span>
+                @endif
+            </a>
+        </li>
+    </ul>
+</li>
+
+
 
                             <li class="treeview {{ Request::is('candidate-manage*') ? 'active' : '' }}">
                                 <a href="{{ route('candidate-manage.index') }}">
@@ -309,24 +364,8 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 
 
 
-                            <li class="{{ Request::is('study-abroads*') ? 'active' : '' }}">
-                                <a href="{{ route('study-abroads.index') }}">
-                                    <img src="{{ asset('backend_admin/images/image-svgrepo-com.svg') }}" width="20"
-                                        height="20">
-                                    <span> Du học nghề</span>
-                                </a>
-                            </li>
-                            <li class="{{ Request::is('register-study*') ? 'active' : '' }}">
-                                <a href="{{ route('register-study.index') }}">
-                                    <img src="{{ asset('backend_admin/images/email2-svgrepo-com.svg') }}" width="20"
-                                        height="20">
-                                    Đăng kí du học nghề
-                                    @if ($registerStudyCountTwoHour > 0)
-                                        <span class="label label-primary pull-right">{{ $registerStudyCountTwoHour }}
-                                            New</span>
-                                    @endif
-                                </a>
-                            </li>
+
+
 
 
                             <li class="{{ Request::is('admin/info/edit*') ? 'active' : '' }}">

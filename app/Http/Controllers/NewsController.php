@@ -5,77 +5,84 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
+
 class NewsController extends Controller
 {
-    public function index()
+  public function index()
     {
-        $news = News::all(); // Hiển thị 10 bản ghi mỗi trang
-        return view('admin.news.index', compact('news'));
-    }
+        $employerId = Auth::guard('employer')->id();
+        $newsList = News::where('employer_id', $employerId)->get();
 
+        return view('employer.news.index', compact('newsList'));
+    }
 
     public function create()
     {
-        return view('admin.news.create');
+        return view('employer.news.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'nullable|string',
+            'name' => 'required',
+            'image' => 'nullable|image',
+            'description' => 'nullable',
             'website' => 'nullable|url',
-            'status' => 'required|boolean',
-            'isBanner'=>'required|boolean',
         ]);
 
         $data = $request->all();
+        $data['employer_id'] = Auth::guard('employer')->id();
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('news_images', 'public');
+            $data['image'] = $request->file('image')->store('news', 'public');
         }
 
         News::create($data);
 
-        return redirect()->route('news.index')->with('success', 'News created successfully.');
+        return redirect()->route('employer.news.index')->with('success', 'Thêm tin tức thành công!');
     }
 
-    public function show(News $news)
+    public function edit($id)
     {
-        return view('admin.news.show', compact('news'));
+        $news = News::findOrFail($id);
+
+        if ($news->employer_id !== Auth::guard('employer')->id()) {
+            abort(403);
+        }
+
+        return view('employer.news.edit', compact('news'));
     }
 
-    public function edit(News $news)
+    public function update(Request $request, $id)
     {
-        return view('admin.news.edit', compact('news'));
-    }
+        $news = News::findOrFail($id);
 
-    public function update(Request $request, News $news)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'nullable|string',
-            'website' => 'nullable|url',
-            'status' => 'required|boolean',
-            'isBanner'=>'required|boolean',
-        ]);
+        if ($news->employer_id !== Auth::guard('employer')->id()) {
+            abort(403);
+        }
 
         $data = $request->all();
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('news_images', 'public');
+            $data['image'] = $request->file('image')->store('news', 'public');
         }
 
         $news->update($data);
 
-        return redirect()->route('news.index')->with('success', 'News updated successfully.');
+        return redirect()->route('employer.news.index')->with('success', 'Cập nhật tin tức thành công!');
     }
 
-    public function destroy(News $news)
+    public function destroy($id)
     {
+        $news = News::findOrFail($id);
+
+        if ($news->employer_id !== Auth::guard('employer')->id()) {
+            abort(403);
+        }
+
         $news->delete();
-        return redirect()->route('news.index')->with('success', 'News deleted successfully.');
+
+        return redirect()->back()->with('success', 'Xóa tin tức thành công!');
     }
 }

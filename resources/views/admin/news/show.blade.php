@@ -1,15 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>{{ $news->name }}</h1>
-    <p><strong>Trạng thái:</strong> {{ $news->status ? 'Hoạt động' : 'Không hoạt động' }}</p>
-    <p><strong>Quảng cáo:</strong> {{ $news->isBanner ? 'Có' : 'Không' }}</p>
-    <p><strong>Mô tả:</strong> {!! $news->description !!}</p>
-    <p><strong>Website:</strong> <a href="{{ $news->website }}" target="_blank">{{ $news->website }}</a></p>
-    @if ($news->image)
-        <img src="{{ asset('storage/' . $news->image) }}" alt="{{ $news->name }}" class="img-thumbnail" style="max-width: 300px;">
+<div class="container mt-4">
+    <h2>Chi tiết tin tức</h2>
+
+    <div class="mb-3">
+        <strong>Tên:</strong> {{ $news->name }}
+    </div>
+
+    @if($news->image)
+        <div class="mb-3">
+            <strong>Ảnh:</strong><br>
+            <img src="{{ asset('storage/' . $news->image) }}" width="300">
+        </div>
     @endif
-    <a href="{{ route('news.index') }}" class="btn btn-secondary mt-3">Quay lại</a>
+
+    <div class="mb-3">
+        <strong>Website:</strong> <a href="{{ $news->website }}" target="_blank">{{ $news->website }}</a>
+    </div>
+
+    <div class="mb-3">
+        <strong>Mô tả:</strong><br>
+        <p>{{ $news->description }}</p>
+    </div>
+
+    <div class="mb-3">
+        <strong>Trạng thái:</strong> {{ $news->status }}
+    </div>
+
+    <a href="{{ route('news-manage.index') }}" class="btn btn-secondary">Quay lại</a>
 </div>
 @endsection
