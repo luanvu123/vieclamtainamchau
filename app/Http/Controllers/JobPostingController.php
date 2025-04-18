@@ -67,24 +67,24 @@ class JobPostingController extends Controller
 
         return view('employer.job-posting.index', compact('jobPostings'));
     }
-public function indexExport(Request $request)
-{
-    $employer = Auth::guard('employer')->user();
+    public function indexExport(Request $request)
+    {
+        $employer = Auth::guard('employer')->user();
 
-    $query = JobPosting::with('genres')
-        ->where('employer_id', $employer->id)
-        ->whereHas('genres', function ($q) {
-            $q->where('slug', 'xuat-khau-lao-dong');
-        });
+        $query = JobPosting::with('genres')
+            ->where('employer_id', $employer->id)
+            ->whereHas('genres', function ($q) {
+                $q->where('slug', 'xuat-khau-lao-dong');
+            });
 
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $jobPostings = $query->get();
+
+        return view('employer.job-posting.export', compact('jobPostings'));
     }
-
-    $jobPostings = $query->get();
-
-    return view('employer.job-posting.export', compact('jobPostings'));
-}
 
     public function create()
     {
@@ -104,13 +104,38 @@ public function indexExport(Request $request)
             ->where('number_of_active', '>', 0)
             ->with(['service'])
             ->get();
+        $hotServiceDetails = OrderDetail::whereHas('order', function ($query) use ($employer) {
+            $query->where('employer_id', $employer->id)
+                ->where('status', 'Đã thanh toán');
+        })
+            ->whereHas('service', function ($query) {
+                $query->where('name', 'Tin nổi bật');
+            })
+            ->whereDate('expiring_date', '>=', Carbon::today())
+            ->where('number_of_active', '>', 0)
+            ->with(['service'])
+            ->get();
+            $specialServiceDetails = OrderDetail::whereHas('order', function ($query) use ($employer) {
+    $query->where('employer_id', $employer->id)
+        ->where('status', 'Đã thanh toán');
+})
+    ->whereHas('service', function ($query) {
+        $query->where('name', 'Tin đặc biệt');
+    })
+    ->whereDate('expiring_date', '>=', Carbon::today())
+    ->where('number_of_active', '>', 0)
+    ->with(['service'])
+    ->get();
+
 
         return view('employer.job-posting.create', compact(
             'categories',
             'countries',
             'employer',
             'genres',
-            'basicServiceDetails'
+            'basicServiceDetails',
+            'hotServiceDetails',
+            'specialServiceDetails'
         ));
     }
     public function store(Request $request)
@@ -140,14 +165,15 @@ public function indexExport(Request $request)
             'countries.*' => 'exists:countries,id',
             'genres' => 'nullable|array',
             'genres.*' => 'exists:genres,id',
+            'service_type' => 'required|in:Tin cơ bản,Tin nổi bật',
         ]);
 
         $orderDetail = OrderDetail::whereHas('order', function ($query) use ($employer) {
             $query->where('employer_id', $employer->id)
                 ->where('status', 'Đã thanh toán');
         })
-            ->whereHas('service', function ($query) {
-                $query->where('name', 'Tin cơ bản');
+            ->whereHas('service', function ($query) use ($validated) {
+                $query->where('name', $validated['service_type']);
             })
             ->where('number_of_active', '>', 0)
             ->whereDate('expiring_date', '>=', Carbon::today())
@@ -156,7 +182,6 @@ public function indexExport(Request $request)
 
         if ($orderDetail) {
             $orderDetail->decrement('number_of_active');
-
 
             $jobPosting = JobPosting::create([
                 'employer_id' => $employer->id,
@@ -174,10 +199,12 @@ public function indexExport(Request $request)
                 'number_of_recruits' => $validated['number_of_recruits'],
                 'sex' => $validated['sex'],
                 'skills_required' => $validated['skills_required'],
+                'service_type' => $validated['service_type']
             ]);
         } else {
-            return redirect()->back()->with('error', 'Không tìm thấy gói Tin cơ bản hợp lệ.');
+            return redirect()->back()->with('error', 'Không tìm thấy gói dịch vụ hợp lệ để đăng tin.');
         }
+
 
 
         if (!empty($validated['categories'])) {
@@ -220,18 +247,18 @@ public function indexExport(Request $request)
 
     public function update(Request $request, $id)
     {
-          $employer = Auth::guard('employer')->user();
+        $employer = Auth::guard('employer')->user();
         $jobPosting = JobPosting::findOrFail($id);
 
-          if ($jobPosting->employer_id != $employer->id) {
+        if ($jobPosting->employer_id != $employer->id) {
             return redirect()->route('employer.job-posting.index')
                 ->with('error', 'Bạn không có quyền cập nhật bài đăng này');
         }
- // Không cho chỉnh sửa nếu trạng thái là active
-    if ($jobPosting->status === 'active') {
-        return redirect()->back()
-            ->with('error', 'Tin đăng đang hoạt động và không thể chỉnh sửa');
-    }
+        // Không cho chỉnh sửa nếu trạng thái là active
+        if ($jobPosting->status === 'active') {
+            return redirect()->back()
+                ->with('error', 'Tin đăng đang hoạt động và không thể chỉnh sửa');
+        }
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|in:fulltime,parttime,intern,freelance',

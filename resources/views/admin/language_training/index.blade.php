@@ -4,7 +4,7 @@
     <div class="container">
         <h1>Danh sách khóa học đào tạo ngôn ngữ</h1>
 
-        <table class="table">
+        <table class="table" id="user-table">
             <thead>
                 <tr>
                     <th>#</th>

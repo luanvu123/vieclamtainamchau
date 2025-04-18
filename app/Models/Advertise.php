@@ -16,6 +16,7 @@ class Advertise extends Model
         'image',
         'content',
         'status',
+         'order_id',
     ];
 
     public function employer()

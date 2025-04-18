@@ -32,6 +32,7 @@ class JobPosting extends Model
         'isHot',
         'views',
          'order_id',
+         'service_type'
     ];
 
     /**

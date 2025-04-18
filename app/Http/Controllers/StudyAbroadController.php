@@ -6,6 +6,8 @@ use App\Models\CandidateStudyAbroad;
 use App\Models\StudyAbroad;
 use App\Models\Category;
 use App\Models\Country;
+use App\Models\OrderDetail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -46,9 +48,29 @@ class StudyAbroadController extends Controller
             'countries.*' => 'exists:countries,id',
         ]);
 
-        $imagePath = $request->hasFile('image') ? $request->file('image')->store('study_abroads', 'public') : null;
-
         $employer = Auth::guard('employer')->user();
+
+        // Kiểm tra nhà tuyển dụng có gói Du học hay không
+        $orderDetail = OrderDetail::whereHas('order', function ($query) use ($employer) {
+            $query->where('employer_id', $employer->id)
+                ->where('status', 'Đã thanh toán');
+        })
+            ->whereHas('service', function ($query) {
+                $query->where('name', 'Du học nghề');
+            })
+            ->where('number_of_active', '>', 0)
+            ->whereDate('expiring_date', '>=', Carbon::today())
+            ->orderBy('expiring_date')
+            ->first();
+
+        if (!$orderDetail) {
+            return redirect()->back()->with('error', 'Bạn không có gói Du học hợp lệ để tạo chương trình.');
+        }
+
+        // Trừ lượt sử dụng
+        $orderDetail->decrement('number_of_active');
+
+        $imagePath = $request->hasFile('image') ? $request->file('image')->store('study_abroads', 'public') : null;
 
         $studyAbroad = StudyAbroad::create([
             'name' => $request->name,
@@ -57,8 +79,8 @@ class StudyAbroadController extends Controller
             'short_detail' => $request->short_detail,
             'image' => $imagePath,
             'employer_id' => $employer->id,
+            'order_id' => $orderDetail->order_id, // lưu order_id vào DB
         ]);
-
 
         $studyAbroad->categories()->sync($request->categories);
         $studyAbroad->countries()->sync($request->countries);

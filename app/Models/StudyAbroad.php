@@ -10,7 +10,7 @@ class StudyAbroad extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'description', 'image', 'status', 'short_detail', 'employer_id'];
+    protected $fillable = ['name', 'slug', 'description', 'image', 'status', 'short_detail','order_id', 'employer_id'];
 
     public static function boot()
     {

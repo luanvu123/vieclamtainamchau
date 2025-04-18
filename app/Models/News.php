@@ -16,5 +16,6 @@ class News extends Model
         'website',
         'status',
         'employer_id',
+        'order_id',
     ];
 }

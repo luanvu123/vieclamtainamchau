@@ -1,25 +1,70 @@
 @extends('layouts.manage')
 @section('content')
 
-        <div class="main-content">
-            <h1 class="mb-4">Tạo bài đăng tuyển dụng</h1>
-            <div class="container">
-                <form action="{{ route('employer.job-posting.store') }}" method="POST">
-                    @csrf
-                    @if ($basicServiceDetails->count())
-                        <div class="alert alert-success">
-                            <h5>Bạn có gói "Tin cơ bản" còn hiệu lực:</h5>
-                            <ul>
-                                @foreach ($basicServiceDetails as $detail)
-                                    <li>
-                                        Hết hạn:
-                                        <strong>{{ \Carbon\Carbon::parse($detail->expiring_date)->format('d/m/Y') }}</strong> -
-                                        Số lượt sử dụng còn lại: <strong>{{ $detail->number_of_active }}</strong>
-                                    </li>
-                                @endforeach
-                            </ul>
+    <div class="main-content">
+        <h1 class="mb-4">Tạo bài đăng tuyển dụng</h1>
+        <div class="container">
+            <form action="{{ route('employer.job-posting.store') }}" method="POST">
+                @csrf
+                @if ($basicServiceDetails->count() || $hotServiceDetails->count())
+                    <div class="alert alert-success">
+                        <h5>Bạn có gói còn hiệu lực:</h5>
+                        <ul>
+                            @foreach ($basicServiceDetails as $detail)
+                                <li>
+                                    <strong>Tin cơ bản</strong> - Hết hạn:
+                                    <strong>{{ \Carbon\Carbon::parse($detail->expiring_date)->format('d/m/Y') }}</strong> -
+                                    Số lượt sử dụng còn lại: <strong>{{ $detail->number_of_active }}</strong>
+                                </li>
+                            @endforeach
+                            @foreach ($hotServiceDetails as $detail)
+                                <li>
+                                    <strong>Tin nổi bật</strong> - Hết hạn:
+                                    <strong>{{ \Carbon\Carbon::parse($detail->expiring_date)->format('d/m/Y') }}</strong> -
+                                    Số lượt sử dụng còn lại: <strong>{{ $detail->number_of_active }}</strong>
+                                </li>
+                            @endforeach
+                            @foreach ($specialServiceDetails as $detail)
+                                <li>
+                                    <strong>Tin đặc biệt</strong> - Hết hạn:
+                                    <strong>{{ \Carbon\Carbon::parse($detail->expiring_date)->format('d/m/Y') }}</strong> -
+                                    Số lượt sử dụng còn lại: <strong>{{ $detail->number_of_active }}</strong>
+                                </li>
+                            @endforeach
+
+                        </ul>
+
+                        {{-- Radio chọn gói sử dụng --}}
+                        <div class="mt-3">
+                            <label><strong>Chọn loại tin đăng:</strong></label><br>
+                            @if ($basicServiceDetails->count())
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="service_type" id="basic_service"
+                                        value="Tin cơ bản" required>
+                                    <label class="form-check-label" for="basic_service">Tin cơ bản</label>
+                                </div>
+                            @endif
+                            @if ($hotServiceDetails->count())
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="service_type" id="hot_service"
+                                        value="Tin nổi bật" required>
+                                    <label class="form-check-label" for="hot_service">Tin nổi bật</label>
+                                </div>
+                            @endif
+                            @if ($specialServiceDetails->count())
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="service_type" id="special_service"
+                                        value="Tin đặc biệt" required>
+                                    <label class="form-check-label" for="special_service">Tin đặc biệt</label>
+                                </div>
+                            @endif
+
+                            @error('service_type')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
-                           <!-- Title -->
+                    </div>
+                    <!-- Title -->
                     <div class="mb-3">
                         <label for="title" class="form-label">Tiêu đề</label>
                         <input type="text" id="title" name="title" class="form-control" value="{{ old('title') }}" required>
@@ -71,8 +116,7 @@
                     <!-- Age Range -->
                     <div class="mb-3">
                         <label for="age_range" class="form-label">Độ tuổi</label>
-                        <input type="text" id="age_range" name="age_range" class="form-control"
-                            value="{{ old('age_range') }}">
+                        <input type="text" id="age_range" name="age_range" class="form-control" value="{{ old('age_range') }}">
                         @error('age_range')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -214,16 +258,16 @@
 
 
                     <button type="submit" class="btn btn-primary">Lưu bài đăng</button>
-                    @else
-                        <div class="alert alert-warning">
-                            Bạn chưa có gói "Tin cơ bản" còn hiệu lực. Vui lòng mua dịch vụ để đăng tin tuyển dụng.
-                        </div>
-                    @endif
+                @else
+                    <div class="alert alert-warning">
+                        Bạn chưa có gói "Tin cơ bản" còn hiệu lực. Vui lòng mua dịch vụ để đăng tin tuyển dụng.
+                    </div>
+                @endif
 
-                </form>
-            </div>
+            </form>
         </div>
-   
+    </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {

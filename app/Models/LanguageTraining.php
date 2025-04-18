@@ -21,7 +21,8 @@ class LanguageTraining extends Model
         'end_date',
         'status',
         'description',
-        'image'
+        'image',
+        'order_id',
     ];
 
     public function typeLanguageTraining()
