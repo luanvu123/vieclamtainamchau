@@ -6,200 +6,81 @@
 
 
 
-            <!-- HTML -->
-            <div class="service-packages">
-                <div class="package-container">
-                    @if ($employer->IsBasicnews)
-                        <div class="package-item basic">
-                            <div class="package-icon">
-                                <i class="fas fa-newspaper"></i>
-                            </div>
-                            <div class="package-details">
-                                <h4>Tin cơ bản</h4>
-                                @if ($employer->IsBasicnews_updated_at)
-                                    <div class="timestamp">
-                                        <i class="fas fa-clock"></i>
-                                        <div class="time-details">
-                                            <span>{{ $employer->IsBasicnews_updated_at->format('H:i d/m/Y') }}</span>
-                                            <span
-                                                class="time-ago">{{ $employer->IsBasicnews_updated_at->diffForHumans() }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
+            <h2>Dịch vụ đã thanh toán</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã đơn</th>
+            <th>Tổng tiền</th>
+            <th>Ngày thanh toán</th>
+            <th>Bài đăng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($orders as $order)
+            <tr>
+                <td>{{ $order->order_key }}</td>
+                <td>₫{{ number_format($order->total_price, 0, ',', '.') }}</td>
+                <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
+                <td>
+                    @php
+                        $languageTrainings = \App\Models\LanguageTraining::where('order_id', $order->id)->get();
+                        $studyAbroads = \App\Models\StudyAbroad::where('order_id', $order->id)->get();
+                        $jobPostings = \App\Models\JobPosting::where('order_id', $order->id)->get();
+                        $newsItems = \App\Models\News::where('order_id', $order->id)->get();
+                        $advertisements = \App\Models\Advertise::where('order_id', $order->id)->get();
+                    @endphp
+
+                    @if ($languageTrainings->isNotEmpty())
+                        <strong>Khóa học tiếng:</strong>
+                        <ul class="mb-0 pl-3">
+                            @foreach ($languageTrainings as $lt)
+                                <li>{{ $lt->name }}</li>
+                            @endforeach
+                        </ul>
+                    @elseif ($studyAbroads->isNotEmpty())
+                        <strong>Du học:</strong>
+                        <ul class="mb-0 pl-3">
+                            @foreach ($studyAbroads as $sa)
+                                <li>{{ $sa->name }}</li>
+                            @endforeach
+                        </ul>
+                    @elseif ($jobPostings->isNotEmpty())
+                        <strong>Tin tuyển dụng:</strong>
+                        <ul class="mb-0 pl-3">
+                            @foreach ($jobPostings as $jp)
+                                <li>{{ $jp->title }}</li>
+                            @endforeach
+                        </ul>
+                    @elseif ($newsItems->isNotEmpty())
+                        <strong>Bài viết:</strong>
+                        <ul class="mb-0 pl-3">
+                            @foreach ($newsItems as $news)
+                                <li>{{ $news->title }}</li>
+                            @endforeach
+                        </ul>
+                    @elseif ($advertisements->isNotEmpty())
+                        <strong>Quảng cáo:</strong>
+                        <ul class="mb-0 pl-3">
+                            @foreach ($advertisements as $ad)
+                                <li>{{ $ad->title }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        -
                     @endif
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="4">Không có đơn hàng đã thanh toán.</td>
+            </tr>
+        @endforelse
+    </tbody>
+</table>
 
-                    @if ($employer->isUrgentrecruitment)
-                        <div class="package-item urgent">
-                            <div class="package-icon">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                            <div class="package-details">
-                                <h4>Tìm ứng viên</h4>
-                                @if ($employer->isUrgentrecruitment_updated_at)
-                                    <div class="timestamp">
-                                        <i class="fas fa-clock"></i>
-                                        <div class="time-details">
-                                            <span>{{ $employer->isUrgentrecruitment_updated_at->format('H:i d/m/Y') }}</span>
-                                            <span
-                                                class="time-ago">{{ $employer->isUrgentrecruitment_updated_at->diffForHumans() }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    @endif
 
-                    @if ($employer->IsPartner)
-                        <div class="package-item partner">
-                            <div class="package-icon">
-                                <i class="fas fa-crown"></i>
-                            </div>
-                            <div class="package-details">
-                                <h4>Đối tác</h4>
-                                @if ($employer->IsPartner_updated_at)
-                                    <div class="timestamp">
-                                        <i class="fas fa-clock"></i>
-                                        <div class="time-details">
-                                            <span>{{ $employer->IsPartner_updated_at->format('H:i d/m/Y') }}</span>
-                                            <span
-                                                class="time-ago">{{ $employer->IsPartner_updated_at->diffForHumans() }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    @endif
-
-                    @if ($employer->IsHoteffect)
-                        <div class="package-item hot">
-                            <div class="package-icon">
-                                <i class="fas fa-fire"></i>
-                            </div>
-                            <div class="package-details">
-                                <h4>Nổi bật</h4>
-                                @if ($employer->IsHoteffect_updated_at)
-                                    <div class="timestamp">
-                                        <i class="fas fa-clock"></i>
-                                        <div class="time-details">
-                                            <span>{{ $employer->IsHoteffect_updated_at->format('H:i d/m/Y') }}</span>
-                                            <span
-                                                class="time-ago">{{ $employer->IsHoteffect_updated_at->diffForHumans() }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-            <style>
-                .service-packages {
-                    padding: 15px;
-                    background: #fff;
-                    border-radius: 8px;
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                }
-
-                .package-container {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 15px;
-                }
-
-                .package-item {
-                    display: flex;
-                    align-items: flex-start;
-                    padding: 12px;
-                    border-radius: 6px;
-                    background: #f8f9fa;
-                    transition: all 0.3s ease;
-                }
-
-                .package-item:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                }
-
-                .package-icon {
-                    width: 40px;
-                    height: 40px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border-radius: 50%;
-                    margin-right: 15px;
-                }
-
-                .package-details {
-                    flex: 1;
-                }
-
-                .package-details h4 {
-                    margin: 0 0 8px 0;
-                    font-size: 16px;
-                    font-weight: 600;
-                }
-
-                .timestamp {
-                    display: flex;
-                    align-items: flex-start;
-                    font-size: 13px;
-                    color: #6c757d;
-                }
-
-                .timestamp i {
-                    margin-right: 8px;
-                    margin-top: 3px;
-                }
-
-                .time-details {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 4px;
-                }
-
-                .time-ago {
-                    color: #868e96;
-                    font-style: italic;
-                }
-
-                /* Package specific styles */
-                .basic .package-icon {
-                    background: #e3f2fd;
-                    color: #1976d2;
-                }
-
-                .urgent .package-icon {
-                    background: #fff3e0;
-                    color: #f57c00;
-                }
-
-                .partner .package-icon {
-                    background: #fff8e1;
-                    color: #ffc107;
-                }
-
-                .hot .package-icon {
-                    background: #ffebee;
-                    color: #e53935;
-                }
-
-                /* Responsive */
-                @media (min-width: 768px) {
-                    .package-container {
-                        flex-direction: row;
-                        flex-wrap: wrap;
-                    }
-
-                    .package-item {
-                        flex: 1 1 calc(50% - 15px);
-                        min-width: 250px;
-                    }
-                }
-            </style>
 
 
         </div>

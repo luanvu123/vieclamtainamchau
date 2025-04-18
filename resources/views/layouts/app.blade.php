@@ -142,7 +142,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     $segment = Request::segment(1);
                                 @endphp
                                 <li
-                                    class="treeview {{ Request::is('users*') || Request::is('cv_templates*') || Request::is('countries*') || Request::is('genres*') || Request::is('locations*') || Request::is('roles*')  || Request::is('language-trainings*') || Request::is('categories*') ? 'active' : '' }}">
+                                    class="treeview {{ Request::is('users*') || Request::is('cv_templates*') || Request::is('countries*') || Request::is('genres*')||Request::is('typeservice*') || Request::is('locations*') || Request::is('roles*')  || Request::is('language-trainings*') || Request::is('categories*') ? 'active' : '' }}">
                                     <a href="#">
                                         <img src="{{ asset('backend_admin/images/9165478_unbox_package_icon.svg') }}"
                                             alt="Google" width="20" height="20">
@@ -174,6 +174,12 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                                     alt="Google" width="20" height="20"> Thể loại
                                             </a>
                                         </li>
+                                        <li class="{{ Request::is('typeservice*') ? 'active' : '' }}">
+    <a href="{{ route('typeservice.index') }}">
+        <i class="fa fa-list-alt"></i> Danh sách thể loại dịch vụ
+    </a>
+</li>
+
                                         <li class="{{ Request::is('genres') ? 'active' : '' }}">
                                             <a href="{{ route('genres.index') }}">
                                                 <img src="{{ asset('backend_admin/images/gift-svgrepo-com.svg') }}"
@@ -537,7 +543,8 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                     <script src="{{ asset('backend_admin/js/index1.js') }}"></script>
                     <script src="{{ asset('backend_admin/js/index.js') }}"></script>
                     <script src="{{ asset('backend_admin/js/index2.js') }}"></script>
-                    <div class="col-md-12">
+                   <div class="col-md-12" style="max-height: 80vh; overflow-y: auto;">
+
                         @if (session('success'))
                             <div class="alert alert-success">{{ session('success') }}</div>
                         @endif

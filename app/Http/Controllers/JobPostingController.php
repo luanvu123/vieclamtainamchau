@@ -18,8 +18,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ApplicationStatusChanged;
 use App\Models\Notification;
+use App\Models\Order;
 use Carbon\Carbon;
 use App\Models\OrderDetail;
+use App\Models\Typeservice;
+
 class JobPostingController extends Controller
 {
     public function __construct()
@@ -141,11 +144,6 @@ class JobPostingController extends Controller
     public function store(Request $request)
     {
         $employer = Auth::guard('employer')->user();
-
-        // Kiểm tra nếu IsBasicnews == 0
-        if ($employer->IsBasicnews == 0) {
-            return redirect()->back()->with('error', 'Bạn cần phải mua dịch vụ Tin cơ bản để đăng tin tuyển dụng.');
-        }
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|in:fulltime,parttime,intern,freelance',
@@ -424,25 +422,27 @@ class JobPostingController extends Controller
 
         return view('employer.job-posting.saved-applications', compact('savedApplications'));
     }
-    public function services()
-    {
-        $services = Service::with('weeks')
-            ->where('status', Service::STATUS_ACTIVE)
-            ->orderBy('created_at', 'desc')
-            ->get();
+  public function services()
+{
 
-        $banks = Bank::where('status', '1')
-            ->orderBy('created_at', 'desc')
-            ->get();
 
-        $employerId = Auth::guard('employer')->id();
-        $carts = Cart::getEmployerCart($employerId);
+    $banks = Bank::where('status', '1')
+        ->orderBy('created_at', 'desc')
+        ->get();
 
-        // Tỷ giá cố định hoặc lấy từ bảng config
-        $exchangeRate = 0.000042; // 1 VND = 0.000042 USD (ví dụ)
+    $employerId = Auth::guard('employer')->id();
+    $carts = Cart::getEmployerCart($employerId);
 
-        return view('employer.job-posting.services', compact('services', 'banks', 'carts', 'exchangeRate'));
-    }
+    $exchangeRate = 0.000042;
+$typeservices = Typeservice::with(['services.weeks'])
+    ->where('status', true)
+    ->get();
+
+return view('employer.job-posting.services', compact('typeservices', 'banks', 'carts', 'exchangeRate'));
+
+
+}
+
     public function removeFromCart($id)
     {
         $cart = Cart::where('id', $id)
@@ -506,11 +506,19 @@ class JobPostingController extends Controller
     }
 
 
-    public function serviceActive()
-    {
-        $employer = Auth::guard('employer')->user();
-        return view('employer.job-posting.service-active', compact('employer'));
-    }
+  public function serviceActive()
+{
+    $employer = Auth::guard('employer')->user();
+
+    $orders = Order::with(['orderDetails.cart'])
+        ->where('employer_id', $employer->id)
+        ->where('status', 'Đã thanh toán')
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return view('employer.job-posting.service-active', compact('employer', 'orders'));
+}
+
     public function updateApplicationView(Request $request)
     {
         $application = Application::findOrFail($request->id);

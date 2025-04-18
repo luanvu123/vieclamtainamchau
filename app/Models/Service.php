@@ -18,6 +18,7 @@ class Service extends Model
         'price',
         'description',
         'status',
+         'typeservice_id',
     ];
 
     // Trạng thái
@@ -47,5 +48,10 @@ class Service extends Model
     {
         return $query->where('status', self::STATUS_ACTIVE);
     }
+    public function typeservice()
+{
+    return $this->belongsTo(Typeservice::class);
+}
+
 }
 

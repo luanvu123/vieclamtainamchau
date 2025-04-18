@@ -54,6 +54,10 @@ class OrderDetail extends Model
     {
         return $this->belongsTo(Service::class);
     }
+public function cart()
+{
+    return $this->belongsTo(Cart::class);
+}
 
     /**
      * Calculate the expiring date based on the order date and number of weeks.

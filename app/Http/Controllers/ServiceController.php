@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use App\Models\ServiceWeek;
+use App\Models\Typeservice;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
@@ -21,10 +22,11 @@ class ServiceController extends Controller
         return view('admin.services.index', compact('services'));
     }
 
-    public function create()
-    {
-        return view('admin.services.create');
-    }
+   public function create()
+{
+    $typeservices = Typeservice::where('status', 'active')->get();
+    return view('admin.services.create', compact('typeservices'));
+}
 
 
 
@@ -38,10 +40,12 @@ public function store(Request $request)
         'status' => 'required|in:active,inactive',
         'number_of_weeks' => 'required|array',
         'number_of_weeks.*' => 'in:1,2,4',
+        'typeservice_id' => 'required|exists:typeservices,id',
+
     ]);
 
     $data = $request->except('number_of_weeks');
-
+$data['typeservice_id'] = $request->typeservice_id;
     if ($request->hasFile('image')) {
         $data['image'] = $request->file('image')->store('services', 'public');
     }
@@ -59,10 +63,12 @@ public function store(Request $request)
 }
 
 
-    public function edit(Service $service)
-    {
-        return view('admin.services.edit', compact('service'));
-    }
+   public function edit(Service $service)
+{
+    $typeservices = Typeservice::where('status', 'active')->get();
+    return view('admin.services.edit', compact('service', 'typeservices'));
+}
+
 
 public function update(Request $request, Service $service)
 {
@@ -74,9 +80,11 @@ public function update(Request $request, Service $service)
         'status' => 'required|in:active,inactive',
         'number_of_weeks' => 'nullable|array',
         'number_of_weeks.*' => 'in:1,2,4',
+        'typeservice_id' => 'required|exists:typeservices,id',
+
     ]);
 
-    $data = $request->only(['name', 'price', 'description', 'status']);
+$data = $request->only(['name', 'price', 'description', 'status', 'typeservice_id']);
 
     if ($request->hasFile('image')) {
         $data['image'] = $request->file('image')->store('services', 'public');

@@ -30,8 +30,9 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $bank->area }}</td>
+                            <td>{{ $bank->name }}</td>
                         <td>{{ $bank->account_name }}</td>
-                        <td>{{ $bank->name }}</td>
+
                         <td>{{ $bank->branch }}</td>
                         <td>{{ $bank->account_number }}</td>
                         <td>{{ $bank->status == 1 ? 'Hoạt động' : 'Ngừng hoạt động' }}</td>

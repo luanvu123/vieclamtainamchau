@@ -27,6 +27,18 @@
             <label for="description">Mô tả</label>
             <textarea name="description" class="form-control" required>{{ $service->description }}</textarea>
         </div>
+        <div class="form-group">
+    <label for="typeservice_id">Chọn loại:</label>
+    <select name="typeservice_id" class="form-control" required>
+        <option value="">-- Chọn thể loại --</option>
+        @foreach ($typeservices as $type)
+            <option value="{{ $type->id }}" {{ $service->typeservice_id == $type->id ? 'selected' : '' }}>
+                {{ $type->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
+
          <div class="form-group">
             <label>Chọn số tuần áp dụng:</label><br>
             @foreach([1, 2, 4] as $week)

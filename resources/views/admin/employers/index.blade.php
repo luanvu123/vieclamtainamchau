@@ -44,7 +44,6 @@
                                 <th><i class="fas fa-building"></i> Tên công ty</th>
                                 <th><i class="fas fa-info-circle"></i> Thông tin cơ bản</th>
                                 <th><i class="fas fa-check-circle"></i> Trạng thái</th>
-                                <th><i class="fas fa-star"></i> Gói dịch vụ</th>
                                 <th><i class="fas fa-cogs"></i> Thao tác</th>
                             </tr>
                         </thead>
@@ -101,93 +100,7 @@
                                             </span>
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="service-features">
-                                            @if ($employer->IsBasicnews)
-                                                <div class="feature-item">
-                                                    <i class="fas fa-newspaper text-primary"></i> Tin cơ bản
-                                                    @if ($employer->IsBasicnews_updated_at)
-                                                        <div class="service-time">
-                                                            <small class="text-muted">
-                                                                <i class="fas fa-clock"></i>
-                                                                {{ $employer->IsBasicnews_updated_at->format('H:i d/m/Y') }}
-                                                                <span class="d-block ms-3">
-                                                                    {{ $employer->IsBasicnews_updated_at->diffForHumans() }}
-                                                                </span>
-                                                            </small>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            @endif
-                                            @if ($employer->IsHome)
-                                                <div class="feature-item">
-                                                    <i class="fas fa-home text-primary"></i> Trang chủ
-                                                    @if ($employer->IsHome_updated_at)
-                                                        <div class="service-time">
-                                                            <small class="text-muted">
-                                                                <i class="fas fa-clock"></i>
-                                                                {{ $employer->IsHome_updated_at->format('H:i d/m/Y') }}
-                                                                <span class="d-block ms-3">
-                                                                    {{ $employer->IsHome_updated_at->diffForHumans() }}
-                                                                </span>
-                                                            </small>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            @endif
 
-                                            @if ($employer->isUrgentrecruitment)
-                                                <div class="feature-item">
-                                                    <i class="fas fa-bolt text-warning"></i> Tìm ứng viên
-                                                    @if ($employer->isUrgentrecruitment_updated_at)
-                                                        <div class="service-time">
-                                                            <small class="text-muted">
-                                                                <i class="fas fa-clock"></i>
-                                                                {{ $employer->isUrgentrecruitment_updated_at->format('H:i d/m/Y') }}
-                                                                <span class="d-block ms-3">
-                                                                    {{ $employer->isUrgentrecruitment_updated_at->diffForHumans() }}
-                                                                </span>
-                                                            </small>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            @endif
-
-                                            @if ($employer->IsPartner)
-                                                <div class="feature-item">
-                                                    <i class="fas fa-crown text-warning"></i> Đối tác
-                                                    @if ($employer->IsPartner_updated_at)
-                                                        <div class="service-time">
-                                                            <small class="text-muted">
-                                                                <i class="fas fa-clock"></i>
-                                                                {{ $employer->IsPartner_updated_at->format('H:i d/m/Y') }}
-                                                                <span class="d-block ms-3">
-                                                                    {{ $employer->IsPartner_updated_at->diffForHumans() }}
-                                                                </span>
-                                                            </small>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            @endif
-
-                                            @if ($employer->IsHoteffect)
-                                                <div class="feature-item">
-                                                    <i class="fas fa-fire text-danger"></i> Nổi bật
-                                                    @if ($employer->IsHoteffect_updated_at)
-                                                        <div class="service-time">
-                                                            <small class="text-muted">
-                                                                <i class="fas fa-clock"></i>
-                                                                {{ $employer->IsHoteffect_updated_at->format('H:i d/m/Y') }}
-                                                                <span class="d-block ms-3">
-                                                                    {{ $employer->IsHoteffect_updated_at->diffForHumans() }}
-                                                                </span>
-                                                            </small>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </td>
                                     <td>
                                         <div class="btn-group" role="group">
                                             <a href="{{ route('manage.employers.show', $employer->id) }}"

@@ -18,6 +18,16 @@
             <input type="number" name="price" class="form-control" required>
         </div>
         <div class="form-group">
+    <label for="typeservice_id">Thể loại dịch vụ</label>
+    <select name="typeservice_id" class="form-control" required>
+        <option value="">-- Chọn thể loại --</option>
+        @foreach($typeservices as $type)
+            <option value="{{ $type->id }}">{{ $type->name }}</option>
+        @endforeach
+    </select>
+</div>
+
+        <div class="form-group">
             <label for="description">Mô tả</label>
             <textarea name="description" class="form-control" required></textarea>
         </div>
