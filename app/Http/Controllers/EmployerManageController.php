@@ -37,7 +37,7 @@ class EmployerManageController extends Controller
 {
     $jobPostings = JobPosting::with(['employer', 'categories', 'genres', 'countries'])
         ->whereHas('genres', function ($q) {
-            $q->where('slug', 'xuat-khau-lao-dong');
+            $q->where('slug', 'viec-lam');
         })
         ->get();
 

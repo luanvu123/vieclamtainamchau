@@ -271,7 +271,7 @@
         @media (min-width: 992px) {
             .footer-contact {
                 width: 400px;
-                margin-left: -33px;
+                margin-left: -72px;
             }
         }
 
@@ -2823,9 +2823,9 @@
                 <h3>Hỗ trợ</h3>
                 <ul>
                     <li><a href="{{ route('hotline') }}">Liên hệ với chúng tôi</a></li>
-                    <li><a href="{{ route('candidate.cv.white') }}">Cv cổ điển</a></li>
-                    <li><a href="{{ route('candidate.cv.black') }}">CV hiện đại</a></li>
-                    <li><a href="{{ route('candidate.cv.logistic') }}">CV xuất nhập khẩu</a></li>
+                    <li><a href="{{ route('candidate.cv.white') }}">CV Du Học</a></li>
+                    <li><a href="{{ route('candidate.cv.black') }}">CV Học Tiếng</a></li>
+                    <li><a href="{{ route('candidate.cv.logistic') }}">CV Việc Làm</a></li>
                 </ul>
             </div>
 
@@ -2840,7 +2840,7 @@
             <div class="footer-contact">
                 <h3>HỖ TRỢ KỸ THUẬT</h3>
                 <ul>
-                    <li><i class="fas fa-phone"></i> Số đt/fax: {{ $info_layout->phone ?? '+8467 9957 052' }}</li>
+                    <li><i class="fas fa-phone"></i>{{ $info_layout->phone ?? '+8467 9957 052' }}</li>
                     <li><i class="fas fa-envelope"></i> {{ $info_layout->gmail ?? 'vietnamvision@gmail.com' }}</li>
                     <li><i class="fas fa-clock"></i>
                         {{ $info_layout->copyright ?? 'Copyright 2014-2024 Việc Làm Năm Châu' }}</li>

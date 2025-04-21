@@ -169,6 +169,8 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
 
 
 Route::prefix('employer')->name('employer.')->group(function () {
+     Route::get('register', [EmployerAuthController::class, 'showRegistrationForm'])->name('register');
+    Route::post('register', [EmployerAuthController::class, 'register'])->name('register.submit');
     Route::get('job-posting-export', [JobPostingController::class, 'indexExport'])
         ->name('job-posting.export')
         ->middleware('employer');
@@ -195,8 +197,7 @@ Route::prefix('employer')->name('employer.')->group(function () {
     Route::delete('/cart/{id}', [JobPostingController::class, 'removeFromCart'])->name('removeFromCart')->middleware('employer');
 
     Route::get('/get-cart-count', [JobPostingController::class, 'getCartCount'])->name('getCartCount')->middleware('employer');
-    Route::get('register', [EmployerAuthController::class, 'showRegistrationForm'])->name('register');
-    Route::post('register', [EmployerAuthController::class, 'register'])->name('register.submit');
+
     Route::get('login', [EmployerAuthController::class, 'showLoginForm'])->name('login');
     Route::post('login', [EmployerAuthController::class, 'login'])->name('login.submit');
     Route::post('logout', [EmployerAuthController::class, 'logout'])->name('logout');

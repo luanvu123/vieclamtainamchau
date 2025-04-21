@@ -163,7 +163,7 @@ class JobPostingController extends Controller
             'countries.*' => 'exists:countries,id',
             'genres' => 'nullable|array',
             'genres.*' => 'exists:genres,id',
-            'service_type' => 'required|in:Tin cơ bản,Tin nổi bật',
+            'service_type' => 'required|in:Tin cơ bản,Tin nổi bật,Tin đặc biệt',
         ]);
 
         $orderDetail = OrderDetail::whereHas('order', function ($query) use ($employer) {
