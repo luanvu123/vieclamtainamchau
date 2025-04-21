@@ -125,6 +125,7 @@ class SiteController extends Controller
                     $query->with(['employer', 'countries'])
                         ->where('status', 'active')
                         ->where('closing_date', '>', now())
+                         ->whereIn('service_type', ['Tin cơ bản','Tin nổi bật', 'Tin đặc biệt'])
                         ->latest();
                 }
             ])
@@ -152,6 +153,7 @@ class SiteController extends Controller
         $orderJob = JobPosting::where('employer_id', $jobPosting->employer_id)
             ->where('slug', '!=', $slug)
             ->where('status', 'active')
+            ->whereIn('service_type', ['Tin cơ bản','Tin nổi bật', 'Tin đặc biệt'])
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
@@ -176,6 +178,7 @@ class SiteController extends Controller
             ->with('employer')
             ->where('status', 'active')
             ->where('closing_date', '>', now())
+            ->whereIn('service_type', ['Tin cơ bản','Tin nổi bật', 'Tin đặc biệt'])
             ->latest()
             ->paginate(12);  // Thêm phân trang
 
@@ -202,7 +205,12 @@ class SiteController extends Controller
             });
         }
 
-        $jobPostings = $query->with('employer')->where('status', 'active')->paginate(10);
+        $jobPostings = $query  ->with('employer')
+            ->where('status', 'active')
+            ->where('closing_date', '>', now())
+            ->whereIn('service_type', ['Tin cơ bản','Tin nổi bật', 'Tin đặc biệt'])
+            ->latest()
+            ->paginate(10);
 
         $categories = Category::where('status', 'active')->where('isHot', 0)->get();
         $countries = Country::where('status', 'active')->get();

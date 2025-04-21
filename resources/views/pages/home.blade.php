@@ -57,7 +57,9 @@
 
                     <div class="category-grid">
                         @foreach ($genre->jobPostings as $job)
-                            <div class="category-card {{ $job->employer && $job->employer->IsHoteffect ? 'hot-effect' : '' }}">
+                        <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
+
+
                                 @if ($job->employer && $job->employer->avatar)
                                     <a href="{{ route('job.show', $job->slug) }}">
                                         <img src="{{ asset('storage/' . $job->employer->avatar) }}" alt="{{ $job->employer->company_name }}"

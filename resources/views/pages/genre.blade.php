@@ -304,7 +304,8 @@
         <div class="category-grid all-jobs">
             @if ($genre->jobPostings->count() > 0)
                 @foreach ($genre->jobPostings as $job)
-                    <div class="category-card {{ $job->employer && $job->employer->IsHoteffect ? 'hot-effect' : '' }}">
+                  <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
+
                         <!-- Job card content như cũ -->
                         @if ($job->employer && $job->employer->avatar)
                             <a href="{{ route('job.show', $job->slug) }}">
@@ -345,7 +346,8 @@
             <div class="category-grid country-jobs" id="country-{{ $country->id }}" style="display: none;">
                 @if ($jobsByCountry->has($country->id) && $jobsByCountry[$country->id]->count() > 0)
                     @foreach ($jobsByCountry[$country->id] as $job)
-                        <div class="category-card {{ $job->employer && $job->employer->IsHoteffect ? 'hot-effect' : '' }}">
+                       <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
+
                             @if ($job->employer && $job->employer->avatar)
                                 <a href="{{ route('job.show', $job->slug) }}">
                                     <img src="{{ asset('storage/' . $job->employer->avatar) }}"
