@@ -72,7 +72,7 @@ class NewsController extends Controller
     {
         $news = News::findOrFail($id);
 
-        if ($news->employer_id !== Auth::guard('employer')->id()) {
+        if ($news->employer_id != Auth::guard('employer')->id()) {
             abort(403);
         }
 
@@ -83,7 +83,7 @@ class NewsController extends Controller
     {
         $news = News::findOrFail($id);
 
-        if ($news->employer_id !== Auth::guard('employer')->id()) {
+        if ($news->employer_id != Auth::guard('employer')->id()) {
             abort(403);
         }
 
@@ -102,7 +102,7 @@ class NewsController extends Controller
     {
         $news = News::findOrFail($id);
 
-        if ($news->employer_id !== Auth::guard('employer')->id()) {
+        if ($news->employer_id != Auth::guard('employer')->id()) {
             abort(403);
         }
 

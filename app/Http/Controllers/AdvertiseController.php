@@ -101,7 +101,7 @@ class AdvertiseController extends Controller
 
     private function authorizeAdvertise($advertise)
     {
-        if ($advertise->employer_id !== Auth::guard('employer')->id()) {
+        if ($advertise->employer_id != Auth::guard('employer')->id()) {
             abort(403);
         }
     }

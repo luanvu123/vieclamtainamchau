@@ -112,7 +112,7 @@ class UserController extends Controller
         if (in_array(1, $userRoleIds)) {
             // Người dùng có vai trò role_id = 1 có thể xem thông tin của bất kỳ ai
             return view('admin.users.show', compact('user'));
-        } elseif ($user->id !== Auth::id()) {
+        } elseif ($user->id != Auth::id()) {
             // Nếu không phải role_id = 1, chỉ cho phép xem thông tin của chính mình
             abort(403, 'Unauthorized action.');
         }
@@ -133,7 +133,7 @@ class UserController extends Controller
         // Kiểm tra vai trò của người dùng hiện tại
         $currentUserRoleIds = Auth::user()->roles->pluck('id')->toArray();
 
-        if (!in_array(1, $currentUserRoleIds) && $user->id !== Auth::id()) {
+        if (!in_array(1, $currentUserRoleIds) && $user->id != Auth::id()) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -167,7 +167,7 @@ class UserController extends Controller
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email,' . $id,
                 'password' => 'nullable|same:confirm-password',
-                'roles' => 'nullable', 
+                'roles' => 'nullable',
                 'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif',
                 'gender' => 'nullable|string',
                 'address' => 'nullable|string',

@@ -196,7 +196,7 @@
                 </div>
                 <script>
                     // public/js/modal.js
-                    document.addEventListener('DOMContentLoaded', function() {
+                    document.addEventListener('DOMContentLoaded', function () {
                         const modal = document.getElementById('registration-modal');
 
                         // Show modal when page loads
@@ -204,7 +204,7 @@
                             modal.classList.remove('hidden');
 
                             // Optional: Close modal when clicking outside
-                            modal.querySelector('.modal-overlay').addEventListener('click', function() {
+                            modal.querySelector('.modal-overlay').addEventListener('click', function () {
                                 modal.classList.add('hidden');
                             });
                         }
@@ -212,7 +212,7 @@
                 </script>
                 <script>
                     // public/js/modal.js
-                    document.addEventListener('DOMContentLoaded', function() {
+                    document.addEventListener('DOMContentLoaded', function () {
                         const modal = document.getElementById('registration-modal');
 
                         if (modal) {
@@ -220,14 +220,14 @@
                             modal.classList.remove('hidden');
 
                             // Đóng modal khi click vào overlay
-                            modal.querySelector('.modal-overlay').addEventListener('click', function() {
+                            modal.querySelector('.modal-overlay').addEventListener('click', function () {
                                 modal.classList.add('hidden');
                             });
 
                             // Đóng modal khi chọn "Tôi là nhà tuyển dụng"
                             const employerButton = modal.querySelector('[data-role="employer"]');
                             if (employerButton) {
-                                employerButton.addEventListener('click', function(e) {
+                                employerButton.addEventListener('click', function (e) {
                                     e.preventDefault(); // Ngăn chặn chuyển hướng ngay lập tức
                                     modal.classList.add('hidden'); // Ẩn modal
 
@@ -241,7 +241,7 @@
                     });
                 </script>
                 <script>
-                    document.addEventListener('DOMContentLoaded', function() {
+                    document.addEventListener('DOMContentLoaded', function () {
                         const modal = document.getElementById('registration-modal');
 
                         // Kiểm tra xem đã chọn vai trò chưa
@@ -252,14 +252,14 @@
                             modal.classList.remove('hidden');
 
                             // Đóng modal khi click vào overlay
-                            modal.querySelector('.modal-overlay').addEventListener('click', function() {
+                            modal.querySelector('.modal-overlay').addEventListener('click', function () {
                                 modal.classList.add('hidden');
                             });
 
                             // Xử lý khi chọn nhà tuyển dụng
                             const employerButton = modal.querySelector('[data-role="employer"]');
                             if (employerButton) {
-                                employerButton.addEventListener('click', function(e) {
+                                employerButton.addEventListener('click', function (e) {
                                     e.preventDefault();
 
                                     // Lưu lựa chọn vào localStorage
@@ -272,6 +272,14 @@
                         }
                     });
                 </script>
+                <div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}"></div>
+                <br />
+                @if($errors->has('g-recaptcha-response'))
+                    <span class="invalid-feedback" style="display:block">
+                        <strong>{{$errors->first('g-recaptcha-response')}}</strong>
+                    </span>
+                @endif
+
                 <button type="submit" class="btn-submit">Đăng kí</button>
             </form>
 
@@ -281,4 +289,5 @@
             </p>
         </div>
     </div>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script> 
 @endsection

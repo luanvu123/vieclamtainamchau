@@ -11,7 +11,6 @@ class Bank extends Model
 
     protected $fillable = [
         'user_id',
-        'area',
         'name',
         'branch',
         'account_number',
@@ -20,6 +19,7 @@ class Bank extends Model
         'logo_bank',
         'status',
         'account_name',
+        'swift_code',
     ];
 
     public function user()

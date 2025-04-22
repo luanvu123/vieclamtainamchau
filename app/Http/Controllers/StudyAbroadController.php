@@ -97,7 +97,7 @@ class StudyAbroadController extends Controller
         $studyAbroad = StudyAbroad::findOrFail($id);
         $categories = Category::all();
         $countries = Country::all();
-        if ($studyAbroad->employer_id !== Auth::guard('employer')->id()) {
+        if ($studyAbroad->employer_id != Auth::guard('employer')->id()) {
             abort(403, 'Bạn không có quyền truy cập chương trình này.');
         }
         // Lấy danh sách ID của categories và countries đã chọn
@@ -123,7 +123,7 @@ class StudyAbroadController extends Controller
 
         $studyAbroad = StudyAbroad::findOrFail($id);
         $studyAbroad->update($request->except(['image', 'categories', 'countries']));
-        if ($studyAbroad->employer_id !== Auth::guard('employer')->id()) {
+        if ($studyAbroad->employer_id != Auth::guard('employer')->id()) {
             abort(403, 'Bạn không có quyền truy cập chương trình này.');
         }
         if ($request->hasFile('image')) {
@@ -153,7 +153,7 @@ class StudyAbroadController extends Controller
     {
 
         $studyAbroad = StudyAbroad::with(['employer', 'categories', 'countries'])->findOrFail($id);
-        if ($studyAbroad->employer_id !== Auth::guard('employer')->id()) {
+        if ($studyAbroad->employer_id != Auth::guard('employer')->id()) {
             abort(403, 'Bạn không có quyền truy cập chương trình này.');
         }
         // Lấy danh sách ứng viên đã đăng ký

@@ -120,7 +120,7 @@ class EmployerManageController extends Controller
     public function update(Request $request, Employer $employer)
     {
         $user = Auth::user();
-        if (!$user->roles()->where('id', 1)->exists() && $employer->user_id !== $user->id) {
+        if (!$user->roles()->where('id', 1)->exists() && $employer->user_id != $user->id) {
             abort(403, 'Bạn không có quyền chỉnh sửa.');
         }
         $validated = $request->validate([
@@ -161,7 +161,7 @@ class EmployerManageController extends Controller
             $validated[$field] = $request->has($field);
 
             // Kiểm tra nếu giá trị thay đổi thì cập nhật timestamp
-            if ($employer->$field !== $validated[$field]) {
+            if ($employer->$field != $validated[$field]) {
                 $validated[$field . '_updated_at'] = now();
             }
         }

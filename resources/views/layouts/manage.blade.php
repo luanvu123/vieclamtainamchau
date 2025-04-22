@@ -2882,7 +2882,11 @@
                         <i>📢</i>
                         <span>Quảng cáo</span>
                     </a>
-
+                    <a href="{{ route('employer.banks.index') }}"
+                        class="menu-item {{ request()->is('employer/banks*') ? 'active' : '' }}">
+                        <i>🏦</i>
+                        <span>Tài khoản ngân hàng</span>
+                    </a>
                 </div>
 
 

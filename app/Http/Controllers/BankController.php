@@ -38,6 +38,7 @@ class BankController extends Controller
         'logo_bank' => 'nullable|image|max:2048',
         'status' => 'nullable|in:0,1',
         'account_name' => 'required|string|max:255',
+          'swift_code' => 'nullable|string|max:255',
 
     ]);
 
@@ -86,6 +87,7 @@ class BankController extends Controller
         'logo_bank' => 'nullable|image|max:2048',
         'status' => 'nullable|in:0,1',
         'account_name' => 'required|string|max:255',
+          'swift_code' => 'nullable|string|max:255',
 
     ]);
 

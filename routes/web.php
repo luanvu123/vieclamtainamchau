@@ -174,7 +174,9 @@ Route::prefix('employer')->name('employer.')->group(function () {
     Route::get('job-posting-export', [JobPostingController::class, 'indexExport'])
         ->name('job-posting.export')
         ->middleware('employer');
-
+   Route::get('/banks', [EmployerProfileController::class, 'bankList'])
+        ->middleware('employer')
+        ->name('banks.index');
     Route::resource('news', NewsController::class);
     Route::resource('advertises', AdvertiseController::class);
     Route::resource('study-abroads', StudyAbroadController::class);

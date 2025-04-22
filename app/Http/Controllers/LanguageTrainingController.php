@@ -116,7 +116,7 @@ class LanguageTrainingController extends Controller
 
     private function authorizeEmployer(LanguageTraining $training)
     {
-        if ($training->employer_id !== Auth::guard('employer')->id()) {
+        if ($training->employer_id != Auth::guard('employer')->id()) {
             abort(403);
         }
     }
@@ -137,7 +137,7 @@ public function destroyCandidateRegistration($id)
 
     // Kiểm tra quyền: chỉ employer tạo khóa học đó mới được xoá
     $training = $registration->training;
-    if ($training->employer_id !== Auth::guard('employer')->id()) {
+    if ($training->employer_id != Auth::guard('employer')->id()) {
         abort(403, 'Bạn không có quyền xóa đăng ký này');
     }
 

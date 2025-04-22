@@ -107,7 +107,7 @@ class OrderController extends Controller
         ->where('id', $id)
         ->firstOrFail();
 
-    if ($order->employer_id !== $employerId) {
+    if ($order->employer_id != $employerId) {
         throw new AccessDeniedHttpException('Bạn không có quyền truy cập đơn hàng này.');
     }
 
@@ -137,7 +137,7 @@ class OrderController extends Controller
             $order = Order::where('id', $id)->firstOrFail();
 
             // Check if the order belongs to the authenticated employer
-            if ($order->employer_id !== $employerId) {
+            if ($order->employer_id != $employerId) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Bạn không có quyền truy cập đơn hàng này.'

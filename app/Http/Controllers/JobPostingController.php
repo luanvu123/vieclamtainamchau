@@ -301,7 +301,7 @@ class JobPostingController extends Controller
             $jobPosting = JobPosting::findOrFail($id);
 
             // Kiểm tra xem bài đăng có thuộc về nhà tuyển dụng đang đăng nhập hay không
-            if ($jobPosting->employer_id !== auth('employer')->id()) {
+            if ($jobPosting->employer_id != auth('employer')->id()) {
                 return redirect()->route('employer.job-posting.index')
                     ->with('error', 'Bạn không có quyền xóa bài đăng này.');
             }
@@ -356,7 +356,7 @@ class JobPostingController extends Controller
         $application = Application::findOrFail($id);
 
         // Kiểm tra nhà tuyển dụng có quyền cập nhật đơn này không
-        if ($application->jobPosting->employer_id !== Auth::guard('employer')->id()) {
+        if ($application->jobPosting->employer_id != Auth::guard('employer')->id()) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
@@ -395,7 +395,7 @@ class JobPostingController extends Controller
         $application = Application::findOrFail($id);
 
         // Verify employer owns this job posting
-        if ($application->jobPosting->employer_id !== Auth::guard('employer')->id()) {
+        if ($application->jobPosting->employer_id != Auth::guard('employer')->id()) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 

@@ -14,44 +14,53 @@
 
         <table class="table table-bordered">
             <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Khu vực</th>
-                    <th>Tên ngân hàng</th>
-                    <th>Chủ tài khoản</th>
-                    <th>Chi nhánh</th>
-                    <th>Số tài khoản</th>
-                    <th>Trạng thái</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($banks as $bank)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $bank->area }}</td>
-                            <td>{{ $bank->name }}</td>
-                        <td>{{ $bank->account_name }}</td>
+    <tr>
+        <th>#</th>
+        <th>Tên ngân hàng</th>
+        <th>Ảnh</th>
+        <th>Chủ tài khoản</th>
+        <th>Số tài khoản</th>
+        <th>Chi nhánh</th>
+        <th>Mã SWIFT</th>
+        <th>Trạng thái</th>
+        <th>Hành động</th>
+    </tr>
+</thead>
+<tbody>
+    @foreach ($banks as $key => $bank)
+        <tr>
+            <td>{{ $key + 1 }}</td>
+            <td>{{ $bank->name }}</td>
+            <td>
+                @if ($bank->image)
+                    <img src="{{ asset('storage/' . $bank->image) }}" alt="Ảnh ngân hàng" width="60" height="60" style="object-fit: cover; border-radius: 8px;">
+                @else
+                    <img src="{{ asset('frontend/img/default_bank.png') }}" alt="No image" width="60" height="60" style="object-fit: cover; border-radius: 8px;">
+                @endif
+            </td>
+            <td>{{ $bank->account_name }}</td>
+            <td>{{ $bank->account_number }}</td>
+            <td>{{ $bank->branch }}</td>
+            <td>{{ $bank->swift_code ?? 'Chưa có' }}</td>
+            <td>
+                @if ($bank->status == 1)
+                    <span class="badge badge-success">Hoạt động</span>
+                @else
+                    <span class="badge badge-secondary">Ẩn</span>
+                @endif
+            </td>
+            <td>
+                <a href="{{ route('banks.edit', $bank->id) }}" class="btn btn-sm btn-warning">Sửa</a>
+                <form action="{{ route('banks.destroy', $bank->id) }}" method="POST" style="display:inline-block">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xoá?')">Xoá</button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
+</tbody>
 
-                        <td>{{ $bank->branch }}</td>
-                        <td>{{ $bank->account_number }}</td>
-                        <td>{{ $bank->status == 1 ? 'Hoạt động' : 'Ngừng hoạt động' }}</td>
-                        <td>
-                            <a href="{{ route('banks.edit', $bank->id) }}" class="btn btn-primary btn-sm">Sửa</a>
-                            <form action="{{ route('banks.destroy', $bank->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" class="text-center">Chưa có thông tin ngân hàng.</td>
-                    </tr>
-                @endforelse
-            </tbody>
         </table>
     </div>
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Employer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bank;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Genre;
@@ -169,4 +170,11 @@ class EmployerProfileController extends Controller
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
+    public function bankList()
+{
+    // Lấy danh sách ngân hàng có status = 1 (active)
+    $banks = Bank::where('status', '1')->get();
+
+    return view('employer.job-posting.bank', compact('banks'));
+}
 }

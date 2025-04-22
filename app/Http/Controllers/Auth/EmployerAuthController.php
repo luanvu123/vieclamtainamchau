@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Mail\EmployerVerificationMail;
 use App\Models\Employer;
-use Illuminate\Http\Request;
+use App\Rules\Captcha;
+ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-
+ use ReCaptcha\ReCaptcha;
 class EmployerAuthController extends Controller
 {
     public function showRegistrationForm()
@@ -26,6 +27,7 @@ class EmployerAuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'phone' => 'required|string|max:20',
             'company_name' => 'required|string|max:255',
+                       'g-recaptcha-response' => new Captcha(),
         ]);
 
         $verificationToken = Str::random(32);
