@@ -29,7 +29,6 @@ class BankController extends Controller
    public function store(Request $request)
 {
     $request->validate([
-        'area' => 'required|in:Khu vực miền bắc,Khu vực miền nam',
         'name' => 'required|string|max:255',
         'branch' => 'required|string|max:255',
         'account_number' => 'required|string|max:255',
@@ -78,7 +77,6 @@ class BankController extends Controller
     }
 
     $request->validate([
-        'area' => 'required|in:Khu vực miền bắc,Khu vực miền nam',
         'name' => 'required|string|max:255',
         'branch' => 'required|string|max:255',
         'account_number' => 'required|string|max:255',

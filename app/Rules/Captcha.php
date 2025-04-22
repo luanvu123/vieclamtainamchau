@@ -12,19 +12,14 @@ class Captcha implements ValidationRule
      *
      * @param  \Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
-    public function validate(string $attribute, mixed $value, Closure $fail): void
-    {
-        //
-    }
-    public function passes($attribute, $value)
+      public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $recaptcha = new ReCaptcha(env('CAPTCHA_SECRET'));
         $response = $recaptcha->verify($value, $_SERVER['REMOTE_ADDR']);
-        return $response->isSuccess();
-    }
-    public function message()
-    {
-        return 'Please complete the recaptcha to submit the form.';	//trả về thông báo khi lỗi không xác nhận captcha
+
+        if (!$response->isSuccess()) {
+            $fail('Vui lòng xác nhận captcha để gửi biểu mẫu.');
+        }
     }
 
 }

@@ -8,13 +8,7 @@
         @csrf
         @method('PUT')
 
-        <div class="form-group">
-            <label for="area">Khu vực:</label>
-            <select name="area" id="area" class="form-control">
-                <option value="Khu vực miền bắc" {{ $bank->area == 'Khu vực miền bắc' ? 'selected' : '' }}>Khu vực miền bắc</option>
-                <option value="Khu vực miền nam" {{ $bank->area == 'Khu vực miền nam' ? 'selected' : '' }}>Khu vực miền nam</option>
-            </select>
-        </div>
+      
 
         <div class="form-group">
             <label for="name">Tên ngân hàng:</label>
