@@ -6,7 +6,7 @@
         <div class="container">
             <form action="{{ route('employer.job-posting.store') }}" method="POST">
                 @csrf
-                @if ($basicServiceDetails->count() || $hotServiceDetails->count())
+                @if ($basicServiceDetails->count() || $hotServiceDetails->count() || $specialServiceDetails->count())
                     <div class="alert alert-success">
                         <h5>Bạn có gói còn hiệu lực:</h5>
                         <ul>

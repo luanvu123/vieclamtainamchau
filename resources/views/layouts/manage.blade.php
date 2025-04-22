@@ -3123,7 +3123,7 @@
             }, true);
         });
     </script>
-    <script src="{{ asset('backend_admin/js/jquery-1.11.1.min.js') }}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
 
     <!-- Include DataTables JavaScript -->
@@ -3133,67 +3133,25 @@
             $('#user-table').DataTable();
         });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    @if (session('error'))
-        <script>
-            $(document).ready(function () {
-                toastr.error("{{ session('error') }}", "Lỗi!");
-            });
-        </script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+    @if (session('success'))
+        toastr.success("{{ session('success') }}");
     @endif
-    <script>
-        @if (session('success'))
-            toastMessage("{{ session('success') }}", 'success');
-        @endif
 
-        @if (session('error'))
-            toastMessage("{{ session('error') }}", 'error');
-        @endif
+    @if (session('error'))
+        toastr.error("{{ session('error') }}");
+    @endif
 
-        function toastMessage(message, type = 'success') {
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
-    </script>
+    @if (session('warning'))
+        toastr.warning("{{ session('warning') }}");
+    @endif
 
-    <style>
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 12px 20px;
-            color: #fff;
-            border-radius: 4px;
-            z-index: 9999;
-            font-size: 15px;
-            animation: slideDown 0.5s ease;
-        }
-
-        .toast-success {
-            background-color: #28a745;
-        }
-
-        .toast-error {
-            background-color: #dc3545;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+    @if (session('info'))
+        toastr.info("{{ session('info') }}");
+    @endif
+</script>
 
 </body>
 

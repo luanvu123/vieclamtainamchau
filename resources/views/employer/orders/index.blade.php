@@ -13,7 +13,7 @@
             </div>
         @else
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped" id="user-table">
                     <thead>
                         <tr>
                             <th>Mã đơn hàng</th>

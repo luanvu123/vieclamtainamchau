@@ -8,7 +8,7 @@
 
             <h2>Dịch vụ đã thanh toán</h2>
 
-<table class="table">
+<table class="table" id="user-table">
     <thead>
         <tr>
             <th>Mã đơn</th>

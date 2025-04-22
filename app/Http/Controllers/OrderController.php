@@ -89,7 +89,7 @@ class OrderController extends Controller
         $orders = Order::with('orderDetails.service')
             ->where('employer_id', $employerId)
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->get();
 
         return view('employer.orders.index', compact('orders'));
     }
