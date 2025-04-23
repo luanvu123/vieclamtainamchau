@@ -33,7 +33,7 @@
             <td>{{ $bank->name }}</td>
             <td>
                 @if ($bank->image)
-                    <img src="{{ asset('storage/' . $bank->image) }}" alt="Ảnh ngân hàng" width="60" height="60" style="object-fit: cover; border-radius: 8px;">
+                    <img src="{{ asset('storage/' . $bank->image) }}" alt="QR code" width="60" height="60" style="object-fit: cover; border-radius: 8px;">
                 @else
                     <img src="{{ asset('frontend/img/default_bank.png') }}" alt="No image" width="60" height="60" style="object-fit: cover; border-radius: 8px;">
                 @endif

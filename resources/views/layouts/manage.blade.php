@@ -2524,6 +2524,7 @@
                             </div>
                         </div>
                     @elseif (Auth::guard('employer')->check())
+
                         <div class="avatar-container">
                             <img src="{{ asset('storage/' . Auth::guard('employer')->user()->avatar) ?? asset('storage/avatar/avatar-default.jpg') }}"
                                 alt="Avatar" onerror="this.src='{{ asset('storage/avatar/avatar-default.jpg') }}'"
@@ -2534,12 +2535,14 @@
                             <div class="auth-actions">
                                 <a href="{{ route('employer.profile.edit') }}" class="auth-btn dashboard">Trang quản
                                     lý</a>
+
                                 <form action="{{ route('employer.logout') }}" method="POST" style="display: inline;">
                                     @csrf
                                     <button type="submit" class="auth-btn logout">Đăng xuất</button>
                                 </form>
                             </div>
                         </div>
+
                     @else
                         <div class="auth-group candidate">
                             <span class="auth-label">Người tìm việc</span>
@@ -2816,7 +2819,47 @@
             }
         </style>
     @endif
+
     <main>
+        @if(Auth::guard('employer')->user()->user)
+            <div class="support-info-bar">
+                <strong class="support-title">Liên hệ hỗ trợ:</strong>
+                <div><i class="fa fa-user"></i> {{ Auth::guard('employer')->user()->user->name }}</div>
+                <div><i class="fa fa-envelope"></i> {{ Auth::guard('employer')->user()->user->email }}</div>
+                <div><i class="fa fa-phone"></i> {{ Auth::guard('employer')->user()->user->phone ?? 'Chưa cập nhật' }}</div>
+            </div>
+
+            <style>
+                .support-info-bar {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    gap: 15px;
+                    background-color: #f1f5f9;
+                    padding: 10px 420px;
+                    margin-bottom: 20px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    color: #333;
+                    width: 100%;
+                    box-sizing: border-box;
+                }
+
+                .support-info-bar>div,
+                .support-title {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+
+                .support-title {
+                    font-weight: bold;
+                    color: #e3110e;
+                    /* Màu xanh Bootstrap */
+                }
+            </style>
+        @endif
+
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -2826,7 +2869,9 @@
                 </ul>
             </div>
         @endif
+
         <section class="hotlines-section">
+
             <div class="sidebar">
                 <div class="menu-section">
                     <div class="menu-title">Quản lý đăng tuyển dụng</div>
@@ -2905,9 +2950,8 @@
                 </div>
 
             </div>
-
-
             @yield('content')
+
         </section>
     </main>
 
@@ -3123,7 +3167,7 @@
             }, true);
         });
     </script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
 
     <!-- Include DataTables JavaScript -->
@@ -3133,26 +3177,51 @@
             $('#user-table').DataTable();
         });
     </script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-<script>
-    @if (session('success'))
-        toastr.success("{{ session('success') }}");
-    @endif
+    <script>
+        @if (session('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
 
-    @if (session('error'))
-        toastr.error("{{ session('error') }}");
-    @endif
+        @if (session('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
 
-    @if (session('warning'))
-        toastr.warning("{{ session('warning') }}");
-    @endif
+        @if (session('warning'))
+            toastr.warning("{{ session('warning') }}");
+        @endif
 
-    @if (session('info'))
-        toastr.info("{{ session('info') }}");
-    @endif
-</script>
+        @if (session('info'))
+            toastr.info("{{ session('info') }}");
+        @endif
+    </script>
+    <style>
+        /* Màu cho success */
+        .toast-success {
+            background-color: #51A351 !important;
+        }
 
+        /* Màu cho error */
+        .toast-error {
+            background-color: #BD362F !important;
+        }
+
+        /* Màu cho info */
+        .toast-info {
+            background-color: #2F96B4 !important;
+        }
+
+        /* Màu cho warning */
+        .toast-warning {
+            background-color: #F89406 !important;
+        }
+
+        /* Màu chữ cho tất cả loại thông báo */
+        .toast-message {
+            color: white !important;
+        }
+    </style>
 </body>
 
 </html>

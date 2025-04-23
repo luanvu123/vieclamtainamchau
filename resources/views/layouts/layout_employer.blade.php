@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <title>@yield('title') - Employer Portal</title>
     <style>
         :root {
@@ -275,6 +276,29 @@
             <p>&copy; {{ date('Y') }} Job Portal. All rights reserved.</p>
         </footer>
     </div>
+    <!-- jQuery (cần cho toastr) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+    @if (session('success'))
+        toastr.success("{{ session('success') }}");
+    @endif
+
+    @if (session('error'))
+        toastr.error("{{ session('error') }}");
+    @endif
+
+    @if (session('warning'))
+        toastr.warning("{{ session('warning') }}");
+    @endif
+
+    @if (session('info'))
+        toastr.info("{{ session('info') }}");
+    @endif
+</script>
+
 </body>
 
 </html>

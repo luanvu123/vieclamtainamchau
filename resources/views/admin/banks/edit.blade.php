@@ -8,7 +8,7 @@
         @csrf
         @method('PUT')
 
-      
+
 
         <div class="form-group">
             <label for="name">Tên ngân hàng:</label>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="form-group">
-            <label for="image">Ảnh hiện tại:</label><br>
+            <label for="image">QR code:</label><br>
             @if ($bank->image)
                 <img src="{{ asset('storage/' . $bank->image) }}" alt="Bank Image" width="100"><br>
             @endif
@@ -48,14 +48,7 @@
             <input type="file" name="image" id="image" class="form-control">
         </div>
 
-        <div class="form-group">
-            <label for="logo_bank">Logo hiện tại:</label><br>
-            @if ($bank->logo_bank)
-                <img src="{{ asset('storage/' . $bank->logo_bank) }}" alt="Bank Logo" width="100"><br>
-            @endif
-            <label for="logo_bank">Cập nhật logo:</label>
-            <input type="file" name="logo_bank" id="logo_bank" class="form-control">
-        </div>
+      
 
         <div class="form-group">
             <label for="status">Trạng thái:</label>
