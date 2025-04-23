@@ -324,7 +324,9 @@
                                     {{ Str::limit($job->title, 30) }}
                                 </a>
                             </h3>
-                            <p>{{ $job->employer ? $job->employer->company_name : 'Công ty TNHH' }}</p>
+                              <p title="{{ $job->employer->company_name }}">
+                                        {{ $job->employer ? Str::limit($job->employer->company_name, 25) : 'Công ty TNHH' }}
+                                    </p>
                             <span>
                                 @if ($job->countries->isNotEmpty())
                                     {{ $job->countries->pluck('name')->join(', ') }}

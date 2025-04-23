@@ -105,7 +105,7 @@
                         <div class="job-item">
                             <div class="job-details">
                                 <h3><a href="{{ route('job.show', $job->slug) }}">{{ $job->title }}</a></h3>
-                                <div class="company">{{ $job->employer->company_name }}</div>
+                                <div class="company">  {{ $job->employer ? Str::limit($job->employer->company_name, 30) : 'Công ty TNHH' }}</div>
                                 <div class="location">{{ $job->location }}</div>
                                 <div class="salary">{{ $job->salary }}</div>
                                 <div class="posted-date">Ngày đăng: {{ $job->created_at->format('d/m/Y') }}

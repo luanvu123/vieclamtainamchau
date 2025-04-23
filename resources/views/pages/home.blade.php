@@ -57,7 +57,7 @@
 
                     <div class="category-grid">
                         @foreach ($genre->jobPostings as $job)
-                        <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
+                            <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
 
 
                                 @if ($job->employer && $job->employer->avatar)
@@ -77,7 +77,10 @@
                                             {{ Str::limit($job->title, 30) }}
                                         </a>
                                     </h3>
-                                    <p>{{ $job->employer ? $job->employer->company_name : 'Công ty TNHH' }}</p>
+                                    <p title="{{ $job->employer->company_name }}">
+                                        {{ $job->employer ? Str::limit($job->employer->company_name, 25) : 'Công ty TNHH' }}
+                                    </p>
+
                                     <span>
                                         @if ($job->countries->isNotEmpty())
                                             {{ $job->countries->pluck('name')->join(', ') }}
@@ -427,16 +430,16 @@
                 .then(response => response.json())
                 .then(data => {
                     contentDiv.innerHTML = `
-                        <h2>${data.name}</h2>
-                        <div class="detail-image">
-                            <img src="${data.image}" alt="${data.name}">
-                        </div>
-                        <div class="detail-info">
-                            <h3>Chi tiết chương trình</h3>
-                            ${data.description}
+                            <h2>${data.name}</h2>
+                            <div class="detail-image">
+                                <img src="${data.image}" alt="${data.name}">
+                            </div>
+                            <div class="detail-info">
+                                <h3>Chi tiết chương trình</h3>
+                                ${data.description}
 
-                        </div>
-                    `;
+                            </div>
+                        `;
                     popup.style.display = 'block';
                 });
         }

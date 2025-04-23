@@ -239,13 +239,12 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                                 @endif
     </a>
 </li>
-                                        <li class="{{ Request::is('banks*') ? 'active' : '' }}">
-                                            <a href="{{ route('banks.index') }}">
-                                                <img src="{{ asset('backend_admin/images/3018587_admin_administrator_ajax_options_permission_icon.svg') }}"
-                                                    alt="Google" width="20" height="20"> Thông tin thanh
-                                                toán
-                                            </a>
-                                        </li>
+                                     <li class="{{ Request::is('banks*') ? 'active' : '' }}">
+    <a href="{{ route('banks.index') }}">
+        <i class="fa fa-credit-card"></i> Thông tin thanh toán
+    </a>
+</li>
+
                                         <li class="{{ Request::is('manage/job-postings') ? 'active' : '' }}">
                                             <a href="{{ route('manage.employers.indexJobPosting') }}">
                                                 <img src="{{ asset('backend_admin/images/file-document-svgrepo-com.svg') }}"

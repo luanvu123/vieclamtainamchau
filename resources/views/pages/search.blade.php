@@ -29,7 +29,9 @@
                         @endif
                         <div class="card-content">
                             <h3>{{ Str::limit($job->title, 15) }}</h3>
-                            <p>{{ Str::limit($job->employer->company_name ?? 'Công ty TNHH', 40) }}</p>
+                              <p title="{{ $job->employer->company_name }}">
+                                        {{ $job->employer ? Str::limit($job->employer->company_name, 25) : 'Công ty TNHH' }}
+                                    </p>
                             <p>Địa điểm: {{ Str::limit($job->location ?? 'Không xác định', 30) }}</p>
                             <p>Lương: {{ Str::limit($job->salary ?? 'Thỏa thuận', 30) }}</p>
                         </div>
