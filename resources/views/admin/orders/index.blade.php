@@ -27,7 +27,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Mã đơn hàng</th>
-                            <th>Nhà tuyển dụng</th>
+                            <th>Email tuyển dụng</th>
                             <th>Tổng tiền</th>
                             <th>Trạng thái</th>
                             <th>Ngày tạo</th>
@@ -41,7 +41,7 @@
                                 <td>{{ $order->order_key }} @if ($order->created_at >= now()->subHours(2))
         <span class="badge badge-danger ml-1">New</span>
     @endif</td>
-                                <td>{{ $order->employer->name }}</td>
+                                <td>{{ $order->employer->email }}</td>
                                 <td>₫{{ number_format($order->total_price, 0) }}</td>
                                 <td>
                                     @if ($order->status == 'Đã thanh toán')
