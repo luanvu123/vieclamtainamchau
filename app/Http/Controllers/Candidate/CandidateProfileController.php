@@ -172,19 +172,29 @@ class CandidateProfileController extends Controller
         return view('candidate.applications', compact('applications'));
     }
 
-    public function edit()
-    {
-        $candidate = Auth::guard('candidate')->user();
-        $experiences = $candidate->experiences;
-        $educations = $candidate->educations;
-        $allSkills = Skill::all();
-        $allSoftSkills = SoftSkill::all();
-        $allLanguages = Language::all(); // thêm dòng này
+   public function edit()
+{
+    $candidate = Auth::guard('candidate')->user();
+    $experiences = $candidate->experiences;
+    $educations = $candidate->educations;
+    $certificates = $candidate->certificates;
+    $allSkills = Skill::all();
+    $allSoftSkills = SoftSkill::all();
+    $allLanguages = Language::all();
+    $cvs = $candidate->cvs;
 
-        $cvs = $candidate->cvs;
-        return view('candidate.profile', compact('candidate', 'experiences', 'educations', 'allSkills', 'allSoftSkills', 'allLanguages', 'cvs'));
+    return view('candidate.profile', compact(
+        'candidate',
+        'experiences',
+        'educations',
+        'certificates', 
+        'allSkills',
+        'allSoftSkills',
+        'allLanguages',
+        'cvs'
+    ));
+}
 
-    }
 
     public function update(Request $request)
     {

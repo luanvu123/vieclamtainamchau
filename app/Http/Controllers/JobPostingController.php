@@ -316,19 +316,27 @@ class JobPostingController extends Controller
         }
     }
 
-    public function viewApplications($id)
-    {
-        $employer = Auth::guard('employer')->user();
-        $jobPosting = JobPosting::where('employer_id', $employer->id)
-            ->findOrFail($id);
+  public function viewApplications($id)
+{
+    $employer = Auth::guard('employer')->user();
+    $jobPosting = JobPosting::where('employer_id', $employer->id)
+        ->findOrFail($id);
 
-        $applications = Application::with('candidate')
-            ->where('job_posting_id', $id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+    $applications = Application::with([
+        'candidate',
+        'candidate.skills',
+        'candidate.softSkills',
+        'candidate.languages',
+        'candidate.experiences',
+        'candidate.educations',
+        'candidate.certificates'
+    ])
+    ->where('job_posting_id', $id)
+    ->orderBy('created_at', 'desc')
+    ->get();
 
-        return view('employer.job-posting.applications', compact('jobPosting', 'applications'));
-    }
+    return view('employer.job-posting.applications', compact('jobPosting', 'applications'));
+}
 
     private function createNotification($application, $status)
     {

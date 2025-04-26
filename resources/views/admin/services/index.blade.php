@@ -26,7 +26,8 @@
                             <img src="{{ asset('storage/' . $service->image) }}" alt="Ảnh dịch vụ" width="50">
                         @endif
                     </td>
-                    <td>{{ $service->price }} VND</td>
+                  <td>{{ number_format($service->price, 0, ',', '.') }} VNĐ</td>
+
                     <td>{!! $service->description !!}</td>
                     <td>{{ $service->status == 'active' ? 'Hoạt động' : 'Ngừng hoạt động' }}</td>
                     <td>

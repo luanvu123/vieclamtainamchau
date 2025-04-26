@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\EmployerForgotPasswordController;
 use App\Http\Controllers\Auth\EmployerResetPasswordController;
 use App\Http\Controllers\Candidate\CandidateProfileController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\AdvertiseController;
 use App\Http\Controllers\AdvertisesManageController;
@@ -130,6 +131,10 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::get('/candidate/check-application/{jobPostingId}', [ApplicationController::class, 'checkApplicationStatus'])->name('candidate.check-application')->middleware('candidate');
+Route::post('/applications/{application}/view-info', [ApplicationController::class, 'viewInfo'])
+    ->name('applications.viewInfo')
+    ->middleware('employer');
+
 Route::prefix('candidate')->name('candidate.')->group(function () {
     Route::post('/apply', [ApplicationController::class, 'store'])->middleware('candidate')->name('apply');
     Route::get('/job/{slug}', [CandidateProfileController::class, 'job'])->name('job.show')->middleware('candidate');
@@ -138,6 +143,7 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
 
     Route::resource('experiences', ExperienceController::class);
     Route::resource('educations', EducationController::class);
+     Route::resource('certificates', CertificateController::class);
     Route::post('/register-study-abroad/{studyAbroadId}', [SavedStudyAbroadController::class, 'registerConsultation'])
         ->middleware('candidate')
         ->name('register.study.abroad');

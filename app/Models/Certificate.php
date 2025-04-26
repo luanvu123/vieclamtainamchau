@@ -15,15 +15,6 @@ class Certificate extends Model
         'issuing_organization',
         'issue_date',
         'expiration_date',
-        'credential_id',
-        'credential_url',
-        'description',
-        'certificate_image_path',
-    ];
-
-    protected $casts = [
-        'issue_date' => 'date',
-        'expiration_date' => 'date',
     ];
 
     public function candidate()

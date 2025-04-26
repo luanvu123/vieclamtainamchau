@@ -15,7 +15,6 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Tên ứng viên</th>
-
                                     <th>Thông tin</th>
                                     <th>Ngày nộp</th>
                                     <th>CV</th>
@@ -34,70 +33,200 @@
                                             <button class="info-btn"
                                                 onclick="showCandidateInfo('{{ $application->candidate->id }}')">Chi
                                                 tiết</button>
-                                            <div id="candidateInfo{{ $application->candidate->id }}" class="candidate-info-popup">
-                                                <div class="info-content">
-                                                    <span class="close-info">&times;</span>
-                                                    <h3>Thông tin ứng viên</h3>
-                                                    <div class="info-grid">
-                                                        <div class="info-item">
-                                                            <strong>Số điện thoại:</strong>
-                                                            {{ $application->candidate->phone ?? 'Không có' }}
-                                                        </div>
-                                                        <div class="info-item">
-                                                            <strong>Ngày sinh:</strong>
-                                                            {{ $application->candidate->dob ? date('d/m/Y', strtotime($application->candidate->dob)) : 'Không có' }}
-                                                        </div>
-                                                        <div class="info-item">
-                                                            <strong>Giới tính:</strong>
-                                                            {{ $application->candidate->gender ?? 'Không có' }}
-                                                        </div>
-                                                        <div class="info-item">
-                                                            <strong>Địa chỉ:</strong>
-                                                            {{ $application->candidate->address ?? 'Không có' }}
-                                                        </div>
-                                                        <div class="info-item">
-                                                            <strong>Kỹ năng:</strong>
-                                                            {{ $application->candidate->skill ?? 'Không có' }}
-                                                        </div>
-                                                        <div class="info-item">
-                                                            <strong>Vị trí:</strong>
-                                                            {{ $application->candidate->position ?? 'Không có' }}
-                                                        </div>
-                                                        <div class="info-item">
-                                                            <strong>Level hiện tại:</strong>
-                                                            {{ $application->candidate->level ?? 'Không có' }}
-                                                        </div>
-                                                        <div class="info-item">
-                                                            <strong>Level mong muốn:</strong>
-                                                            {{ $application->candidate->desired_level ?? 'Không có' }}
-                                                        </div>
-                                                        <div class="info-item">
-                                                            <strong>Lương mong muốn:</strong>
-                                                            {{ $application->candidate->desired_salary ?? 'Không có' }}
-                                                        </div>
-                                                        <div class="info-item">
-                                                            <strong>Trình độ học vấn:</strong>
-                                                            {{ $application->candidate->education_level ?? 'Không có' }}
-                                                        </div>
-                                                        <div class="info-item">
-                                                            <strong>Kinh nghiệm:</strong>
-                                                            {{ $application->candidate->years_of_experience ?? 'Không có' }}
-                                                            năm
-                                                        </div>
-                                                        <div class="info-item">
-                                                            <strong>Hình thức làm việc:</strong>
-                                                            {{ $application->candidate->working_form ?? 'Không có' }}
-                                                        </div>
-                                                        @if ($application->candidate->linkedin)
-                                                            <div class="info-item">
-                                                                <strong>LinkedIn:</strong> <a
-                                                                    href="{{ $application->candidate->linkedin }}" target="_blank">Xem
-                                                                    profile</a>
-                                                            </div>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
+                                           <!-- Replace your existing candidate info popup with this enhanced version -->
+<div id="candidateInfo{{ $application->candidate->id }}" class="candidate-info-popup">
+    <div class="info-content">
+        <span class="close-info">&times;</span>
+        <h3>Thông tin ứng viên</h3>
+        <div class="info-grid">
+            <div class="info-item">
+                <strong>Số điện thoại:</strong>
+                {{ $application->candidate->phone ?? 'Không có' }}
+            </div>
+            <div class="info-item">
+                <strong>Email:</strong>
+                {{ $application->candidate->email ?? 'Không có' }}
+            </div>
+            <div class="info-item">
+                <strong>Ngày sinh:</strong>
+                {{ $application->candidate->dob ? date('d/m/Y', strtotime($application->candidate->dob)) : 'Không có' }}
+            </div>
+            <div class="info-item">
+                <strong>Giới tính:</strong>
+                {{ $application->candidate->gender ?? 'Không có' }}
+            </div>
+            <div class="info-item">
+                <strong>Địa chỉ:</strong>
+                {{ $application->candidate->address ?? 'Không có' }}
+            </div>
+            <div class="info-item">
+                <strong>Vị trí:</strong>
+                {{ $application->candidate->position ?? 'Không có' }}
+            </div>
+            <div class="info-item">
+                <strong>Level hiện tại:</strong>
+                {{ $application->candidate->level ?? 'Không có' }}
+            </div>
+            <div class="info-item">
+                <strong>Level mong muốn:</strong>
+                {{ $application->candidate->desired_level ?? 'Không có' }}
+            </div>
+            <div class="info-item">
+                <strong>Lương mong muốn:</strong>
+                {{ $application->candidate->desired_salary ?? 'Không có' }}
+            </div>
+            <div class="info-item">
+                <strong>Trình độ học vấn:</strong>
+                {{ $application->candidate->education_level ?? 'Không có' }}
+            </div>
+            <div class="info-item">
+                <strong>Kinh nghiệm:</strong>
+                {{ $application->candidate->years_of_experience ?? 'Không có' }}
+                năm
+            </div>
+            <div class="info-item">
+                <strong>Hình thức làm việc:</strong>
+                {{ $application->candidate->working_form ?? 'Không có' }}
+            </div>
+            @if ($application->candidate->linkedin)
+                <div class="info-item">
+                    <strong>LinkedIn:</strong> <a
+                        href="{{ $application->candidate->linkedin }}" target="_blank">Xem
+                        profile</a>
+                </div>
+            @endif
+        </div>
+
+        <!-- Skills Section -->
+        @if($application->candidate->skills->count() > 0)
+        <div class="additional-section">
+            <h4>Kỹ năng chuyên môn</h4>
+            <div class="skills-container">
+                @foreach($application->candidate->skills as $skill)
+                <div class="skill-item">
+                    <span class="skill-name">{{ $skill->name }}</span>
+                    {{-- <div class="skill-level">
+                        @for($i = 1; $i <= 5; $i++)
+                            <span class="level-dot {{ $i <= $skill->pivot->proficiency_level ? 'active' : '' }}"></span>
+                        @endfor
+                    </div> --}}
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        <!-- Soft Skills Section -->
+        @if($application->candidate->softSkills->count() > 0)
+        <div class="additional-section">
+            <h4>Kỹ năng mềm</h4>
+            <div class="soft-skills-container">
+                @foreach($application->candidate->softSkills as $softSkill)
+                <span class="soft-skill-tag">{{ $softSkill->name }}</span>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        <!-- Languages Section -->
+        @if($application->candidate->languages->count() > 0)
+        <div class="additional-section">
+            <h4>Ngoại ngữ</h4>
+            <div class="languages-container">
+                @foreach($application->candidate->languages as $language)
+                <div class="language-item">
+                    <span class="language-name">{{ $language->name }}</span>
+                    <span class="language-level {{ strtolower($language->pivot->proficiency) }}">
+                        {{ ucfirst($language->pivot->proficiency) }}
+                    </span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        <!-- Experience Section -->
+        @if($application->candidate->experiences->count() > 0)
+        <div class="additional-section">
+            <h4>Kinh nghiệm làm việc</h4>
+            <div class="experiences-container">
+                @foreach($application->candidate->experiences as $experience)
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <h5>{{ $experience->position }}</h5>
+                        <div class="experience-company">{{ $experience->company_name }}</div>
+                        <div class="experience-duration">
+                            {{ date('m/Y', strtotime($experience->start_date)) }} -
+                            {{ $experience->is_current ? 'Hiện tại' : date('m/Y', strtotime($experience->end_date)) }}
+                        </div>
+                        @if($experience->location)
+                        <div class="experience-location">{{ $experience->location }}</div>
+                        @endif
+                    </div>
+                    @if($experience->description)
+                    <div class="experience-description">
+                        {{ $experience->description }}
+                    </div>
+                    @endif
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        <!-- Education Section -->
+        @if($application->candidate->educations->count() > 0)
+        <div class="additional-section">
+            <h4>Học vấn</h4>
+            <div class="educations-container">
+                @foreach($application->candidate->educations as $education)
+                <div class="education-item">
+                    <div class="education-header">
+                        <h5>{{ $education->degree }}</h5>
+                        <div class="education-institution">{{ $education->institution_name }}</div>
+                        @if($education->field_of_study)
+                        <div class="education-field">{{ $education->field_of_study }}</div>
+                        @endif
+                        <div class="education-duration">
+                            {{ date('m/Y', strtotime($education->start_date)) }} -
+                            {{ $education->end_date ? date('m/Y', strtotime($education->end_date)) : 'Hiện tại' }}
+                        </div>
+                    </div>
+                    @if($education->description)
+                    <div class="education-description">
+                        {{ $education->description }}
+                    </div>
+                    @endif
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        <!-- Certificates Section -->
+        @if($application->candidate->certificates->count() > 0)
+        <div class="additional-section">
+            <h4>Chứng chỉ</h4>
+            <div class="certificates-container">
+                @foreach($application->candidate->certificates as $certificate)
+                <div class="certificate-item">
+                    <div class="certificate-name">{{ $certificate->name }}</div>
+                    @if($certificate->issuing_organization)
+                    <div class="certificate-organization">{{ $certificate->issuing_organization }}</div>
+                    @endif
+                    @if($certificate->issue_date)
+                    <div class="certificate-date">Ngày cấp: {{ date('d/m/Y', strtotime($certificate->issue_date)) }}</div>
+                    @endif
+                    @if($certificate->expiration_date)
+                    <div class="certificate-expire">Hết hạn: {{ date('d/m/Y', strtotime($certificate->expiration_date)) }}</div>
+                    @endif
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+    </div>
+</div>
                                         </td>
                                         <td>{{ $application->created_at->format('d/m/Y H:i') }}</td>
                                         <td>
@@ -591,6 +720,265 @@
             cursor: pointer;
             font-size: 28px;
         }
+        /* Add these styles to your CSS file */
+.candidate-info-popup {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.info-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 3% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 900px;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: 5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.close-info {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-info:hover {
+    color: black;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    border-left: 3px solid #0066cc;
+}
+
+.info-item strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 14px;
+}
+
+.additional-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.additional-section h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 18px;
+}
+
+/* Skills styling */
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.skill-item {
+    background-color: #f0f7ff;
+    padding: 10px 15px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+}
+
+.skill-name {
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.skill-level {
+    display: flex;
+    gap: 3px;
+}
+
+.level-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+}
+
+.level-dot.active {
+    background-color: #0066cc;
+}
+
+/* Soft Skills styling */
+.soft-skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.soft-skill-tag {
+    background-color: #f0fff0;
+    color: #2e7d32;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+/* Languages styling */
+.languages-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.language-item {
+    background-color: #f5f5f5;
+    padding: 10px 15px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 200px;
+}
+
+.language-name {
+    font-weight: 500;
+}
+
+.language-level {
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.language-level.beginner {
+    background-color: #ffecb3;
+    color: #ff8f00;
+}
+
+.language-level.intermediate {
+    background-color: #c8e6c9;
+    color: #2e7d32;
+}
+
+.language-level.advanced {
+    background-color: #bbdefb;
+    color: #1565c0;
+}
+
+.language-level.fluent {
+    background-color: #e1bee7;
+    color: #6a1b9a;
+}
+
+.language-level.native {
+    background-color: #d1c4e9;
+    color: #4527a0;
+}
+
+/* Experience styling */
+.experiences-container, .educations-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.experience-item, .education-item {
+    background-color: #f9f9f9;
+    border-left: 3px solid #0066cc;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.experience-header, .education-header {
+    margin-bottom: 10px;
+}
+
+.experience-header h5, .education-header h5 {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 16px;
+}
+
+.experience-company, .education-institution {
+    font-weight: 500;
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.experience-duration, .education-duration,
+.experience-location, .education-field {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 3px;
+}
+
+.experience-description, .education-description {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #ddd;
+}
+
+/* Certificates styling */
+.certificates-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.certificate-item {
+    background-color: #fff3e0;
+    border-left: 3px solid #ef6c00;
+    padding: 12px;
+    border-radius: 4px;
+    flex: 1 1 250px;
+    max-width: 300px;
+}
+
+.certificate-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.certificate-organization {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.certificate-date, .certificate-expire {
+    font-size: 13px;
+    color: #666;
+}
     </style>
 
     <script>

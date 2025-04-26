@@ -436,6 +436,120 @@
 </div>
 @endforeach
 <div class="form-group">
+    <label for="certificates">Chứng chỉ</label>
+    <ul>
+    @foreach($certificates as $certificate)
+        <li class="mb-3">
+            <strong><i class="fas fa-certificate"></i> {{ $certificate->name }}</strong>
+            @if($certificate->issuing_organization)
+                <span class="ml-2"><i class="fas fa-building"></i> {{ $certificate->issuing_organization }}</span>
+            @endif
+            <br>
+            <small>
+                @if($certificate->issue_date)
+                <i class="fas fa-calendar-plus"></i> Cấp ngày: {{ \Carbon\Carbon::parse($certificate->issue_date)->format('d/m/Y') }}
+                @endif
+                @if($certificate->expiration_date)
+                - <i class="fas fa-calendar-times"></i> Hết hạn: {{ \Carbon\Carbon::parse($certificate->expiration_date)->format('d/m/Y') }}
+                @endif
+            </small>
+            <br>
+
+            <!-- Nút Icon -->
+            <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#editCertificateModal-{{ $certificate->id }}">
+                <i class="fas fa-edit"></i>
+            </button>
+            <form action="{{ route('candidate.certificates.destroy', $certificate->id) }}" method="POST" class="d-inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-danger">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </form>
+        </li>
+    @endforeach
+    </ul>
+</div>
+
+<!-- Nút Thêm Chứng Chỉ -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCertificateModal">
+    Thêm Chứng Chỉ
+</button>
+<div class="modal fade" id="addCertificateModal" tabindex="-1" role="dialog" aria-labelledby="addCertificateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="{{ route('candidate.certificates.store') }}" method="POST" class="modal-content">
+            @csrf
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCertificateModalLabel">Thêm Chứng Chỉ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Tên chứng chỉ</label>
+                    <input type="text" class="form-control" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="issuing_organization">Tổ chức cấp</label>
+                    <input type="text" class="form-control" name="issuing_organization">
+                </div>
+                <div class="form-group">
+                    <label for="issue_date">Ngày cấp</label>
+                    <input type="date" class="form-control" name="issue_date">
+                </div>
+                <div class="form-group">
+                    <label for="expiration_date">Ngày hết hạn</label>
+                    <input type="date" class="form-control" name="expiration_date">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary">Lưu</button>
+            </div>
+        </form>
+    </div>
+</div>
+@foreach($certificates as $certificate)
+<div class="modal fade" id="editCertificateModal-{{ $certificate->id }}" tabindex="-1" role="dialog" aria-labelledby="editCertificateModalLabel-{{ $certificate->id }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="{{ route('candidate.certificates.update', $certificate->id) }}" method="POST" class="modal-content">
+            @csrf
+            @method('PUT')
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCertificateModalLabel-{{ $certificate->id }}">Sửa Chứng Chỉ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Tên chứng chỉ</label>
+                    <input type="text" class="form-control" name="name" value="{{ old('name', $certificate->name) }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="issuing_organization">Tổ chức cấp</label>
+                    <input type="text" class="form-control" name="issuing_organization" value="{{ old('issuing_organization', $certificate->issuing_organization) }}">
+                </div>
+                <div class="form-group">
+                    <label for="issue_date">Ngày cấp</label>
+                    <input type="date" class="form-control" name="issue_date" value="{{ old('issue_date', $certificate->issue_date ? \Carbon\Carbon::parse($certificate->issue_date)->format('Y-m-d') : '') }}">
+                </div>
+                <div class="form-group">
+                    <label for="expiration_date">Ngày hết hạn</label>
+                    <input type="date" class="form-control" name="expiration_date" value="{{ old('expiration_date', $certificate->expiration_date ? \Carbon\Carbon::parse($certificate->expiration_date)->format('Y-m-d') : '') }}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+            </div>
+        </form>
+    </div>
+</div>
+@endforeach
+
+<div class="form-group">
     <label for="educations">Học vấn</label>
     <ul>
         @foreach($educations as $education)

@@ -17,6 +17,7 @@ class Application extends Model
         'approve_application',
         'cv_path_resubmit',
         'summary',
+        'order_id',
     ];
     protected $casts = [
         'saved' => 'boolean'
@@ -34,5 +35,4 @@ class Application extends Model
     {
         return $this->belongsTo(CV::class);
     }
-
 }
