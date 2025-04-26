@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.layout_candidate_profile')
 
 @section('title', 'Chỉnh sửa hồ sơ')
 
@@ -338,133 +338,87 @@
             }
         }
     </style>
-    <div class="container">
 
-       <div class="sidebar">
-            <div class="menu-title">Quản lý CV</div>
-            <div class="menu-section">
 
-                <a href="{{ route('candidate.cv.white') }}" class="menu-item">
-                    <i>📄</i>
-                    <span>Mẫu CV cổ điển</span>
-                </a>
-                <a href="{{ route('candidate.cv.black') }}" class="menu-item">
-                    <i>📄</i>
-                    <span>Mẫu CV hiện đại</span>
-                </a>
-                <a href="{{ route('candidate.cv.logistic') }}" class="menu-item">
-                    <i>📄</i>
-                    <span>Mẫu CV Xuất khẩu LD</span>
-                </a>
+    <div class="main-content">
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-4 border-b flex justify-between items-center">
+                <h2 class="text-xl font-semibold">Thông báo</h2>
+                <form action="{{ route('candidate.notifications.clear-all') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="text-sm text-blue-600 hover:text-blue-800">
+                        Đánh dấu tất cả là đã đọc
+                    </button>
+                </form>
             </div>
 
-            <div class="menu-section">
-                <div class="menu-title">Quản lý ứng tuyển</div>
-                <a href="{{ route('candidate.profile.edit') }}" class="menu-item">
-                    <i>📊</i>
-                    <span>Cập nhật hồ sơ & CV</span>
-                </a>
-                <a href="{{ route('candidate.applications') }}" class="menu-item">
-                    <i>👥</i>
-                    <span>Hồ sơ đã nộp</span>
-                </a>
-                 <a href="{{ route('candidate.saved.jobs') }}" class="menu-item">
-                    <i>❤️</i>
-                    <span>Hồ sơ đã lưu</span>
-                </a>
-                 <a href="{{ route('candidate.notifications') }}" class="menu-item">
-                     <i>📋</i>
-                     <span>Thông báo</span>
-                 </a>
-                  <a href="{{ route('candidate.saved.study.abroad') }}" class="menu-item">
-                    <i>❤️</i>
-                    <span>Du học nghề đã lưu</span>
-                </a>
-            </div>
-
-        </div>
-
-       <div class="main-content">
-            <div class="bg-white rounded-lg shadow">
-                <div class="p-4 border-b flex justify-between items-center">
-                    <h2 class="text-xl font-semibold">Thông báo</h2>
-                    <form action="{{ route('candidate.notifications.clear-all') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="text-sm text-blue-600 hover:text-blue-800">
-                            Đánh dấu tất cả là đã đọc
-                        </button>
-                    </form>
-                </div>
-
-                <div class="divide-y">
-                    @forelse ($notifications as $notification)
-                        <div class="p-4 hover:bg-gray-50 {{ $notification->is_read ? 'bg-white' : 'bg-blue-50' }}"
-                            data-notification-id="{{ $notification->id }}">
-                            <div class="flex justify-between items-start">
-                                <div class="flex-1">
-                                    <h3 class="font-medium text-gray-900">{{ $notification->title }}</h3>
-                                    <p class="text-gray-600 mt-1">{{ $notification->message }}</p>
-                                    <div class="mt-2 text-sm text-gray-500">
-                                        {{ $notification->created_at->diffForHumans() }}
-                                    </div>
+            <div class="divide-y">
+                @forelse ($notifications as $notification)
+                    <div class="p-4 hover:bg-gray-50 {{ $notification->is_read ? 'bg-white' : 'bg-blue-50' }}"
+                        data-notification-id="{{ $notification->id }}">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <h3 class="font-medium text-gray-900">{{ $notification->title }}</h3>
+                                <p class="text-gray-600 mt-1">{{ $notification->message }}</p>
+                                <div class="mt-2 text-sm text-gray-500">
+                                    {{ $notification->created_at->diffForHumans() }}
                                 </div>
-                                @if (!$notification->is_read)
-                                    <button class="mark-as-read-btn text-sm text-blue-600 hover:text-blue-800">
-                                        Đánh dấu đã đọc
-                                    </button>
-                                @endif
                             </div>
-                            @if ($notification->link)
-                                <a href="{{ $notification->link }}"
-                                    class="mt-2 inline-block text-sm text-blue-600 hover:text-blue-800">
-                                    Xem chi tiết
-                                </a>
+                            @if (!$notification->is_read)
+                                <button class="mark-as-read-btn text-sm text-blue-600 hover:text-blue-800">
+                                    Đánh dấu đã đọc
+                                </button>
                             @endif
                         </div>
-                    @empty
-                        <div class="p-4 text-center text-gray-500">
-                            Không có thông báo nào
-                        </div>
-                    @endforelse
-                </div>
+                        @if ($notification->link)
+                            <a href="{{ $notification->link }}" class="mt-2 inline-block text-sm text-blue-600 hover:text-blue-800">
+                                Xem chi tiết
+                            </a>
+                        @endif
+                    </div>
+                @empty
+                    <div class="p-4 text-center text-gray-500">
+                        Không có thông báo nào
+                    </div>
+                @endforelse
+            </div>
 
-                <div class="p-4">
-                    {{ $notifications->links() }}
-                </div>
+            <div class="p-4">
+                {{ $notifications->links() }}
             </div>
         </div>
+    </div>
 
-        @push('scripts')
-            <script>
-                document.querySelectorAll('.mark-as-read-btn').forEach(btn => {
-                    btn.addEventListener('click', async function() {
-                        const notificationDiv = this.closest('[data-notification-id]');
-                        const notificationId = notificationDiv.dataset.notificationId;
+    <script>
+        document.querySelectorAll('.mark-as-read-btn').forEach(btn => {
+            btn.addEventListener('click', async function () {
+                const notificationDiv = this.closest('[data-notification-id]');
+                const notificationId = notificationDiv.dataset.notificationId;
 
-                        try {
-                            const response = await fetch(
-                                `/candidate/notifications/${notificationId}/mark-as-read`, {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                            .content
-                                    }
-                                });
-
-                            if (response.ok) {
-                                notificationDiv.classList.remove('bg-blue-50');
-                                notificationDiv.classList.add('bg-white');
-                                this.remove();
-                            }
-                        } catch (error) {
-                            console.error('Error:', error);
+                try {
+                    const response = await fetch(
+                        `/candidate/notifications/${notificationId}/mark-as-read`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .content
                         }
                     });
-                });
-            </script>
-        @endpush
+
+                    if (response.ok) {
+                        notificationDiv.classList.remove('bg-blue-50');
+                        notificationDiv.classList.add('bg-white');
+                        this.remove();
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    </script>
 
 
-    </div>
+
+
 @endsection

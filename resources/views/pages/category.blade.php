@@ -7,8 +7,7 @@
                 <select name="category">
                     <option value="">Lựa chọn nghề nghiệp</option>
                     @foreach ($categories as $category)
-                        <option value="{{ $category->slug }}"
-                            {{ request('category') == $category->slug ? 'selected' : '' }}>
+                        <option value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'selected' : '' }}>
                             {{ $category->name }}
                         </option>
                     @endforeach
@@ -21,12 +20,13 @@
                         </option>
                     @endforeach
                 </select>
-               <button class="search-btn" type="submit">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"></circle>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-    </svg>
-</button>
+                <button class="search-btn" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
 
             </form>
         </div>
@@ -39,12 +39,11 @@
         @if ($jobPostings->count() > 0)
             <div class="category-grid">
                 @foreach ($jobPostings as $job)
-                    <a href="{{ route('job.show', $job->slug) }}" class="category-card-link">
-                     <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
+                    <a href="{{ route('candidate.job.show', $job->slug) }}" class="category-card-link">
+                        <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
 
                             @if ($job->employer && $job->employer->avatar)
-                                <img src="{{ asset('storage/' . $job->employer->avatar) }}"
-                                    alt="{{ $job->employer->company_name }}"
+                                <img src="{{ asset('storage/' . $job->employer->avatar) }}" alt="{{ $job->employer->company_name }}"
                                     onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
                             @else
                                 <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">

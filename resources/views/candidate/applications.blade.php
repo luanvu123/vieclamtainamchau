@@ -1,53 +1,10 @@
-@extends('layout')
+@extends('layouts.layout_candidate_profile')
 
 @section('title', 'Chỉnh sửa hồ sơ')
 
 @section('content')
 
-    <div class="container">
-        <div class="sidebar">
-            <div class="menu-title">Quản lý CV</div>
-            <div class="menu-section">
 
-                <a href="{{ route('candidate.cv.white') }}" class="menu-item">
-                    <i>📄</i>
-                    <span>Mẫu CV cổ điển</span>
-                </a>
-                <a href="{{ route('candidate.cv.black') }}" class="menu-item">
-                    <i>📄</i>
-                    <span>Mẫu CV hiện đại</span>
-                </a>
-                <a href="{{ route('candidate.cv.logistic') }}" class="menu-item">
-                    <i>📄</i>
-                    <span>Mẫu CV Xuất khẩu LD</span>
-                </a>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-title">Quản lý ứng tuyển</div>
-                <a href="{{ route('candidate.profile.edit') }}" class="menu-item">
-                    <i>📊</i>
-                    <span>Cập nhật hồ sơ & CV</span>
-                </a>
-                <a href="{{ route('candidate.applications') }}" class="menu-item">
-                    <i>👥</i>
-                    <span>Hồ sơ đã nộp</span>
-                </a>
-                <a href="{{ route('candidate.saved.jobs') }}" class="menu-item">
-                    <i>❤️</i>
-                    <span>Hồ sơ đã lưu</span>
-                </a>
-                <a href="{{ route('candidate.notifications') }}" class="menu-item">
-                    <i>📋</i>
-                    <span>Thông báo</span>
-                </a>
-                 <a href="{{ route('candidate.saved.study.abroad') }}" class="menu-item">
-                    <i>❤️</i>
-                    <span>Du học nghề đã lưu</span>
-                </a>
-            </div>
-
-        </div>
         @if ($applications->count() > 0)
             <div class="main-content">
                 <div class="row">
@@ -98,7 +55,7 @@
                                         @endif
 
                                         <!-- Thêm nút xem chi tiết -->
-                                        <a href="{{ route('job.show', $application->jobPosting->slug) }}"
+                                        <a href="{{ route('candidate.job.show', $application->jobPosting->slug) }}"
                                             class="btn-view-job">
                                             <i class="fas fa-eye"></i> Xem chi tiết công việc
                                         </a>
@@ -117,5 +74,5 @@
                 Bạn chưa ứng tuyển vào vị trí nào.
             </div>
         @endif
-    </div>
+  
 @endsection

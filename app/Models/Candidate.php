@@ -22,12 +22,10 @@ class Candidate extends Authenticatable
         'phone',
         'dob',
         'avatar_candidate',
-        'cv_path',
         'status',
         'verification_token',
         'gender',
         'address',
-        'skill',
         'position',
         'is_public',
         'cv_public',
@@ -67,6 +65,62 @@ class Candidate extends Authenticatable
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'candidate_category');
+    }
+    public function cvs()
+    {
+        return $this->belongsToMany(CV::class, 'candidate_cv', 'candidate_id', 'cv_id')
+            ->withPivot('is_primary', 'is_active')
+            ->withTimestamps();
+    }
+
+    // Phương thức tiện ích để lấy CV chính
+    public function primaryCV()
+    {
+        return $this->belongsToMany(CV::class, 'candidate_cv')
+            ->wherePivot('is_primary', true)
+            ->first();
+    }
+
+    // Phương thức tiện ích để lấy các CV đang hoạt động
+    public function activeCVs()
+    {
+        return $this->belongsToMany(CV::class, 'candidate_cv')
+            ->wherePivot('is_active', true)
+            ->get();
+    }
+    public function experiences()
+    {
+        return $this->hasMany(Experience::class);
+    }
+
+    public function educations()
+    {
+        return $this->hasMany(Education::class);
+    }
+
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class, 'candidate_skill')
+            ->withPivot('proficiency_level')
+            ->withTimestamps();
+    }
+
+    public function softSkills()
+    {
+        return $this->belongsToMany(SoftSkill::class, 'candidate_soft_skill')
+            ->withTimestamps();
+    }
+
+    public function languages()
+    {
+        return $this->belongsToMany(Language::class, 'candidate_language')
+            ->withPivot('proficiency')
+            ->withTimestamps();
+    }
+
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class);
     }
     public function savedJobPostings()
     {

@@ -5,7 +5,13 @@ namespace App\Http\Controllers\Candidate;
 use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\CandidateLanguageTraining;
+use App\Models\Category;
+use App\Models\CV;
+use App\Models\JobPosting;
+use App\Models\Language;
 use App\Models\Notification;
+use App\Models\Skill;
+use App\Models\SoftSkill;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -16,12 +22,80 @@ class CandidateProfileController extends Controller
     {
         $this->middleware('candidate');
     }
-    public function edit()
+
+  public function job($slug)
     {
-        $candidate = Auth::guard('candidate')->user();
-        return view('candidate.profile', compact('candidate'));
+        $jobPosting = JobPosting::where('slug', $slug)
+            ->with('employer')
+            ->firstOrFail();
+        $jobPosting->increment('views');
+        $orderJob = JobPosting::where('employer_id', $jobPosting->employer_id)
+            ->where('slug', '!=', $slug)
+            ->where('status', 'active')
+            ->whereIn('service_type', ['Tin cơ bản','Tin nổi bật', 'Tin đặc biệt'])
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        $categories = Category::where('status', 'active')->where('isHot', 0)->get();
+
+        return view('pages.job', compact('jobPosting', 'categories', 'orderJob'));
     }
-     public function registerTraining(Request $request)
+    public function uploadCV(Request $request)
+    {
+        $request->validate([
+            'cv' => 'required|file|mimes:pdf,doc,docx|max:5120',
+            'title' => 'required|string|max:255',
+        ]);
+
+        $candidate = Auth::guard('candidate')->user();
+
+        if ($candidate->cvs()->count() >= 3) {
+            return back()->with('error', 'Bạn chỉ được tải lên tối đa 3 CV.');
+        }
+
+        $file = $request->file('cv');
+        $filePath = $file->store('cvs', 'public');
+
+        $cv = CV::create([
+            'title' => $request->title,
+            'file_path' => $filePath,
+            'file_name' => $file->getClientOriginalName(),
+            'file_type' => $file->getClientMimeType(),
+            'file_size' => $file->getSize() / 1024, // KB
+            'is_template' => false,
+            'is_public' => false,
+        ]);
+
+        $candidate->cvs()->attach($cv->id, [
+            'is_primary' => false,
+            'is_active' => true,
+        ]);
+
+        return back()->with('success', 'Tải lên CV thành công.');
+    }
+    public function deleteCV($id)
+{
+    $candidate = Auth::guard('candidate')->user();
+    $cv = $candidate->cvs()->where('cv_id', $id)->first();
+
+    if (!$cv) {
+        return back()->with('error', 'Không tìm thấy CV hoặc bạn không có quyền.');
+    }
+
+    // Xoá file khỏi storage
+    if (Storage::exists($cv->file_path)) {
+        Storage::delete($cv->file_path);
+    }
+
+    // Xoá liên kết và bản ghi CV nếu cần
+    $candidate->cvs()->detach($id);
+    $cv->delete();
+
+    return back()->with('success', 'CV đã được xóa thành công.');
+}
+
+    public function registerTraining(Request $request)
     {
         $candidateId = Auth::guard('candidate')->id();
 
@@ -45,33 +119,33 @@ class CandidateProfileController extends Controller
 
         return back()->with('success', 'Đăng ký thành công!');
     }
-public function notify()
-{
-    $candidate = Auth::guard('candidate')->user();
-    $notifications = Notification::where('candidate_id', $candidate->id)
-                                ->orderBy('created_at', 'desc')
-                                ->paginate(10);
+    public function notify()
+    {
+        $candidate = Auth::guard('candidate')->user();
+        $notifications = Notification::where('candidate_id', $candidate->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
-    return view('candidate.notify', compact('notifications'));
-}
+        return view('candidate.notify', compact('notifications'));
+    }
 
-public function markNotificationAsRead($id)
-{
-    $notification = Notification::where('candidate_id', Auth::guard('candidate')->id())
-                              ->findOrFail($id);
+    public function markNotificationAsRead($id)
+    {
+        $notification = Notification::where('candidate_id', Auth::guard('candidate')->id())
+            ->findOrFail($id);
 
-    $notification->update(['is_read' => true]);
+        $notification->update(['is_read' => true]);
 
-    return response()->json(['success' => true]);
-}
+        return response()->json(['success' => true]);
+    }
 
-public function clearAllNotifications()
-{
-    Notification::where('candidate_id', Auth::guard('candidate')->id())
-                ->update(['is_read' => true]);
+    public function clearAllNotifications()
+    {
+        Notification::where('candidate_id', Auth::guard('candidate')->id())
+            ->update(['is_read' => true]);
 
-    return redirect()->back()->with('success', 'Đã đánh dấu tất cả thông báo là đã đọc');
-}
+        return redirect()->back()->with('success', 'Đã đánh dấu tất cả thông báo là đã đọc');
+    }
     public function cvWhite()
     {
         return view('candidate.cv_white');
@@ -92,27 +166,34 @@ public function clearAllNotifications()
         // Lấy danh sách ứng tuyển với eager loading
         $applications = Application::with(['jobPosting', 'jobPosting.employer'])
             ->where('candidate_id', $candidate->id)
-           ->orderBy('updated_at', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->paginate(10); // Phân trang, mỗi trang 10 items
 
         return view('candidate.applications', compact('applications'));
     }
-    /**
-     * Update the candidate's profile.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
+
+    public function edit()
+    {
+        $candidate = Auth::guard('candidate')->user();
+        $experiences = $candidate->experiences;
+        $educations = $candidate->educations;
+        $allSkills = Skill::all();
+        $allSoftSkills = SoftSkill::all();
+        $allLanguages = Language::all(); // thêm dòng này
+
+        $cvs = $candidate->cvs;
+        return view('candidate.profile', compact('candidate', 'experiences', 'educations', 'allSkills', 'allSoftSkills', 'allLanguages', 'cvs'));
+
+    }
+
     public function update(Request $request)
     {
-        // Validate the request
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:candidates,email,' . Auth::id(),
+            'email' => 'required|email|max:255|unique:candidates,email,' . Auth::guard('candidate')->id(),
             'phone' => 'required|string|max:15',
             'dob' => 'required|date',
             'avatar_candidate' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-            'cv_path' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
             'gender' => 'required|string',
             'address' => 'required|string',
             'position' => 'required|string',
@@ -125,7 +206,10 @@ public function clearAllNotifications()
             'education_level' => 'required|string',
             'years_of_experience' => 'required|integer',
             'working_form' => 'required|string',
-            'skill' => 'required|string|max:255',
+            'skills' => 'nullable|array',
+            'skills.*' => 'exists:skills,id',
+            'soft_skills' => 'nullable|array',
+            'soft_skills.*' => 'exists:soft_skills,id',
 
         ]);
 
@@ -149,7 +233,6 @@ public function clearAllNotifications()
         $candidate->education_level = $request->input('education_level');
         $candidate->years_of_experience = $request->input('years_of_experience');
         $candidate->working_form = $request->input('working_form');
-         $candidate->skill = $request->input('skill');
 
         // Handle file uploads
         if ($request->hasFile('avatar_candidate')) {
@@ -162,22 +245,19 @@ public function clearAllNotifications()
             $avatarPath = $request->file('avatar_candidate')->store('avatars', 'public');
             $candidate->avatar_candidate = basename($avatarPath); // Save only the filename
         }
+        $candidate->skills()->sync($request->input('skills', []));
+        $candidate->softSkills()->sync($request->input('soft_skills', []));
+        $languagesInput = $request->input('languages', []);
+        $languageSyncData = [];
 
-        if ($request->hasFile('cv_path')) {
-            // Delete the old CV file if exists
-            if ($candidate->cv_path && Storage::exists('public/cvs/' . $candidate->cv_path)) {
-                Storage::delete('public/cvs/' . $candidate->cv_path);
+        foreach ($languagesInput as $langData) {
+            if (!empty($langData['proficiency'])) {
+                $languageSyncData[$langData['id']] = ['proficiency' => $langData['proficiency']];
             }
-
-            // Store the new CV and get the filename
-            $cvPath = $request->file('cv_path')->store('cvs', 'public');
-            $candidate->cv_path = basename($cvPath); // Save only the filename
         }
 
-        // Save the updated candidate profile
+        $candidate->languages()->sync($languageSyncData);
         $candidate->save();
-
-        // Redirect back to the profile page with success message
         return redirect()->route('candidate.profile.edit')->with('success', 'Profile updated successfully!');
     }
 }

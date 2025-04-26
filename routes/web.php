@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\ApplicationManageController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\CandidateManageController;
 use App\Http\Controllers\Auth\CandidateAuthController;
@@ -14,8 +15,11 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\AdvertiseController;
 use App\Http\Controllers\AdvertisesManageController;
+use App\Http\Controllers\EducationController;
 use App\Http\Controllers\Employer\EmployerProfileController;
+use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SavedJobController;
@@ -35,6 +39,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RegisterStudyController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\SkillController;
+use App\Http\Controllers\SoftSkillController;
 use App\Http\Controllers\StudyAbroadManageController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\SupportManageController;
@@ -49,7 +55,7 @@ Route::get('/job', [SiteController::class, 'job'])->name('job')->middleware('can
 Route::get('/about', [SiteController::class, 'about'])->name('about')->middleware('candidate');
 Route::get('/lien-he', [SiteController::class, 'hotline'])->name('hotline');
 Route::get('/genre/{slug}', [SiteController::class, 'genre'])->name('genre.show')->middleware('candidate');
-Route::get('/job/{slug}', [SiteController::class, 'job'])->name('job.show')->middleware('candidate');
+
 Route::get('/category/{slug}', [SiteController::class, 'category'])->name('category.show')->middleware('candidate');
 Route::get('/country/{slug}', [SiteController::class, 'country'])->name('country.show')->middleware('candidate');
 Route::get('/search', [SiteController::class, 'search'])->name('site.search')->middleware('candidate');
@@ -70,14 +76,24 @@ Auth::routes();
 
 
 Route::group(['middleware' => ['auth']], function () {
-     Route::resource('news-manage', NewsManageController::class);
-      Route::resource('advertises-manage', AdvertisesManageController::class);
-      Route::resource('language-training-manage', LanguageTrainingManageController::class);
-       Route::resource('study-abroad-manage', StudyAbroadManageController::class);
+     Route::resource('application-manage', ApplicationManageController::class);
+      Route::post('application-manage/{id}/add-hidden-cv', [ApplicationManageController::class, 'addHiddenCv'])
+        ->name('application-manage.add-hidden-cv');
+    Route::post('application-manage/{id}/update-cv-path', [ApplicationManageController::class, 'updateCvPath'])
+        ->name('application-manage.update-cv-path');
+        Route::post('application-manage/{id}/delete-hidden-cv', [ApplicationManageController::class, 'deleteHiddenCv'])
+    ->name('application-manage.delete-hidden-cv');
+    Route::resource('languages', LanguageController::class);
+    Route::resource('news-manage', NewsManageController::class);
+    Route::resource('skills', SkillController::class);
+    Route::resource('soft-skills', SoftSkillController::class);
+    Route::resource('advertises-manage', AdvertisesManageController::class);
+    Route::resource('language-training-manage', LanguageTrainingManageController::class);
+    Route::resource('study-abroad-manage', StudyAbroadManageController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('labor-exports', LaborexportController::class);
 
-   Route::resource('typeservice', TypeserviceController::class);
+    Route::resource('typeservice', TypeserviceController::class);
 
     Route::resource('typeLanguagetrainings', TypeLanguageTrainingController::class);
 
@@ -115,6 +131,13 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::get('/candidate/check-application/{jobPostingId}', [ApplicationController::class, 'checkApplicationStatus'])->name('candidate.check-application')->middleware('candidate');
 Route::prefix('candidate')->name('candidate.')->group(function () {
+    Route::post('/apply', [ApplicationController::class, 'store'])->middleware('candidate')->name('apply');
+    Route::get('/job/{slug}', [CandidateProfileController::class, 'job'])->name('job.show')->middleware('candidate');
+    Route::post('upload-cv', [CandidateProfileController::class, 'uploadCV'])->name('uploadCV');
+    Route::delete('cv/{id}', [CandidateProfileController::class, 'deleteCV'])->name('deleteCV');
+
+    Route::resource('experiences', ExperienceController::class);
+    Route::resource('educations', EducationController::class);
     Route::post('/register-study-abroad/{studyAbroadId}', [SavedStudyAbroadController::class, 'registerConsultation'])
         ->middleware('candidate')
         ->name('register.study.abroad');
@@ -152,7 +175,7 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
     Route::get('dashboard', [CandidateAuthController::class, 'dashboard'])
         ->middleware('candidate')
         ->name('dashboard');
-    Route::post('/apply', [ApplicationController::class, 'store'])->middleware('candidate')->name('apply');
+
     Route::get('/profile/edit', [CandidateProfileController::class, 'edit'])->middleware('candidate')->name('profile.edit');
 
     Route::get('/cv-white', [CandidateProfileController::class, 'cvWhite'])->middleware('candidate')->name('cv.white');
@@ -169,12 +192,12 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
 
 
 Route::prefix('employer')->name('employer.')->group(function () {
-     Route::get('register', [EmployerAuthController::class, 'showRegistrationForm'])->name('register');
+    Route::get('register', [EmployerAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [EmployerAuthController::class, 'register'])->name('register.submit');
     Route::get('job-posting-export', [JobPostingController::class, 'indexExport'])
         ->name('job-posting.export')
         ->middleware('employer');
-   Route::get('/banks', [EmployerProfileController::class, 'bankList'])
+    Route::get('/banks', [EmployerProfileController::class, 'bankList'])
         ->middleware('employer')
         ->name('banks.index');
     Route::resource('news', NewsController::class);

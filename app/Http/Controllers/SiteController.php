@@ -144,24 +144,7 @@ class SiteController extends Controller
 
         return view('pages.genre', compact('genre', 'genres', 'categories', 'countries', 'jobsByCountry'));
     }
-    public function job($slug)
-    {
-        $jobPosting = JobPosting::where('slug', $slug)
-            ->with('employer')
-            ->firstOrFail();
-        $jobPosting->increment('views');
-        $orderJob = JobPosting::where('employer_id', $jobPosting->employer_id)
-            ->where('slug', '!=', $slug)
-            ->where('status', 'active')
-            ->whereIn('service_type', ['Tin cơ bản','Tin nổi bật', 'Tin đặc biệt'])
-            ->orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
-
-        $categories = Category::where('status', 'active')->where('isHot', 0)->get();
-
-        return view('pages.job', compact('jobPosting', 'categories', 'orderJob'));
-    }
+  
     public function category($slug)
     {
         $categories = Category::where('status', 'active')->where('isHot', 0)->get();

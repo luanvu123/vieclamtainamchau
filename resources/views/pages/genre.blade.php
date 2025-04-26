@@ -221,18 +221,19 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-        .custom-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 30px;
-}
-.countries-container .row {
-    margin-left: 0;
-    margin-right: 0;
-}
 
+        .custom-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .countries-container .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
     </style>
     <section class="hero">
         <div class="search-bar">
@@ -241,8 +242,7 @@
                 <select name="category">
                     <option value="">Lựa chọn nghề nghiệp</option>
                     @foreach ($categories as $category)
-                        <option value="{{ $category->slug }}"
-                            {{ request('category') == $category->slug ? 'selected' : '' }}>
+                        <option value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'selected' : '' }}>
                             {{ $category->name }}
                         </option>
                     @endforeach
@@ -256,11 +256,12 @@
                     @endforeach
                 </select>
                 <button class="search-btn" type="submit">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"></circle>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-    </svg>
-</button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
 
             </form>
         </div>
@@ -283,18 +284,18 @@
         <h1>Bài đăng tuyển dụng trong thể loại: {{ $genre->name }}</h1>
         <br>
         <div class="countries-container">
-           @foreach ($countries->chunk(8) as $chunk)
-    <div class="custom-row">
-        @foreach ($chunk as $country)
-            <div class="country-item" data-country-id="{{ $country->id }}">
-                <a href="javascript:void(0)">
-                    <img src="{{ asset('storage/' . $country->image) }}" alt="{{ $country->name }}" class="flag">
-                    <span class="country-name">{{ $country->name }}</span>
-                </a>
-            </div>
-        @endforeach
-    </div>
-@endforeach
+            @foreach ($countries->chunk(8) as $chunk)
+                <div class="custom-row">
+                    @foreach ($chunk as $country)
+                        <div class="country-item" data-country-id="{{ $country->id }}">
+                            <a href="javascript:void(0)">
+                                <img src="{{ asset('storage/' . $country->image) }}" alt="{{ $country->name }}" class="flag">
+                                <span class="country-name">{{ $country->name }}</span>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            @endforeach
 
         </div>
     </section>
@@ -304,29 +305,28 @@
         <div class="category-grid all-jobs">
             @if ($genre->jobPostings->count() > 0)
                 @foreach ($genre->jobPostings as $job)
-                  <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
+                    <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
 
                         <!-- Job card content như cũ -->
                         @if ($job->employer && $job->employer->avatar)
-                            <a href="{{ route('job.show', $job->slug) }}">
-                                <img src="{{ asset('storage/' . $job->employer->avatar) }}"
-                                    alt="{{ $job->employer->company_name }}"
+                            <a href="{{ route('candidate.job.show', $job->slug) }}">
+                                <img src="{{ asset('storage/' . $job->employer->avatar) }}" alt="{{ $job->employer->company_name }}"
                                     onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
                             </a>
                         @else
-                            <a href="{{ route('job.show', $job->slug) }}">
+                            <a href="{{ route('candidate.job.show', $job->slug) }}">
                                 <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">
                             </a>
                         @endif
                         <div class="card-content">
                             <h3>
-                                <a href="{{ route('job.show', $job->slug) }}">
+                                <a href="{{ route('candidate.job.show', $job->slug) }}">
                                     {{ Str::limit($job->title, 30) }}
                                 </a>
                             </h3>
-                              <p title="{{ $job->employer->company_name }}">
-                                        {{ $job->employer ? Str::limit($job->employer->company_name, 25) : 'Công ty TNHH' }}
-                                    </p>
+                            <p title="{{ $job->employer->company_name }}">
+                                {{ $job->employer ? Str::limit($job->employer->company_name, 25) : 'Công ty TNHH' }}
+                            </p>
                             <span>
                                 @if ($job->countries->isNotEmpty())
                                     {{ $job->countries->pluck('name')->join(', ') }}
@@ -348,22 +348,21 @@
             <div class="category-grid country-jobs" id="country-{{ $country->id }}" style="display: none;">
                 @if ($jobsByCountry->has($country->id) && $jobsByCountry[$country->id]->count() > 0)
                     @foreach ($jobsByCountry[$country->id] as $job)
-                       <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
+                        <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
 
                             @if ($job->employer && $job->employer->avatar)
-                                <a href="{{ route('job.show', $job->slug) }}">
-                                    <img src="{{ asset('storage/' . $job->employer->avatar) }}"
-                                        alt="{{ $job->employer->company_name }}"
+                                <a href="{{ route('candidate.job.show', $job->slug) }}">
+                                    <img src="{{ asset('storage/' . $job->employer->avatar) }}" alt="{{ $job->employer->company_name }}"
                                         onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
                                 </a>
                             @else
-                                <a href="{{ route('job.show', $job->slug) }}">
+                                <a href="{{ route('candidate.job.show', $job->slug) }}">
                                     <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">
                                 </a>
                             @endif
                             <div class="card-content">
                                 <h3>
-                                    <a href="{{ route('job.show', $job->slug) }}">
+                                    <a href="{{ route('candidate.job.show', $job->slug) }}">
                                         {{ Str::limit($job->title, 30) }}
                                     </a>
                                 </h3>
@@ -387,14 +386,14 @@
     </section>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const countryItems = document.querySelectorAll('.country-item');
             const allJobs = document.querySelector('.all-jobs');
             const countryJobs = document.querySelectorAll('.country-jobs');
             let activeCountry = null;
 
             countryItems.forEach(item => {
-                item.addEventListener('click', function() {
+                item.addEventListener('click', function () {
                     const countryId = this.dataset.countryId;
 
                     // Xóa active state từ country item trước đó

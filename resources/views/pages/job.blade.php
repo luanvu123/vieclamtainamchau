@@ -558,6 +558,8 @@
                     <!-- Sẽ được JavaScript cập nhật -->
                 </div>
                 <button class="apply-btn" onclick="applyJob({{ $jobPosting->id }})">Nộp hồ sơ</button>
+               
+
                 <button class="save-btn" onclick="toggleSaveJob({{ $jobPosting->id }})">
                     ♡
                 </button>
@@ -566,12 +568,12 @@
             <script>
                 function toggleSaveJob(jobPostingId) {
                     fetch(`candidate/save-job/${jobPostingId}`, {
-                            method: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Content-Type': 'application/json'
-                            }
-                        })
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json'
+                        }
+                    })
                         .then(response => response.json())
                         .then(data => {
                             if (data.saved) {
@@ -598,7 +600,7 @@
 
 
             <script>
-                document.addEventListener('DOMContentLoaded', function() {
+                document.addEventListener('DOMContentLoaded', function () {
                     checkApplicationStatus({{ $jobPosting->id }});
                 });
 
@@ -614,10 +616,10 @@
                                     null;
 
                                 statusDiv.innerHTML = `
-                        <div class="application-status">
-                            Đã nộp hồ sơ - Ngày nộp: ${applicationDate}
-                            ${lastUpdateDate ? `<br>Cập nhật lần cuối: ${lastUpdateDate}` : ''}
-                        </div>`;
+                                <div class="application-status">
+                                    Đã nộp hồ sơ - Ngày nộp: ${applicationDate}
+                                    ${lastUpdateDate ? `<br>Cập nhật lần cuối: ${lastUpdateDate}` : ''}
+                                </div>`;
 
                                 const applyBtn = document.querySelector('.apply-btn');
                                 applyBtn.textContent = 'Nộp lại hồ sơ';
@@ -632,29 +634,29 @@
                 }
 
                 // Đóng modal
-                document.querySelector('.close').onclick = function() {
+                document.querySelector('.close').onclick = function () {
                     document.getElementById('applicationModal').style.display = 'none';
                 };
 
-                window.onclick = function(event) {
+                window.onclick = function (event) {
                     if (event.target == document.getElementById('applicationModal')) {
                         document.getElementById('applicationModal').style.display = 'none';
                     }
                 };
 
                 // Xử lý gửi form
-                document.getElementById('applicationForm').onsubmit = function(e) {
+                document.getElementById('applicationForm').onsubmit = function (e) {
                     e.preventDefault();
 
                     const formData = new FormData(this);
 
                     fetch('{{ route('candidate.apply') }}', {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                            }
-                        })
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        }
+                    })
                         .then(response => response.json())
                         .then(data => {
                             if (data.status === 'success') {
@@ -817,7 +819,7 @@
                                 <div class="job-item">
                                     <div class="job-item-header">
                                         <h3 class="job-item-title">
-                                            <a href="{{ route('job.show', $job->slug) }}">{{ $job->title }}</a>
+                                            <a href="{{ route('candidate.job.show', $job->slug) }}">{{ $job->title }}</a>
                                         </h3>
                                         @if ($job->isHot)
                                             <span class="hot-label">Hot</span>
@@ -885,16 +887,36 @@
             <form id="applicationForm" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="job_posting_id" id="jobPostingId">
+
                 <div class="form-group">
-                    <label for="cv">CV của bạn (PDF, DOC, DOCX)*</label>
-                    <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" required>
+                    <label for="cv_id">Chọn CV đã tải lên</label>
+                    <select name="cv_id" id="cv_id" class="form-control">
+                        <option value="">-- Tải CV mới --</option>
+                        @foreach(auth('candidate')->user()->cvs as $cv)
+                            <option value="{{ $cv->id }}">{{ $cv->title }} - {{ $cv->file_name }}</option>
+                        @endforeach
+                    </select>
                 </div>
+
+                <div class="form-group" id="new-cv-upload">
+                    <label for="cv">CV mới (PDF, DOC, DOCX)*</label>
+                    <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx">
+                </div>
+
                 <div class="form-group">
                     <label for="introduction">Giới thiệu bản thân (không bắt buộc)</label>
                     <textarea id="introduction" name="introduction" rows="4"></textarea>
                 </div>
+
                 <button type="submit" class="submit-btn">Nộp hồ sơ</button>
             </form>
+
+            <script>
+                document.getElementById('cv_id').addEventListener('change', function () {
+                    document.getElementById('new-cv-upload').style.display = this.value ? 'none' : 'block';
+                });
+            </script>
+
         </div>
     </div>
 
@@ -1068,7 +1090,7 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Tab switching functionality
             const tabs = document.querySelectorAll('.tab');
             const tabContents = document.querySelectorAll('.tab-content');
@@ -1089,14 +1111,14 @@
 
 
 
-            window.toggleSaveJob = function(jobId) {
+            window.toggleSaveJob = function (jobId) {
                 fetch(`/candidate/save-job/${jobId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        }
-                    })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
@@ -1135,46 +1157,46 @@
                     const modal = document.createElement('div');
                     modal.classList.add('gallery-modal');
                     modal.innerHTML = `
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <img src="${img.src}" alt="${img.alt}">
-                </div>
-            `;
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <img src="${img.src}" alt="${img.alt}">
+                        </div>
+                    `;
 
                     // Add modal styles
                     const style = document.createElement('style');
                     style.textContent = `
-                .gallery-modal {
-                    display: flex;
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0,0,0,0.9);
-                    z-index: 1000;
-                    justify-content: center;
-                    align-items: center;
-                }
-                .modal-content {
-                    position: relative;
-                    max-width: 90%;
-                    max-height: 90%;
-                }
-                .modal-content img {
-                    max-width: 100%;
-                    max-height: 90vh;
-                    object-fit: contain;
-                }
-                .close {
-                    position: absolute;
-                    top: -30px;
-                    right: 0;
-                    color: white;
-                    font-size: 30px;
-                    cursor: pointer;
-                }
-            `;
+                        .gallery-modal {
+                            display: flex;
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: rgba(0,0,0,0.9);
+                            z-index: 1000;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                        .modal-content {
+                            position: relative;
+                            max-width: 90%;
+                            max-height: 90%;
+                        }
+                        .modal-content img {
+                            max-width: 100%;
+                            max-height: 90vh;
+                            object-fit: contain;
+                        }
+                        .close {
+                            position: absolute;
+                            top: -30px;
+                            right: 0;
+                            color: white;
+                            font-size: 30px;
+                            cursor: pointer;
+                        }
+                    `;
                     document.head.appendChild(style);
 
                     // Add modal to body
@@ -1200,29 +1222,29 @@
         }
 
         // Close modal when clicking on X or outside
-        document.querySelector('.close').onclick = function() {
+        document.querySelector('.close').onclick = function () {
             document.getElementById('applicationModal').style.display = 'none';
         }
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == document.getElementById('applicationModal')) {
                 document.getElementById('applicationModal').style.display = 'none';
             }
         }
 
         // Handle form submission
-        document.getElementById('applicationForm').onsubmit = function(e) {
+        document.getElementById('applicationForm').onsubmit = function (e) {
             e.preventDefault();
 
             const formData = new FormData(this);
 
             fetch('{{ route('candidate.apply') }}', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
-                })
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
@@ -1275,18 +1297,18 @@
         }
 
         // Close modal when clicking on X or outside
-        document.querySelector('.close').onclick = function() {
+        document.querySelector('.close').onclick = function () {
             hideModal('applicationModal');
         }
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == document.getElementById('applicationModal')) {
                 hideModal('applicationModal');
             }
         }
 
         // Handle form submission
-        document.getElementById('applicationForm').onsubmit = function(e) {
+        document.getElementById('applicationForm').onsubmit = function (e) {
             e.preventDefault();
 
             // Disable submit button
@@ -1297,12 +1319,12 @@
             const formData = new FormData(this);
 
             fetch('{{ route('candidate.apply') }}', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
-                })
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     hideLoading();
@@ -1336,7 +1358,7 @@
         };
 
         // File input validation
-        document.getElementById('cv').onchange = function() {
+        document.getElementById('cv').onchange = function () {
             const file = this.files[0];
             const maxSize = 2 * 1024 * 1024; // 2MB
             const allowedTypes = ['application/pdf', 'application/msword',

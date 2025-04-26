@@ -340,20 +340,53 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
         </li>
     </ul>
 </li>
-
-
-
-                            <li class="treeview {{ Request::is('candidate-manage*') ? 'active' : '' }}">
-                                <a href="{{ route('candidate-manage.index') }}">
-                                    <img src="{{ asset('backend_admin/images/candidate-for-elections-svgrepo-com.svg') }}"
+<li class="treeview {{ Request::is('candidate-manage*')||Request::is('application-manage*') ||Request::is('languages*')||Request::is('soft-skills*') || Request::is('skills*') ? 'active' : '' }}">
+    <a href="#">
+         <img src="{{ asset('backend_admin/images/candidate-for-elections-svgrepo-com.svg') }}"
                                         alt="Google" width="20" height="20">
                                     <span> Ứng viên</span>
-                                    @if ($candidateCountTwoHour > 0)
+         @if ($candidateCountTwoHour > 0)
                                         <span class="label label-primary pull-right">{{ $candidateCountTwoHour }}
                                         </span>
                                     @endif
-                                </a>
-                            </li>
+        <i class="fa fa-angle-left pull-right"></i>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::is('candidate-manage*') ? 'active' : '' }}">
+           <a href="{{ route('candidate-manage.index') }}">
+                <i class="fa fa-user"></i>
+                                    <span> Ứng viên</span>
+         @if ($candidateCountTwoHour > 0)
+                                        <span class="label label-primary pull-right">{{ $candidateCountTwoHour }}
+                                        </span>
+                                    @endif
+            </a>
+        </li>
+        <li class="{{ Request::is('skills*') ? 'active' : '' }}">
+            <a href="{{ route('skills.index') }}">
+                <i class="fa fa-cogs"></i> <span>Danh sách kỹ năng</span>
+            </a>
+        </li>
+        <li class="{{ Request::is('soft-skills*') ? 'active' : '' }}">
+    <a href="{{ route('soft-skills.index') }}">
+        <i class="fa fa-handshake"></i> <span>Danh sách kỹ năng mềm</span>
+    </a>
+</li>
+<li class="{{ Request::is('languages*') ? 'active' : '' }}">
+    <a href="{{ route('languages.index') }}">
+        <i class="fa fa-language"></i> <span>Languages</span>
+    </a>
+</li>
+<li class="{{ Request::is('application-manage*') ? 'active' : '' }}">
+    <a href="{{ route('application-manage.index') }}">
+        <i class="fa fa-file-text-o"></i> <span>Duyệt đơn ứng viên</span>
+    </a>
+</li>
+
+    </ul>
+</li>
+
+
                             <li class="treeview {{ Request::is('support-manage*') ? 'active' : '' }}">
                                 <a href="{{ route('support-manage.index') }}">
                                     <img src="{{ asset('backend_admin/images/support-svgrepo-com.svg') }}" alt="Google"

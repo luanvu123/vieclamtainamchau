@@ -61,19 +61,19 @@
 
 
                                 @if ($job->employer && $job->employer->avatar)
-                                    <a href="{{ route('job.show', $job->slug) }}">
+                                    <a href="{{ route('candidate.job.show', $job->slug) }}">
                                         <img src="{{ asset('storage/' . $job->employer->avatar) }}" alt="{{ $job->employer->company_name }}"
                                             onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
                                     </a>
                                 @else
-                                    <a href="{{ route('job.show', $job->slug) }}">
+                                    <a href="{{ route('candidate.job.show', $job->slug) }}">
                                         <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">
                                     </a>
                                 @endif
 
                                 <div class="card-content">
                                     <h3>
-                                        <a href="{{ route('job.show', $job->slug) }}">
+                                        <a href="{{ route('candidate.job.show', $job->slug) }}">
                                             {{ Str::limit($job->title, 30) }}
                                         </a>
                                     </h3>
@@ -430,16 +430,16 @@
                 .then(response => response.json())
                 .then(data => {
                     contentDiv.innerHTML = `
-                            <h2>${data.name}</h2>
-                            <div class="detail-image">
-                                <img src="${data.image}" alt="${data.name}">
-                            </div>
-                            <div class="detail-info">
-                                <h3>Chi tiết chương trình</h3>
-                                ${data.description}
+                                <h2>${data.name}</h2>
+                                <div class="detail-image">
+                                    <img src="${data.image}" alt="${data.name}">
+                                </div>
+                                <div class="detail-info">
+                                    <h3>Chi tiết chương trình</h3>
+                                    ${data.description}
 
-                            </div>
-                        `;
+                                </div>
+                            `;
                     popup.style.display = 'block';
                 });
         }

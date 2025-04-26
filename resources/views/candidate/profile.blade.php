@@ -1,277 +1,24 @@
-@extends('layout')
+@extends('layouts.layout_candidate_profile')
 
 @section('title', 'Chỉnh sửa hồ sơ')
 
 @section('content')
-    <style>
-        /* Container styling */
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
 
-        /* Auth card styling */
-        .auth-card {
-            width: 100%;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            max-width: 800px;
-            margin: 40px auto;
-        }
 
-        /* Header styling */
-        .auth-header {
-            margin-bottom: 30px;
-        }
-
-        .auth-header h2 {
-            color: #333;
-            font-size: 24px;
-            margin: 10px 0 0;
-        }
-
-        .header-icon {
-            font-size: 32px;
-            color: #dc3545;
-            /* Changed to red */
-            margin-bottom: 10px;
-        }
-
-        /* Form group styling */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #555;
-        }
-
-        .form-group label i {
-            width: 20px;
-            margin-right: 8px;
-            color: #dc3545;
-            /* Changed to red */
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .checkbox-group label {
-            margin-bottom: 0;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-
-        .form-control:focus {
-            border-color: #dc3545;
-            /* Changed to red */
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
-            /* Changed to red with opacity */
-        }
-
-        /* Checkbox styling */
-        input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin-right: 8px;
-            cursor: pointer;
-        }
-
-        /* File input styling */
-        .form-control-file {
-            padding: 8px 0;
-        }
-
-        /* Button styling */
-        .btn {
-            padding: 12px 24px;
-            border-radius: 4px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn i {
-            margin-right: 8px;
-        }
-
-        .btn-primary {
-            background-color: #dc3545;
-            /* Changed to red */
-            border: none;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #c82333;
-            /* Darker red for hover */
-        }
-
-        /* Alert styling */
-        .alert {
-            padding: 12px 20px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .alert i {
-            font-size: 18px;
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-            color: #155724;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-
-            .auth-card {
-                padding: 20px;
-                margin: 20px auto;
-            }
-
-            .auth-header h2 {
-                font-size: 20px;
-            }
-
-            .header-icon {
-                font-size: 28px;
-            }
-
-            .form-group {
-                margin-bottom: 15px;
-            }
-
-            .btn {
-                width: 100%;
-                padding: 10px 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .auth-card {
-                padding: 15px;
-                margin: 10px auto;
-            }
-
-            .header-icon {
-                font-size: 24px;
-            }
-
-            .form-control {
-                font-size: 14px;
-                padding: 8px 10px;
-            }
-
-            .btn {
-                font-size: 14px;
-            }
-
-            .form-group label i {
-                width: 16px;
-                font-size: 14px;
-            }
-        }
-    </style>
-    <div class="container">
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        <div class="sidebar">
-            <div class="menu-title">Quản lý CV</div>
-            <div class="menu-section">
-
-                <a href="{{ route('candidate.cv.white') }}" class="menu-item">
-                    <i>📄</i>
-                    <span>Mẫu CV cổ điển</span>
-                </a>
-                <a href="{{ route('candidate.cv.black') }}" class="menu-item">
-                    <i>📄</i>
-                    <span>Mẫu CV hiện đại</span>
-                </a>
-                <a href="{{ route('candidate.cv.logistic') }}" class="menu-item">
-                    <i>📄</i>
-                    <span>Mẫu CV Xuất khẩu LD</span>
-                </a>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-title">Quản lý ứng tuyển</div>
-                <a href="{{ route('candidate.profile.edit') }}" class="menu-item">
-                    <i>📊</i>
-                    <span>Cập nhật hồ sơ & CV</span>
-                </a>
-                <a href="{{ route('candidate.applications') }}" class="menu-item">
-                    <i>👥</i>
-                    <span>Hồ sơ đã nộp</span>
-                </a>
-                <a href="{{ route('candidate.saved.jobs') }}" class="menu-item">
-                    <i>❤️</i>
-                    <span>Hồ sơ đã lưu</span>
-                </a>
-                <a href="{{ route('candidate.notifications') }}" class="menu-item">
-                    <i>📋</i>
-                    <span>Thông báo</span>
-                </a>
-                 <a href="{{ route('candidate.saved.study.abroad') }}" class="menu-item">
-                    <i>❤️</i>
-                    <span>Du học nghề đã lưu</span>
-                </a>
-            </div>
-
-        </div>
-        <div class="auth-card">
-            <div class="auth-header text-center">
-                <i class="fas fa-user-edit header-icon"></i>
-                <h2>Chỉnh sửa hồ sơ</h2>
-            </div>
-
-            @if (session('success'))
-                <div class="alert alert-success">
-                    <i class="fas fa-check-circle"></i>
-                    {{ session('success') }}
-                </div>
-            @endif
+<div class="main-content">
+    <h1>Chỉnh sửa hồ sơ</h1>
 
             <form method="POST" action="{{ route('candidate.profile.update') }}" enctype="multipart/form-data">
                 @csrf
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
                 <div class="form-group">
                     <label for="name"><i class="fas fa-user"></i> Tên</label>
@@ -458,12 +205,78 @@
                         </option>
                     </select>
                 </div>
+<div class="form-group">
+    <label><i class="fas fa-language"></i> Ngôn ngữ</label>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#languageModal">
+        Thêm / Chỉnh sửa ngôn ngữ
+    </button>
+</div>
+<ul id="selectedLanguages" class="list-group mt-3">
+    @foreach($candidate->languages as $lang)
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ $lang->name }} - <em>{{ $lang->pivot->proficiency }}</em>
+        </li>
+    @endforeach
+</ul>
+<div class="modal fade" id="languageModal" tabindex="-1" role="dialog" aria-labelledby="languageModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="languageModalLabel">Chọn Ngôn ngữ</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        @foreach($allLanguages as $language)
+            @php
+                $selectedLang = $candidate->languages->firstWhere('id', $language->id);
+                $proficiency = optional(optional($selectedLang)->pivot)->proficiency;
+            @endphp
+            <div class="form-group">
+                <label>{{ $language->name }}</label>
+                <input type="hidden" name="languages[{{ $language->id }}][id]" value="{{ $language->id }}">
+                <select name="languages[{{ $language->id }}][proficiency]" class="form-control">
+                    <option value="">-- Chọn mức độ --</option>
+                    <option value="basic" {{ $proficiency == 'basic' ? 'selected' : '' }}>Cơ bản</option>
+                    <option value="intermediate" {{ $proficiency == 'intermediate' ? 'selected' : '' }}>Trung bình</option>
+                    <option value="advanced" {{ $proficiency == 'advanced' ? 'selected' : '' }}>Nâng cao</option>
+                    <option value="fluent" {{ $proficiency == 'fluent' ? 'selected' : '' }}>Thông thạo</option>
+                </select>
+            </div>
+        @endforeach
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="submit" class="btn btn-primary">Lưu</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-                <div class="form-group">
-                    <label for="skill"><i class="fas fa-cogs"></i> Kỹ năng</label>
-                    <input type="text" class="form-control" id="skill" name="skill"
-                        value="{{ old('skill', $candidate->skill) }}" required>
-                </div>
+
+               <div class="form-group">
+    <label for="skills"><i class="fas fa-cogs"></i> Kỹ năng</label>
+    <select name="skills[]" id="skills" class="form-control" multiple>
+        @foreach($allSkills as $skill)
+            <option value="{{ $skill->id }}" {{ in_array($skill->id, $candidate->skills->pluck('id')->toArray()) ? 'selected' : '' }}>
+                {{ $skill->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="soft_skills"><i class="fas fa-lightbulb"></i> Kỹ năng mềm</label>
+    <select name="soft_skills[]" id="soft_skills" class="form-control" multiple>
+        @foreach($allSoftSkills as $softSkill)
+            <option value="{{ $softSkill->id }}"
+                {{ in_array($softSkill->id, $candidate->softSkills->pluck('id')->toArray()) ? 'selected' : '' }}>
+                {{ $softSkill->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
                 <div class="form-group">
                     <label for="avatar_candidate"><i class="fas fa-camera"></i> Ảnh đại diện</label>
@@ -476,32 +289,351 @@
                     <input type="file" class="form-control-file" id="avatar_candidate" name="avatar_candidate">
                 </div>
 
-                <div class="form-group">
-                    <label for="cv_path"><i class="fas fa-file-upload"></i> CV</label>
-                    @if ($candidate->cv_path)
-                        <div class="mb-3">
-                            <!-- Hiển thị CV trực tiếp nếu có file -->
-                            <iframe src="{{ asset('storage/cvs/' . $candidate->cv_path) }}" width="100%"
-                                height="500px" frameborder="0">
-                                <!-- Nếu trình duyệt không hỗ trợ iframe, có thể cung cấp một liên kết tải xuống -->
-                                <a href="{{ asset('storage/cvs/' . $candidate->cv_path) }}" target="_blank"
-                                    class="btn btn-primary">
-                                    Tải xuống CV
-                                </a>
-                            </iframe>
-                        </div>
-                    @endif
-                    <input type="file" class="form-control-file" id="cv_path" name="cv_path">
-                </div>
-
-
-
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save"></i> Cập nhật hồ sơ
                     </button>
                 </div>
+
+            </form>
+
+
+
+   <!-- Hiển thị danh sách experiences -->
+<div class="form-group">
+    <label for="experiences">Kinh nghiệm làm việc</label>
+    <ul>
+    @foreach($experiences as $experience)
+        <li class="mb-3">
+            <strong><i class="fas fa-building"></i> {{ $experience->company_name }}</strong>
+            <span class="ml-2"><i class="fas fa-briefcase"></i> {{ $experience->position }}</span>
+            <br>
+            <small>
+                <i class="fas fa-calendar-alt"></i>
+                {{ \Carbon\Carbon::parse($experience->start_date)->format('d/m/Y') }}
+                -
+                {{ $experience->end_date ? \Carbon\Carbon::parse($experience->end_date)->format('d/m/Y') : 'Hiện tại' }}
+            </small>
+            <br>
+            @if($experience->description)
+                <p class="mt-1"></i> {!! $experience->description !!}</p>
+            @endif
+
+            <!-- Nút Icon -->
+            <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#editExperienceModal-{{ $experience->id }}">
+                <i class="fas fa-edit"></i>
+            </button>
+            <form action="{{ route('candidate.experiences.destroy', $experience->id) }}" method="POST" class="d-inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-danger">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </form>
+        </li>
+    @endforeach
+</ul>
+
+</div>
+<!-- Modal tạo mới hoặc chỉnh sửa kinh nghiệm -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addExperienceModal">
+    Thêm Kinh Nghiệm
+</button>
+
+
+
+<!-- Modal Thêm Kinh Nghiệm -->
+<div class="modal fade" id="addExperienceModal" tabindex="-1" role="dialog" aria-labelledby="addExperienceModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addExperienceModalLabel">Thêm Kinh Nghiệm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('candidate.experiences.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="company_name">Tên công ty</label>
+                        <input type="text" class="form-control" id="company_name" name="company_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="position">Vị trí</label>
+                        <input type="text" class="form-control" id="position" name="position" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_date">Ngày bắt đầu</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">Ngày kết thúc</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Mô tả</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
             </form>
         </div>
     </div>
+</div>
+
+<!-- Modal Sửa Kinh Nghiệm -->
+@foreach($experiences as $experience)
+<div class="modal fade" id="editExperienceModal-{{ $experience->id }}" tabindex="-1" role="dialog" aria-labelledby="editExperienceModalLabel-{{ $experience->id }}" aria-hidden="true">
+
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editExperienceModalLabel-{{ $experience->id }}">Sửa Kinh Nghiệm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('candidate.experiences.update', $experience->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="company_name">Tên công ty</label>
+                        <input type="text" class="form-control" id="company_name" name="company_name" value="{{ old('company_name', $experience->company_name) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="position">Vị trí</label>
+                        <input type="text" class="form-control" id="position" name="position" value="{{ old('position', $experience->position) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_date">Ngày bắt đầu</label>
+                       <input type="date" class="form-control" id="start_date" name="start_date"
+    value="{{ old('start_date', \Carbon\Carbon::parse($experience->start_date)->format('Y-m-d')) }}" required>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">Ngày kết thúc</label>
+                      <input type="date" class="form-control" id="end_date" name="end_date"
+    value="{{ old('end_date', $experience->end_date ? \Carbon\Carbon::parse($experience->end_date)->format('Y-m-d') : '') }}">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Mô tả</label>
+                        <textarea class="form-control" id="description" name="description">{{ old('description', $experience->description) }}</textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+<div class="form-group">
+    <label for="educations">Học vấn</label>
+    <ul>
+        @foreach($educations as $education)
+            <li class="mb-3">
+                <strong><i class="fas fa-university"></i> {{ $education->institution_name }}</strong>
+                <span class="ml-2"><i class="fas fa-user-graduate"></i> {{ $education->degree }}</span>
+                @if($education->field_of_study)
+                    <span class="ml-2"><i class="fas fa-book"></i> {{ $education->field_of_study }}</span>
+                @endif
+                <br>
+                <small>
+                    <i class="fas fa-calendar-alt"></i>
+                    {{ \Carbon\Carbon::parse($education->start_date)->format('d/m/Y') }}
+                    -
+                    {{ $education->end_date ? \Carbon\Carbon::parse($education->end_date)->format('d/m/Y') : 'Hiện tại' }}
+                </small>
+                <br>
+                @if($education->description)
+                    <p class="mt-1"><i class="fas fa-align-left"></i> {{ $education->description }}</p>
+                @endif
+
+                <!-- Icon Sửa/Xóa -->
+                <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#editEducationModal-{{ $education->id }}">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <form action="{{ route('candidate.educations.destroy', $education->id) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
+            </li>
+        @endforeach
+    </ul>
+</div>
+<!-- Nút thêm -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addEducationModal">
+    Thêm Học Vấn
+</button>
+
+<!-- Modal Thêm -->
+<div class="modal fade" id="addEducationModal" tabindex="-1" role="dialog" aria-labelledby="addEducationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="{{ route('candidate.educations.store') }}" method="POST">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm Học Vấn</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tên trường</label>
+                        <input type="text" class="form-control" name="institution_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Bằng cấp</label>
+                        <input type="text" class="form-control" name="degree" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngành học</label>
+                        <input type="text" class="form-control" name="field_of_study">
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày bắt đầu</label>
+                        <input type="date" class="form-control" name="start_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày kết thúc</label>
+                        <input type="date" class="form-control" name="end_date">
+                    </div>
+                    <div class="form-group">
+                        <label>Mô tả</label>
+                        <textarea class="form-control" name="description"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@foreach($educations as $education)
+<div class="modal fade" id="editEducationModal-{{ $education->id }}" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form action="{{ route('candidate.educations.update', $education->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sửa Học Vấn</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tên trường</label>
+                        <input type="text" class="form-control" name="institution_name" value="{{ old('institution_name', $education->institution_name) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Bằng cấp</label>
+                        <input type="text" class="form-control" name="degree" value="{{ old('degree', $education->degree) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngành học</label>
+                        <input type="text" class="form-control" name="field_of_study" value="{{ old('field_of_study', $education->field_of_study) }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày bắt đầu</label>
+                        <input type="date" class="form-control" name="start_date" value="{{ old('start_date', \Carbon\Carbon::parse($education->start_date)->format('Y-m-d')) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày kết thúc</label>
+                        <input type="date" class="form-control" name="end_date" value="{{ old('end_date', $education->end_date ? \Carbon\Carbon::parse($education->end_date)->format('Y-m-d') : '') }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Mô tả</label>
+                        <textarea class="form-control" name="description">{{ old('description', $education->description) }}</textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@endforeach
+
+
+<div class="form-group">
+    <label for="educations">CV</label>
+<ul class="list-group">
+    @foreach($candidate->cvs as $cv)
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>{{ $cv->title }}</strong> -
+                <a href="{{ asset('storage/' . $cv->file_path) }}" target="_blank">{{ $cv->file_name }}</a>
+                <small>({{ number_format($cv->file_size, 1) }} KB)</small>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge badge-{{ $cv->pivot->is_primary ? 'success' : 'secondary' }}">
+                    {{ $cv->pivot->is_primary ? 'Chính' : 'Phụ' }}
+                </span>
+
+                <!-- Nút Xóa -->
+                <form action="{{ route('candidate.deleteCV', $cv->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa CV này?')" class="ml-2">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-danger" title="Xóa CV">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
+            </div>
+        </li>
+    @endforeach
+</ul>
+
+</div>
+<!-- Nút mở modal -->
+<button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#uploadCVModal">
+    <i class="fas fa-plus"></i> Thêm CV
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="uploadCVModal" tabindex="-1" role="dialog" aria-labelledby="uploadCVModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="{{ route('candidate.uploadCV') }}" method="POST" enctype="multipart/form-data" class="modal-content">
+      @csrf
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadCVModalLabel">Tải lên CV mới</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-group">
+            <label for="title">Tên CV</label>
+            <input type="text" name="title" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="cv">Chọn file CV</label>
+            <input type="file" name="cv" class="form-control" accept=".pdf,.doc,.docx" required>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="submit" class="btn btn-success">Tải lên</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+</div>
 @endsection

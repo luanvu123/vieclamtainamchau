@@ -12,7 +12,11 @@ class Application extends Model
         'cv_path',
         'introduction',
         'status',
-        'saved'
+        'saved',
+        'cv_path_hidden_info',
+        'approve_application',
+        'cv_path_resubmit',
+        'summary',
     ];
     protected $casts = [
         'saved' => 'boolean'
@@ -26,4 +30,9 @@ class Application extends Model
     {
         return $this->belongsTo(JobPosting::class);
     }
+    public function cv()
+    {
+        return $this->belongsTo(CV::class);
+    }
+
 }
