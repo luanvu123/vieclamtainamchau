@@ -316,11 +316,25 @@ class JobPostingController extends Controller
         }
     }
 
-  public function viewApplications($id)
+ public function viewApplications($id)
 {
     $employer = Auth::guard('employer')->user();
     $jobPosting = JobPosting::where('employer_id', $employer->id)
         ->findOrFail($id);
+
+    // Lấy gói "Xem thông tin ứng viên" của employer
+    $orderDetail = OrderDetail::whereHas('order', function ($query) use ($employer) {
+            $query->where('employer_id', $employer->id)
+                  ->where('status', 'Đã thanh toán');
+        })
+        ->whereHas('service', function ($query) {
+            $query->where('name', 'Xem thông tin ứng viên');
+        })
+        ->where('number_of_active', '>', 0)
+        ->whereDate('expiring_date', '>=', now())
+        ->first();
+
+    $hasViewInfoPackage = $orderDetail ? true : false;
 
     $applications = Application::with([
         'candidate',
@@ -335,7 +349,39 @@ class JobPostingController extends Controller
     ->orderBy('created_at', 'desc')
     ->get();
 
-    return view('employer.job-posting.applications', compact('jobPosting', 'applications'));
+    return view('employer.job-posting.applications', compact('jobPosting', 'applications', 'hasViewInfoPackage'));
+}
+   public function viewInfo(Request $request, Application $application)
+{
+    $employer = Auth::guard('employer')->user();
+
+    $orderDetail = OrderDetail::whereHas('order', function ($query) use ($employer) {
+            $query->where('employer_id', $employer->id)
+                  ->where('status', 'Đã thanh toán');
+        })
+        ->whereHas('service', function ($query) {
+            $query->where('name', 'Xem thông tin ứng viên');
+        })
+        ->where('number_of_active', '>', 0)
+        ->whereDate('expiring_date', '>=', now())
+        ->first();
+
+    if (!$orderDetail) {
+        return response()->json(['message' => 'Bạn chưa mua gói hoặc đã hết lượt xem.'], 403);
+    }
+
+    DB::transaction(function () use ($orderDetail, $application) {
+        $orderDetail->decrement('number_of_active');
+
+        $application->order_id = $orderDetail->order_id;
+        $application->save();
+    });
+
+    return response()->json([
+        'phone' => $application->candidate->phone,
+        'email' => $application->candidate->email,
+        'cv_path' => asset('storage/' . $application->cv_path)
+    ]);
 }
 
     private function createNotification($application, $status)

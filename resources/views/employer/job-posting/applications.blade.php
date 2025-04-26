@@ -39,14 +39,21 @@
         <span class="close-info">&times;</span>
         <h3>Thông tin ứng viên</h3>
         <div class="info-grid">
-            <div class="info-item">
-                <strong>Số điện thoại:</strong>
-                {{ $application->candidate->phone ?? 'Không có' }}
-            </div>
-            <div class="info-item">
-                <strong>Email:</strong>
-                {{ $application->candidate->email ?? 'Không có' }}
-            </div>
+            @if($hasViewInfoPackage)
+    <div class="info-item">
+        <strong>Số điện thoại:</strong> {{ $application->candidate->phone ?? 'Không có' }}
+    </div>
+    <div class="info-item">
+        <strong>Email:</strong> {{ $application->candidate->email ?? 'Không có' }}
+    </div>
+@else
+    <div class="info-item">
+        <button class="btn btn-primary view-info-btn" data-application-id="{{ $application->id }}">
+            Nhấn để xem thông tin
+        </button>
+    </div>
+@endif
+
             <div class="info-item">
                 <strong>Ngày sinh:</strong>
                 {{ $application->candidate->dob ? date('d/m/Y', strtotime($application->candidate->dob)) : 'Không có' }}
@@ -229,12 +236,18 @@
 </div>
                                         </td>
                                         <td>{{ $application->created_at->format('d/m/Y H:i') }}</td>
-                                        <td>
-                                            <a href="{{ asset('storage/' . $application->cv_path) }}" target="_blank"
-                                                class="view-cv-btn">
-                                                CV
-                                            </a>
-                                        </td>
+                                       <td>
+    @if($hasViewInfoPackage)
+        <a href="{{ asset('storage/' . $application->cv_path) }}" target="_blank" class="view-cv-btn">
+            CV
+        </a>
+    @else
+        <a href="{{ asset('storage/' . $application->cv_path_hidden_info) }}" target="_blank" class="view-cv-btn">
+            CV Ẩn
+        </a>
+    @endif
+</td>
+
                                         <td>
                                             @if ($application->introduction)
                                                 <button onclick="showIntroduction('{{ $application->id }}')" class="view-intro-btn">
@@ -1140,4 +1153,33 @@
             setupFilters();
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.view-info-btn');
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const applicationId = this.getAttribute('data-application-id');
+
+            axios.post(`/applications/${applicationId}/view-info`)
+                .then(response => {
+                    const parent = this.parentElement;
+                    parent.innerHTML = `
+                        <div class="info-item"><strong>Số điện thoại:</strong> ${response.data.phone ?? 'Không có'}</div>
+                        <div class="info-item"><strong>Email:</strong> ${response.data.email ?? 'Không có'}</div>
+                      
+                    `;
+                })
+                .catch(error => {
+                    if (error.response && error.response.status === 403) {
+                        alert(error.response.data.message);
+                    } else {
+                        alert('Đã xảy ra lỗi.');
+                    }
+                });
+        });
+    });
+});
+</script>
+
 @endsection

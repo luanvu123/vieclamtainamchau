@@ -131,9 +131,10 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::get('/candidate/check-application/{jobPostingId}', [ApplicationController::class, 'checkApplicationStatus'])->name('candidate.check-application')->middleware('candidate');
-Route::post('/applications/{application}/view-info', [ApplicationController::class, 'viewInfo'])
+Route::post('/applications/{application}/view-info', [JobPostingController::class, 'viewInfo'])
     ->name('applications.viewInfo')
     ->middleware('employer');
+
 
 Route::prefix('candidate')->name('candidate.')->group(function () {
     Route::post('/apply', [ApplicationController::class, 'store'])->middleware('candidate')->name('apply');

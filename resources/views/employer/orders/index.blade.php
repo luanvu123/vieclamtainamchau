@@ -46,10 +46,6 @@
                     </tbody>
                 </table>
             </div>
-
-            <div class="d-flex justify-content-center">
-                {{ $orders->links() }}
-            </div>
         @endif
 
     </div>

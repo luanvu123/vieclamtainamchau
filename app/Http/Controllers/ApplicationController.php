@@ -114,38 +114,5 @@ class ApplicationController extends Controller
         ]);
     }
 
-    public function viewInfo(Request $request, Application $application)
-{
-    $employer = Auth::guard('employer')->user();
 
-    // Kiểm tra employer có gói "Xem thông tin ứng viên" còn số lượng không
-    $orderDetail = OrderDetail::whereHas('order', function ($query) use ($employer) {
-        $query->where('employer_id', $employer->id)
-            ->where('status', 'Đã thanh toán');
-    })
-    ->whereHas('service', function ($query) {
-        $query->where('name', 'Xem thông tin ứng viên');
-    })
-    ->where('number_of_active', '>', 0)
-    ->whereDate('expiring_date', '>=', now())
-    ->first();
-
-    if (!$orderDetail) {
-        return response()->json(['message' => 'Bạn chưa mua gói hoặc đã hết lượt xem.'], 403);
-    }
-
-    DB::transaction(function () use ($orderDetail, $application) {
-        // Trừ number_of_active
-        $orderDetail->decrement('number_of_active');
-
-        // Gán order_id vào Application
-        $application->order_id = $orderDetail->order_id;
-        $application->save();
-    });
-
-    return response()->json([
-        'phone' => $application->candidate->phone,
-        'email' => $application->candidate->email,
-    ]);
-}
 }
