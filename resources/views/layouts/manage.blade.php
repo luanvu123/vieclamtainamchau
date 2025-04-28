@@ -298,7 +298,7 @@
                 margin-left: -33px;
             }
             .footer-company {
-                width: 400px;
+                width: 280px;
 
             }
         }

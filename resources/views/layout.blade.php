@@ -280,8 +280,8 @@
                 margin-left: -72px;
             }
             .footer-company {
-                width: 400px;
-               
+                width: 280px;
+
             }
         }
 
