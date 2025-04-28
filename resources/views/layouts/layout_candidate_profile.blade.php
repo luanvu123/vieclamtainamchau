@@ -145,8 +145,13 @@
             color: #fff;
             font-weight: bold;
         }
-
         .category-card.hot-effect {
+            border: 2px solid #ff6b6b;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+
+        }
+
+        /* .category-card.hot-effect {
             border: 2px solid #ff6b6b;
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
             transform: translateY(-3px);
@@ -164,7 +169,7 @@
             font-size: 12px;
             font-weight: bold;
             z-index: 1;
-        }
+        } */
 
         .advertisement-container {
             display: flex;
@@ -296,6 +301,10 @@
             .footer-contact {
                 width: 400px;
                 margin-left: -33px;
+            }
+            .footer-company {
+                width: 400px;
+
             }
         }
 

@@ -122,13 +122,18 @@
             border-radius: 4px;
         }
 
-        .category-card.hot-effect {
+        /* .category-card.hot-effect {
+            border: 2px solid #ff6b6b;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+            transform: translateY(-3px);
+        } */
+
+.category-card.hot-effect {
             border: 2px solid #ff6b6b;
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
 
         }
-
-        .category-card.hot-effect::before {
+        /* .category-card.hot-effect::before {
             content: "Hot";
             position: absolute;
             top: -12px;
@@ -139,8 +144,9 @@
             border-radius: 12px;
             font-size: 12px;
             font-weight: bold;
-            z-index: 1;
-        }
+
+
+        } */
 
         .advertisement-container {
             display: flex;
@@ -272,6 +278,10 @@
             .footer-contact {
                 width: 400px;
                 margin-left: -72px;
+            }
+            .footer-company {
+                width: 400px;
+               
             }
         }
 
@@ -780,19 +790,8 @@
             margin-top: 2rem;
         }
 
-        .category-card {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
 
-        .category-card img {
-            width: 50px;
-            height: 50px;
-        }
+
 
         /* Partners Section */
         .partners {
@@ -945,6 +944,7 @@
             border-radius: 8px;
             font-size: 16px;
             transition: border-color 0.3s ease;
+
         }
 
         .search-input:focus {
@@ -2459,238 +2459,7 @@
             display: inline-block;
             margin-left: 5px;
         }
-            .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
 
-        .modal-content {
-            position: relative;
-            background-color: #fff;
-            margin: 15% auto;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 500px;
-            animation: modalFade 0.3s ease-in-out;
-        }
-
-        @keyframes modalFade {
-            from {
-                transform: translateY(-30px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .modal-title.job-seekers {
-            color: #ff0000;
-        }
-
-        .modal-title.employers {
-            color: #00ffff;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0;
-            color: #666;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .input-with-icon {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 8px 12px;
-        }
-
-        .input-with-icon i {
-            margin-right: 10px;
-            color: #666;
-        }
-
-        .input-with-icon input,
-        .input-with-icon textarea {
-            border: none;
-            outline: none;
-            width: 100%;
-            font-size: 1rem;
-        }
-
-        .input-with-icon textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .submit-button {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .submit-button.job-seekers {
-            background-color: #ff0000;
-            color: white;
-        }
-
-        .submit-button.employers {
-            background-color: #00ffff;
-            color: black;
-        }
-
-        /* Responsive styles */
-        @media screen and (max-width: 768px) {
-            .modal-content {
-                margin: 10% auto;
-                width: 95%;
-                padding: 15px;
-            }
-
-            .modal-title {
-                font-size: 1.25rem;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .modal-content {
-                margin: 5% auto;
-            }
-
-            .form-group label {
-                font-size: 0.9rem;
-            }
-
-            .input-with-icon {
-                padding: 6px 10px;
-            }
-        }
-
-        .countries-section {
-            padding: 2rem 0;
-        }
-
-        .countries-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        .row {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .country-item {
-            text-align: center;
-        }
-
-        .country-item a {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: inherit;
-            transition: transform 0.2s;
-        }
-
-        .country-item a:hover {
-            transform: translateY(-5px);
-        }
-
-        .flag {
-            width: 100%;
-            aspect-ratio: 3/2;
-            object-fit: cover;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 8px;
-        }
-
-        .country-name {
-            font-size: 0.9rem;
-            margin-top: 5px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1200px) {
-            .row {
-                grid-template-columns: repeat(6, 1fr);
-            }
-        }
-
-        @media (max-width: 992px) {
-            .row {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .row {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 576px) {
-            .row {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .custom-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .countries-container .row {
-            margin-left: 0;
-            margin-right: 0;
-        }
     .search-suggestions {
     position: absolute;
     top: 100%;
@@ -2702,12 +2471,12 @@
     border: 1px solid #ddd;
     border-top: none;
     border-radius: 0 0 4px 4px;
-    z-index: 10000; /* Tăng z-index lên cao hơn */
+    z-index: 10000;
     list-style: none;
     padding: 0;
     margin: 0;
     display: none;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2)
 }
 
 /* Đảm bảo các item trong danh sách hiển thị rõ ràng */
@@ -2718,13 +2487,17 @@
     background: white; /* Đảm bảo nền trắng */
     color: #333; /* Màu chữ rõ ràng */
     font-size: 14px;
+
 }
+
 
 /* Khi hover vào gợi ý */
 .search-suggestions li:hover,
 .search-suggestions li.active-suggestion {
     background-color: #f0f7ff;
 }
+
+
     </style>
 </head>
 
@@ -3077,7 +2850,7 @@
 
     <footer class="footer">
         <div class="footer-grid">
-            <div class="footer-links">
+            <div class="footer-links" >
                 <h3>Trang chủ</h3>
                 <ul>
                     <li><a href="{{ route('about') }}">Về chúng tôi</a></li>

@@ -37,14 +37,14 @@ class SiteController extends Controller
         $locations = Location::where('status', 'active')->get();
         return response()->json($locations);
     }
-  public function news()
-{
-    $promotion = News::where('status', 1)->paginate(10);
+    public function news()
+    {
+        $promotion = News::where('status', 1)->paginate(10);
 
-    $bannerNews = Advertise::where('status', 1)->latest()->get(); // hoặc điều kiện tùy theo nhu cầu
+        $bannerNews = Advertise::where('status', 1)->latest()->get(); // hoặc điều kiện tùy theo nhu cầu
 
-    return view('pages.news', compact('promotion', 'bannerNews'));
-}
+        return view('pages.news', compact('promotion', 'bannerNews'));
+    }
 
     public function newsDetail($id)
     {
@@ -73,6 +73,7 @@ class SiteController extends Controller
         $jobPostings = $country->jobPostings()
             ->where('status', 'active')
             ->where('closing_date', '>', now())
+            ->whereIn('service_type', ['Tin nổi bật', 'Tin đặc biệt'])
             ->with('employer')
             ->latest()
             ->get();
@@ -80,49 +81,49 @@ class SiteController extends Controller
         return view('pages.country', compact('country', 'jobPostings', 'countries', 'categories'));
     }
 
- public function index(Request $request)
-{
-    $categories = Category::where('status', 'active')->where('isHot', 0)->get();
+    public function index(Request $request)
+    {
+        $categories = Category::where('status', 'active')->where('isHot', 0)->get();
 
-    $genres = Genre::with([
-        'jobPostings' => function ($query) {
-            $query->with(['employer', 'countries'])
-                ->where('status', 'active')
-                ->where('closing_date', '>', now())
-                ->whereIn('service_type', ['Tin nổi bật', 'Tin đặc biệt'])
-                ->latest();
-        }
-    ])
-    // Lọc ra các genres có ít nhất một jobPosting phù hợp
-    ->whereHas('jobPostings', function ($query) {
-        $query->where('status', 'active')
+        $genres = Genre::with([
+            'jobPostings' => function ($query) {
+                $query->with(['employer', 'countries'])
+                    ->where('status', 'active')
+                    ->where('closing_date', '>', now())
+                    ->whereIn('service_type', ['Tin nổi bật', 'Tin đặc biệt'])
+                    ->latest();
+            }
+        ])
+            // Lọc ra các genres có ít nhất một jobPosting phù hợp
+            ->whereHas('jobPostings', function ($query) {
+                $query->where('status', 'active')
+                    ->where('closing_date', '>', now())
+                    ->whereIn('service_type', ['Tin nổi bật', 'Tin đặc biệt']);
+            })
+            ->get();
+        $jobTitles = JobPosting::where('status', 'active')
             ->where('closing_date', '>', now())
-            ->whereIn('service_type', ['Tin nổi bật', 'Tin đặc biệt']);
-    })
-    ->get();
-  $jobTitles = JobPosting::where('status', 'active')
-        ->where('closing_date', '>', now())
-        ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
-        ->select('id', 'title', 'slug')
-        ->get()
-        ->toArray();
+            ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
+            ->select('id', 'title', 'slug')
+            ->get()
+            ->toArray();
 
-    // Tạo thư mục và file jobs.json
-    $path = public_path()."/json/";
-    if(!is_dir($path)) {
-        mkdir($path, 0777, true);
+        // Tạo thư mục và file jobs.json
+        $path = public_path() . "/json/";
+        if (!is_dir($path)) {
+            mkdir($path, 0777, true);
+        }
+        File::put($path . 'jobs.json', json_encode($jobTitles));
+        OnlineVisitor::trackVisitor($request->ip());
+
+        $countries = Country::where('status', 'active')->get();
+        $employerIsPartner = Employer::where('isPartner', 1)->withCount('jobPostings')->get();
+        $studyAbroads = StudyAbroad::where('status', 1)
+            ->with(['categories', 'countries'])
+            ->get();
+
+        return view('pages.home', compact('categories', 'genres', 'countries', 'employerIsPartner', 'studyAbroads'));
     }
-    File::put($path.'jobs.json', json_encode($jobTitles));
-    OnlineVisitor::trackVisitor($request->ip());
-
-    $countries = Country::where('status', 'active')->get();
-    $employerIsPartner = Employer::where('isPartner', 1)->withCount('jobPostings')->get();
-    $studyAbroads = StudyAbroad::where('status', 1)
-        ->with(['categories', 'countries'])
-        ->get();
-
-    return view('pages.home', compact('categories', 'genres', 'countries', 'employerIsPartner', 'studyAbroads'));
-}
 
 
     public function genre($slug)
@@ -137,7 +138,7 @@ class SiteController extends Controller
                     $query->with(['employer', 'countries'])
                         ->where('status', 'active')
                         ->where('closing_date', '>', now())
-                         ->whereIn('service_type', ['Tin cơ bản','Tin nổi bật', 'Tin đặc biệt'])
+                        ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
                         ->latest();
                 }
             ])
@@ -173,31 +174,31 @@ class SiteController extends Controller
             ->with('employer')
             ->where('status', 'active')
             ->where('closing_date', '>', now())
-            ->whereIn('service_type', ['Tin cơ bản','Tin nổi bật', 'Tin đặc biệt'])
+            ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
             ->latest()
             ->paginate(12);  // Thêm phân trang
 
         return view('pages.category', compact('category', 'categories', 'countries', 'jobPostings'));
     }
     public function getJobSuggestions(Request $request)
-{
-    $keyword = $request->input('keyword');
+    {
+        $keyword = $request->input('keyword');
 
-    if (strlen($keyword) < 2) {
-        return response()->json([]);
+        if (strlen($keyword) < 2) {
+            return response()->json([]);
+        }
+
+        $suggestions = JobPosting::where('status', 'active')
+            ->where('closing_date', '>', now())
+            ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
+            ->where('title', 'LIKE', "%{$keyword}%")
+            ->select('title', 'slug')
+            ->distinct('title')
+            ->limit(10)
+            ->get();
+
+        return response()->json($suggestions);
     }
-
-    $suggestions = JobPosting::where('status', 'active')
-        ->where('closing_date', '>', now())
-        ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
-        ->where('title', 'LIKE', "%{$keyword}%")
-        ->select('title', 'slug')
-        ->distinct('title')
-        ->limit(10)
-        ->get();
-
-    return response()->json($suggestions);
-}
     public function search(Request $request)
     {
         $query = JobPosting::query();
@@ -219,10 +220,10 @@ class SiteController extends Controller
             });
         }
 
-        $jobPostings = $query  ->with('employer')
+        $jobPostings = $query->with('employer')
             ->where('status', 'active')
             ->where('closing_date', '>', now())
-            ->whereIn('service_type', ['Tin cơ bản','Tin nổi bật', 'Tin đặc biệt'])
+            ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
             ->latest()
             ->paginate(10);
 

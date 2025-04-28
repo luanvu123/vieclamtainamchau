@@ -297,6 +297,10 @@
                 width: 400px;
                 margin-left: -33px;
             }
+            .footer-company {
+                width: 400px;
+
+            }
         }
 
         @media (max-width: 480px) {
