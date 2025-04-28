@@ -22,7 +22,13 @@
                 @foreach($applications as $key => $application)
                     <tr>
                         <td>{{ $key + 1 }}</td>
-                        <td>{{ $application->candidate->name ?? 'N/A' }}</td>
+                        <td>
+    {{ $application->candidate->name ?? 'N/A' }}
+    @if($application->approve_application === 'Chờ duyệt' && $application->created_at >= now()->subHours(24))
+        <span class="badge badge-success">New</span>
+    @endif
+</td>
+
                         <td>
                             @if($application->cv_path)
                                 <a href="{{ asset('storage/' . $application->cv_path) }}" target="_blank">Xem CV</a>

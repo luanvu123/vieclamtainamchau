@@ -379,9 +379,14 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 </li>
 <li class="{{ Request::is('application-manage*') ? 'active' : '' }}">
     <a href="{{ route('application-manage.index') }}">
-        <i class="fa fa-file-text-o"></i> <span>Duyệt đơn ứng viên</span>
+        <i class="fa fa-file-text-o"></i>
+        <span>Duyệt đơn ứng viên</span>
+        @if ($applicationlayout > 0)
+            <span class="badge badge-danger">{{ $applicationlayout }}</span>
+        @endif
     </a>
 </li>
+
 
     </ul>
 </li>
@@ -403,7 +408,43 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 
 
 
-
+<li class="treeview {{ Request::is('manage/job-postings/*') ? 'active' : '' }}">
+    <a href="{{ route('manage.employers.indexJobPosting') }}">
+        <i class="fa fa-briefcase"></i> <span>Quản lý Đăng tin</span>
+        @if ($basicJobCountTwoHour > 0 || $outstandingJobCountTwoHour > 0 || $specialJobCountTwoHour > 0)
+            <span class="label label-primary pull-right">
+                {{ $basicJobCountTwoHour + $outstandingJobCountTwoHour + $specialJobCountTwoHour }}
+            </span>
+        @endif
+        <i class="fa fa-angle-left pull-right"></i>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::is('manage/job-postings/basic') ? 'active' : '' }}">
+            <a href="{{ route('manage.employers.indexBasic') }}">
+                <i class="fa fa-circle-o"></i> Tin cơ bản
+                @if ($basicJobCountTwoHour > 0)
+                    <span class="label label-primary pull-right">{{ $basicJobCountTwoHour }}</span>
+                @endif
+            </a>
+        </li>
+        <li class="{{ Request::is('manage/job-postings/outstanding') ? 'active' : '' }}">
+            <a href="{{ route('manage.employers.indexOutstanding') }}">
+                <i class="fa fa-star-o"></i> Tin nổi bật
+                @if ($outstandingJobCountTwoHour > 0)
+                    <span class="label label-primary pull-right">{{ $outstandingJobCountTwoHour }}</span>
+                @endif
+            </a>
+        </li>
+        <li class="{{ Request::is('manage/job-postings/special') ? 'active' : '' }}">
+            <a href="{{ route('manage.employers.indexSpecial') }}">
+                <i class="fa fa-star"></i> Tin đặc biệt
+                @if ($specialJobCountTwoHour > 0)
+                    <span class="label label-primary pull-right">{{ $specialJobCountTwoHour }}</span>
+                @endif
+            </a>
+        </li>
+    </ul>
+</li>
 
 
                             <li class="{{ Request::is('admin/info/edit*') ? 'active' : '' }}">
@@ -411,6 +452,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     <img src="{{ asset('backend_admin/images/5355692_code_coding_development_programming_web_icon.svg') }}"
                                         alt="Google" width="20" height="20"> Quản lý giao diện
                                 </a>
+                            </li>
 
                                 </ul>
                         </div>

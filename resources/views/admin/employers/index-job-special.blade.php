@@ -2,10 +2,10 @@
 
 @section('content')
     <div class="container">
-        <h1>Danh sách Bài đăng Tuyển dụng</h1>
+        <h1>Danh sách Tin Tuyển dụng Đặc biệt</h1>
 
         @if($jobPostings->isEmpty())
-            <p>Hiện tại không có bài đăng tuyển dụng nào.</p>
+            <p>Hiện tại không có tin tuyển dụng đặc biệt nào.</p>
         @else
             <table class="table" id="user-table">
                 <thead>
@@ -23,7 +23,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $jobPosting->title }}
-                                 @if ($jobPosting->created_at  >= \Carbon\Carbon::now()->subHours(2))
+                                @if ($jobPosting->created_at >= \Carbon\Carbon::now()->subHours(2))
                                     <span class="badge badge-danger">New</span>
                                 @endif
                             </td>
@@ -41,8 +41,7 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('employer.admin.job-postings.edit', ['employerId' => $jobPosting->employer->id, 'jobPostingId' => $jobPosting->id]) }}" class="btn btn-primary">Sửa</a>
-
+                                <a href="{{ route('employer.admin.job-postings.edit', ['employerId' => $jobPosting->employer->id, 'jobPostingId' => $jobPosting->id]) }}" class="btn btn-primary btn-sm">Sửa</a>
                             </td>
                         </tr>
                     @endforeach

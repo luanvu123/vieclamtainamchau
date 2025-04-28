@@ -21,7 +21,7 @@
                     <tr>
                         <td>{{ $languageTraining->id }}</td>
                         <td>{{ $languageTraining->name }}</td>
-                        <td>{{ $languageTraining->employer->name }}</td>
+                        <td>{{ $languageTraining->employer->email }}</td>
                         <td>{{ \Carbon\Carbon::parse($languageTraining->start_date)->format('d/m/Y') }}</td>
                         <td>{{ \Carbon\Carbon::parse($languageTraining->end_date)->format('d/m/Y') }}</td>
                         <td>

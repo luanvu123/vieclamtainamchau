@@ -32,7 +32,7 @@
                                 <span class="badge badge-danger">Mới</span>
                             @endif
                         </td>
-                        <td>{{ $jobPosting->employer->name ?? 'N/A' }}</td>
+                        <td>{{ $jobPosting->employer->email ?? 'N/A' }}</td>
                         <td>{{ $jobPosting->created_at->format('d/m/Y H:i') }}</td>
                         <td>
                             @switch($jobPosting->status)

@@ -56,7 +56,8 @@ Route::get('/job', [SiteController::class, 'job'])->name('job')->middleware('can
 Route::get('/about', [SiteController::class, 'about'])->name('about')->middleware('candidate');
 Route::get('/lien-he', [SiteController::class, 'hotline'])->name('hotline');
 Route::get('/genre/{slug}', [SiteController::class, 'genre'])->name('genre.show')->middleware('candidate');
-
+// Route cho API gợi ý tìm kiếm
+Route::get('/job-suggestions', [SiteController::class, 'getJobSuggestions'])->name('job.suggestions');
 Route::get('/category/{slug}', [SiteController::class, 'category'])->name('category.show')->middleware('candidate');
 Route::get('/country/{slug}', [SiteController::class, 'country'])->name('country.show')->middleware('candidate');
 Route::get('/search', [SiteController::class, 'search'])->name('site.search')->middleware('candidate');
@@ -85,6 +86,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('application-manage/{id}/delete-hidden-cv', [ApplicationManageController::class, 'deleteHiddenCv'])
     ->name('application-manage.delete-hidden-cv');
     Route::resource('languages', LanguageController::class);
+        Route::get('manage/job-postings/basic', [EmployerManageController::class, 'indexBasic'])->name('manage.employers.indexBasic');
+    Route::get('manage/job-postings/outstanding', [EmployerManageController::class, 'indexOutstanding'])->name('manage.employers.indexOutstanding');
+    Route::get('manage/job-postings/special', [EmployerManageController::class, 'indexSpecial'])->name('manage.employers.indexSpecial');
+
     Route::resource('news-manage', NewsManageController::class);
     Route::resource('skills', SkillController::class);
     Route::resource('soft-skills', SoftSkillController::class);

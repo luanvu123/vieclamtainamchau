@@ -18,7 +18,7 @@ use App\Models\TypeLanguageTraining;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\File;
 class SiteController extends Controller
 {
     public function about()
@@ -100,7 +100,19 @@ class SiteController extends Controller
             ->whereIn('service_type', ['Tin nổi bật', 'Tin đặc biệt']);
     })
     ->get();
+  $jobTitles = JobPosting::where('status', 'active')
+        ->where('closing_date', '>', now())
+        ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
+        ->select('id', 'title', 'slug')
+        ->get()
+        ->toArray();
 
+    // Tạo thư mục và file jobs.json
+    $path = public_path()."/json/";
+    if(!is_dir($path)) {
+        mkdir($path, 0777, true);
+    }
+    File::put($path.'jobs.json', json_encode($jobTitles));
     OnlineVisitor::trackVisitor($request->ip());
 
     $countries = Country::where('status', 'active')->get();
@@ -144,7 +156,7 @@ class SiteController extends Controller
 
         return view('pages.genre', compact('genre', 'genres', 'categories', 'countries', 'jobsByCountry'));
     }
-  
+
     public function category($slug)
     {
         $categories = Category::where('status', 'active')->where('isHot', 0)->get();
@@ -167,6 +179,25 @@ class SiteController extends Controller
 
         return view('pages.category', compact('category', 'categories', 'countries', 'jobPostings'));
     }
+    public function getJobSuggestions(Request $request)
+{
+    $keyword = $request->input('keyword');
+
+    if (strlen($keyword) < 2) {
+        return response()->json([]);
+    }
+
+    $suggestions = JobPosting::where('status', 'active')
+        ->where('closing_date', '>', now())
+        ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
+        ->where('title', 'LIKE', "%{$keyword}%")
+        ->select('title', 'slug')
+        ->distinct('title')
+        ->limit(10)
+        ->get();
+
+    return response()->json($suggestions);
+}
     public function search(Request $request)
     {
         $query = JobPosting::query();

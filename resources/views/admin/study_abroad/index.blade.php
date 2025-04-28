@@ -20,7 +20,7 @@
                 <tr>
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->name }}</td>
-                    <td>{{ $item->employer->name ?? 'N/A' }}</td>
+                    <td>{{ $item->employer->email ?? 'N/A' }}</td>
                     <td>
                         @if ($item->status)
                             <span class="badge badge-success">Hoạt động</span>

@@ -49,9 +49,9 @@
                             class="form-check-input name"
                             @if(in_array($value->id, $rolePermissions)) checked @endif>
                         <label class="form-check-label">
-                            <strong>{{ $value->name }}</strong>
+
                             @if(!empty($value->description))
-                                <small> - {{ $value->description }}</small>
+                                <small>{{ $value->description }}</small>
                             @endif
                         </label>
                     </div>

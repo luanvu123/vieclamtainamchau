@@ -43,7 +43,32 @@ class EmployerManageController extends Controller
 
     return view('admin.employers.index-job-posting', compact('jobPostings'));
 }
+public function indexBasic()
+{
+    $jobPostings = JobPosting::with(['employer', 'categories', 'genres', 'countries'])
+          ->where('service_type', 'Tin cơ bản')
+        ->get();
 
+    return view('admin.employers.index-job-basic', compact('jobPostings'));
+}
+
+public function indexOutstanding()
+{
+    $jobPostings = JobPosting::with(['employer', 'categories', 'genres', 'countries'])
+       ->where('service_type', 'Tin nổi bật')
+        ->get();
+
+    return view('admin.employers.index-job-outstanding', compact('jobPostings'));
+}
+
+public function indexSpecial()
+{
+    $jobPostings = JobPosting::with(['employer', 'categories', 'genres', 'countries'])
+       ->where('service_type', 'Tin đặc biệt')
+        ->get();
+
+    return view('admin.employers.index-job-special', compact('jobPostings'));
+}
     public function show($id)
     {
         $employer = Employer::findOrFail($id);

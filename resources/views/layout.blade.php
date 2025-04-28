@@ -125,7 +125,7 @@
         .category-card.hot-effect {
             border: 2px solid #ff6b6b;
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
-            transform: translateY(-3px);
+
         }
 
         .category-card.hot-effect::before {
@@ -2459,6 +2459,272 @@
             display: inline-block;
             margin-left: 5px;
         }
+            .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            animation: modalFade 0.3s ease-in-out;
+        }
+
+        @keyframes modalFade {
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .modal-title.job-seekers {
+            color: #ff0000;
+        }
+
+        .modal-title.employers {
+            color: #00ffff;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .input-with-icon {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px 12px;
+        }
+
+        .input-with-icon i {
+            margin-right: 10px;
+            color: #666;
+        }
+
+        .input-with-icon input,
+        .input-with-icon textarea {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .input-with-icon textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button.job-seekers {
+            background-color: #ff0000;
+            color: white;
+        }
+
+        .submit-button.employers {
+            background-color: #00ffff;
+            color: black;
+        }
+
+        /* Responsive styles */
+        @media screen and (max-width: 768px) {
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+                padding: 15px;
+            }
+
+            .modal-title {
+                font-size: 1.25rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .modal-content {
+                margin: 5% auto;
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+            }
+
+            .input-with-icon {
+                padding: 6px 10px;
+            }
+        }
+
+        .countries-section {
+            padding: 2rem 0;
+        }
+
+        .countries-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .country-item {
+            text-align: center;
+        }
+
+        .country-item a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s;
+        }
+
+        .country-item a:hover {
+            transform: translateY(-5px);
+        }
+
+        .flag {
+            width: 100%;
+            aspect-ratio: 3/2;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 8px;
+        }
+
+        .country-name {
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .row {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .row {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .custom-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .countries-container .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    .search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    z-index: 10000; /* Tăng z-index lên cao hơn */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Đảm bảo các item trong danh sách hiển thị rõ ràng */
+.search-suggestions li {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    background: white; /* Đảm bảo nền trắng */
+    color: #333; /* Màu chữ rõ ràng */
+    font-size: 14px;
+}
+
+/* Khi hover vào gợi ý */
+.search-suggestions li:hover,
+.search-suggestions li.active-suggestion {
+    background-color: #f0f7ff;
+}
     </style>
 </head>
 
@@ -2563,6 +2829,8 @@
                         </div>
                     @endif
                 </li>
+
+                 <li><a href="{{ route('site.study-abroad') }}">Du học nghề</a></li>
                 <li><a href="{{ route('news.home') }}">Tin tức</a></li>
                 <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
             </ul>
@@ -3091,6 +3359,113 @@
         }
     </style>
  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+ <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsList = document.getElementById('search-suggestions');
+    let jobsList = [];
+
+    // Tải dữ liệu từ file jobs.json
+    fetch('/json/jobs.json')
+        .then(response => response.json())
+        .then(data => {
+            jobsList = data;
+        })
+        .catch(error => {
+            console.error('Error loading jobs.json:', error);
+        });
+
+    // Xử lý sự kiện nhập tìm kiếm
+    searchInput.addEventListener('input', function() {
+        const keyword = searchInput.value.trim().toLowerCase();
+
+        if (keyword.length < 2) {
+            suggestionsList.style.display = 'none';
+            return;
+        }
+
+        // Lọc các job title phù hợp với từ khóa
+        const matchedJobs = jobsList.filter(job =>
+            job.title.toLowerCase().includes(keyword)
+        ).slice(0, 10); // Giới hạn 10 kết quả
+
+        suggestionsList.innerHTML = '';
+
+        if (matchedJobs.length > 0) {
+            matchedJobs.forEach(job => {
+                const li = document.createElement('li');
+                li.textContent = job.title;
+                li.setAttribute('data-slug', job.slug);
+
+                li.addEventListener('click', function() {
+                    searchInput.value = job.title;
+                    suggestionsList.style.display = 'none';
+                    // window.location.href = `/jobs/${job.slug}`;
+                });
+
+                suggestionsList.appendChild(li);
+            });
+
+            suggestionsList.style.display = 'block';
+        } else {
+            suggestionsList.style.display = 'none';
+        }
+    });
+
+    // Ẩn danh sách gợi ý khi click ra ngoài
+    document.addEventListener('click', function(event) {
+        if (!searchInput.contains(event.target) && !suggestionsList.contains(event.target)) {
+            suggestionsList.style.display = 'none';
+        }
+    });
+
+    // Xử lý phím mũi tên và Enter cho danh sách gợi ý
+    searchInput.addEventListener('keydown', function(e) {
+        const items = suggestionsList.querySelectorAll('li');
+
+        if (items.length === 0) return;
+
+        const key = e.key;
+        const activeClass = 'active-suggestion';
+        const activeItem = suggestionsList.querySelector('.' + activeClass);
+
+        if (key === 'ArrowDown' || key === 'ArrowUp') {
+            e.preventDefault();
+
+            if (!activeItem) {
+                // Không có item nào đang active
+                if (key === 'ArrowDown') {
+                    items[0].classList.add(activeClass);
+                } else {
+                    items[items.length - 1].classList.add(activeClass);
+                }
+            } else {
+                // Đã có item active
+                const currentIndex = Array.from(items).indexOf(activeItem);
+                activeItem.classList.remove(activeClass);
+
+                if (key === 'ArrowDown') {
+                    const nextIndex = (currentIndex + 1) % items.length;
+                    items[nextIndex].classList.add(activeClass);
+                } else {
+                    const prevIndex = (currentIndex - 1 + items.length) % items.length;
+                    items[prevIndex].classList.add(activeClass);
+                }
+            }
+
+            // Scroll đến item active để luôn nhìn thấy
+            const newActiveItem = suggestionsList.querySelector('.' + activeClass);
+            if (newActiveItem) {
+                newActiveItem.scrollIntoView({ block: 'nearest' });
+            }
+        } else if (key === 'Enter' && activeItem) {
+            e.preventDefault();
+            searchInput.value = activeItem.textContent;
+            suggestionsList.style.display = 'none';
+        }
+    });
+});
+</script>
 </body>
 
 </html>

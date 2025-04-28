@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Advertise;
+use App\Models\Application;
 use App\Models\Genre;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
@@ -95,8 +96,22 @@ class AppServiceProvider extends ServiceProvider
             $newsCountTwoHour = News::where('created_at', '>=', $twoHoursAgo)->count();
             $advertisesCountTwoHour = Advertise::where('created_at', '>=', $twoHoursAgo)->count();
             $studyabroadCountTwoHour = StudyAbroad::where('created_at', '>=', $twoHoursAgo)->count();
+            $applicationlayout = Application::where('approve_application', 'Chờ duyệt')
+                ->where('created_at', '>=', Carbon::now()->subHours(24))
+                ->count();
+            $basicJobCountTwoHour = JobPosting::where('created_at', '>=', Carbon::now()->subHours(2))
+                ->where('service_type', 'Tin cơ bản')
 
+                ->count();
 
+            $outstandingJobCountTwoHour = JobPosting::where('created_at', '>=', Carbon::now()->subHours(2))
+                ->where('service_type', 'Tin nổi bật')
+                ->count();
+
+            $specialJobCountTwoHour = JobPosting::where('created_at', '>=', Carbon::now()->subHours(2))
+                ->where('service_type', 'Tin đặc biệt')
+
+                ->count();
             $view->with(compact(
                 'genre_home',
                 'categoryHot',
@@ -104,7 +119,11 @@ class AppServiceProvider extends ServiceProvider
                 'languagetrainingCountTwoHour',
                 'newsCountTwoHour',
                 'advertisesCountTwoHour',
-                'studyabroadCountTwoHour'
+                'studyabroadCountTwoHour',
+                'applicationlayout',
+                'basicJobCountTwoHour',
+                'outstandingJobCountTwoHour',
+                'specialJobCountTwoHour',
             ));
         });
 

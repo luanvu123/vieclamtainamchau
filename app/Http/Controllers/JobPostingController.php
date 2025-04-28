@@ -118,17 +118,17 @@ class JobPostingController extends Controller
             ->where('number_of_active', '>', 0)
             ->with(['service'])
             ->get();
-            $specialServiceDetails = OrderDetail::whereHas('order', function ($query) use ($employer) {
-    $query->where('employer_id', $employer->id)
-        ->where('status', 'Đã thanh toán');
-})
-    ->whereHas('service', function ($query) {
-        $query->where('name', 'Tin đặc biệt');
-    })
-    ->whereDate('expiring_date', '>=', Carbon::today())
-    ->where('number_of_active', '>', 0)
-    ->with(['service'])
-    ->get();
+        $specialServiceDetails = OrderDetail::whereHas('order', function ($query) use ($employer) {
+            $query->where('employer_id', $employer->id)
+                ->where('status', 'Đã thanh toán');
+        })
+            ->whereHas('service', function ($query) {
+                $query->where('name', 'Tin đặc biệt');
+            })
+            ->whereDate('expiring_date', '>=', Carbon::today())
+            ->where('number_of_active', '>', 0)
+            ->with(['service'])
+            ->get();
 
 
         return view('employer.job-posting.create', compact(
@@ -316,73 +316,74 @@ class JobPostingController extends Controller
         }
     }
 
- public function viewApplications($id)
-{
-    $employer = Auth::guard('employer')->user();
-    $jobPosting = JobPosting::where('employer_id', $employer->id)
-        ->findOrFail($id);
+    public function viewApplications($id)
+    {
+        $employer = Auth::guard('employer')->user();
+        $jobPosting = JobPosting::where('employer_id', $employer->id)
+            ->findOrFail($id);
 
-    // Lấy gói "Xem thông tin ứng viên" của employer
-    $orderDetail = OrderDetail::whereHas('order', function ($query) use ($employer) {
+        // Lấy gói "Xem thông tin ứng viên" của employer
+        $orderDetail = OrderDetail::whereHas('order', function ($query) use ($employer) {
             $query->where('employer_id', $employer->id)
-                  ->where('status', 'Đã thanh toán');
+                ->where('status', 'Đã thanh toán');
         })
-        ->whereHas('service', function ($query) {
-            $query->where('name', 'Xem thông tin ứng viên');
-        })
-        ->where('number_of_active', '>', 0)
-        ->whereDate('expiring_date', '>=', now())
-        ->first();
+            ->whereHas('service', function ($query) {
+                $query->where('name', 'Xem thông tin ứng viên');
+            })
+            ->where('number_of_active', '>', 0)
+            ->whereDate('expiring_date', '>=', now())
+            ->first();
 
-    $hasViewInfoPackage = $orderDetail ? true : false;
+        $hasViewInfoPackage = $orderDetail ? true : false;
 
-    $applications = Application::with([
-        'candidate',
-        'candidate.skills',
-        'candidate.softSkills',
-        'candidate.languages',
-        'candidate.experiences',
-        'candidate.educations',
-        'candidate.certificates'
-    ])
-    ->where('job_posting_id', $id)
-    ->orderBy('created_at', 'desc')
-    ->get();
+        $applications = Application::with([
+            'candidate',
+            'candidate.skills',
+            'candidate.softSkills',
+            'candidate.languages',
+            'candidate.experiences',
+            'candidate.educations',
+            'candidate.certificates'
+        ])
+            ->where('job_posting_id', $id)
+            ->whereIn('approve_application', ['Đã duyệt', 'Nộp lại'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-    return view('employer.job-posting.applications', compact('jobPosting', 'applications', 'hasViewInfoPackage'));
-}
-   public function viewInfo(Request $request, Application $application)
-{
-    $employer = Auth::guard('employer')->user();
-
-    $orderDetail = OrderDetail::whereHas('order', function ($query) use ($employer) {
-            $query->where('employer_id', $employer->id)
-                  ->where('status', 'Đã thanh toán');
-        })
-        ->whereHas('service', function ($query) {
-            $query->where('name', 'Xem thông tin ứng viên');
-        })
-        ->where('number_of_active', '>', 0)
-        ->whereDate('expiring_date', '>=', now())
-        ->first();
-
-    if (!$orderDetail) {
-        return response()->json(['message' => 'Bạn chưa mua gói hoặc đã hết lượt xem.'], 403);
+        return view('employer.job-posting.applications', compact('jobPosting', 'applications', 'hasViewInfoPackage'));
     }
+    public function viewInfo(Request $request, Application $application)
+    {
+        $employer = Auth::guard('employer')->user();
 
-    DB::transaction(function () use ($orderDetail, $application) {
-        $orderDetail->decrement('number_of_active');
+        $orderDetail = OrderDetail::whereHas('order', function ($query) use ($employer) {
+            $query->where('employer_id', $employer->id)
+                ->where('status', 'Đã thanh toán');
+        })
+            ->whereHas('service', function ($query) {
+                $query->where('name', 'Xem thông tin ứng viên');
+            })
+            ->where('number_of_active', '>', 0)
+            ->whereDate('expiring_date', '>=', now())
+            ->first();
 
-        $application->order_id = $orderDetail->order_id;
-        $application->save();
-    });
+        if (!$orderDetail) {
+            return response()->json(['message' => 'Bạn chưa mua gói hoặc đã hết lượt xem.'], 403);
+        }
 
-    return response()->json([
-        'phone' => $application->candidate->phone,
-        'email' => $application->candidate->email,
-        'cv_path' => asset('storage/' . $application->cv_path)
-    ]);
-}
+        DB::transaction(function () use ($orderDetail, $application) {
+            $orderDetail->decrement('number_of_active');
+
+            $application->order_id = $orderDetail->order_id;
+            $application->save();
+        });
+
+        return response()->json([
+            'phone' => $application->candidate->phone,
+            'email' => $application->candidate->email,
+            'cv_path' => asset('storage/' . $application->cv_path)
+        ]);
+    }
 
     private function createNotification($application, $status)
     {
@@ -476,26 +477,26 @@ class JobPostingController extends Controller
 
         return view('employer.job-posting.saved-applications', compact('savedApplications'));
     }
-  public function services()
-{
+    public function services()
+    {
 
 
-    $banks = Bank::where('status', '1')
-        ->orderBy('created_at', 'desc')
-        ->get();
+        $banks = Bank::where('status', '1')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-    $employerId = Auth::guard('employer')->id();
-    $carts = Cart::getEmployerCart($employerId);
+        $employerId = Auth::guard('employer')->id();
+        $carts = Cart::getEmployerCart($employerId);
 
-    $exchangeRate = 0.000042;
-$typeservices = Typeservice::with(['services.weeks'])
-    ->where('status', true)
-    ->get();
+        $exchangeRate = 0.000042;
+        $typeservices = Typeservice::with(['services.weeks'])
+            ->where('status', true)
+            ->get();
 
-return view('employer.job-posting.services', compact('typeservices', 'banks', 'carts', 'exchangeRate'));
+        return view('employer.job-posting.services', compact('typeservices', 'banks', 'carts', 'exchangeRate'));
 
 
-}
+    }
 
     public function removeFromCart($id)
     {
@@ -560,18 +561,18 @@ return view('employer.job-posting.services', compact('typeservices', 'banks', 'c
     }
 
 
-  public function serviceActive()
-{
-    $employer = Auth::guard('employer')->user();
+    public function serviceActive()
+    {
+        $employer = Auth::guard('employer')->user();
 
-    $orders = Order::with(['orderDetails.cart'])
-        ->where('employer_id', $employer->id)
-        ->where('status', 'Đã thanh toán')
-        ->orderBy('created_at', 'desc')
-        ->get();
+        $orders = Order::with(['orderDetails.cart'])
+            ->where('employer_id', $employer->id)
+            ->where('status', 'Đã thanh toán')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-    return view('employer.job-posting.service-active', compact('employer', 'orders'));
-}
+        return view('employer.job-posting.service-active', compact('employer', 'orders'));
+    }
 
     public function updateApplicationView(Request $request)
     {

@@ -2590,6 +2590,7 @@
                         </div>
                     @endif
                 </li>
+                  <li><a href="{{ route('site.study-abroad') }}">Du học nghề</a></li>
                 <li><a href="{{ route('news.home') }}">Tin tức</a></li>
                 <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
             </ul>
