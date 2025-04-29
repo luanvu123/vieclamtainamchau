@@ -295,12 +295,13 @@
         @media (min-width: 992px) {
             .footer-contact {
                 width: 400px;
-                margin-left: -33px;
+                margin-left: -150px;
             }
             .footer-company {
                 width: 280px;
-
+              margin-left: -70px;
             }
+
         }
 
         @media (max-width: 480px) {
@@ -1015,7 +1016,7 @@
             font-size: 1.1rem;
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+
         }
 
         .footer-links ul,
@@ -2972,7 +2973,7 @@
                 </ul>
             </div>
 
-            <div class="footer-links">
+            <div class="footer-links" style="margin-left: -60px;">
                 <h3>Hỗ trợ</h3>
                 <ul>
                     <li><a href="{{ route('hotline') }}">Liên hệ với chúng tôi</a></li>
@@ -2982,7 +2983,7 @@
                 </ul>
             </div>
 
-            <div class="footer-links">
+            <div class="footer-links" style="margin-left: -120px;">
                 <h3>Hỏi đáp</h3>
                 <ul>
                     <li><a href="{{ route('hotline') }}">Giải đáp thắc mắc</a></li>

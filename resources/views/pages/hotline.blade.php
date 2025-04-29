@@ -3,42 +3,80 @@
 @section('content')
     <!-- Section: Hotline -->
     <section class="hotlines-section">
-        <!-- Job Seekers Column -->
-        <div class="hotline-column">
-            <h2 class="hotline-title job-seekers">Hotline cho người tìm việc</h2>
+           <div class="hotline-column">
+        <h2 class="hotline-title job-seekers">Hotline cho người tìm việc</h2>
 
-            <div class="hotline-info">
-                <span class="hotline-label job-seekers">Hotline hỗ trợ</span>
-                <span class="hotline-number job-seekers">{{ $info_layout->number_job_seeker_1 ?? '0567 012 132' }}</span>
-            </div>
-
-            <div class="hotline-info">
-                <span class="hotline-label job-seekers">Hotline hỗ trợ kỹ thuật</span>
-                <span class="hotline-number job-seekers">{{ $info_layout->number_job_seeker_2 ?? '0567 012 132' }}</span>
-            </div>
-
-            <button class="consult-button job-seekers">Tư vấn cho người tìm việc</button>
+        <div class="hotline-info">
+            <span class="hotline-label job-seekers">Hotline hỗ trợ</span>
+            <span class="hotline-number job-seekers">{{ $info_layout->number_job_seeker_1 ?? '0567 012 132' }}</span>
         </div>
 
-        <!-- Divider -->
-        <div class="divider"></div>
-
-        <!-- Employers Column -->
-        <div class="hotline-column">
-            <h2 class="hotline-title employers">Hotline cho Nhà tuyển dụng</h2>
-
-            <div class="hotline-info">
-                <span class="hotline-label employers">Hotline hỗ trợ</span>
-                <span class="hotline-number employers">{{ $info_layout->number_employer_1 ?? '0567 012 132' }}</span>
-            </div>
-
-            <div class="hotline-info">
-                <span class="hotline-label employers">Hotline hỗ trợ kỹ thuật</span>
-                <span class="hotline-number employers">{{ $info_layout->number_employer_2 ?? '0567 012 132' }}</span>
-            </div>
-
-            <button class="consult-button employers">Tư vấn cho Nhà tuyển dụng</button>
+        @if($info_layout->facebook_candidate)
+        <div class="hotline-info">
+            <span class="hotline-label job-seekers">Facebook</span>
+            <span class="hotline-number job-seekers">{{ $info_layout->facebook_candidate }}</span>
         </div>
+        @endif
+
+        @if($info_layout->email_candidate)
+        <div class="hotline-info">
+            <span class="hotline-label job-seekers">Email</span>
+            <span class="hotline-number job-seekers">{{ $info_layout->email_candidate }}</span>
+        </div>
+        @endif
+
+        <button class="consult-button job-seekers">Tư vấn cho người tìm việc</button>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Employers Column -->
+    <div class="hotline-column">
+        <h2 class="hotline-title employers">Hotline cho Nhà tuyển dụng</h2>
+
+        <div class="hotline-info">
+            <span class="hotline-label employers">Hotline hỗ trợ</span>
+            <span class="hotline-number employers">{{ $info_layout->number_employer_1 ?? '0567 012 132' }}</span>
+        </div>
+
+        @if($info_layout->whatsapp)
+        <div class="hotline-info">
+            <span class="hotline-label employers">WhatsApp</span>
+            <span class="hotline-number employers">{{ $info_layout->whatsapp }}</span>
+        </div>
+        @endif
+
+        @if($info_layout->wechat)
+        <div class="hotline-info">
+            <span class="hotline-label employers">WeChat</span>
+            <span class="hotline-number employers">{{ $info_layout->wechat }}</span>
+        </div>
+        @endif
+
+        @if($info_layout->facebook)
+        <div class="hotline-info">
+            <span class="hotline-label employers">Facebook</span>
+            <span class="hotline-number employers">{{ $info_layout->facebook }}</span>
+        </div>
+        @endif
+
+        @if($info_layout->email)
+        <div class="hotline-info">
+            <span class="hotline-label employers">Email</span>
+            <span class="hotline-number employers">{{ $info_layout->email }}</span>
+        </div>
+        @endif
+
+        @if($info_layout->zalo)
+        <div class="hotline-info">
+            <span class="hotline-label employers">Zalo</span>
+            <span class="hotline-number employers">{{ $info_layout->zalo }}</span>
+        </div>
+        @endif
+
+        <button class="consult-button employers">Tư vấn cho Nhà tuyển dụng</button>
+    </div>
         <div class="divider"></div>
         <div class="hotline-column">
             <label for="location-select">Chọn địa điểm:</label>
@@ -129,11 +167,7 @@
             margin-bottom: 15px;
         }
 
-        p {
-            line-height: 1.6;
-            color: #666;
-            margin-bottom: 15px;
-        }
+       
 
         .services {
             margin-top: 40px;
@@ -318,6 +352,7 @@
                 padding: 6px 10px;
             }
         }
+
     </style>
 
     <!-- Modal HTML -->
