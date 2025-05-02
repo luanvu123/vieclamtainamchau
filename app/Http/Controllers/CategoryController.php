@@ -97,6 +97,7 @@ class CategoryController extends Controller
             'image' => $imagePath,
             'status' => $request->status,
             'slug' => Str::slug($request->name),
+             'hot' => $request->hot ?? 1,
         ]);
         return redirect()->route('categories.index')->with('success', 'Ngành nghề đã được cập nhật.');
     }

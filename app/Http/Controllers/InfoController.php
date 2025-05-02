@@ -12,6 +12,12 @@ class InfoController extends Controller
         $info = Info::first(); // Chỉ lấy một bản ghi đầu tiên
         return view('admin.info.edit', compact('info'));
     }
+     public function hotline()
+    {
+        $info = Info::first(); // Chỉ lấy một bản ghi đầu tiên
+        return view('admin.info.hotline', compact('info'));
+    }
+
 
    public function update(Request $request)
 {

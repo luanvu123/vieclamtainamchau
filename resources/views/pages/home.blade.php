@@ -1,39 +1,40 @@
 @extends('layout')
 @section('content')
 
-     <section class="hero">
-    <div class="search-bar">
-        <form action="{{ route('site.search') }}" method="GET">
-            <div class="search-input-container">
-                <input type="text" name="keyword" id="searchInput" placeholder="Nhập từ khóa tìm kiếm" value="{{ request('keyword') }}" autocomplete="off">
-                <ul id="search-suggestions" class="search-suggestions"></ul>
-            </div>
-            <select name="category">
-                <option value="">Lựa chọn nghề nghiệp</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'selected' : '' }}>
-                        {{ $category->name }}
-                    </option>
-                @endforeach
-            </select>
-            <select name="country">
-                <option value="">Tất cả các quốc gia</option>
-                @foreach ($countries as $country)
-                    <option value="{{ $country->slug }}" {{ request('country') == $country->slug ? 'selected' : '' }}>
-                        {{ $country->name }}
-                    </option>
-                @endforeach
-            </select>
-            <button class="search-btn" type="submit">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-            </button>
-        </form>
-    </div>
-</section>
+    <section class="hero">
+        <div class="search-bar">
+            <form action="{{ route('site.search') }}" method="GET">
+                <div class="search-input-container">
+                    <input type="text" name="keyword" id="searchInput" placeholder="Nhập từ khóa tìm kiếm"
+                        value="{{ request('keyword') }}" autocomplete="off">
+                    <ul id="search-suggestions" class="search-suggestions"></ul>
+                </div>
+                <select name="category">
+                    <option value="">Lựa chọn nghề nghiệp</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <select name="country">
+                    <option value="">Tất cả các quốc gia</option>
+                    @foreach ($countries as $country)
+                        <option value="{{ $country->slug }}" {{ request('country') == $country->slug ? 'selected' : '' }}>
+                            {{ $country->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <button class="search-btn" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </section>
 
 
     <section class="stats">
@@ -125,7 +126,7 @@
                             </div>
 
                             <h3>{{ $study->name }}
-                                <button class="save-btn" onclick="toggleSaveStudyAbroad({{ $study->id }})">♡</button>
+
                             </h3>
 
                             <div class="job-details">
@@ -134,19 +135,103 @@
 
                             <div class="job-footer">
                                 <span class="location">
-                                    <i class="fas fa-map-marker-alt"></i>
                                     @foreach ($study->countries as $country)
-                                        {{ $country->name }}@if (!$loop->last), @endif
+                                        <img src="{{ asset('storage/' . $country->image) }}" alt="{{ $country->name }}"
+                                            class="country-flag">@if (!$loop->last) @endif
                                     @endforeach
                                 </span>
 
                                 <div class="action-buttons">
-                                    <button class="btn-participate" onclick="showRegisterPopup({{ $study->id }})">THAM
-                                        GIA</button>
-
-                                    <a href="{{ route('study-abroad.show', $study->slug) }}" class="btn-detail">XEM CHI TIẾT</a>
+                                    <button class="btn-participate" onclick="showRegisterPopup({{ $study->id }})"
+                                        data-id="{{ $study->id }}">
+                                        <i class="fas fa-user-plus fa-lg"></i>
+                                    </button>
+                                    <button class="save-btn" onclick="toggleSaveStudyAbroad({{ $study->id }})"
+                                        data-id="{{ $study->id }}">
+                                        <i class="far fa-heart fa-lg"></i>
+                                    </button>
+                                    <a href="{{ route('study-abroad.show', $study->slug) }}" class="btn-detail">
+                                        <i class="fas fa-info-circle fa-lg"></i>
+                                    </a>
                                 </div>
                             </div>
+
+                            <style>
+                                .job-footer {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    margin-top: 15px;
+                                }
+
+                                .location {
+                                    display: flex;
+                                    gap: 5px;
+                                }
+
+                                .country-flag {
+                                    width: 24px;
+                                    height: 16px;
+                                    object-fit: cover;
+                                    vertical-align: middle;
+                                }
+
+                                .action-buttons {
+                                    display: flex;
+                                    gap: 10px;
+                                }
+
+                                .action-buttons button,
+                                .action-buttons a {
+                                    background: transparent;
+                                    border: 1px solid #ddd;
+                                    border-radius: 5px;
+                                    padding: 8px 12px;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                }
+
+                                .action-buttons i {
+                                    font-size: 18px;
+                                    width: 20px;
+                                    height: 20px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                }
+
+                                .btn-participate:hover {
+                                    background-color: #4CAF50;
+                                    color: white;
+                                    border-color: #4CAF50;
+                                }
+
+                                .btn-detail:hover {
+                                    background-color: #2196F3;
+                                    color: white;
+                                    border-color: #2196F3;
+                                }
+
+                                .save-btn:hover {
+                                    background-color: #ff5252;
+                                    color: white;
+                                    border-color: #ff5252;
+                                }
+
+                                .save-btn.saved {
+                                    background-color: #ff5252;
+                                    color: white;
+                                    border-color: #ff5252;
+                                }
+
+                                .save-btn.processing {
+                                    opacity: 0.7;
+                                    pointer-events: none;
+                                }
+                            </style>
                         </div>
                     </div>
                 @endforeach
@@ -191,19 +276,11 @@
         </div>
     </div>
     <style>
-        .btn-detail {
-            display: inline-block;
-            padding: 8px 15px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-
-        .btn-detail:hover {
-            background-color: #0056b3;
+        .country-flag {
+            width: 24px;
+            height: 16px;
+            object-fit: cover;
+            vertical-align: middle;
         }
 
         /* Popup Styles */
@@ -369,15 +446,7 @@
             font-size: 14px;
         }
 
-        .btn-participate {
-            background: #ff1f6d;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+
 
         .slider-nav {
             display: flex;
@@ -432,16 +501,16 @@
                 .then(response => response.json())
                 .then(data => {
                     contentDiv.innerHTML = `
-                                <h2>${data.name}</h2>
-                                <div class="detail-image">
-                                    <img src="${data.image}" alt="${data.name}">
-                                </div>
-                                <div class="detail-info">
-                                    <h3>Chi tiết chương trình</h3>
-                                    ${data.description}
+                                            <h2>${data.name}</h2>
+                                            <div class="detail-image">
+                                                <img src="${data.image}" alt="${data.name}">
+                                            </div>
+                                            <div class="detail-info">
+                                                <h3>Chi tiết chương trình</h3>
+                                                ${data.description}
 
-                                </div>
-                            `;
+                                            </div>
+                                        `;
                     popup.style.display = 'block';
                 });
         }
@@ -597,10 +666,10 @@
                     if (data.success) {
                         const saveBtn = document.querySelector(`.save-btn[data-id="${studyAbroadId}"]`);
                         if (data.saved) {
-                            saveBtn.innerHTML = '❤️';
+                            saveBtn.innerHTML = 'Đã lưu';
                             saveBtn.classList.add('saved');
                         } else {
-                            saveBtn.innerHTML = '♡';
+                            saveBtn.innerHTML = 'Lưu';
                             saveBtn.classList.remove('saved');
                         }
                     }

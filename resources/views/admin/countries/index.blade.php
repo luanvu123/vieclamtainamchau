@@ -20,6 +20,8 @@
                 <th>Slug</th>
                 <th>Hình ảnh</th>
                 <th>Trạng thái</th>
+                <th>Nổi bật</th>
+
                 <th>Hành động</th>
             </tr>
         </thead>
@@ -33,6 +35,7 @@
                         <img src="{{ asset('storage/' . $country->image) }}" alt="{{ $country->name }}" width="50">
                     </td>
                     <td>{{ $country->status === 'active' ? 'Hoạt động' : 'Không hoạt động' }}</td>
+                    <td>{{ $country->hot ? 'Có' : 'Không' }}</td>
                     <td>
                         <a href="{{ route('countries.edit', $country->id) }}" class="btn btn-sm btn-warning">Sửa</a>
                         <form action="{{ route('countries.destroy', $country->id) }}" method="POST" style="display: inline-block;">

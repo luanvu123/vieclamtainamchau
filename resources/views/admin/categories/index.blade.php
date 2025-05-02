@@ -17,6 +17,8 @@
                     <th>Hình ảnh</th>
                     <th>Trạng thái</th>
                     <th>Menu</th>
+                    <th>Từ khóa Nổi bật</th>
+
                     <th>Hành động</th>
                 </tr>
             </thead>
@@ -27,14 +29,15 @@
                         <td>{{ $category->name }}</td>
                         <td>
                             @if ($category->image)
-                                <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}"
-                                    width="50">
+                                <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" width="50">
                             @else
                                 Không có hình ảnh
                             @endif
                         </td>
                         <td>{{ $category->status == 'active' ? 'Hoạt động' : 'Không hoạt động' }}</td>
                         <td>{{ $category->isHot ? 'Du học nghề' : 'Menu việc làm ' }}</td>
+                        <td>{{ $category->hot ? 'Có' : 'Không' }}</td>
+
                         <td>
                             <a href="{{ route('categories.edit', $category) }}" class="btn btn-warning btn-sm">Sửa</a>
                             <form action="{{ route('categories.destroy', $category) }}" method="POST" class="d-inline">

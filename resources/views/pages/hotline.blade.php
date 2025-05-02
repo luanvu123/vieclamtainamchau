@@ -24,7 +24,12 @@
             <span class="hotline-number job-seekers">{{ $info_layout->email_candidate }}</span>
         </div>
         @endif
-
+ @if($info_layout->zalo)
+        <div class="hotline-info">
+            <span class="hotline-label job-seekers">Zalo</span>
+            <span class="hotline-number job-seekers">{{ $info_layout->zalo }}</span>
+        </div>
+        @endif
         <button class="consult-button job-seekers">Tư vấn cho người tìm việc</button>
     </div>
 
@@ -68,12 +73,7 @@
         </div>
         @endif
 
-        @if($info_layout->zalo)
-        <div class="hotline-info">
-            <span class="hotline-label employers">Zalo</span>
-            <span class="hotline-number employers">{{ $info_layout->zalo }}</span>
-        </div>
-        @endif
+
 
         <button class="consult-button employers">Tư vấn cho Nhà tuyển dụng</button>
     </div>
@@ -167,7 +167,7 @@
             margin-bottom: 15px;
         }
 
-       
+
 
         .services {
             margin-top: 40px;
@@ -251,7 +251,7 @@
         }
 
         .modal-title.employers {
-            color: #00ffff;
+            color: #f7bd00;
         }
 
         .close-modal {
@@ -322,7 +322,7 @@
         }
 
         .submit-button.employers {
-            background-color: #00ffff;
+            background-color: #f7bd00;
             color: black;
         }
 
@@ -351,6 +351,9 @@
             .input-with-icon {
                 padding: 6px 10px;
             }
+        }
+        .modal-title employers{
+            color: #ffcd00;
         }
 
     </style>

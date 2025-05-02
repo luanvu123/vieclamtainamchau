@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $fillable = ['user_id', 'name', 'image', 'status', 'slug'];
+    protected $fillable = ['user_id', 'name', 'image', 'status', 'slug','hot'];
     public function candidates()
     {
         return $this->belongsToMany(Candidate::class, 'candidate_category');

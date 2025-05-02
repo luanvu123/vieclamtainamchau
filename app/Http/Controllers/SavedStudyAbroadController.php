@@ -52,7 +52,7 @@ class SavedStudyAbroadController extends Controller
 
         $savedStudyAbroad = StudyAbroad::whereHas('savedByCandidates', function ($query) use ($candidateId) {
             $query->where('candidate_id', $candidateId);
-        })->paginate(4); // Phân trang với 10 mục mỗi trang
+        })->paginate(4); 
 
         return view('candidate.saved_study_abroad', compact('savedStudyAbroad'));
     }

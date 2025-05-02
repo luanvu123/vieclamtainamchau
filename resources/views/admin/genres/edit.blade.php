@@ -23,6 +23,14 @@
             <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $genre->name) }}" required>
             @error('name') <p class="text-danger">{{ $message }}</p> @enderror
         </div>
+<div class="form-group">
+    <label for="hot">Từ khóa Nổi bật:</label>
+    <select name="hot" id="hot" class="form-control">
+        <option value="1" {{ old('hot', $genre->hot ?? 1) == 1 ? 'selected' : '' }}>Có</option>
+        <option value="0" {{ old('hot', $genre->hot ?? 1) == 0 ? 'selected' : '' }}>Không</option>
+    </select>
+    @error('hot') <p class="text-danger">{{ $message }}</p> @enderror
+</div>
 
         <div class="form-group">
             <label for="status">Trạng thái:</label>

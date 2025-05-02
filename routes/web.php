@@ -121,6 +121,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('locations', LocationController::class);
     Route::get('/admin/info/edit', [InfoController::class, 'edit'])->name('info.edit');
     Route::put('/admin/info/update', [InfoController::class, 'update'])->name('info.update');
+    Route::get('/hotline', [InfoController::class, 'hotline'])->name('hotline.edit');
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::resource('countries', CountryController::class);

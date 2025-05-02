@@ -3239,6 +3239,51 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        @if (session('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
+
+        @if (session('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
+
+        @if (session('warning'))
+            toastr.warning("{{ session('warning') }}");
+        @endif
+
+        @if (session('info'))
+            toastr.info("{{ session('info') }}");
+        @endif
+    </script>
+    <style>
+        /* Màu cho success */
+        .toast-success {
+            background-color: #51A351 !important;
+        }
+
+        /* Màu cho error */
+        .toast-error {
+            background-color: #BD362F !important;
+        }
+
+        /* Màu cho info */
+        .toast-info {
+            background-color: #2F96B4 !important;
+        }
+
+        /* Màu cho warning */
+        .toast-warning {
+            background-color: #F89406 !important;
+        }
+
+        /* Màu chữ cho tất cả loại thông báo */
+        .toast-message {
+            color: white !important;
+        }
+    </style>
 </body>
 
 </html>

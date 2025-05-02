@@ -2,20 +2,7 @@
 
 @section('content')
  <style>
-        .btn-detail {
-            display: inline-block;
-            padding: 8px 15px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
 
-        .btn-detail:hover {
-            background-color: #0056b3;
-        }
 
         /* Popup Styles */
         .popup {
@@ -66,35 +53,7 @@
             font-size: 16px;
         }
 
-        .submit-btn {
-            width: 100%;
-            padding: 12px;
-            background-color: #ff1f6d;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .btn-view {
-            background: none;
-            border: none;
-            color: #666;
-            cursor: pointer;
-            font-size: 18px;
-            padding: 5px;
-        }
-
-        .btn-view:hover {
-            color: #ff1f6d;
-        }
+      
 
         .job-categories2 {
             padding: 60px 20px;
@@ -232,40 +191,124 @@
 
                     @foreach ($savedStudyAbroad as $study)
                         <div class="job-card">
-                            <div class="job-image">
-                                <img src="{{ asset('storage/' . $study->image) }}" alt="{{ $study->name }}">
-                            </div>
-                            <div class="job-content">
-                                <div class="date">
-                                    <i class="far fa-calendar"></i>
-                                    {{ now()->locale('vi')->translatedFormat('j F, Y') }}
-                                </div>
-
-                                <h3>{{ $study->name }}
-                                </h3>
-                                <div class="job-details">
-                                    {{ $study->short_detail }}
-
-                                </div>
-                                <div class="job-footer">
-                                    <span class="location">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        @foreach ($study->countries as $country)
-                                            {{ $country->name }}@if (!$loop->last)
-                                                ,
-                                            @endif
-                                        @endforeach
-                                    </span>
-                                    <div class="action-buttons">
-                                        <button class="btn-participate" onclick="showRegisterPopup()">THAM GIA</button>
-
-
-                                        <a href="{{ route('study-abroad.show', $study->slug) }}" class="btn-detail">XEM CHI
-                                            TIẾT</a>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="job-image">
+                            <img src="{{ asset('storage/' . $study->image) }}" alt="{{ $study->name }}">
                         </div>
+                        <div class="job-content">
+                            <div class="date">
+                                <i class="far fa-calendar"></i>
+                                {{ now()->locale('vi')->translatedFormat('j F, Y') }}
+                            </div>
+
+                            <h3>{{ $study->name }}
+
+                            </h3>
+
+                            <div class="job-details">
+                                {{ $study->short_detail }}
+                            </div>
+
+                            <div class="job-footer">
+                                <span class="location">
+                                    @foreach ($study->countries as $country)
+                                        <img src="{{ asset('storage/' . $country->image) }}" alt="{{ $country->name }}"
+                                            class="country-flag">@if (!$loop->last) @endif
+                                    @endforeach
+                                </span>
+
+                                <div class="action-buttons">
+                                    <button class="btn-participate" onclick="showRegisterPopup({{ $study->id }})"
+                                        data-id="{{ $study->id }}">
+                                        <i class="fas fa-user-plus fa-lg"></i>
+                                    </button>
+                                    <button class="save-btn" onclick="toggleSaveStudyAbroad({{ $study->id }})"
+                                        data-id="{{ $study->id }}">
+                                        <i class="far fa-heart fa-lg"></i>
+                                    </button>
+                                    <a href="{{ route('study-abroad.show', $study->slug) }}" class="btn-detail">
+                                        <i class="fas fa-info-circle fa-lg"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <style>
+                                .job-footer {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    margin-top: 15px;
+                                }
+
+                                .location {
+                                    display: flex;
+                                    gap: 5px;
+                                }
+
+                                .country-flag {
+                                    width: 24px;
+                                    height: 16px;
+                                    object-fit: cover;
+                                    vertical-align: middle;
+                                }
+
+                                .action-buttons {
+                                    display: flex;
+                                    gap: 10px;
+                                }
+
+                                .action-buttons button,
+                                .action-buttons a {
+                                    background: transparent;
+                                    border: 1px solid #ddd;
+                                    border-radius: 5px;
+                                    padding: 8px 12px;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                }
+
+                                .action-buttons i {
+                                    font-size: 18px;
+                                    width: 20px;
+                                    height: 20px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                }
+
+                                .btn-participate:hover {
+                                    background-color: #4CAF50;
+                                    color: white;
+                                    border-color: #4CAF50;
+                                }
+
+                                .btn-detail:hover {
+                                    background-color: #2196F3;
+                                    color: white;
+                                    border-color: #2196F3;
+                                }
+
+                                .save-btn:hover {
+                                    background-color: #ff5252;
+                                    color: white;
+                                    border-color: #ff5252;
+                                }
+
+                                .save-btn.saved {
+                                    background-color: #ff5252;
+                                    color: white;
+                                    border-color: #ff5252;
+                                }
+
+                                .save-btn.processing {
+                                    opacity: 0.7;
+                                    pointer-events: none;
+                                }
+                            </style>
+                        </div>
+                    </div>
                     @endforeach
 
                 </div>
@@ -273,6 +316,7 @@
             <div class="pagination-container mt-4">
                 {{ $savedStudyAbroad->links() }}
             </div>
+
         @else
             <div class="empty-state">
                 <i class="far fa-heart fa-4x"></i>
@@ -280,5 +324,71 @@
 
             </div>
         @endif
+<script>
+        window.toggleSaveStudyAbroad = function (studyAbroadId) {
+            document.querySelectorAll(".save-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const studyAbroadId = this.dataset.id;
+                    toggleSaveStudyAbroad(studyAbroadId);
+                });
+            });
 
+            fetch(`/candidate/save-study-abroad/${studyAbroadId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const saveBtn = document.querySelector(`.save-btn[data-id="${studyAbroadId}"]`);
+                        if (data.saved) {
+                            saveBtn.innerHTML = 'Đã lưu';
+                            saveBtn.classList.add('saved');
+                        } else {
+                            saveBtn.innerHTML = 'Lưu';
+                            saveBtn.classList.remove('saved');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                    alert('Có lỗi xảy ra khi lưu chương trình du học.');
+                });
+        };
+
+        // Kiểm tra nếu chương trình đã được lưu
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".save-btn").forEach(button => {
+                const studyAbroadId = button.dataset.id;
+
+                fetch(`/candidate/study-abroad/${studyAbroadId}/check-saved`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.saved) {
+                            button.innerHTML = '❤️';
+                            button.classList.add('saved');
+                        }
+                    });
+            });
+        });
+    </script>
+    <script>
+        function showRegisterPopup(studyAbroadId) {
+            const popup = document.getElementById('registerPopup');
+            const form = document.getElementById('registerForm');
+
+            // Gán action route động đúng với route Laravel
+            const actionRoute = `/candidate/register-study-abroad/${studyAbroadId}`;
+            form.action = actionRoute;
+
+            popup.style.display = 'block';
+        }
+
+        function closeRegisterPopup() {
+            document.getElementById('registerPopup').style.display = 'none';
+        }
+    </script>
 @endsection

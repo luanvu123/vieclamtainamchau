@@ -19,7 +19,7 @@ class CountryController extends Controller
 
     public function index()
     {
-        $countries = Country::where('status', 'active')->get();
+        $countries = Country::get();
         return view('admin.countries.index', compact('countries'));
     }
 
@@ -55,28 +55,28 @@ class CountryController extends Controller
         return view('admin.countries.edit', compact('country'));
     }
 
-    public function update(Request $request, Country $country)
-    {
-        $request->validate([
-            'name' => 'required|max:255|unique:countries,name,' . $country->id,
-            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
-        ]);
+   public function update(Request $request, Country $country)
+{
+    $request->validate([
+        'name' => 'required|max:255|unique:countries,name,' . $country->id,
+        'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+        'hot' => 'nullable|boolean',
+    ]);
 
-        // Generate slug if the name has changed
-        $slug = $this->generateSlug($request->name);
+    $slug = $this->generateSlug($request->name);
+    $data = $request->only(['name', 'status', 'hot']);
+    $data['slug'] = $slug;
 
-        $data = $request->only(['name', 'status']);
-        $data['slug'] = $slug;
-
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('flags', 'public');
-            $data['image'] = $imagePath;
-        }
-
-        $country->update($data);
-
-        return redirect()->route('countries.index')->with('success', 'Country updated successfully.');
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('flags', 'public');
+        $data['image'] = $imagePath;
     }
+
+    $country->update($data);
+
+    return redirect()->route('countries.index')->with('success', 'Country updated successfully.');
+}
+
 
     public function destroy(Country $country)
     {

@@ -61,7 +61,7 @@ class GenreController extends Controller
 
     public function update(Request $request, Genre $genre)
     {
-       
+
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -78,6 +78,7 @@ class GenreController extends Controller
             'name' => $request->name,
             'slug' => $request->slug ? Str::slug($request->slug) : Str::slug($request->name),
             'status' => $request->status,
+             'hot' => $request->hot ?? 1,
         ]);
 
         return redirect()->route('genres.index')->with('success', 'Thể loại đã được cập nhật.');

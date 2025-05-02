@@ -83,7 +83,7 @@ class SiteController extends Controller
 
     public function index(Request $request)
     {
-        $categories = Category::where('status', 'active')->where('isHot', 0)->get();
+        $categories = Category::where('status', 'active')->where('isHot', 0)->where('hot', 1)->get();
 
         $genres = Genre::with([
             'jobPostings' => function ($query) {
@@ -116,7 +116,7 @@ class SiteController extends Controller
         File::put($path . 'jobs.json', json_encode($jobTitles));
         OnlineVisitor::trackVisitor($request->ip());
 
-        $countries = Country::where('status', 'active')->get();
+        $countries = Country::where('status', 'active')->where('hot', 1)->get();
         $employerIsPartner = Employer::where('isPartner', 1)->withCount('jobPostings')->get();
         $studyAbroads = StudyAbroad::where('status', 1)
             ->with(['categories', 'countries'])
@@ -128,9 +128,9 @@ class SiteController extends Controller
 
     public function genre($slug)
     {
-        $genres = Genre::where('status', 'active')->get();
-        $categories = Category::where('status', 'active')->where('isHot', 0)->get();
-        $countries = Country::where('status', 'active')->get();
+        $genres = Genre::where('status', 'active')->where('hot', 1)->get();
+        $categories = Category::where('status', 'active')->where('isHot', 0)->where('hot', 1)->get();
+        $countries = Country::where('status', 'active')->where('hot', 1)->get();
 
         $genre = Genre::where('slug', $slug)
             ->with([

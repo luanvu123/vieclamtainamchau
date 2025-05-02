@@ -142,9 +142,9 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     $segment = Request::segment(1);
                                 @endphp
                                 <li
-                                    class="treeview {{ Request::is('users*') || Request::is('cv_templates*') || Request::is('countries*') || Request::is('genres*')||Request::is('typeservice*') || Request::is('locations*') || Request::is('roles*')  || Request::is('language-trainings*') || Request::is('categories*') ? 'active' : '' }}">
+                                    class="treeview {{ Request::is('users*') || Request::is('cv_templates*') ||Request::is('typeservice*') || Request::is('roles*')  || Request::is('typeLanguagetrainings*')  ? 'active' : '' }}">
                                     <a href="#">
-                                        <img src="{{ asset('backend_admin/images/9165478_unbox_package_icon.svg') }}"
+                                        <img src="{{ asset('backend_admin/images/8673763_ic_fluent_slide_size_filled_icon.svg') }}"
                                             alt="Google" width="20" height="20">
                                         <span>Quản lý hệ thống</span>
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -162,37 +162,15 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                                     alt="Google" width="20" height="20"> Phân quyền quản trị
                                             </a>
                                         </li>
-                                        <li class="{{ Request::is('countries*') ? 'active' : '' }}">
-                                            <a href="{{ route('countries.index') }}">
-                                                <img src="{{ asset('backend_admin/images/file-cv-svgrepo-com.svg') }}"
-                                                    alt="Google" width="20" height="20"> Quốc gia
-                                            </a>
-                                        </li>
-                                        <li class="{{ Request::is('categories*') ? 'active' : '' }}">
-                                            <a href="{{ route('categories.index') }}">
-                                                <img src="{{ asset('backend_admin/images/8673763_ic_fluent_slide_size_filled_icon.svg') }}"
-                                                    alt="Google" width="20" height="20"> Thể loại
-                                            </a>
-                                        </li>
+
+
                                         <li class="{{ Request::is('typeservice*') ? 'active' : '' }}">
     <a href="{{ route('typeservice.index') }}">
         <i class="fa fa-list-alt"></i> Danh sách thể loại dịch vụ
     </a>
 </li>
 
-                                        <li class="{{ Request::is('genres') ? 'active' : '' }}">
-                                            <a href="{{ route('genres.index') }}">
-                                                <img src="{{ asset('backend_admin/images/gift-svgrepo-com.svg') }}"
-                                                    alt="Google" width="20" height="20"> Danh mục
-                                            </a>
-                                        </li>
-                                        <li class="treeview {{ Request::is('locations*') ? 'active' : '' }}">
-                                            <a href="{{ route('locations.index') }}">
-                                                <img src="{{ asset('backend_admin/images/register-svgrepo-com.svg') }}"
-                                                    alt="Google" width="20" height="20">
-                                                <span> Địa điểm tư vấn </span>
-                                            </a>
-                                        </li>
+
 
 
 
@@ -392,18 +370,59 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 </li>
 
 
-                            <li class="treeview {{ Request::is('support-manage*') ? 'active' : '' }}">
-                                <a href="{{ route('support-manage.index') }}">
-                                    <img src="{{ asset('backend_admin/images/support-svgrepo-com.svg') }}" alt="Google"
-                                        width="20" height="20"> Hỗ trợ
-                                    @if ($supportCountTwoHour > 0)
-                                        <span class="label label-primary pull-right">{{ $supportCountTwoHour }}
-                                            New</span>
-                                    @endif
+                          <li class="treeview {{ Request::is('support-manage*')||Request::is('locations*') || Request::is('hotline') ? 'active' : '' }}">
+    <a href="#">
+        <i class="fa fa-support"></i> <span>Hỗ trợ & liên hệ</span>
+        @if ($supportCountTwoHour > 0)
+            <span class="label label-primary pull-right">{{ $supportCountTwoHour }} New</span>
+        @endif
+        <i class="fa fa-angle-left pull-right"></i>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::is('support-manage*') ? 'active' : '' }}">
+            <a href="{{ route('support-manage.index') }}">
+                <i class="fa fa-life-ring"></i> <span>Danh sách hỗ trợ</span>
+            </a>
+        </li>
+        <li class="{{ Request::is('hotline') ? 'active' : '' }}">
+            <a href="{{ route('hotline.edit') }}">
+                <i class="fa fa-phone"></i> <span>Chỉnh sửa liên hệ </span>
+            </a>
+        </li>
 
-                                </a>
-                            </li>
+                                        <li class="treeview {{ Request::is('locations*') ? 'active' : '' }}">
+                                            <a href="{{ route('locations.index') }}">
+                                                <img src="{{ asset('backend_admin/images/register-svgrepo-com.svg') }}"
+                                                    alt="Google" width="20" height="20">
+                                                <span> Địa chỉ </span>
+                                            </a>
+                                        </li>
+    </ul>
+</li>
 
+<li class="treeview {{ Request::is('countries*') || Request::is('categories*') || Request::is('genres*') ? 'active' : '' }}">
+    <a href="#">
+        <i class="fa fa-tags"></i> <span>Quốc gia & danh mục & ngành nghề</span>
+        <i class="fa fa-angle-left pull-right"></i>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::is('countries*') ? 'active' : '' }}">
+            <a href="{{ route('countries.index') }}">
+                <i class="fa fa-flag"></i> Danh sách Quốc gia
+            </a>
+        </li>
+        <li class="{{ Request::is('categories*') ? 'active' : '' }}">
+            <a href="{{ route('categories.index') }}">
+                <i class="fa fa-list"></i> Danh sách Ngành nghề
+            </a>
+        </li>
+        <li class="{{ Request::is('genres*') ? 'active' : '' }}">
+            <a href="{{ route('genres.index') }}">
+                <i class="fa fa-folder-open"></i> Danh mục XKLD
+            </a>
+        </li>
+    </ul>
+</li>
 
 
 

@@ -1,5 +1,4 @@
-<?php
-?>
+
 @extends('layouts.app')
 
 @section('content')
@@ -27,6 +26,13 @@
                 <option value="inactive" {{ $category->status === 'inactive' ? 'selected' : '' }}>Không hoạt động</option>
             </select>
 
+<div class="mb-3">
+    <label for="hot" class="form-label"> Từ khóa Nổi bật</label>
+    <select name="hot" id="hot" class="form-control">
+        <option value="1" {{ $category->hot == 1 ? 'selected' : '' }}>Có</option>
+        <option value="0" {{ $category->hot == 0 ? 'selected' : '' }}>Không</option>
+    </select>
+</div>
 
 
             <button type="submit" class="btn btn-success">Cập nhật</button>
