@@ -582,29 +582,74 @@
             }, 5000);
         });
     </script>
-    <section class="partners">
-        <h2>CÁC ĐỐI TÁC</h2>
-        <div class="partner-grid">
-            @if ($employerIsPartner->count() > 0)
-                @foreach ($employerIsPartner as $partner)
-                    <div class="partner-logo">
-                        <img src="{{ asset('storage/' . $partner->avatar) }}" alt="{{ $partner->company_name }}"
-                            onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
-                        <div class="partner-info">
-                            <h5>{{ $partner->company_name }}</h5>
-                            <div class="position-count">
-                                <i class="fas fa-briefcase"></i>
-                                <span>{{ $partner->job_postings_count }} vị trí đang tuyển</span>
+<section class="partners">
+    <h2>CÁC ĐỐI TÁC</h2>
+    <div class="partner-grid">
+        <div class="row">
+            @foreach($companyPartners->chunk(6) as $partnerChunk)
+                <div class="row mb-4">
+                    @foreach($partnerChunk as $partner)
+                        <div class="col-md-2">
+                            <div class="partner-item">
+                                <img src="{{ asset('storage/' . $partner->image) }}" alt="{{ $partner->name }}" class="img-fluid">
                             </div>
                         </div>
-                    </div>
-                @endforeach
-            @else
-                <p>Hiện tại chưa có đối tác nào.</p>
-            @endif
+                    @endforeach
+                </div>
+            @endforeach
         </div>
-    </section>
+    </div>
+</section>
+<style>
+    .partners {
+    padding: 50px 0;
+    background-color: #f9f9f9;
+}
 
+.partners h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: bold;
+    position: relative;
+}
+
+.partners h2:after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background-color: #007bff;
+    margin: 10px auto 0;
+}
+
+.partner-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.partner-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 15px;
+    height: 120px;
+    transition: all 0.3s ease;
+}
+
+.partner-item:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
+}
+
+.partner-item img {
+    max-height: 80%;
+    max-width: 80%;
+    object-fit: contain;
+}
+</style>
 
     <section class="keywords-section">
         <h2>TỪ KHÓA TÌM VIỆC LÀM PHỔ BIẾN TẠI VIỆC LÀM NĂM CHÂU</h2>
@@ -631,16 +676,14 @@
                 </ul>
             </div>
 
-            <div class="keyword-column">
-                <h3>Việc làm danh mục</h3>
-                <ul class="keyword-list">
-                    @foreach ($genres as $genre)
-                        <li>
-                            <a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
+           <div class="keyword-column">
+    <h3>Từ khóa</h3>
+    <ul class="keyword-list">
+        @foreach($keySearches as $keySearch)
+            <li><a href="{{ $keySearch->url }}">{{ $keySearch->name }}</a></li>
+        @endforeach
+    </ul>
+</div>
 
         </div>
     </section>

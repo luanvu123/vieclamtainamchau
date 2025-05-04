@@ -142,7 +142,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     $segment = Request::segment(1);
                                 @endphp
                                 <li
-                                    class="treeview {{ Request::is('users*') || Request::is('cv_templates*') ||Request::is('typeservice*') || Request::is('roles*')  || Request::is('typeLanguagetrainings*')  ? 'active' : '' }}">
+                                    class="treeview {{ Request::is('users*') || Request::is('cv_templates*') ||Request::is('typeservice*')|| Request::is('company-partners*') || Request::is('roles*')  || Request::is('typeLanguagetrainings*')  ? 'active' : '' }}">
                                     <a href="#">
                                         <img src="{{ asset('backend_admin/images/8673763_ic_fluent_slide_size_filled_icon.svg') }}"
                                             alt="Google" width="20" height="20">
@@ -172,7 +172,11 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 
 
 
-
+ <li class="{{ Request::is('company-partners*') ? 'active' : '' }}">
+            <a href="{{ route('company-partners.index') }}">
+                <i class="fa fa-building"></i> Danh sách Đối tác
+            </a>
+        </li>
 
                                           <li class="treeview {{ Request::is('typeLanguagetrainings*') ? 'active' : '' }}">
                                             <a href="{{ route('typeLanguagetrainings.index') }}">
@@ -400,7 +404,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     </ul>
 </li>
 
-<li class="treeview {{ Request::is('countries*') || Request::is('categories*') || Request::is('genres*') ? 'active' : '' }}">
+<li class="treeview {{ Request::is('countries*')|| Request::is('keysearch*') || Request::is('categories*') || Request::is('genres*') ? 'active' : '' }}">
     <a href="#">
         <i class="fa fa-tags"></i> <span>Quốc gia & danh mục & ngành nghề</span>
         <i class="fa fa-angle-left pull-right"></i>
@@ -419,6 +423,11 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
         <li class="{{ Request::is('genres*') ? 'active' : '' }}">
             <a href="{{ route('genres.index') }}">
                 <i class="fa fa-folder-open"></i> Danh mục XKLD
+            </a>
+        </li>
+          <li class="{{ Request::is('keysearch*') ? 'active' : '' }}">
+            <a href="{{ route('keysearch.index') }}">
+                <i class="fa fa-search"></i> Danh sách Từ khóa tìm kiếm
             </a>
         </li>
     </ul>

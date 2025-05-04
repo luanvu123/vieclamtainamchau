@@ -16,10 +16,12 @@ use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\AdvertiseController;
 use App\Http\Controllers\AdvertisesManageController;
+use App\Http\Controllers\CompanyPartnerController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\Employer\EmployerProfileController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\KeySearchController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NewsController;
@@ -78,6 +80,8 @@ Auth::routes();
 
 
 Route::group(['middleware' => ['auth']], function () {
+     Route::resource('keysearch', KeySearchController::class);
+Route::resource('company-partners', CompanyPartnerController::class);
      Route::resource('application-manage', ApplicationManageController::class);
       Route::post('application-manage/{id}/add-hidden-cv', [ApplicationManageController::class, 'addHiddenCv'])
         ->name('application-manage.add-hidden-cv');
@@ -143,6 +147,8 @@ Route::post('/applications/{application}/view-info', [JobPostingController::clas
 
 
 Route::prefix('candidate')->name('candidate.')->group(function () {
+
+
     Route::post('/apply', [ApplicationController::class, 'store'])->middleware('candidate')->name('apply');
     Route::get('/job/{slug}', [CandidateProfileController::class, 'job'])->name('job.show')->middleware('candidate');
     Route::post('upload-cv', [CandidateProfileController::class, 'uploadCV'])->name('uploadCV');

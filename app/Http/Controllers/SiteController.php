@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Advertise;
 use App\Models\Category;
+use App\Models\CompanyPartner;
 use App\Models\Country;
 use App\Models\Employer;
 use App\Models\Genre;
 use App\Models\JobPosting;
+use App\Models\KeySearch;
 use App\Models\LanguageTraining;
 use App\Models\Location;
 use App\Models\News;
@@ -84,7 +86,6 @@ class SiteController extends Controller
     public function index(Request $request)
     {
         $categories = Category::where('status', 'active')->where('isHot', 0)->where('hot', 1)->get();
-
         $genres = Genre::with([
             'jobPostings' => function ($query) {
                 $query->with(['employer', 'countries'])
@@ -107,7 +108,6 @@ class SiteController extends Controller
             ->select('id', 'title', 'slug')
             ->get()
             ->toArray();
-
         // Tạo thư mục và file jobs.json
         $path = public_path() . "/json/";
         if (!is_dir($path)) {
@@ -115,16 +115,17 @@ class SiteController extends Controller
         }
         File::put($path . 'jobs.json', json_encode($jobTitles));
         OnlineVisitor::trackVisitor($request->ip());
-
         $countries = Country::where('status', 'active')->where('hot', 1)->get();
         $employerIsPartner = Employer::where('isPartner', 1)->withCount('jobPostings')->get();
         $studyAbroads = StudyAbroad::where('status', 1)
             ->with(['categories', 'countries'])
             ->get();
 
-        return view('pages.home', compact('categories', 'genres', 'countries', 'employerIsPartner', 'studyAbroads'));
+        // Fetch CompanyPartner data - limit to 18 active partners
+        $companyPartners = CompanyPartner::where('status', 1)->take(18)->get();
+        $keySearches = KeySearch::where('status', 1)->get();
+        return view('pages.home', compact('categories', 'genres', 'countries', 'employerIsPartner', 'studyAbroads', 'companyPartners', 'keySearches'));
     }
-
 
     public function genre($slug)
     {
