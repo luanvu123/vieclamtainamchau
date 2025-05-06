@@ -1,6 +1,6 @@
 @extends('layout')
 @section('content')
-<style>
+    <style>
         .modal {
             display: none;
             position: fixed;
@@ -233,50 +233,51 @@
             margin-left: 0;
             margin-right: 0;
         }
-</style>
- <section class="hero">
-    <div class="search-bar">
-        <form action="{{ route('site.search') }}" method="GET">
-            <div class="search-input-container">
-                <input type="text" name="keyword" id="searchInput" placeholder="Nhập từ khóa tìm kiếm" value="{{ request('keyword') }}" autocomplete="off">
-                <ul id="search-suggestions" class="search-suggestions"></ul>
-            </div>
-            <select name="category">
-                <option value="">Lựa chọn nghề nghiệp</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'selected' : '' }}>
-                        {{ $category->name }}
-                    </option>
-                @endforeach
-            </select>
-            <select name="country">
-                <option value="">Tất cả các quốc gia</option>
-                @foreach ($countries as $country)
-                    <option value="{{ $country->slug }}" {{ request('country') == $country->slug ? 'selected' : '' }}>
-                        {{ $country->name }}
-                    </option>
-                @endforeach
-            </select>
-            <button class="search-btn" type="submit">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-            </button>
-        </form>
-    </div>
-</section>
+    </style>
+    <section class="hero">
+        <div class="search-bar">
+            <form action="{{ route('site.search') }}" method="GET">
+                <div class="search-input-container">
+                    <input type="text" name="keyword" id="searchInput" placeholder="Nhập từ khóa tìm kiếm"
+                        value="{{ request('keyword') }}" autocomplete="off">
+                    <ul id="search-suggestions" class="search-suggestions"></ul>
+                </div>
+                <select name="category">
+                    <option value="">Lựa chọn nghề nghiệp</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <select name="country">
+                    <option value="">Tất cả các quốc gia</option>
+                    @foreach ($countries as $country)
+                        <option value="{{ $country->slug }}" {{ request('country') == $country->slug ? 'selected' : '' }}>
+                            {{ $country->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <button class="search-btn" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </section>
 
     {{-- <section class="stats">
         @foreach ($categories as $categoryItem)
-            <div class="stat-item">
-                <a href="{{ route('category.show', $categoryItem->slug) }}">
-                    <img src="{{ $categoryItem->image ? asset('storage/' . $categoryItem->image) : asset('frontend/img/default-category.png') }}"
-                        alt="{{ $categoryItem->name }}">
-                    <p>{{ $categoryItem->name }}</p>
-                </a>
-            </div>
+        <div class="stat-item">
+            <a href="{{ route('category.show', $categoryItem->slug) }}">
+                <img src="{{ $categoryItem->image ? asset('storage/' . $categoryItem->image) : asset('frontend/img/default-category.png') }}"
+                    alt="{{ $categoryItem->name }}">
+                <p>{{ $categoryItem->name }}</p>
+            </a>
+        </div>
         @endforeach
     </section>
 
@@ -286,16 +287,16 @@
         <br>
         <div class="countries-container">
             @foreach ($countries->chunk(8) as $chunk)
-                <div class="custom-row">
-                    @foreach ($chunk as $country)
-                        <div class="country-item" data-country-id="{{ $country->id }}">
-                            <a href="javascript:void(0)">
-                                <img src="{{ asset('storage/' . $country->image) }}" alt="{{ $country->name }}" class="flag">
-                                <span class="country-name">{{ $country->name }}</span>
-                            </a>
-                        </div>
-                    @endforeach
+            <div class="custom-row">
+                @foreach ($chunk as $country)
+                <div class="country-item" data-country-id="{{ $country->id }}">
+                    <a href="javascript:void(0)">
+                        <img src="{{ asset('storage/' . $country->image) }}" alt="{{ $country->name }}" class="flag">
+                        <span class="country-name">{{ $country->name }}</span>
+                    </a>
                 </div>
+                @endforeach
+            </div>
             @endforeach
 
         </div>
@@ -312,11 +313,11 @@
                         @if ($job->employer && $job->employer->avatar)
                             <a href="{{ route('candidate.job.show', $job->slug) }}">
                                 <img src="{{ asset('storage/' . $job->employer->avatar) }}" alt="{{ $job->employer->company_name }}"
-                                    onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
+                                    onerror="this.src='{{ asset('frontend/company1.png') }}'">
                             </a>
                         @else
                             <a href="{{ route('candidate.job.show', $job->slug) }}">
-                                <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">
+                                <img src="{{ asset('frontend/company1.png') }}" alt="Default Company Logo">
                             </a>
                         @endif
                         <div class="card-content">
@@ -354,11 +355,11 @@
                             @if ($job->employer && $job->employer->avatar)
                                 <a href="{{ route('candidate.job.show', $job->slug) }}">
                                     <img src="{{ asset('storage/' . $job->employer->avatar) }}" alt="{{ $job->employer->company_name }}"
-                                        onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
+                                        onerror="this.src='{{ asset('frontend/company1.png') }}'">
                                 </a>
                             @else
                                 <a href="{{ route('candidate.job.show', $job->slug) }}">
-                                    <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">
+                                    <img src="{{ asset('frontend/company1.png') }}" alt="Default Company Logo">
                                 </a>
                             @endif
                             <div class="card-content">

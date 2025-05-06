@@ -44,9 +44,9 @@
 
                             @if ($job->employer && $job->employer->avatar)
                                 <img src="{{ asset('storage/' . $job->employer->avatar) }}" alt="{{ $job->employer->company_name }}"
-                                    onerror="this.src='{{ asset('frontend/img/company1.png') }}'">
+                                    onerror="this.src='{{ asset('frontend/company1.png') }}'">
                             @else
-                                <img src="{{ asset('frontend/img/company1.png') }}" alt="Default Company Logo">
+                                <img src="{{ asset('frontend/company1.png') }}" alt="Default Company Logo">
                             @endif
                             <div class="card-content">
                                 <h3>{{ Str::limit($job->title, 15) }}</h3>
