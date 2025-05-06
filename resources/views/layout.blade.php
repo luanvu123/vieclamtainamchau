@@ -1939,7 +1939,7 @@
         }
 
         .hotline-title.employers {
-            color: #00ffff;
+            color: #ffc107;
         }
 
         .hotline-info {
@@ -2126,7 +2126,7 @@
         }
 
         .hotline-label.employers {
-            color: #00ffff;
+            color: #ffc107;
         }
 
         .hotline-number {
@@ -2141,7 +2141,7 @@
         }
 
         .hotline-number.employers {
-            color: #00ffff;
+            color: #ffc107;
         }
 
         .consult-button {
@@ -2158,8 +2158,8 @@
         }
 
         .consult-button.employers {
-            border-color: #00ffff;
-            color: #00ffff;
+            border-color: #ffc107;
+            color: #ffc107;
         }
 
         .divider {

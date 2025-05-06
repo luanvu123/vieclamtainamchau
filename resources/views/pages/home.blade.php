@@ -52,16 +52,17 @@
 
 
 
-    <section class="job-categories">
-        @foreach ($genres as $genre)
-            @if ($genre->jobPostings->count() > 0)
-                <section class="job-categories">
-                    <h2><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></h2>
 
-                    <div class="category-grid">
-                        @foreach ($genre->jobPostings as $job)
-                            <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
+       @php $bgIndex = 0; @endphp
+@foreach ($genres as $genre)
+    @if ($genre->jobPostings->count() > 0)
+        <section class="job-categories bg-{{ $bgIndex }}">
+            <h2><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></h2>
 
+            <div class="category-grid">
+                @foreach ($genre->jobPostings as $job)
+                    <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
+                        <!-- Card content -->
 
                                 @if ($job->employer && $job->employer->avatar)
                                     <a href="{{ route('candidate.job.show', $job->slug) }}">
@@ -92,22 +93,24 @@
                                         @endif
                                     </span>
                                 </div>
-                            </div>
-                        @endforeach
+
                     </div>
+                @endforeach
+            </div>
 
-                    @if ($genre->jobPostings->count() > 4)
-                        <div class="view-more">
-                            <a href="{{ route('genre.show', $genre->slug) }}" class="btn btn-outline">
-                                Xem thêm {{ $genre->name }}
-                            </a>
-
-                        </div>
-                    @endif
-                </section>
+            @if ($genre->jobPostings->count() > 4)
+                <div class="view-more">
+                    <a href="{{ route('genre.show', $genre->slug) }}" class="btn btn-outline">
+                        Xem thêm {{ $genre->name }}
+                    </a>
+                </div>
             @endif
-        @endforeach
-    </section>
+        </section>
+        @php $bgIndex++; @endphp
+    @endif
+@endforeach
+
+
 
 
     <section class="job-categories2">
@@ -367,6 +370,36 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+.job-categories {
+    padding: 2rem;
+}
+
+.job-categories.bg-0 {
+    background-color: #f5f5f5;
+}
+
+.job-categories.bg-1 {
+    background-color: #ced2d3;
+}
+
+.job-categories.bg-2 {
+    background-color: #fff8e1;
+}
+
+.job-categories.bg-3 {
+    background-color: #e8f5e9;
+}
+
+.job-categories.bg-4 {
+    background-color: #ede7f6;
+}
+
+/* Nếu có nhiều hơn 5 genres, dùng % để lặp lại */
+.job-categories.bg-5,
+.job-categories.bg-6,
+.job-categories.bg-7 {
+    background-color: #fce4ec;
+}
 
         .section-title {
             text-align: center;
@@ -501,16 +534,16 @@
                 .then(response => response.json())
                 .then(data => {
                     contentDiv.innerHTML = `
-                                            <h2>${data.name}</h2>
-                                            <div class="detail-image">
-                                                <img src="${data.image}" alt="${data.name}">
-                                            </div>
-                                            <div class="detail-info">
-                                                <h3>Chi tiết chương trình</h3>
-                                                ${data.description}
+                                                <h2>${data.name}</h2>
+                                                <div class="detail-image">
+                                                    <img src="${data.image}" alt="${data.name}">
+                                                </div>
+                                                <div class="detail-info">
+                                                    <h3>Chi tiết chương trình</h3>
+                                                    ${data.description}
 
-                                            </div>
-                                        `;
+                                                </div>
+                                            `;
                     popup.style.display = 'block';
                 });
         }
@@ -582,74 +615,75 @@
             }, 5000);
         });
     </script>
-<section class="partners">
-    <h2>CÁC ĐỐI TÁC</h2>
-    <div class="partner-grid">
-        <div class="row">
-            @foreach($companyPartners->chunk(6) as $partnerChunk)
-                <div class="row mb-4">
-                    @foreach($partnerChunk as $partner)
-                        <div class="col-md-2">
-                            <div class="partner-item">
-                                <img src="{{ asset('storage/' . $partner->image) }}" alt="{{ $partner->name }}" class="img-fluid">
+    <section class="partners">
+        <h2>CÁC ĐỐI TÁC</h2>
+        <div class="partner-grid">
+            <div class="row">
+                @foreach($companyPartners->chunk(6) as $partnerChunk)
+                    <div class="row mb-4">
+                        @foreach($partnerChunk as $partner)
+                            <div class="col-md-2">
+                                <div class="partner-item">
+                                    <img src="{{ asset('storage/' . $partner->image) }}" alt="{{ $partner->name }}"
+                                        class="img-fluid">
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
-                </div>
-            @endforeach
+                        @endforeach
+                    </div>
+                @endforeach
+            </div>
         </div>
-    </div>
-</section>
-<style>
-    .partners {
-    padding: 50px 0;
-    background-color: #f9f9f9;
-}
+    </section>
+    <style>
+        .partners {
+            padding: 50px 0;
+            background-color: #f9f9f9;
+        }
 
-.partners h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    font-weight: bold;
-    position: relative;
-}
+        .partners h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+            position: relative;
+        }
 
-.partners h2:after {
-    content: '';
-    display: block;
-    width: 80px;
-    height: 3px;
-    background-color: #007bff;
-    margin: 10px auto 0;
-}
+        .partners h2:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: #007bff;
+            margin: 10px auto 0;
+        }
 
-.partner-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-}
+        .partner-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-.partner-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    padding: 15px;
-    height: 120px;
-    transition: all 0.3s ease;
-}
+        .partner-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            height: 120px;
+            transition: all 0.3s ease;
+        }
 
-.partner-item:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transform: translateY(-3px);
-}
+        .partner-item:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
 
-.partner-item img {
-    max-height: 80%;
-    max-width: 80%;
-    object-fit: contain;
-}
-</style>
+        .partner-item img {
+            max-height: 80%;
+            max-width: 80%;
+            object-fit: contain;
+        }
+    </style>
 
     <section class="keywords-section">
         <h2>TỪ KHÓA TÌM VIỆC LÀM PHỔ BIẾN TẠI VIỆC LÀM NĂM CHÂU</h2>
@@ -676,14 +710,14 @@
                 </ul>
             </div>
 
-           <div class="keyword-column">
-    <h3>Từ khóa</h3>
-    <ul class="keyword-list">
-        @foreach($keySearches as $keySearch)
-            <li><a href="{{ $keySearch->url }}">{{ $keySearch->name }}</a></li>
-        @endforeach
-    </ul>
-</div>
+            <div class="keyword-column">
+                <h3>Từ khóa</h3>
+                <ul class="keyword-list">
+                    @foreach($keySearches as $keySearch)
+                        <li><a href="{{ $keySearch->url }}">{{ $keySearch->name }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
 
         </div>
     </section>

@@ -80,17 +80,17 @@ Auth::routes();
 
 
 Route::group(['middleware' => ['auth']], function () {
-     Route::resource('keysearch', KeySearchController::class);
-Route::resource('company-partners', CompanyPartnerController::class);
-     Route::resource('application-manage', ApplicationManageController::class);
-      Route::post('application-manage/{id}/add-hidden-cv', [ApplicationManageController::class, 'addHiddenCv'])
+    Route::resource('keysearch', KeySearchController::class);
+    Route::resource('company-partners', CompanyPartnerController::class);
+    Route::resource('application-manage', ApplicationManageController::class);
+    Route::post('application-manage/{id}/add-hidden-cv', [ApplicationManageController::class, 'addHiddenCv'])
         ->name('application-manage.add-hidden-cv');
     Route::post('application-manage/{id}/update-cv-path', [ApplicationManageController::class, 'updateCvPath'])
         ->name('application-manage.update-cv-path');
-        Route::post('application-manage/{id}/delete-hidden-cv', [ApplicationManageController::class, 'deleteHiddenCv'])
-    ->name('application-manage.delete-hidden-cv');
+    Route::post('application-manage/{id}/delete-hidden-cv', [ApplicationManageController::class, 'deleteHiddenCv'])
+        ->name('application-manage.delete-hidden-cv');
     Route::resource('languages', LanguageController::class);
-        Route::get('manage/job-postings/basic', [EmployerManageController::class, 'indexBasic'])->name('manage.employers.indexBasic');
+    Route::get('manage/job-postings/basic', [EmployerManageController::class, 'indexBasic'])->name('manage.employers.indexBasic');
     Route::get('manage/job-postings/outstanding', [EmployerManageController::class, 'indexOutstanding'])->name('manage.employers.indexOutstanding');
     Route::get('manage/job-postings/special', [EmployerManageController::class, 'indexSpecial'])->name('manage.employers.indexSpecial');
 
@@ -156,7 +156,7 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
 
     Route::resource('experiences', ExperienceController::class);
     Route::resource('educations', EducationController::class);
-     Route::resource('certificates', CertificateController::class);
+    Route::resource('certificates', CertificateController::class);
     Route::post('/register-study-abroad/{studyAbroadId}', [SavedStudyAbroadController::class, 'registerConsultation'])
         ->middleware('candidate')
         ->name('register.study.abroad');
