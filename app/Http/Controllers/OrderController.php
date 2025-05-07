@@ -56,6 +56,7 @@ class OrderController extends Controller
                     'service_id' => $cartItem->service_id,
                     'quantity' => $cartItem->quantity,
                     'number_of_weeks' => $cartItem->number_of_weeks,
+                    'number_of_active'=> $cartItem->quantity,
                     'price' => $cartItem->service->price,
                     'total_price' => $cartItem->total_price,
                 ]);

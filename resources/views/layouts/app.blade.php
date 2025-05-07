@@ -189,7 +189,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                 </li>
 
                                 <li
-                                    class="treeview  {{ Request::is('manage/employers') || Request::is('employer/admin/employers*') || Request::is('banks*') || Request::is('manage/job-postings') || Request::is('manage/orders*') || Request::is('services*') || Request::is('labor-exports*') ? 'active' : '' }}">
+                                    class="treeview  {{ Request::is('manage/employers')  || Request::is('banks*') || Request::is('manage/job-postings') || Request::is('manage/orders*') || Request::is('services*') || Request::is('labor-exports*') ? 'active' : '' }}">
                                     <a href="{{ route('manage.employers.index') }}">
                                         <i class="fa fa-table"></i> <span>Nhà tuyển dụng</span>
                                         @if ($employerCountTwoHour > 0)
@@ -436,7 +436,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 
 
 
-<li class="treeview {{ Request::is('manage/job-postings/*') ? 'active' : '' }}">
+<li class="treeview {{ Request::is('manage/job-postings/*')|| Request::is('employer/admin/employers*') ? 'active' : '' }}">
     <a href="{{ route('manage.employers.indexJobPosting') }}">
         <i class="fa fa-briefcase"></i> <span>Quản lý Đăng tin</span>
         @if ($basicJobCountTwoHour > 0 || $outstandingJobCountTwoHour > 0 || $specialJobCountTwoHour > 0)

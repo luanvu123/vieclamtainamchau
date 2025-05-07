@@ -53,15 +53,10 @@ class SiteController extends Controller
         // Get the specific news
         $news = News::findOrFail($id);
 
-        // Get banner news for right sidebar
-        $bannerNews = News::where('status', 1)
-            ->where('isBanner', 1)
-            ->get();
-
+        $bannerNews = Advertise::where('status', 1)->latest()->get(); 
         // Get related news (optional)
         $relatedNews = News::where('status', 1)
             ->where('id', '!=', $id)
-            ->where('isBanner', 0)
             ->take(5)
             ->get();
 
