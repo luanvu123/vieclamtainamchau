@@ -27,55 +27,96 @@ class EmployerManageController extends Controller
         $this->middleware('permission:employer-delete', ['only' => ['destroy']]);
     }
 
-    public function index()
-    {
+   public function index()
+{
+    $user = Auth::user();
+
+    // Nếu là admin thì hiển thị toàn bộ, nếu không thì chỉ hiển thị của chính họ
+    if ($user->roles()->where('id', 1)->exists()) {
         $employers = Employer::with(['jobPostings', 'gallery'])->get();
-        return view('admin.employers.index', compact('employers'));
+    } else {
+        $employers = Employer::with(['jobPostings', 'gallery'])
+            ->where('user_id', $user->id)
+            ->get();
     }
+
+    return view('admin.employers.index', compact('employers'));
+}
 
    public function indexJobPosting()
 {
+    $user = Auth::user();
+
     $jobPostings = JobPosting::with(['employer', 'categories', 'genres', 'countries'])
         ->whereHas('genres', function ($q) {
             $q->where('slug', 'viec-lam');
+        })
+        ->when(!$user->roles()->where('id', 1)->exists(), function ($query) use ($user) {
+            $query->whereHas('employer', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
         })
         ->get();
 
     return view('admin.employers.index-job-posting', compact('jobPostings'));
 }
+
 public function indexBasic()
 {
+    $user = Auth::user();
+
     $jobPostings = JobPosting::with(['employer', 'categories', 'genres', 'countries'])
-          ->where('service_type', 'Tin cơ bản')
+        ->where('service_type', 'Tin cơ bản')
+        ->when(!$user->roles()->where('id', 1)->exists(), function ($query) use ($user) {
+            $query->whereHas('employer', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        })
         ->get();
 
     return view('admin.employers.index-job-basic', compact('jobPostings'));
 }
 
+
 public function indexOutstanding()
 {
+    $user = Auth::user();
+
     $jobPostings = JobPosting::with(['employer', 'categories', 'genres', 'countries'])
-       ->where('service_type', 'Tin nổi bật')
+        ->where('service_type', 'Tin nổi bật')
+        ->when(!$user->roles()->where('id', 1)->exists(), function ($query) use ($user) {
+            $query->whereHas('employer', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        })
         ->get();
 
     return view('admin.employers.index-job-outstanding', compact('jobPostings'));
 }
 
+
 public function indexSpecial()
 {
+    $user = Auth::user();
+
     $jobPostings = JobPosting::with(['employer', 'categories', 'genres', 'countries'])
-       ->where('service_type', 'Tin đặc biệt')
+        ->where('service_type', 'Tin đặc biệt')
+        ->when(!$user->roles()->where('id', 1)->exists(), function ($query) use ($user) {
+            $query->whereHas('employer', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        })
         ->get();
 
     return view('admin.employers.index-job-special', compact('jobPostings'));
 }
+
     public function show($id)
     {
         $employer = Employer::findOrFail($id);
         $jobPostings = JobPosting::where('employer_id', $id)
             ->with(['categories', 'genres', 'countries'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->orderBy('created_at', 'desc');
 
         return view('admin.employers.show', compact('employer', 'jobPostings'));
     }
@@ -83,7 +124,7 @@ public function indexSpecial()
     public function edit(Employer $employer)
     {
         $user = Auth::user();
-        if ($user->roles()->where('id', 1)->exists() || $employer->user_id === $user->id) {
+        if ($user->roles()->where('id', 1)->exists() || $employer->user_id == $user->id) {
             $users = User::all(); // Lấy danh sách tất cả user
             return view('admin.employers.edit', compact('employer', 'users'));
         }
@@ -94,6 +135,11 @@ public function indexSpecial()
     public function editJobPosting($employerId, $jobPostingId)
     {
         $employer = Employer::findOrFail($employerId);
+          $user = Auth::user();
+
+    if (!$user->roles()->where('id', 1)->exists() && $employer->user_id != $user->id) {
+        abort(403, 'Bạn không có quyền chỉnh sửa bài đăng này.');
+    }
         $jobPosting = JobPosting::where('employer_id', $employerId)
             ->with(['categories', 'genres', 'countries'])
             ->findOrFail($jobPostingId);
@@ -114,7 +160,12 @@ public function indexSpecial()
     public function updateJobPosting(Request $request, $employerId, $jobPostingId)
     {
         $jobPosting = JobPosting::where('employer_id', $employerId)->findOrFail($jobPostingId);
+  $user = Auth::user();
+    $employer = Employer::findOrFail($employerId);
 
+    if (!$user->roles()->where('id', 1)->exists() && $employer->user_id != $user->id) {
+        abort(403, 'Bạn không có quyền cập nhật bài đăng này.');
+    }
         $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|in:fulltime,parttime,intern,freelance',
@@ -213,67 +264,97 @@ public function indexSpecial()
         return redirect()->route('manage.employers.edit', $employer)
             ->with('success', 'Thông tin nhà tuyển dụng đã được cập nhật thành công.');
     }
-    public function destroy(Employer $employer)
+   public function destroy(Employer $employer)
 {
-    try {
-        $employerName = $employer->company_name;
-        $employer->delete();
+    $user = Auth::user();
 
-        return redirect()->route('manage.employers.index')
-            ->with('success', "Đã xóa nhà tuyển dụng \"$employerName\" thành công");
-    } catch (\Exception $e) {
-        return redirect()->route('manage.employers.index')
-            ->with('error', 'Không thể xóa nhà tuyển dụng. Vui lòng thử lại sau.');
-    }
-}
-   public function orders()
-    {
-        $orders = Order::with(['employer', 'orderDetails.service'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-
-        return view('admin.orders.index', compact('orders'));
-    }
-
-
-    public function showOrder($id)
-    {
-        $order = Order::with(['employer', 'orderDetails.service'])
-            ->findOrFail($id);
-
-        return view('admin.orders.show', compact('order'));
-    }
-
-
-    public function updateOrderStatus(Request $request, $id)
-    {
-        $request->validate([
-            'status' => 'required|in:Đã thanh toán,Chưa thanh toán',
-        ]);
-
-        DB::beginTransaction();
+    // Chỉ cho admin hoặc người tạo employer được phép xóa
+    if ($user->roles()->where('id', 1)->exists() || $employer->user_id == $user->id) {
         try {
-            $order = Order::findOrFail($id);
-            $order->status = $request->status;
-            $order->save();
+            $employerName = $employer->company_name;
+            $employer->delete();
 
-            // If marking as paid, update the expiring date for all details
-            if ($request->status == 'Đã thanh toán') {
-                $orderDate = Carbon::now();
-                foreach ($order->orderDetails as $detail) {
-                    $expiringDate = $orderDate->copy()->addWeeks($detail->number_of_weeks);
-                    $detail->expiring_date = $expiringDate;
-                    $detail->save();
-                }
-            }
-
-            DB::commit();
-            return redirect()->back()->with('success', 'Trạng thái đơn hàng đã được cập nhật.');
+            return redirect()->route('manage.employers.index')
+                ->with('success', "Đã xóa nhà tuyển dụng \"$employerName\" thành công");
         } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
+            return redirect()->route('manage.employers.index')
+                ->with('error', 'Không thể xóa nhà tuyển dụng. Vui lòng thử lại sau.');
         }
     }
+
+    // Nếu không có quyền thì trả về lỗi 403
+    abort(403, 'Bạn không có quyền xóa nhà tuyển dụng này.');
+}
+
+ public function orders()
+{
+    $user = Auth::user();
+
+    $orders = Order::with(['employer', 'orderDetails.service'])
+        ->when(!$user->roles()->where('id', 1)->exists(), function ($query) use ($user) {
+            $query->whereHas('employer', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+
+    return view('admin.orders.index', compact('orders'));
+}
+
+
+   public function showOrder($id)
+{
+    $user = Auth::user();
+
+    $order = Order::with(['employer', 'orderDetails.service'])
+        ->when(!$user->roles()->where('id', 1)->exists(), function ($query) use ($user) {
+            $query->whereHas('employer', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        })
+        ->findOrFail($id);
+
+    return view('admin.orders.show', compact('order'));
+}
+public function updateOrderStatus(Request $request, $id)
+{
+    $request->validate([
+        'status' => 'required|in:Đã thanh toán,Chưa thanh toán',
+    ]);
+
+    $user = Auth::user();
+
+    DB::beginTransaction();
+    try {
+        $order = Order::with('employer')->findOrFail($id);
+
+        // Chỉ cho phép nếu là admin hoặc chủ sở hữu
+        if (!$user->roles()->where('id', 1)->exists() && $order->employer->user_id !== $user->id) {
+            abort(403, 'Bạn không có quyền cập nhật đơn hàng này.');
+        }
+
+        $order->status = $request->status;
+        $order->save();
+
+        // Nếu trạng thái là "Đã thanh toán", cập nhật ngày hết hạn
+        if ($request->status == 'Đã thanh toán') {
+            $orderDate = Carbon::now();
+            foreach ($order->orderDetails as $detail) {
+                $expiringDate = $orderDate->copy()->addWeeks($detail->number_of_weeks);
+                $detail->expiring_date = $expiringDate;
+                $detail->save();
+            }
+        }
+
+        DB::commit();
+        return redirect()->back()->with('success', 'Trạng thái đơn hàng đã được cập nhật.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
+    }
+}
+
 
     /**
      * Update the order detail's number of active.
@@ -304,12 +385,20 @@ public function indexSpecial()
     }
 
 
-    public function orderDetails()
-    {
-        $orderDetails = OrderDetail::with(['order.employer', 'service'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
+  public function orderDetails()
+{
+    $user = Auth::user();
 
-        return view('admin.order_details.index', compact('orderDetails'));
-    }
+    $orderDetails = OrderDetail::with(['order.employer', 'service'])
+        ->when(!$user->roles()->where('id', 1)->exists(), function ($query) use ($user) {
+            $query->whereHas('order.employer', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(15);
+
+    return view('admin.order_details.index', compact('orderDetails'));
+}
+
 }

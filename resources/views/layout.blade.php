@@ -2497,7 +2497,67 @@
     background-color: #f0f7ff;
 }
 
+/* Thêm CSS này vào file CSS của bạn hoặc tạo một section style trong blade */
 
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 4px;
+}
+
+.pagination li {
+    margin: 0 2px;
+}
+
+.pagination li a, .pagination li span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    min-width: 36px;
+    padding: 0 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+}
+
+.pagination li.active span {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.pagination li a:hover {
+    background-color: #f5f5f5;
+}
+
+.pagination li.disabled span {
+    color: #aaa;
+    background-color: #f8f8f8;
+    cursor: not-allowed;
+}
+
+/* Điều chỉnh để phù hợp với giao diện di động */
+@media (max-width: 768px) {
+    .pagination li a, .pagination li span {
+        height: 32px;
+        min-width: 32px;
+        padding: 0 8px;
+        font-size: 14px;
+    }
+}
     </style>
 </head>
 
@@ -3283,6 +3343,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .toast-message {
             color: white !important;
         }
+        
     </style>
 </body>
 

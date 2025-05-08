@@ -53,62 +53,71 @@
 
 
 
-    @php $bgIndex = 0; @endphp
-    @foreach ($genres as $genre)
-        @if ($genre->jobPostings->count() > 0)
-            <section class="job-categories bg-{{ $bgIndex }}">
-                <h2><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></h2>
+   @php $bgIndex = 0; @endphp
+@foreach ($genres as $genre)
+    @php
+        $jobs = $paginatedJobsByGenre[$genre->id] ?? collect();
+    @endphp
 
-                <div class="category-grid">
-                    @foreach ($genre->jobPostings as $job)
-                        <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
-                            <!-- Card content -->
+    @if ($jobs->count() > 0)
+        <section class="job-categories bg-{{ $bgIndex }}">
+            <h2><a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a></h2>
 
-                            @if ($job->employer && $job->employer->avatar)
+            <div class="category-grid">
+                @foreach ($jobs as $job)
+                    <div class="category-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-effect' : '' }}">
+                        <!-- Card content -->
+
+                        @if ($job->employer && $job->employer->avatar)
+                            <a href="{{ route('candidate.job.show', $job->slug) }}">
+                                <img src="{{ asset('storage/' . $job->employer->avatar) }}" alt="{{ $job->employer->company_name }}"
+                                    onerror="this.src='{{ asset('frontend/company1.png') }}'">
+                            </a>
+                        @else
+                            <a href="{{ route('candidate.job.show', $job->slug) }}">
+                                <img src="{{ asset('frontend/company1.png') }}" alt="Default Company Logo">
+                            </a>
+                        @endif
+
+                        <div class="card-content">
+                            <h3>
                                 <a href="{{ route('candidate.job.show', $job->slug) }}">
-                                    <img src="{{ asset('storage/' . $job->employer->avatar) }}" alt="{{ $job->employer->company_name }}"
-                                        onerror="this.src='{{ asset('frontend/company1.png') }}'">
+                                    {{ Str::limit($job->title, 30) }}
                                 </a>
-                            @else
-                                <a href="{{ route('candidate.job.show', $job->slug) }}">
-                                    <img src="{{ asset('frontend/company1.png') }}" alt="Default Company Logo">
-                                </a>
-                            @endif
+                            </h3>
+                            <p title="{{ $job->employer->company_name }}">
+                                {{ $job->employer ? Str::limit($job->employer->company_name, 25) : 'Công ty TNHH' }}
+                            </p>
 
-                            <div class="card-content">
-                                <h3>
-                                    <a href="{{ route('candidate.job.show', $job->slug) }}">
-                                        {{ Str::limit($job->title, 30) }}
-                                    </a>
-                                </h3>
-                                <p title="{{ $job->employer->company_name }}">
-                                    {{ $job->employer ? Str::limit($job->employer->company_name, 25) : 'Công ty TNHH' }}
-                                </p>
-
-                                <span>
+                             <span>
                                     @if ($job->countries->isNotEmpty())
                                         {{ $job->countries->pluck('name')->join(', ') }}
                                     @else
                                         Không xác định quốc gia
                                     @endif
                                 </span>
-                            </div>
-
                         </div>
-                    @endforeach
-                </div>
-
-                @if ($genre->jobPostings->count() > 4)
-                    <div class="view-more">
-                        <a href="{{ route('genre.show', $genre->slug) }}" class="btn btn-outline">
-                            Xem thêm {{ $genre->name }}
-                        </a>
                     </div>
-                @endif
-            </section>
-            @php $bgIndex++; @endphp
-        @endif
-    @endforeach
+                @endforeach
+            </div>
+
+            <!-- Hiển thị phân trang -->
+            <div class="pagination-container">
+                {{ $jobs->appends(request()->except('genre_'.$genre->id))->links() }}
+            </div>
+
+            @if ($jobs->total() > 12)
+                <div class="view-more">
+                    <a href="{{ route('genre.show', $genre->slug) }}" class="btn btn-outline">
+                        Xem thêm {{ $genre->name }}
+                    </a>
+                </div>
+            @endif
+        </section>
+
+        @php $bgIndex++; @endphp
+    @endif
+@endforeach
 
 
 

@@ -144,24 +144,34 @@ class JobPostingController extends Controller
     public function store(Request $request)
     {
         $employer = Auth::guard('employer')->user();
+        $requiredFields = [
+        'avatar', 'mst', 'address', 'scale', 'detail', 'phone', 'facebook', 'twitter'
+    ];
+
+    foreach ($requiredFields as $field) {
+        if (empty($employer->$field)) {
+            return redirect()->back()
+                ->with('error', 'Vui lòng cập nhật đầy đủ thông tin công ty trước khi tạo tin tuyển dụng.');
+        }
+    }
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|in:fulltime,parttime,intern,freelance',
-            'age_range' => 'nullable|string|max:50',
-            'location' => 'nullable|string|max:255',
+            'age_range' => 'required|string|max:50',
+            'location' => 'required|string|max:255',
             'description' => 'required|string',
-            'closing_date' => 'nullable|date',
-            'salary' => 'nullable|string|max:50',
-            'experience' => 'nullable|in:Không yêu cầu,1 năm,2 năm,3 năm,4 năm,5 năm,5+ năm',
-            'rank' => 'nullable|string|max:100',
-            'number_of_recruits' => 'nullable|integer',
-            'sex' => 'nullable|string|max:50',
-            'skills_required' => 'nullable|string|max:255',
-            'categories' => 'nullable|array',
+            'closing_date' => 'required|date',
+            'salary' => 'required|string|max:50',
+            'experience' => 'required|in:Không yêu cầu,1 năm,2 năm,3 năm,4 năm,5 năm,5+ năm',
+            'rank' => 'required|string|max:100',
+            'number_of_recruits' => 'required|integer',
+            'sex' => 'required|string|max:50',
+            'skills_required' => 'required|string|max:255',
+            'categories' => 'required|array',
             'categories.*' => 'exists:categories,id',
-            'countries' => 'nullable|array',
+            'countries' => 'required|array',
             'countries.*' => 'exists:countries,id',
-            'genres' => 'nullable|array',
+            'genres' => 'required|array',
             'genres.*' => 'exists:genres,id',
             'service_type' => 'required|in:Tin cơ bản,Tin nổi bật,Tin đặc biệt',
         ]);
@@ -260,13 +270,13 @@ class JobPostingController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|in:fulltime,parttime,intern,freelance',
-            'age_range' => 'nullable|string|max:50',
+            'age_range' => 'required|string|max:50',
             'location' => 'required|string|max:255',
             'experience' => 'required|string|max:50',
             'rank' => 'required|string|max:50',
             'number_of_recruits' => 'required|integer|min:1',
             'sex' => 'required|string|max:20',
-            'skills_required' => 'nullable|string',
+            'skills_required' => 'required|string',
             'description' => 'required|string',
             'closing_date' => 'required|date|after:today',
             'salary' => 'required|string|max:100',

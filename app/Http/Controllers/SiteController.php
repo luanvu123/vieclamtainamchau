@@ -78,50 +78,71 @@ class SiteController extends Controller
         return view('pages.country', compact('country', 'jobPostings', 'countries', 'categories'));
     }
 
-    public function index(Request $request)
-    {
-        $categories = Category::where('status', 'active')->where('isHot', 0)->where('hot', 1)->get();
-        $genres = Genre::with([
-            'jobPostings' => function ($query) {
-                $query->with(['employer', 'countries'])
-                    ->where('status', 'active')
-                    ->where('closing_date', '>', now())
-                    ->whereIn('service_type', ['Tin nổi bật', 'Tin đặc biệt'])
-                    ->latest();
-            }
-        ])
-            // Lọc ra các genres có ít nhất một jobPosting phù hợp
-            ->whereHas('jobPostings', function ($query) {
-                $query->where('status', 'active')
-                    ->where('closing_date', '>', now())
-                    ->whereIn('service_type', ['Tin nổi bật', 'Tin đặc biệt']);
-            })
-            ->get();
-        $jobTitles = JobPosting::where('status', 'active')
-            ->where('closing_date', '>', now())
-            ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
-            ->select('id', 'title', 'slug')
-            ->get()
-            ->toArray();
-        // Tạo thư mục và file jobs.json
-        $path = public_path() . "/json/";
-        if (!is_dir($path)) {
-            mkdir($path, 0777, true);
-        }
-        File::put($path . 'jobs.json', json_encode($jobTitles));
-        OnlineVisitor::trackVisitor($request->ip());
-        $countries = Country::where('status', 'active')->where('hot', 1)->get();
-        $employerIsPartner = Employer::where('isPartner', 1)->withCount('jobPostings')->get();
-        $studyAbroads = StudyAbroad::where('status', 1)
-            ->with(['categories', 'countries'])
-            ->get();
+  public function index(Request $request)
+{
+    $categories = Category::where('status', 'active')->where('isHot', 0)->where('hot', 1)->get();
 
-        // Fetch CompanyPartner data - limit to 18 active partners
-        $companyPartners = CompanyPartner::where('status', 1)->take(18)->get();
-        $keySearches = KeySearch::where('status', 1)->get();
-        return view('pages.home', compact('categories', 'genres', 'countries', 'employerIsPartner', 'studyAbroads', 'companyPartners', 'keySearches'));
+    // Lấy danh sách genres mà không kèm theo phân trang
+    $genres = Genre::whereHas('jobPostings', function ($query) {
+        $query->where('status', 'active')
+            ->where('closing_date', '>', now())
+            ->whereIn('service_type', ['Tin nổi bật', 'Tin đặc biệt']);
+    })->get();
+
+    // Tạo mảng để lưu trữ các jobs đã phân trang cho mỗi genre
+    $paginatedJobsByGenre = [];
+
+    // Với mỗi genre, truy vấn và phân trang jobs riêng biệt
+    foreach ($genres as $genre) {
+        $paginatedJobs = JobPosting::with(['employer', 'countries'])
+            ->where('status', 'active')
+            ->where('closing_date', '>', now())
+            ->whereIn('service_type', ['Tin nổi bật', 'Tin đặc biệt'])
+            ->whereHas('genres', function ($query) use ($genre) {
+                $query->where('genres.id', $genre->id);
+            })
+            ->latest()
+            ->paginate(12, ['*'], 'genre_'.$genre->id); // Mỗi genre có một tên phân trang riêng
+
+        $paginatedJobsByGenre[$genre->id] = $paginatedJobs;
     }
 
+    $jobTitles = JobPosting::where('status', 'active')
+        ->where('closing_date', '>', now())
+        ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
+        ->select('id', 'title', 'slug')
+        ->get()
+        ->toArray();
+
+    // Tạo thư mục và file jobs.json
+    $path = public_path() . "/json/";
+    if (!is_dir($path)) {
+        mkdir($path, 0777, true);
+    }
+    File::put($path . 'jobs.json', json_encode($jobTitles));
+
+    OnlineVisitor::trackVisitor($request->ip());
+    $countries = Country::where('status', 'active')->where('hot', 1)->get();
+    $employerIsPartner = Employer::where('isPartner', 1)->withCount('jobPostings')->get();
+    $studyAbroads = StudyAbroad::where('status', 1)
+        ->with(['categories', 'countries'])
+        ->get();
+
+    // Fetch CompanyPartner data - limit to 18 active partners
+    $companyPartners = CompanyPartner::where('status', 1)->take(18)->get();
+    $keySearches = KeySearch::where('status', 1)->get();
+
+    return view('pages.home', compact(
+        'categories',
+        'genres',
+        'countries',
+        'employerIsPartner',
+        'studyAbroads',
+        'companyPartners',
+        'keySearches',
+        'paginatedJobsByGenre'
+    ));
+}
     public function genre($slug)
     {
         $genres = Genre::where('status', 'active')->where('hot', 1)->get();

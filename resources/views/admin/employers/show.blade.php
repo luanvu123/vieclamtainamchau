@@ -162,9 +162,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="mt-4">
-                        {{ $jobPostings->links() }}
-                    </div>
+
                 @else
                     <div class="text-center py-4">
                         <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
@@ -175,7 +173,7 @@
         </div>
     </div>
 
-    @push('styles')
+
         <style>
             .badge {
                 font-weight: 500;
@@ -189,5 +187,4 @@
                 gap: 0.25rem;
             }
         </style>
-    @endpush
 @endsection
