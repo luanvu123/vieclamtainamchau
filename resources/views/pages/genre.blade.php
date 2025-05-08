@@ -448,16 +448,15 @@
                 </ul>
             </div>
 
-            <div class="keyword-column">
-                <h3>Việc làm danh mục</h3>
+             <div class="keyword-column">
+                <h3>Từ khóa</h3>
                 <ul class="keyword-list">
-                    @foreach ($genres as $genre)
-                        <li>
-                            <a href="{{ route('genre.show', $genre->slug) }}">{{ $genre->name }}</a>
-                        </li>
+                    @foreach($keySearches as $keySearch)
+                        <li><a href="{{ $keySearch->url }}">{{ $keySearch->name }}</a></li>
                     @endforeach
                 </ul>
             </div>
+
 
         </div>
     </section>

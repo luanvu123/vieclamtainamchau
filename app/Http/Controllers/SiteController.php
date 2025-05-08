@@ -53,7 +53,7 @@ class SiteController extends Controller
         // Get the specific news
         $news = News::findOrFail($id);
 
-        $bannerNews = Advertise::where('status', 1)->latest()->get(); 
+        $bannerNews = Advertise::where('status', 1)->latest()->get();
         // Get related news (optional)
         $relatedNews = News::where('status', 1)
             ->where('id', '!=', $id)
@@ -150,8 +150,8 @@ class SiteController extends Controller
                 $jobsByCountry[$country->id]->push($job);
             }
         }
-
-        return view('pages.genre', compact('genre', 'genres', 'categories', 'countries', 'jobsByCountry'));
+   $keySearches = KeySearch::where('status', 1)->get();
+        return view('pages.genre', compact('genre', 'genres', 'categories', 'countries', 'jobsByCountry','keySearches'));
     }
 
     public function category($slug)
