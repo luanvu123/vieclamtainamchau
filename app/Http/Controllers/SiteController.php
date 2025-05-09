@@ -143,26 +143,25 @@ class SiteController extends Controller
             'paginatedJobsByGenre'
         ));
     }
-   public function genre($slug)
+    public function genre($slug)
 {
     $genres = Genre::where('status', 'active')->get();
     $categories = Category::where('status', 'active')->get();
     $countries = Country::where('status', 'active')->get();
 
-    $genre = Genre::where('slug', $slug)
-        ->with([
-            'jobPostings' => function ($query) {
-                $query->with(['employer', 'countries'])
-                    ->where('status', 'active')
-                    ->where('closing_date', '>', now())
-                    ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
-                    ->latest();
-            }
-        ])
-        ->firstOrFail();
+    // Lấy thông tin genre
+    $genre = Genre::where('slug', $slug)->firstOrFail();
 
-    $keySearches = KeySearch::where('status', 1)->get();
-    return view('pages.genre', compact('genre', 'genres', 'categories', 'countries', 'keySearches'));
+    // Lấy danh sách job postings với phân trang
+    $jobPostings = $genre->jobPostings()
+        ->with(['employer', 'countries'])
+        ->where('status', 'active')
+        ->where('closing_date', '>', now())
+        ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
+        ->latest()
+        ->paginate(12); // Số lượng bài đăng mỗi trang, có thể điều chỉnh
+
+    return view('pages.genre', compact('genre', 'genres', 'categories', 'countries', 'jobPostings'));
 }
 
 

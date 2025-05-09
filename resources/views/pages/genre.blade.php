@@ -34,46 +34,50 @@
             </form>
         </div>
     </section>
-    <section class="job-categories">
-        @if ($genre->jobPostings->count() > 0)
-            <div class="category-grid">
-                @foreach ($genre->jobPostings as $job)
-                    <div class="category-card {{ $job->service_type == 'Tin đặc biệt' ? 'hot-effect' : '' }}">
-                        <!-- Job card content như cũ -->
-                        @if ($job->employer && $job->employer->avatar)
+   <section class="job-categories">
+    @if ($jobPostings->count() > 0)
+        <div class="category-grid">
+            @foreach ($jobPostings as $job)
+                <div class="category-card {{ $job->service_type == 'Tin đặc biệt' ? 'hot-effect' : '' }}">
+                    <!-- Job card content như cũ -->
+                    @if ($job->employer && $job->employer->avatar)
+                        <a href="{{ route('candidate.job.show', $job->slug) }}">
+                            <img src="{{ asset('storage/' . $job->employer->avatar) }}" alt="{{ $job->employer->company_name }}"
+                                onerror="this.src='{{ asset('frontend/company1.png') }}'">
+                        </a>
+                    @else
+                        <a href="{{ route('candidate.job.show', $job->slug) }}">
+                            <img src="{{ asset('frontend/company1.png') }}" alt="Default Company Logo">
+                        </a>
+                    @endif
+                    <div class="card-content">
+                        <h3>
                             <a href="{{ route('candidate.job.show', $job->slug) }}">
-                                <img src="{{ asset('storage/' . $job->employer->avatar) }}" alt="{{ $job->employer->company_name }}"
-                                    onerror="this.src='{{ asset('frontend/company1.png') }}'">
+                                {{ Str::limit($job->title, 30) }}
                             </a>
-                        @else
-                            <a href="{{ route('candidate.job.show', $job->slug) }}">
-                                <img src="{{ asset('frontend/company1.png') }}" alt="Default Company Logo">
-                            </a>
-                        @endif
-                        <div class="card-content">
-                            <h3>
-                                <a href="{{ route('candidate.job.show', $job->slug) }}">
-                                    {{ Str::limit($job->title, 30) }}
-                                </a>
-                            </h3>
-                            <p title="{{ $job->employer->company_name }}">
-                                {{ $job->employer ? Str::limit($job->employer->company_name, 25) : 'Công ty TNHH' }}
-                            </p>
-                            <span>
-                                @if ($job->countries->isNotEmpty())
-                                    {{ $job->countries->pluck('name')->join(', ') }}
-                                @else
-                                    Không xác định quốc gia
-                                @endif
-                            </span>
-                        </div>
+                        </h3>
+                        <p title="{{ $job->employer->company_name }}">
+                            {{ $job->employer ? Str::limit($job->employer->company_name, 25) : 'Công ty TNHH' }}
+                        </p>
+                        <span>
+                            @if ($job->countries->isNotEmpty())
+                                {{ $job->countries->pluck('name')->join(', ') }}
+                            @else
+                                Không xác định quốc gia
+                            @endif
+                        </span>
                     </div>
-                @endforeach
-            </div>
-             
-        @else
-            <p>Hiện tại không có bài đăng tuyển dụng nào trong thể loại này.</p>
-        @endif
-    </section>
+                </div>
+            @endforeach
+        </div>
+
+        <!-- Hiển thị phân trang -->
+        <div class="pagination-container">
+            {{ $jobPostings->links() }}
+        </div>
+    @else
+        <p>Hiện tại không có bài đăng tuyển dụng nào trong thể loại này.</p>
+    @endif
+</section>
 
 @endsection
