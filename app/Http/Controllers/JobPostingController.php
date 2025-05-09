@@ -145,7 +145,7 @@ class JobPostingController extends Controller
     {
         $employer = Auth::guard('employer')->user();
         $requiredFields = [
-        'avatar', 'mst', 'address', 'scale', 'detail', 'phone', 'facebook', 'twitter'
+        'avatar', 'mst', 'address', 'scale', 'detail', 'phone','map'
     ];
 
     foreach ($requiredFields as $field) {

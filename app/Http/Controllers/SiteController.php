@@ -288,7 +288,7 @@ class SiteController extends Controller
             });
         }
 
-        $studyAbroads = $query->paginate(3);
+        $studyAbroads = $query->paginate(6);
 
         $categories = Category::where('status', 1)->get();
         $countries = Country::where('status', 1)->get();

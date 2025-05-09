@@ -558,7 +558,7 @@
                     <!-- Sẽ được JavaScript cập nhật -->
                 </div>
                 <button class="apply-btn" onclick="applyJob({{ $jobPosting->id }})">Nộp hồ sơ</button>
-               
+
 
                 <button class="save-btn" onclick="toggleSaveJob({{ $jobPosting->id }})">
                     ♡
@@ -807,9 +807,11 @@
                     </div>
 
                 </div>
-                <iframe src="https://www.google.com/maps/embed?pb={{ $jobPosting->employer->map_url }}" width="600"
-                    height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+              @if (!empty($jobPosting->employer->map))
+    <div class="map-container" style="margin-top: 20px;">
+        {!! $jobPosting->employer->map !!}
+    </div>
+@endif
                 <div class="other-jobs-section">
                     <h2 class="section-title">Việc làm khác từ công ty</h2>
 

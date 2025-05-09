@@ -2,181 +2,231 @@
 
 @section('content')
 
-<style>
-    /* Style cho bộ lọc */
-    .filter-form {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-.study-programs {
-    text-align: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
+    <style>
+        /* Style cho bộ lọc */
+        .filter-form {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
 
-/* Căn giữa danh sách */
-.study-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    justify-content: center;
-    margin-top: 20px;
-}
+        .study-programs {
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-/* Đồng bộ kích thước của thẻ study-card */
-.study-card {
-    position: relative;
-    background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 350px; /* Đảm bảo chiều cao đồng nhất */
-}
+        /* Căn giữa danh sách */
+        .study-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
 
-/* Hover */
-.study-card:hover {
-    transform: translateY(-5px);
-}
+        /* Đồng bộ kích thước của thẻ study-card */
+        .study-card {
+            position: relative;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 350px;
+            /* Đảm bảo chiều cao đồng nhất */
+        }
 
-/* Ảnh tự động co dãn */
-.study-card img {
-    width: 100%;
-    height: 180px; /* Đảm bảo kích thước ảnh đồng nhất */
-    object-fit: cover;
-    border-radius: 8px;
-}
+        /* Hover */
+        .study-card:hover {
+            transform: translateY(-5px);
+        }
 
-/* Định dạng số thứ tự */
-.study-number {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: #ff5722;
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 50%;
-}
+        /* Ảnh tự động co dãn */
+        .study-card img {
+            width: 100%;
+            height: 180px;
+            /* Đảm bảo kích thước ảnh đồng nhất */
+            object-fit: cover;
+            border-radius: 8px;
+        }
 
-/* Nội dung của card */
-.card-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: left;
-    padding: 10px 0;
-}
+        /* Định dạng số thứ tự */
+        .study-number {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #ff5722;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 50%;
+        }
 
-.card-content h3 {
-    font-size: 18px;
-    margin: 10px 0;
-}
+        /* Nội dung của card */
+        .card-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: left;
+            padding: 10px 0;
+        }
 
-.card-content p {
-    font-size: 14px;
-    color: #666;
-}
+        .card-content h3 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
 
-/* Căn giữa phân trang */
-.pagination-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
+        .card-content p {
+            font-size: 14px;
+            color: #666;
+        }
 
-/* Không có chương trình nào */
-.no-programs {
-    font-size: 18px;
-    color: #666;
-    margin-top: 20px;
-}
+        /* Căn giữa phân trang */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
 
-    .filter-form select {
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
+        /* Không có chương trình nào */
+        .no-programs {
+            font-size: 18px;
+            color: #666;
+            margin-top: 20px;
+        }
 
-    .filter-form button {
-        padding: 8px 15px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+        .filter-form select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-    .filter-form button:hover {
-        background-color: #0056b3;
-    }
-</style>
+        .filter-form button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-<section class="study-programs">
-    <h1>Du học nghề</h1>
+        .filter-form button:hover {
+            background-color: #0056b3;
+        }
 
-    {{-- Bộ lọc --}}
-   <form method="GET" action="{{ route('site.study-abroad') }}">
-    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
-        <!-- Lọc theo danh mục -->
-        <select name="category_id" onchange="this.form.submit()">
-            <option value="">Chọn ngành nghề</option>
-            @foreach ($categories as $category)
-                <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                    {{ $category->name }}
-                </option>
-            @endforeach
-        </select>
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
 
-        <!-- Lọc theo quốc gia -->
-        <select name="country_id" onchange="this.form.submit()">
-            <option value="">Chọn quốc gia</option>
-            @foreach ($countries as $country)
-                <option value="{{ $country->id }}" {{ request('country_id') == $country->id ? 'selected' : '' }}>
-                    {{ $country->name }}
-                </option>
-            @endforeach
-        </select>
+        .filter-bar select {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            min-width: 160px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
 
-        <button type="submit">Lọc</button>
-    </div>
-</form>
+        .filter-bar select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .filter-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .filter-btn i {
+            font-size: 16px;
+        }
+    </style>
+
+    <section class="study-programs">
+        <h1>Du học nghề</h1>
+
+        {{-- Bộ lọc --}}
+        <form method="GET" action="{{ route('site.study-abroad') }}">
+            <div class="filter-bar">
+                <!-- Lọc theo danh mục -->
+                <select name="category_id" onchange="this.form.submit()">
+                    <option value="">Chọn ngành nghề</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+                <!-- Lọc theo quốc gia -->
+                <select name="country_id" onchange="this.form.submit()">
+                    <option value="">Chọn quốc gia</option>
+                    @foreach ($countries as $country)
+                        <option value="{{ $country->id }}" {{ request('country_id') == $country->id ? 'selected' : '' }}>
+                            {{ $country->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+                <button type="submit" class="filter-btn" title="Lọc">
+                    <i class="fas fa-filter"></i>
+                </button>
+            </div>
+        </form>
 
 
-    {{-- Danh sách chương trình --}}
-    @if ($studyAbroads->count() > 0)
-        <div class="study-grid">
-            @foreach ($studyAbroads as $index => $study)
-                <a href="{{ route('study-abroad.show', $study->slug) }}" class="study-card-link">
-                    <div class="study-card">
-                        <span class="study-number">{{ $studyAbroads->firstItem() + $index }}</span>
-                        <img src="{{ asset('storage/' . $study->image) }}" alt="{{ $study->name }}"
-                            onerror="this.src='{{ asset('frontend/img/default-image.png') }}'">
-                        <div class="card-content">
-                            <h3>{{ Str::limit($study->name, 40) }}</h3>
-                            <p>{{ $study->short_detail }}</p>
+
+        {{-- Danh sách chương trình --}}
+        @if ($studyAbroads->count() > 0)
+            <div class="study-grid">
+                @foreach ($studyAbroads as $index => $study)
+                    <a href="{{ route('study-abroad.show', $study->slug) }}" class="study-card-link">
+                        <div class="study-card">
+                            <img src="{{ asset('storage/' . $study->image) }}" alt="{{ $study->name }}"
+                                onerror="this.src='{{ asset('frontend/img/default-image.png') }}'">
+                            <div class="card-content">
+                                <h3>{{ Str::limit($study->name, 40) }}</h3>
+                                <p>{{ $study->short_detail }}</p>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            @endforeach
-        </div>
+                    </a>
+                @endforeach
+            </div>
 
-        {{-- Căn giữa phân trang --}}
-        <div class="pagination-container">
-            {{ $studyAbroads->appends(request()->query())->links() }}
-        </div>
-    @else
-        <p class="no-programs">Hiện tại không có chương trình du học nào.</p>
-    @endif
-</section>
+            {{-- Căn giữa phân trang --}}
+            <div class="pagination-container">
+                <div class="pagination-container" style="text-align: center; margin-top: 20px;">
+                    {{ $studyAbroads->appends(request()->query())->links() }}
+                </div>
+
+            </div>
+        @else
+            <p class="no-programs">Hiện tại không có chương trình du học nào.</p>
+        @endif
+    </section>
 
 @endsection
-

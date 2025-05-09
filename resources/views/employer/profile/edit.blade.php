@@ -243,6 +243,10 @@
                              <input type="text" name="company_name" placeholder="Tên công ty"
                                  value="{{ old('company_name', $employer->company_name) }}">
                          </div>
+                         <div class="form-group">
+                             <label>Mô tả công ty</label>
+                             <textarea class="form-control @error('detail') is-invalid @enderror" name="detail" rows="5">{{ old('detail', $employer->detail) }}</textarea>
+                         </div>
 
                          <div class="form-group">
                              <label>Quy mô nhân sự</label>
@@ -270,7 +274,14 @@
                              <label>Bản đồ</label>
                              <input type="text" name="map" placeholder="Đường dẫn Google Map"
                                  value="{{ old('map', $employer->map) }}">
+                                 <small class="text-muted">Dán toàn bộ mã iframe từ Google Maps ở chế độ chia sẻ → nhúng bản đồ.</small>
+
                          </div>
+@if (!empty($employer->map))
+    <div class="map-container" style="margin-top: 20px;">
+        {!! $employer->map !!}
+    </div>
+@endif
 
                          <div class="form-group">
                              <label for="gallery_images">Hình ảnh gallery</label>
@@ -323,7 +334,7 @@
                          </div>
                          <div class="business-license">
                              <h2>Giấy phép kinh doanh</h2>
-                             <p>Để chứng thực tài khoản Quý khách đang sử dụng trên Việc Làm 24h, vui lòng đăng tải giấy
+                             <p>Để chứng thực tài khoản Quý khách đang sử dụng trên Vieclamtainamchau, vui lòng đăng tải giấy
                                  phép đăng ký kinh doanh.</p>
 
                              <div class="upload-file">

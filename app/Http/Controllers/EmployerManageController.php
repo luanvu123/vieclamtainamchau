@@ -116,7 +116,8 @@ public function indexSpecial()
         $employer = Employer::findOrFail($id);
         $jobPostings = JobPosting::where('employer_id', $id)
             ->with(['categories', 'genres', 'countries'])
-            ->orderBy('created_at', 'desc');
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('admin.employers.show', compact('employer', 'jobPostings'));
     }

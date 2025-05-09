@@ -31,6 +31,7 @@ class EmployerProfileController extends Controller
             'mst' => 'nullable|string|max:255',
             'company_name' => 'required|string|max:255',
             'scale' => 'nullable|string',
+            'detail' => 'nullable|string',
             'map' => 'nullable|string',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
@@ -53,6 +54,7 @@ class EmployerProfileController extends Controller
             'slug' => Str::slug($request->company_name),
             'scale' => $request->scale,
             'map' => $request->map,
+            'detail' => $request->detail,
         ]);
 
         // Cập nhật quan hệ categories và genres
