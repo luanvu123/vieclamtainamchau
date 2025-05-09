@@ -40,6 +40,9 @@
                     </a>
                 @endforeach
             </div>
+            <div class="pagination-container mt-4">
+                {{ $jobPostings->links() }}
+            </div>
         @else
             <p>Không tìm thấy kết quả phù hợp với tiêu chí tìm kiếm.</p>
         @endif

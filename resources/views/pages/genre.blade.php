@@ -35,8 +35,8 @@
         </div>
     </section>
     <section class="job-categories">
-        <div class="category-grid all-jobs">
-            @if ($genre->jobPostings->count() > 0)
+        @if ($genre->jobPostings->count() > 0)
+            <div class="category-grid">
                 @foreach ($genre->jobPostings as $job)
                     <div class="category-card {{ $job->service_type == 'Tin đặc biệt' ? 'hot-effect' : '' }}">
                         <!-- Job card content như cũ -->
@@ -69,10 +69,11 @@
                         </div>
                     </div>
                 @endforeach
-            @else
-                <p>Hiện tại không có bài đăng tuyển dụng nào trong thể loại này.</p>
-            @endif
-        </div>
+            </div>
+             
+        @else
+            <p>Hiện tại không có bài đăng tuyển dụng nào trong thể loại này.</p>
+        @endif
     </section>
 
 @endsection
