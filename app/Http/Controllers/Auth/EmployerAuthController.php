@@ -19,37 +19,46 @@ class EmployerAuthController extends Controller
         return view('employer.auth.register');
     }
 
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:employers',
-            'password' => 'required|string|min:8|confirmed',
-            'phone' => 'required|string|max:20',
-            'company_name' => 'required|string|max:255',
-                       'g-recaptcha-response' => new Captcha(),
-        ]);
+  public function register(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:employers',
+        'password' => 'required|string|min:8|confirmed',
+        'phone' => 'required|string|max:20',
+        'company_name' => 'required|string|max:255',
+        'g-recaptcha-response' => new Captcha(),
+    ]);
 
-        $verificationToken = Str::random(32);
+    // Lấy địa chỉ IP của người dùng
+    $ip = $request->ip();
 
-        $employer = Employer::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone' => $request->phone,
-            'company_name' => $request->company_name,
-            'slug' => Str::slug($request->company_name),
-            'status' => 0, // Chưa kích hoạt
-            'isVerify' => 0,
-            'isVerifyEmail' => 0,
-            'verification_token' => $verificationToken, // Sử dụng verification_token
-        ]);
-
-        Mail::to($employer->email)->send(new EmployerVerificationMail($employer));
-
-        return redirect()->route('employer.register')
-        ->with('success', 'Vui lòng kiểm tra email để xác thực tài khoản của bạn.');
+    // Kiểm tra số lượng tài khoản có cùng IP và status = 0
+    if (!Employer::canRegisterWithIp($ip)) {
+        return redirect()->back()->withInput($request->except('password', 'password_confirmation'))
+            ->with('error', 'Bạn đã đạt giới hạn số lượng tài khoản chưa kích hoạt từ địa chỉ IP này.');
     }
+
+    $verificationToken = Str::random(32);
+    $employer = Employer::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'phone' => $request->phone,
+        'company_name' => $request->company_name,
+        'slug' => Str::slug($request->company_name),
+        'status' => 0, // Chưa kích hoạt
+        'isVerify' => 0,
+        'isVerifyEmail' => 0,
+        'verification_token' => $verificationToken, // Sử dụng verification_token
+        'ip_address' => $ip, // Lưu địa chỉ IP
+    ]);
+
+    Mail::to($employer->email)->send(new EmployerVerificationMail($employer));
+
+    return redirect()->route('employer.register')
+        ->with('success', 'Vui lòng kiểm tra email để xác thực tài khoản của bạn.');
+}
 
 
     public function verify($token)

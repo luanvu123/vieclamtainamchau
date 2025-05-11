@@ -49,7 +49,7 @@ class EmployerManageController extends Controller
 
     $jobPostings = JobPosting::with(['employer', 'categories', 'genres', 'countries'])
         ->whereHas('genres', function ($q) {
-            $q->where('slug', 'viec-lam');
+            $q->where('slug', 'viec-lam-moi');
         })
         ->when(!$user->roles()->where('id', 1)->exists(), function ($query) use ($user) {
             $query->whereHas('employer', function ($q) use ($user) {

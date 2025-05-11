@@ -59,7 +59,7 @@ class JobPostingController extends Controller
         $query = JobPosting::with('genres')
             ->where('employer_id', $employer->id)
             ->whereHas('genres', function ($q) {
-                $q->where('slug', 'viec-lam');
+                $q->where('slug', 'viec-lam-moi');
             });
 
         if ($request->filled('status')) {

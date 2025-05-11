@@ -69,6 +69,7 @@ class Employer extends Authenticatable
         'isUrgentrecruitment_updated_at',
         'IsPartner_updated_at',
         'IsHoteffect_updated_at',
+          'ip_address',
         'IsHome_updated_at'
     ];
 
@@ -156,5 +157,12 @@ class Employer extends Authenticatable
 {
     return $this->hasMany(Order::class);
 }
+ public static function canRegisterWithIp($ip)
+    {
+        $count = self::where('ip_address', $ip)
+                     ->where('status', 0)
+                     ->count();
 
+        return $count < 3; // Trả về true nếu số lượng tài khoản < 3
+    }
 }
