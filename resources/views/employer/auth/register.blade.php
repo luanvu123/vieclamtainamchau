@@ -153,6 +153,33 @@
                         <span class="error">{{ $message }}</span>
                     @enderror
                 </div>
+<div class="form-group">
+    <label>Lĩnh vực hoạt động</label>
+    <select name="categories[]" id="categories" multiple>
+        @foreach ($categories as $category)
+            <option value="{{ $category->id }}" {{ collect(old('categories'))->contains($category->id) ? 'selected' : '' }}>
+                {{ $category->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('categories')
+        <span class="error">{{ $message }}</span>
+    @enderror
+</div>
+
+<div class="form-group">
+    <label>Danh mục</label>
+    <select name="genres[]" id="genres" multiple>
+        @foreach ($genres as $genre)
+            <option value="{{ $genre->id }}" {{ collect(old('genres'))->contains($genre->id) ? 'selected' : '' }}>
+                {{ $genre->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('genres')
+        <span class="error">{{ $message }}</span>
+    @enderror
+</div>
 
                 <div class="form-group">
                     <label for="password">Mật khảu</label>
@@ -289,5 +316,17 @@
             </p>
         </div>
     </div>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script> 
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+     <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
+    <script>
+        new MultiSelectTag('countries') // id
+    </script>
+    <script>
+        new MultiSelectTag('genres')
+    </script>
+    <script>
+        new MultiSelectTag('categories')
+    </script>
 @endsection

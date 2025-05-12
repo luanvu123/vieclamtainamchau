@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\EmployerVerificationMail;
+use App\Models\Category;
 use App\Models\Employer;
+use App\Models\Genre;
 use App\Rules\Captcha;
  use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,11 +14,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
  use ReCaptcha\ReCaptcha;
+ use Illuminate\Support\Facades\DB;
 class EmployerAuthController extends Controller
 {
     public function showRegistrationForm()
     {
-        return view('employer.auth.register');
+          $categories = Category::where('status', 'active')->get();
+        $genres = Genre::where('status', 'active')->get();
+         return view('employer.auth.register', compact('categories', 'genres'));
     }
 
   public function register(Request $request)
@@ -28,36 +33,51 @@ class EmployerAuthController extends Controller
         'phone' => 'required|string|max:20',
         'company_name' => 'required|string|max:255',
         'g-recaptcha-response' => new Captcha(),
+        'categories' => 'required|array',
+        'categories.*' => 'exists:categories,id',
+        'genres' => 'required|array',
+        'genres.*' => 'exists:genres,id',
     ]);
 
-    // Lấy địa chỉ IP của người dùng
     $ip = $request->ip();
-
-    // Kiểm tra số lượng tài khoản có cùng IP và status = 0
     if (!Employer::canRegisterWithIp($ip)) {
         return redirect()->back()->withInput($request->except('password', 'password_confirmation'))
             ->with('error', 'Bạn đã đạt giới hạn số lượng tài khoản chưa kích hoạt từ địa chỉ IP này.');
     }
 
-    $verificationToken = Str::random(32);
-    $employer = Employer::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        'phone' => $request->phone,
-        'company_name' => $request->company_name,
-        'slug' => Str::slug($request->company_name),
-        'status' => 0, // Chưa kích hoạt
-        'isVerify' => 0,
-        'isVerifyEmail' => 0,
-        'verification_token' => $verificationToken, // Sử dụng verification_token
-        'ip_address' => $ip, // Lưu địa chỉ IP
-    ]);
+    DB::beginTransaction();
+    try {
+        $verificationToken = Str::random(32);
+        $employer = Employer::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'phone' => $request->phone,
+            'company_name' => $request->company_name,
+            'slug' => Str::slug($request->company_name),
+            'status' => 0,
+            'isVerify' => 0,
+            'isVerifyEmail' => 0,
+            'verification_token' => $verificationToken,
+            'ip_address' => $ip,
+        ]);
 
-    Mail::to($employer->email)->send(new EmployerVerificationMail($employer));
+        if ($request->has('categories')) {
+            $employer->categories()->sync($request->categories);
+        }
 
-    return redirect()->route('employer.register')
-        ->with('success', 'Vui lòng kiểm tra email để xác thực tài khoản của bạn.');
+        if ($request->has('genres')) {
+            $employer->genres()->sync($request->genres);
+        }
+
+        Mail::to($employer->email)->send(new EmployerVerificationMail($employer));
+
+        DB::commit();
+        return redirect()->route('employer.register')->with('success', 'Vui lòng kiểm tra email để xác thực tài khoản của bạn.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return back()->with('error', 'Đã xảy ra lỗi khi đăng ký. Vui lòng thử lại.')->withInput();
+    }
 }
 
 

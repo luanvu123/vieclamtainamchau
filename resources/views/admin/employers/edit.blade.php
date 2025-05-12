@@ -32,6 +32,31 @@
                             @enderror
                         </div>
                     </div>
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="form-group">
+        <strong>Ngành nghề:</strong>
+        <select class="form-control" name="categories[]" id="categories" multiple>
+            @foreach ($categories as $category)
+                <option value="{{ $category->id }}" {{ in_array($category->id, old('categories', $employer->categories->pluck('id')->toArray())) ? 'selected' : '' }}>
+                    {{ $category->name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="form-group">
+        <strong>Lĩnh vực:</strong>
+        <select class="form-control" name="genres[]" id="genres" multiple>
+            @foreach ($genres as $genre)
+                <option value="{{ $genre->id }}" {{ in_array($genre->id, old('genres', $employer->genres->pluck('id')->toArray())) ? 'selected' : '' }}>
+                    {{ $genre->name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+</div>
 
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
@@ -196,7 +221,7 @@
                         </div>
                     </div>
 
-                  
+
 
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                         <a href="{{ route('manage.employers.show', $employer) }}" class="btn btn-secondary">
@@ -210,4 +235,5 @@
             </div>
         </div>
     </div>
+
 @endsection

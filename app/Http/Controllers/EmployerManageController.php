@@ -127,7 +127,9 @@ public function indexSpecial()
         $user = Auth::user();
         if ($user->roles()->where('id', 1)->exists() || $employer->user_id == $user->id) {
             $users = User::all(); // Lấy danh sách tất cả user
-            return view('admin.employers.edit', compact('employer', 'users'));
+             $categories = Category::where('status', 'active')->get();
+        $genres = Genre::where('status', 'active')->get();
+            return view('admin.employers.edit', compact('employer', 'categories', 'genres', 'users'));
         }
         abort(403, 'Bạn không có quyền truy cập.');
     }
@@ -214,24 +216,18 @@ public function indexSpecial()
             'detail' => 'nullable|string',
             'status' => 'boolean',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'IsBasicnews' => 'boolean',
              'isVerifyCompany' => 'boolean',
-            'isUrgentrecruitment' => 'boolean',
-            'IsPartner' => 'boolean',
-            'IsHoteffect' => 'boolean',
-            'IsHome' => 'boolean',
             'user_id' => 'nullable|exists:users,id',
+             'categories' => 'nullable|array',
+    'categories.*' => 'exists:categories,id',
+    'genres' => 'nullable|array',
+    'genres.*' => 'exists:genres,id',
         ]);
 
         // Handle boolean fields
         $booleanFields = [
             'status',
-            'IsBasicnews',
-            'isUrgentrecruitment',
-            'IsPartner',
-            'IsHoteffect',
             'isVerifyCompany',
-            'IsHome'
         ];
 
         foreach ($booleanFields as $field) {
@@ -259,9 +255,12 @@ public function indexSpecial()
         // Thêm slug
         $validated['slug'] = Str::slug($validated['company_name']);
 
+
         // Cập nhật employer với tất cả dữ liệu đã validate
         $employer->update($validated);
-
+// Đồng bộ categories và genres
+$employer->categories()->sync($request->input('categories', []));
+$employer->genres()->sync($request->input('genres', []));
         return redirect()->route('manage.employers.edit', $employer)
             ->with('success', 'Thông tin nhà tuyển dụng đã được cập nhật thành công.');
     }

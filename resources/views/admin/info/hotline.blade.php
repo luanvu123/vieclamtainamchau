@@ -45,10 +45,7 @@
                 <input type="email" name="email" id="email" class="form-control" value="{{ $info->email ?? '' }}">
             </div>
 
-            <div class="form-group">
-                <label for="zalo">Zalo:</label>
-                <input type="text" name="zalo" id="zalo" class="form-control" value="{{ $info->zalo ?? '' }}">
-            </div>
+
 
             <h4 class="mt-4">Thông tin liên hệ cho Người tìm việc</h4>
 
@@ -69,7 +66,10 @@
                 <input type="email" name="email_candidate" id="email_candidate" class="form-control"
                     value="{{ $info->email_candidate ?? '' }}">
             </div>
-
+   <div class="form-group">
+                <label for="zalo">Zalo:</label>
+                <input type="text" name="zalo" id="zalo" class="form-control" value="{{ $info->zalo ?? '' }}">
+            </div>
             <button type="submit" class="btn btn-success">Cập nhật</button>
             <a href="{{ route('home') }}" class="btn btn-secondary">Hủy</a>
         </form>
