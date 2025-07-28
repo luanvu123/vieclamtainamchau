@@ -2881,6 +2881,11 @@
             <div class="sidebar">
                 <div class="menu-section">
                     <div class="menu-title">Quản lý đăng tuyển dụng</div>
+                     <a href="{{ route('employer.profile.edit') }}"
+        class="menu-item {{ request()->routeIs('employer.profile.edit') ? 'active' : '' }}">
+        <i>🏢</i>
+        <span>Cập nhật hồ sơ</span>
+    </a>
                     <a href="{{ route('employer.job-posting.create') }}"
                         class="menu-item {{ request()->routeIs('employer.job-posting.create') ? 'active' : '' }}">
                         <i>+</i>

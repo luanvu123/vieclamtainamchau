@@ -148,12 +148,13 @@ class JobPostingController extends Controller
         'avatar', 'mst', 'address', 'scale', 'detail', 'phone','map'
     ];
 
-    foreach ($requiredFields as $field) {
-        if (empty($employer->$field)) {
-            return redirect()->back()
-                ->with('error', 'Vui lòng cập nhật đầy đủ thông tin công ty trước khi tạo tin tuyển dụng.');
-        }
+   foreach ($requiredFields as $field) {
+    if (empty($employer->$field)) {
+        return redirect()->route('employer.profile.edit')
+            ->with('error', 'Vui lòng cập nhật đầy đủ thông tin công ty trước khi tạo tin tuyển dụng.');
     }
+}
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|in:fulltime,parttime,intern,freelance',

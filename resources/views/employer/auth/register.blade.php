@@ -153,33 +153,33 @@
                         <span class="error">{{ $message }}</span>
                     @enderror
                 </div>
-<div class="form-group">
-    <label>Lĩnh vực hoạt động</label>
-    <select name="categories[]" id="categories" multiple>
-        @foreach ($categories as $category)
-            <option value="{{ $category->id }}" {{ collect(old('categories'))->contains($category->id) ? 'selected' : '' }}>
-                {{ $category->name }}
-            </option>
-        @endforeach
-    </select>
-    @error('categories')
-        <span class="error">{{ $message }}</span>
-    @enderror
-</div>
+                <div class="form-group">
+                    <label>Lĩnh vực hoạt động</label>
+                    <select name="categories[]" id="categories" multiple>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" {{ collect(old('categories'))->contains($category->id) ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('categories')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+                </div>
 
-<div class="form-group">
-    <label>Danh mục</label>
-    <select name="genres[]" id="genres" multiple>
-        @foreach ($genres as $genre)
-            <option value="{{ $genre->id }}" {{ collect(old('genres'))->contains($genre->id) ? 'selected' : '' }}>
-                {{ $genre->name }}
-            </option>
-        @endforeach
-    </select>
-    @error('genres')
-        <span class="error">{{ $message }}</span>
-    @enderror
-</div>
+                <div class="form-group">
+                    <label>Danh mục</label>
+                    <select name="genres[]" id="genres" multiple>
+                        @foreach ($genres as $genre)
+                            <option value="{{ $genre->id }}" {{ collect(old('genres'))->contains($genre->id) ? 'selected' : '' }}>
+                                {{ $genre->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('genres')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+                </div>
 
                 <div class="form-group">
                     <label for="password">Mật khảu</label>
@@ -299,13 +299,28 @@
                         }
                     });
                 </script>
-                <div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}"></div>
-                <br />
-                @if($errors->has('g-recaptcha-response'))
-                    <span class="invalid-feedback" style="display:block">
-                        <strong>{{$errors->first('g-recaptcha-response')}}</strong>
-                    </span>
-                @endif
+                <div class="form-group">
+                    <label for="captcha">Mã xác thực *</label>
+                    <div class="d-flex align-items-center mb-2">
+                      <span id="captcha-image">{!! captcha_img('flat') !!}</span>
+                        <button type="button" class="btn btn-refresh ml-2" id="reload">↻</button>
+                    </div>
+                    <input type="text" id="captcha" name="captcha" class="form-control" placeholder="Nhập mã xác thực...">
+                    @error('captcha')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <script>
+                    document.getElementById('reload').addEventListener('click', function () {
+    fetch('{{ url('reload-captcha') }}?type=flat')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('captcha-image').innerHTML = data.captcha;
+        });
+});
+
+                </script>
 
                 <button type="submit" class="btn-submit">Đăng kí</button>
             </form>
@@ -317,7 +332,7 @@
         </div>
     </div>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-     <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
     <script>

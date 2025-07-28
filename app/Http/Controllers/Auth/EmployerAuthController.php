@@ -32,12 +32,15 @@ class EmployerAuthController extends Controller
         'password' => 'required|string|min:8|confirmed',
         'phone' => 'required|string|max:20',
         'company_name' => 'required|string|max:255',
-        'g-recaptcha-response' => new Captcha(),
         'categories' => 'required|array',
         'categories.*' => 'exists:categories,id',
         'genres' => 'required|array',
         'genres.*' => 'exists:genres,id',
-    ]);
+        'captcha' => 'required|captcha',
+    ], [
+    'captcha.required' => 'Vui lòng nhập mã xác thực.',
+    'captcha.captcha' => 'Mã xác thực không đúng.',
+]);
 
     $ip = $request->ip();
     if (!Employer::canRegisterWithIp($ip)) {
