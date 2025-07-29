@@ -3343,8 +3343,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .toast-message {
             color: white !important;
         }
-        
+
     </style>
+    
 </body>
 
 </html>

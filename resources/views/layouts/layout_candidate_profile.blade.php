@@ -812,6 +812,8 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1rem;
             margin-top: 2rem;
+             margin-left: 8rem;
+            margin-right: 8rem;
         }
 
         .category-card {
@@ -2971,7 +2973,289 @@
         </div>
     </footer>
 
+  <style>
+        /* Job Card Styles */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+            margin-left: 8rem;
+            margin-right: 8rem;
+        }
 
+        .job-card {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e5e5;
+            padding: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .job-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #d0d0d0;
+        }
+
+        /* Hot Job Effect */
+        .job-card.hot-job {
+            border-left: 4px solid #ff4757;
+            background: linear-gradient(135deg, #fff 0%, #fff5f5 100%);
+            position: relative;
+        }
+
+        .job-card.hot-job::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-top: 20px solid #ff4757;
+        }
+
+        .job-card.hot-job::after {
+            content: 'HOT';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            color: white;
+            font-size: 8px;
+            font-weight: bold;
+            transform: rotate(45deg);
+            transform-origin: center;
+        }
+
+        /* Job Header */
+        .job-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .company-logo {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e5e5e5;
+            background: white;
+        }
+
+        .company-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .job-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .job-title {
+            margin: 0 0 6px 0;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.3;
+            color: #333;
+        }
+
+        .job-title a {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+        }
+
+        .job-title a:hover {
+            color: #2563eb;
+        }
+
+        .hot-icon {
+            font-size: 14px;
+            margin-left: 6px;
+            animation: hotBounce 2s infinite;
+        }
+
+        .company-name {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .salary {
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .location {
+            color: #666;
+        }
+
+        /* Job Actions */
+        .job-actions {
+            flex-shrink: 0;
+        }
+
+        .save-job-btn {
+            background: none;
+            border: 1px solid #e5e5e5;
+            border-radius: 6px;
+            padding: 8px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.2s ease;
+        }
+
+        .save-job-btn:hover {
+            background: #f8fafc;
+            color: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .save-job-btn.saved {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        /* Job Details */
+        .job-details {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .job-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .job-tag {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .job-tag.job-type {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .job-tag.experience {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .job-tag.time-posted {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        /* Hot Badge for Genre Title */
+        .hot-badge {
+            background: linear-gradient(45deg, #ff6b6b, #ff4757);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 8px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            animation: hotPulse 2s infinite;
+        }
+
+        /* Animations */
+        @keyframes hotBounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-2px);
+            }
+
+            60% {
+                transform: translateY(-1px);
+            }
+        }
+
+        @keyframes hotPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .job-card {
+                padding: 12px;
+            }
+
+            .job-header {
+                gap: 10px;
+            }
+
+            .company-logo {
+                width: 48px;
+                height: 48px;
+            }
+
+            .job-title {
+                font-size: 15px;
+            }
+
+            .job-meta {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .job-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .job-actions {
+                align-self: flex-end;
+                margin-top: -40px;
+            }
+        }
+    </style>
     <script>
         // Add mobile menu toggle
         document.addEventListener('DOMContentLoaded', () => {

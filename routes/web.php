@@ -66,8 +66,8 @@ Route::get('/search', [SiteController::class, 'search'])->name('site.search')->m
 Route::post('/supports', [SupportController::class, 'store'])->name('supports.store');
 Route::get('/tin-tuc', [SiteController::class, 'news'])->name('news.home');
 Route::get('/tin-tuc/{id}', [SiteController::class, 'newsDetail'])->name('news.detail.home');
-// Route::get('/study-abroad/{id}/details', [SiteController::class, 'getStudyDetails']);
-Route::get('/study-abroad/{id}', [SiteController::class, 'getStudyDetails']);
+Route::get('/study-abroad/{id}/details', [SiteController::class, 'getStudyDetails']);
+// Route::get('/study-abroad/{id}', [SiteController::class, 'getStudyDetails']);
 Route::get('/study-abroad', [SiteController::class, 'studyIndex'])->name('site.study-abroad');
 Route::get('/study-abroad/{slug}', [SiteController::class, 'studyShow'])->name('study-abroad.show');
 Route::get('/language-training/{slug}', [SiteController::class, 'detailLanguageTrainings'])->name('site.language-training.detail');

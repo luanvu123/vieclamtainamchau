@@ -34,12 +34,30 @@
                                         </div>
                                     </div>
                                     <div class="application-info mt-3">
-                                        <p><strong>Trạng thái:</strong>
-                                            <span
-                                                class="badge {{ $application->status === 'pending' ? 'bg-warning' : ($application->status === 'accepted' ? 'bg-success' : 'bg-danger') }}">
-                                                {{ ucfirst($application->status) }}
-                                            </span>
-                                        </p>
+                                       <p><strong>Trạng thái:</strong>
+    <span class="badge {{
+        $application->status === 'pending' ? 'bg-warning text-dark' :
+        ($application->status === 'reviewed' ? 'bg-info text-white' :
+        ($application->status === 'accepted' ? 'bg-success text-white' : 'bg-danger text-white'))
+    }}">
+        @switch($application->status)
+            @case('pending')
+                🕐 Đang chờ duyệt
+                @break
+            @case('reviewed')
+                👀 Đã xem
+                @break
+            @case('accepted')
+                ✅ Đã chấp nhận
+                @break
+            @case('rejected')
+                ❌ Đã từ chối
+                @break
+            @default
+                {{ ucfirst($application->status) }}
+        @endswitch
+    </span>
+</p>
                                         <p><strong>Ngày ứng tuyển:</strong> {{ $application->created_at->format('d/m/Y') }}
                                         </p>
                                         <p><strong>Ngày cập nhật:</strong> {{ $application->updated_at->format('d/m/Y') }}
@@ -74,5 +92,5 @@
                 Bạn chưa ứng tuyển vào vị trí nào.
             </div>
         @endif
-  
+
 @endsection

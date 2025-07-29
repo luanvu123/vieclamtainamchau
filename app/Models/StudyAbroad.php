@@ -10,7 +10,7 @@ class StudyAbroad extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'description', 'image', 'status', 'short_detail','order_id', 'employer_id'];
+    protected $fillable = ['name', 'slug', 'description', 'image', 'status', 'short_detail', 'order_id', 'employer_id'];
 
     public static function boot()
     {
@@ -40,13 +40,13 @@ class StudyAbroad extends Model
         return $this->hasMany(SavedStudyAbroad::class, 'study_abroad_id');
     }
     public function employer()
-{
-    return $this->belongsTo(Employer::class);
-}
-public function candidatesToday()
-{
-    return $this->hasMany(CandidateStudyAbroad::class, 'study_abroad_id')
-                ->where('created_at', '>=', now()->subDay());
-}
+    {
+        return $this->belongsTo(Employer::class);
+    }
+    public function candidatesToday()
+    {
+        return $this->hasMany(CandidateStudyAbroad::class, 'study_abroad_id')
+            ->where('created_at', '>=', now()->subDay());
+    }
 
 }

@@ -144,25 +144,25 @@ class SiteController extends Controller
         ));
     }
     public function genre($slug)
-{
-    $genres = Genre::where('status', 'active')->get();
-    $categories = Category::where('status', 'active')->get();
-    $countries = Country::where('status', 'active')->get();
+    {
+        $genres = Genre::where('status', 'active')->get();
+        $categories = Category::where('status', 'active')->get();
+        $countries = Country::where('status', 'active')->get();
 
-    // Lấy thông tin genre
-    $genre = Genre::where('slug', $slug)->firstOrFail();
+        // Lấy thông tin genre
+        $genre = Genre::where('slug', $slug)->firstOrFail();
 
-    // Lấy danh sách job postings với phân trang
-    $jobPostings = $genre->jobPostings()
-        ->with(['employer', 'countries'])
-        ->where('status', 'active')
-        ->where('closing_date', '>', now())
-        ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
-        ->latest()
-        ->paginate(12); // Số lượng bài đăng mỗi trang, có thể điều chỉnh
+        // Lấy danh sách job postings với phân trang
+        $jobPostings = $genre->jobPostings()
+            ->with(['employer', 'countries'])
+            ->where('status', 'active')
+            ->where('closing_date', '>', now())
+            ->whereIn('service_type', ['Tin cơ bản', 'Tin nổi bật', 'Tin đặc biệt'])
+            ->latest()
+            ->paginate(12); // Số lượng bài đăng mỗi trang, có thể điều chỉnh
 
-    return view('pages.genre', compact('genre', 'genres', 'categories', 'countries', 'jobPostings'));
-}
+        return view('pages.genre', compact('genre', 'genres', 'categories', 'countries', 'jobPostings'));
+    }
 
 
     public function category($slug)

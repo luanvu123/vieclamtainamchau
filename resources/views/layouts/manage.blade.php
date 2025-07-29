@@ -807,6 +807,8 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1rem;
             margin-top: 2rem;
+             margin-left: 8rem;
+            margin-right: 8rem;
         }
 
         .category-card {
