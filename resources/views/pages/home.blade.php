@@ -53,118 +53,437 @@
 
 
 
-    @php $bgIndex = 0; @endphp
-    @foreach ($genres as $genre)
-        @php
-            $jobs = $paginatedJobsByGenre[$genre->id] ?? collect();
-        @endphp
 
-        @if ($jobs->count() > 0)
-            <section class="job-categories bg-{{ $bgIndex }}">
-                <h2>
-                    <a href="{{ route('genre.show', $genre->slug) }}">
-                        {{ $genre->name }}
 
-                    </a>
-                </h2>
+@php $bgIndex = 0; @endphp
+@foreach ($genres as $genre)
+    @php
+        $jobs = $paginatedJobsByGenre[$genre->id] ?? collect();
+    @endphp
 
-                <div class="category-grid">
-                    @foreach ($jobs as $job)
-                        <div class="job-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-job' : '' }}">
-                            <div class="job-card-content">
-                                <!-- Logo và thông tin chính -->
-                                <div class="job-header">
-                                    <div class="company-logo">
-                                        @if ($job->employer && $job->employer->avatar)
-                                            <a href="{{ route('candidate.job.show', $job->slug) }}">
-                                                <img src="{{ asset('storage/' . $job->employer->avatar) }}"
-                                                    alt="{{ $job->employer->company_name }}"
-                                                    onerror="this.src='{{ asset('frontend/company1.png') }}'">
-                                            </a>
-                                        @else
-                                            <a href="{{ route('candidate.job.show', $job->slug) }}">
-                                                <img src="{{ asset('frontend/company1.png') }}" alt="Default Company Logo">
-                                            </a>
+    @if ($jobs->count() > 0)
+        <section class="job-categories bg-{{ $bgIndex }}">
+            <h2>
+                <a href="{{ route('genre.show', $genre->slug) }}">
+                    {{ $genre->name }}
+                </a>
+            </h2>
+
+            <div class="category-grid">
+                @foreach ($jobs as $job)
+                    <div class="job-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-job' : '' }}">
+                        <div class="job-card-content">
+                            <!-- Logo và thông tin chính -->
+                            <div class="job-header">
+                                <div class="company-logo">
+                                    @if ($job->employer && $job->employer->avatar)
+                                        <a href="{{ route('candidate.job.show', $job->slug) }}">
+                                            <img src="{{ asset('storage/' . $job->employer->avatar) }}"
+                                                alt="{{ $job->employer->company_name }}"
+                                                onerror="this.src='{{ asset('frontend/company1.png') }}'">
+                                        </a>
+                                    @else
+                                        <a href="{{ route('candidate.job.show', $job->slug) }}">
+                                            <img src="{{ asset('frontend/company1.png') }}" alt="Default Company Logo">
+                                        </a>
+                                    @endif
+                                </div>
+
+                                <div class="job-info">
+                                    <h3 class="job-title">
+                                        <a href="{{ route('candidate.job.show', $job->slug) }}" title="{{ $job->title }}">
+                                            {{ Str::limit($job->title, 30) }}
+                                            @if ($job->service_type === 'Tin đặc biệt')
+                                                <span class="hot-icon">🔥</span>
+                                            @endif
+                                        </a>
+                                    </h3>
+
+                                    <p class="company-name">
+                                        {{ $job->employer ? $job->employer->company_name : 'Công ty TNHH' }}
+                                    </p>
+
+                                    <div class="job-meta">
+                                        @if ($job->salary)
+                                            <span class="salary">{{ $job->salary }}</span>
                                         @endif
-                                    </div>
 
-                                    <div class="job-info">
-                                        <h3 class="job-title">
-                                            <a href="{{ route('candidate.job.show', $job->slug) }}" title="{{ $job->title }}">
-                                                {{ Str::limit($job->title, 30) }}
-                                                @if ($job->service_type === 'Tin đặc biệt')
-                                                    <span class="hot-icon">🔥</span>
-                                                @endif
-                                            </a>
-                                        </h3>
-
-                                        <p class="company-name">
-                                            {{ $job->employer ? $job->employer->company_name : 'Công ty TNHH' }}
-                                        </p>
-
-                                        <div class="job-meta">
-                                            @if ($job->salary)
-                                                <span class="salary">{{ $job->salary }}</span>
-                                            @endif
-
-                                            @if ($job->countries->isNotEmpty())
-                                                <span class="location">{{ $job->countries->pluck('name')->join(', ') }}</span>
-                                            @else
-                                                <span class="location">Không xác định quốc gia</span>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="job-actions">
-                                        <button class="save-job-btn" data-job-id="{{ $job->id }}">
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2">
-                                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                                            </svg>
-                                        </button>
+                                        @if ($job->countries->isNotEmpty())
+                                            <span class="location">{{ $job->countries->pluck('name')->join(', ') }}</span>
+                                        @else
+                                            <span class="location">Không xác định quốc gia</span>
+                                        @endif
                                     </div>
                                 </div>
 
-                                <!-- Thông tin bổ sung -->
-                                <div class="job-details">
-                                    <div class="job-tags">
-                                        @if ($job->type)
-                                            <span class="job-tag job-type">{{ $job->type }}</span>
-                                        @endif
+                                <div class="job-actions">
+                                    <button class="save-job-btn" data-job-id="{{ $job->id }}">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
 
-                                        @if ($job->experience)
-                                            <span class="job-tag experience">{{ $job->experience }}</span>
-                                        @endif
+                            <!-- Thông tin bổ sung -->
+                            <div class="job-details">
+                                <div class="job-tags">
+                                    @if ($job->type)
+                                        <span class="job-tag job-type">{{ $job->type }}</span>
+                                    @endif
 
-                                        <span class="job-tag time-posted">
-                                            {{ $job->created_at->diffForHumans() }}
-                                        </span>
-                                    </div>
+                                    @if ($job->experience)
+                                        <span class="job-tag experience">{{ $job->experience }}</span>
+                                    @endif
+
+                                    <span class="job-tag time-posted">
+                                        {{ $job->created_at->diffForHumans() }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                </div>
-
-                <!-- Hiển thị phân trang -->
-                <div class="pagination-container">
-                    {{ $jobs->appends(request()->except('genre_' . $genre->id))->links() }}
-                </div>
-
-                @if ($jobs->total() > 12)
-                    <div class="view-more">
-                        <a href="{{ route('genre.show', $genre->slug) }}" class="btn btn-outline">
-                            Xem thêm {{ $genre->name }}
-                        </a>
                     </div>
+                @endforeach
+            </div>
+
+            <!-- Custom Numbered Pagination with Auto-scroll -->
+            <div class="pagination-container" data-genre-id="{{ $genre->id }}">
+                @if ($jobs->hasPages())
+                    <nav class="pagination-nav">
+                        <!-- Auto-scroll controls -->
+                        <div class="auto-scroll-controls">
+                            <button class="auto-scroll-btn" data-genre="{{ $genre->id }}" data-action="toggle">
+                                <span class="play-icon">▶️</span>
+                                <span class="pause-icon" style="display: none;">⏸️</span>
+                                <span class="auto-text">Tự động lướt</span>
+                            </button>
+                            <select class="auto-speed" data-genre="{{ $genre->id }}">
+                                <option value="3000">Chậm (3s)</option>
+                                <option value="2000" selected>Bình thường (2s)</option>
+                                <option value="1000">Nhanh (1s)</option>
+                            </select>
+                        </div>
+
+                        <ul class="pagination" data-genre="{{ $genre->id }}">
+                            {{-- Previous Page Link --}}
+                            @if ($jobs->onFirstPage())
+                                <li class="disabled"><span>&laquo;</span></li>
+                            @else
+                                <li><a href="{{ $jobs->previousPageUrl() }}" rel="prev" class="pagination-link">&laquo;</a></li>
+                            @endif
+
+                            {{-- Pagination Elements --}}
+                            @php
+                                $currentPage = $jobs->currentPage();
+                                $lastPage = $jobs->lastPage();
+                                $start = max(1, $currentPage - 2);
+                                $end = min($lastPage, $currentPage + 2);
+                            @endphp
+
+                            {{-- First Page --}}
+                            @if ($start > 1)
+                                <li><a href="{{ $jobs->url(1) }}" class="pagination-link">1</a></li>
+                                @if ($start > 2)
+                                    <li class="disabled"><span>...</span></li>
+                                @endif
+                            @endif
+
+                            {{-- Page Numbers --}}
+                            @for ($page = $start; $page <= $end; $page++)
+                                @if ($page == $currentPage)
+                                    <li class="active"><span>{{ $page }}</span></li>
+                                @else
+                                    <li><a href="{{ $jobs->url($page) }}" class="pagination-link">{{ $page }}</a></li>
+                                @endif
+                            @endfor
+
+                            {{-- Last Page --}}
+                            @if ($end < $lastPage)
+                                @if ($end < $lastPage - 1)
+                                    <li class="disabled"><span>...</span></li>
+                                @endif
+                                <li><a href="{{ $jobs->url($lastPage) }}" class="pagination-link">{{ $lastPage }}</a></li>
+                            @endif
+
+                            {{-- Next Page Link --}}
+                            @if ($jobs->hasMorePages())
+                                <li><a href="{{ $jobs->nextPageUrl() }}" rel="next" class="pagination-link">&raquo;</a></li>
+                            @else
+                                <li class="disabled"><span>&raquo;</span></li>
+                            @endif
+                        </ul>
+
+                        <!-- Progress bar -->
+                        <div class="auto-progress" data-genre="{{ $genre->id }}" style="display: none;">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </nav>
                 @endif
-            </section>
+            </div>
 
-            @php $bgIndex++; @endphp
-        @endif
-    @endforeach
+            @if ($jobs->total() > 12)
+                <div class="view-more">
+                    <a href="{{ route('genre.show', $genre->slug) }}" class="btn btn-outline">
+                        Xem thêm {{ $genre->name }}
+                    </a>
+                </div>
+            @endif
+        </section>
 
+        @php $bgIndex++; @endphp
+    @endif
+@endforeach
 
+<style>
+/* Auto-scroll pagination styles */
+.auto-scroll-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+
+.auto-scroll-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.auto-scroll-btn:hover {
+    background: #0056b3;
+}
+
+.auto-scroll-btn.active {
+    background: #dc3545;
+}
+
+.auto-speed {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.auto-progress {
+    width: 100%;
+    height: 4px;
+    background: #f0f0f0;
+    border-radius: 2px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #007bff;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+.pagination-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 5px;
+}
+
+.pagination li {
+    display: inline-block;
+}
+
+.pagination li a,
+.pagination li span {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    color: #333;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.pagination li.active span {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.pagination li.disabled span {
+    color: #6c757d;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.pagination li a:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-1px);
+}
+
+/* Animation for page transitions */
+.job-categories {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.job-categories.loading {
+    opacity: 0.7;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const autoScrollState = {};
+
+    // Initialize auto-scroll for each genre
+    document.querySelectorAll('.auto-scroll-btn').forEach(btn => {
+        const genreId = btn.dataset.genre;
+        autoScrollState[genreId] = {
+            isActive: false,
+            timer: null,
+            progressTimer: null,
+            speed: 2000
+        };
+
+        // Toggle auto-scroll
+        btn.addEventListener('click', function() {
+            toggleAutoScroll(genreId);
+        });
+    });
+
+    // Speed change handlers
+    document.querySelectorAll('.auto-speed').forEach(select => {
+        const genreId = select.dataset.genre;
+        select.addEventListener('change', function() {
+            autoScrollState[genreId].speed = parseInt(this.value);
+            if (autoScrollState[genreId].isActive) {
+                stopAutoScroll(genreId);
+                startAutoScroll(genreId);
+            }
+        });
+    });
+
+    function toggleAutoScroll(genreId) {
+        const state = autoScrollState[genreId];
+        if (state.isActive) {
+            stopAutoScroll(genreId);
+        } else {
+            startAutoScroll(genreId);
+        }
+    }
+
+    function startAutoScroll(genreId) {
+        const state = autoScrollState[genreId];
+        const btn = document.querySelector(`[data-genre="${genreId}"][data-action="toggle"]`);
+        const progressBar = document.querySelector(`[data-genre="${genreId}"].auto-progress`);
+        const progressBarInner = progressBar.querySelector('.progress-bar');
+
+        state.isActive = true;
+        btn.classList.add('active');
+        btn.querySelector('.play-icon').style.display = 'none';
+        btn.querySelector('.pause-icon').style.display = 'inline';
+        btn.querySelector('.auto-text').textContent = 'Tạm dừng';
+        progressBar.style.display = 'block';
+
+        function nextPage() {
+            const pagination = document.querySelector(`ul.pagination[data-genre="${genreId}"]`);
+            const nextLink = pagination.querySelector('a[rel="next"]');
+
+            if (nextLink) {
+                // Add loading animation
+                const section = pagination.closest('.job-categories');
+                section.classList.add('loading');
+
+                // Navigate to next page
+                window.location.href = nextLink.href;
+            } else {
+                // Go back to first page if at the end
+                const firstPageLink = pagination.querySelector('li:not(.disabled) a');
+                if (firstPageLink) {
+                    const section = pagination.closest('.job-categories');
+                    section.classList.add('loading');
+                    window.location.href = firstPageLink.href;
+                } else {
+                    stopAutoScroll(genreId);
+                }
+            }
+        }
+
+        // Progress bar animation
+        let progress = 0;
+        const progressIncrement = 100 / (state.speed / 100);
+
+        function updateProgress() {
+            progress += progressIncrement;
+            if (progress >= 100) {
+                progress = 0;
+                nextPage();
+                return;
+            }
+            progressBarInner.style.width = progress + '%';
+
+            if (state.isActive) {
+                state.progressTimer = setTimeout(updateProgress, 100);
+            }
+        }
+
+        updateProgress();
+    }
+
+    function stopAutoScroll(genreId) {
+        const state = autoScrollState[genreId];
+        const btn = document.querySelector(`[data-genre="${genreId}"][data-action="toggle"]`);
+        const progressBar = document.querySelector(`[data-genre="${genreId}"].auto-progress`);
+
+        state.isActive = false;
+        if (state.timer) clearTimeout(state.timer);
+        if (state.progressTimer) clearTimeout(state.progressTimer);
+
+        btn.classList.remove('active');
+        btn.querySelector('.play-icon').style.display = 'inline';
+        btn.querySelector('.pause-icon').style.display = 'none';
+        btn.querySelector('.auto-text').textContent = 'Tự động lướt';
+        progressBar.style.display = 'none';
+        progressBar.querySelector('.progress-bar').style.width = '0%';
+    }
+
+    // Stop auto-scroll when user manually clicks pagination
+    document.querySelectorAll('.pagination-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const pagination = this.closest('ul.pagination');
+            const genreId = pagination.dataset.genre;
+            if (autoScrollState[genreId] && autoScrollState[genreId].isActive) {
+                stopAutoScroll(genreId);
+            }
+        });
+    });
+
+    // Stop all auto-scroll when page is about to unload
+    window.addEventListener('beforeunload', function() {
+        Object.keys(autoScrollState).forEach(genreId => {
+            if (autoScrollState[genreId].isActive) {
+                stopAutoScroll(genreId);
+            }
+        });
+    });
+});
+</script>
 
 
 
@@ -872,16 +1191,16 @@
                 .then(response => response.json())
                 .then(data => {
                     contentDiv.innerHTML = `
-                                                                    <h2>${data.name}</h2>
-                                                                    <div class="detail-image">
-                                                                        <img src="${data.image}" alt="${data.name}">
-                                                                    </div>
-                                                                    <div class="detail-info">
-                                                                        <h3>Chi tiết chương trình</h3>
-                                                                        ${data.description}
+                                                                        <h2>${data.name}</h2>
+                                                                        <div class="detail-image">
+                                                                            <img src="${data.image}" alt="${data.name}">
+                                                                        </div>
+                                                                        <div class="detail-info">
+                                                                            <h3>Chi tiết chương trình</h3>
+                                                                            ${data.description}
 
-                                                                    </div>
-                                                                `;
+                                                                        </div>
+                                                                    `;
                     popup.style.display = 'block';
                 });
         }
@@ -1188,12 +1507,12 @@
                 const toast = document.createElement('div');
                 toast.className = `toast-notification toast-${type}`;
                 toast.innerHTML = `
-                        <div class="toast-content">
-                            <span class="toast-icon">${type === 'success' ? '✓' : '⚠'}</span>
-                            <span class="toast-message">${message}</span>
-                            <button class="toast-close" onclick="this.parentElement.parentElement.remove()">×</button>
-                        </div>
-                    `;
+                            <div class="toast-content">
+                                <span class="toast-icon">${type === 'success' ? '✓' : '⚠'}</span>
+                                <span class="toast-message">${message}</span>
+                                <button class="toast-close" onclick="this.parentElement.parentElement.remove()">×</button>
+                            </div>
+                        `;
 
                 // Add to page
                 document.body.appendChild(toast);
@@ -1289,141 +1608,141 @@
 
         // CSS Styles (add to your CSS file or in a <style> tag)
         const saveJobStyles = `
-            <style>
-            /* Save button states */
-            .save-job-btn {
-                position: relative;
-                transition: all 0.3s ease;
-            }
+                <style>
+                /* Save button states */
+                .save-job-btn {
+                    position: relative;
+                    transition: all 0.3s ease;
+                }
 
-            .save-job-btn.loading::after {
-                content: '';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: 16px;
-                height: 16px;
-                margin: -8px 0 0 -8px;
-                border: 2px solid transparent;
-                border-top: 2px solid currentColor;
-                border-radius: 50%;
-                animation: spin 1s linear infinite;
-            }
+                .save-job-btn.loading::after {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 16px;
+                    height: 16px;
+                    margin: -8px 0 0 -8px;
+                    border: 2px solid transparent;
+                    border-top: 2px solid currentColor;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                }
 
-            .save-job-btn.loading svg {
-                opacity: 0;
-            }
-
-            .save-job-btn.saved {
-                background: #2563eb !important;
-                color: white !important;
-                border-color: #2563eb !important;
-            }
-
-            /* Toast Notification */
-            .toast-notification {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                z-index: 9999;
-                min-width: 300px;
-                max-width: 400px;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-                animation: slideInRight 0.3s ease-out;
-            }
-
-            .toast-notification.toast-success {
-                border-left: 4px solid #10b981;
-            }
-
-            .toast-notification.toast-error {
-                border-left: 4px solid #ef4444;
-            }
-
-            .toast-content {
-                display: flex;
-                align-items: center;
-                padding: 16px;
-                gap: 12px;
-            }
-
-            .toast-icon {
-                flex-shrink: 0;
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 12px;
-                font-weight: bold;
-                color: white;
-            }
-
-            .toast-success .toast-icon {
-                background: #10b981;
-            }
-
-            .toast-error .toast-icon {
-                background: #ef4444;
-            }
-
-            .toast-message {
-                flex: 1;
-                font-size: 14px;
-                color: #374151;
-                line-height: 1.4;
-            }
-
-            .toast-close {
-                background: none;
-                border: none;
-                font-size: 18px;
-                color: #9ca3af;
-                cursor: pointer;
-                padding: 0;
-                width: 20px;
-                height: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .toast-close:hover {
-                color: #374151;
-            }
-
-            /* Animations */
-            @keyframes slideInRight {
-                from {
-                    transform: translateX(100%);
+                .save-job-btn.loading svg {
                     opacity: 0;
                 }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
 
-            @keyframes spin {
-                to {
-                    transform: rotate(360deg);
+                .save-job-btn.saved {
+                    background: #2563eb !important;
+                    color: white !important;
+                    border-color: #2563eb !important;
                 }
-            }
 
-            /* Mobile responsive */
-            @media (max-width: 768px) {
+                /* Toast Notification */
                 .toast-notification {
-                    left: 20px;
+                    position: fixed;
+                    top: 20px;
                     right: 20px;
-                    min-width: auto;
-                    max-width: none;
+                    z-index: 9999;
+                    min-width: 300px;
+                    max-width: 400px;
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+                    animation: slideInRight 0.3s ease-out;
                 }
-            }
-            </style>
-            `;
+
+                .toast-notification.toast-success {
+                    border-left: 4px solid #10b981;
+                }
+
+                .toast-notification.toast-error {
+                    border-left: 4px solid #ef4444;
+                }
+
+                .toast-content {
+                    display: flex;
+                    align-items: center;
+                    padding: 16px;
+                    gap: 12px;
+                }
+
+                .toast-icon {
+                    flex-shrink: 0;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 12px;
+                    font-weight: bold;
+                    color: white;
+                }
+
+                .toast-success .toast-icon {
+                    background: #10b981;
+                }
+
+                .toast-error .toast-icon {
+                    background: #ef4444;
+                }
+
+                .toast-message {
+                    flex: 1;
+                    font-size: 14px;
+                    color: #374151;
+                    line-height: 1.4;
+                }
+
+                .toast-close {
+                    background: none;
+                    border: none;
+                    font-size: 18px;
+                    color: #9ca3af;
+                    cursor: pointer;
+                    padding: 0;
+                    width: 20px;
+                    height: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .toast-close:hover {
+                    color: #374151;
+                }
+
+                /* Animations */
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+
+                @keyframes spin {
+                    to {
+                        transform: rotate(360deg);
+                    }
+                }
+
+                /* Mobile responsive */
+                @media (max-width: 768px) {
+                    .toast-notification {
+                        left: 20px;
+                        right: 20px;
+                        min-width: auto;
+                        max-width: none;
+                    }
+                }
+                </style>
+                `;
 
         // Inject styles into page
         if (!document.querySelector('#save-job-styles')) {

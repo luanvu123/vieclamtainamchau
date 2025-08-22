@@ -4,6 +4,20 @@
     <div class="container">
         <h2 class="mb-4">Danh sách đơn ứng tuyển</h2>
 
+        <!-- Process Description Section -->
+        <div class="process-section mb-4">
+            <h3>Quy trình xử lý đơn ứng tuyển:</h3>
+            <p><strong>Xem CV gốc</strong> - Kiểm tra CV ban đầu của ứng viên</p>
+            <p>1. <strong>Thêm CV che thông tin</strong> - Upload CV đã ẩn thông tin liên hệ cá nhân</p>
+            <p>2. <strong>Sửa/Cập nhật</strong> - Chỉnh sửa thông tin đơn và trạng thái</p>
+            <p>3. <strong>Chờ duyệt → Đã duyệt</strong> - Quy trình phê duyệt đơn</p>
+
+            <h4>Trường hợp CV nộp lại:</h4>
+            <p>* Quy trình tương tự như trên</p>
+            <p>* Có thể giữ nguyên trạng thái "Đã duyệt" nếu không cần duyệt lại</p>
+            <p>* Có thể cập nhật CV nộp lại thành CV chính</p>
+        </div>
+
         <table class="table table-bordered" id="user-table">
             <thead>
                 <tr>
@@ -23,11 +37,11 @@
                     <tr>
                         <td>{{ $key + 1 }}</td>
                         <td>
-    {{ $application->candidate->name ?? 'N/A' }}
-    @if($application->approve_application === 'Chờ duyệt' && $application->created_at >= now()->subHours(24))
-        <span class="badge badge-success">New</span>
-    @endif
-</td>
+                            {{ $application->candidate->name ?? 'N/A' }}
+                            @if($application->approve_application === 'Chờ duyệt' && $application->created_at >= now()->subHours(24))
+                                <span class="badge badge-success">New</span>
+                            @endif
+                        </td>
 
                         <td>
                             @if($application->cv_path)
@@ -172,6 +186,29 @@
             max-height: 200px;
             overflow-y: auto;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .process-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+
+        .process-section h3 {
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        .process-section h4 {
+            color: #28a745;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .process-section p {
+            margin-bottom: 8px;
+            line-height: 1.6;
         }
     </style>
 @endsection
