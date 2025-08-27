@@ -243,7 +243,7 @@
         </a>
     @else
         <a href="{{ asset('storage/' . $application->cv_path_hidden_info) }}" target="_blank" class="view-cv-btn">
-            CV Ẩn
+            CV
         </a>
     @endif
 </td>
@@ -1167,7 +1167,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     parent.innerHTML = `
                         <div class="info-item"><strong>Số điện thoại:</strong> ${response.data.phone ?? 'Không có'}</div>
                         <div class="info-item"><strong>Email:</strong> ${response.data.email ?? 'Không có'}</div>
-                      
+
                     `;
                 })
                 .catch(error => {

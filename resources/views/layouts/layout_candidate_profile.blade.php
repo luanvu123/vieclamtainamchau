@@ -3313,6 +3313,7 @@
     </script>
     <script src="{{ asset('backend_admin/ckeditor/ckeditor.js') }}"></script>
     <script>
+         CKEDITOR.config.versionCheck = false;
         CKEDITOR.replace('summary2');
         CKEDITOR.replace('summary3');
         CKEDITOR.replace('summary1');

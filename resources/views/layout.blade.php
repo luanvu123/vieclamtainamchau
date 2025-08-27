@@ -17,6 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <title>Vieclamtainamchau</title>
+
     <style>
         * {
             margin: 0;
@@ -1840,7 +1841,170 @@
             border-radius: 4px;
             cursor: pointer;
         }
+ .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
 
+        .content-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .contact-section h2 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: #e2e8f0;
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            fill: #667eea;
+        }
+
+        /* Nút Zalo cố định */
+        .zalo-float-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #0068FF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 104, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        .zalo-float-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(0, 104, 255, 0.6);
+        }
+
+        .zalo-icon {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        /* Nút Zalo trong contact section */
+        .zalo-contact-button {
+            background: linear-gradient(45deg, #0068FF, #0052CC);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            justify-content: center;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 104, 255, 0.3);
+        }
+
+        .zalo-contact-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 104, 255, 0.4);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 15px;
+            fill: #667eea;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 20px rgba(0, 104, 255, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 30px rgba(0, 104, 255, 0.7);
+            }
+            100% {
+                box-shadow: 0 4px 20px rgba(0, 104, 255, 0.4);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .zalo-float-button {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+
+            .zalo-icon {
+                width: 28px;
+                height: 28px;
+            }
+        }
         .page-btn.active {
             background: #ff0000;
             color: white;
@@ -2952,6 +3116,58 @@
                 <h3>{{ $info_layout->newspaper ?? 'Trực thuộc (C) Công Ty Ltd' }}</h3>
                 {!! $info_layout->footer_company !!}
             </div>
+             <!-- Nút Zalo cố định -->
+    <div class="zalo-float-button" onclick="openZalo()" title="Liên hệ qua Zalo">
+        <img src="{{ asset('frontend/zalo.png') }}" alt="Zalo" style="width: 50px; height: 50px;">
+    </div>
+
+    <script>
+        function openZalo() {
+            // Thay đổi số điện thoại theo số Zalo của bạn
+         const zaloNumber = "{{ $info_layout->phone ?? '0988123456' }}";
+            const message = encodeURIComponent('Xin chào! Tôi muốn tìm hiểu về Layout App.');
+
+            // Thử mở ứng dụng Zalo trước
+            const zaloApp = `zalo://conversation?phone=${zaloNumber}&message=${message}`;
+
+            // Fallback về Zalo Web nếu không có app
+            const zaloWeb = `https://zalo.me/${zaloNumber}`;
+
+            // Tạo link tạm thời để thử mở app
+            const link = document.createElement('a');
+            link.href = zaloApp;
+            link.click();
+
+            // Sau 1 giây, nếu vẫn ở trang này thì mở Zalo Web
+            setTimeout(() => {
+                window.open(zaloWeb, '_blank');
+            }, 1000);
+        }
+
+        // Hiệu ứng hover cho các card
+        document.querySelectorAll('.content-card, .feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Hiệu ứng scroll smooth
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
         </div>
 
         <div class="footer-bottom">
@@ -3038,6 +3254,7 @@
     </script>
     <script src="{{ asset('backend_admin/ckeditor/ckeditor.js') }}"></script>
     <script>
+          CKEDITOR.config.versionCheck = false;
         CKEDITOR.replace('summary2');
         CKEDITOR.replace('summary3');
         CKEDITOR.replace('summary1');
@@ -3345,7 +3562,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
     </style>
-    
+
 </body>
 
 </html>

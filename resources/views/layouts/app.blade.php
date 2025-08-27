@@ -723,6 +723,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
         });
     </script>
     <script>
+         CKEDITOR.config.versionCheck = false;
         CKEDITOR.replace('summary2');
         CKEDITOR.replace('summary6');
         CKEDITOR.replace('description');

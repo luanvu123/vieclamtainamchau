@@ -68,7 +68,7 @@
 
                 </div>
             @endforeach
-        
+
 
 
         <div class="modal-overlay" id="overlay"></div>

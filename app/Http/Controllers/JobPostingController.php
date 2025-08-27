@@ -52,42 +52,72 @@ class JobPostingController extends Controller
 
 
 
-    public function index(Request $request)
-    {
-        $employer = Auth::guard('employer')->user();
+ public function index(Request $request)
+{
+    $employer = Auth::guard('employer')->user();
 
-        $query = JobPosting::with('genres')
-            ->where('employer_id', $employer->id)
-            ->whereHas('genres', function ($q) {
-                $q->where('slug', 'viec-lam-moi');
-            });
+    $query = JobPosting::with(['genres', 'applications'])
+        ->where('employer_id', $employer->id)
+        ->whereHas('genres', function ($q) {
+            $q->where('slug', 'viec-lam-moi');
+        });
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $jobPostings = $query->get();
-
-        return view('employer.job-posting.index', compact('jobPostings'));
+    // Filter by status
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
     }
-    public function indexExport(Request $request)
-    {
-        $employer = Auth::guard('employer')->user();
 
-        $query = JobPosting::with('genres')
-            ->where('employer_id', $employer->id)
-            ->whereHas('genres', function ($q) {
-                $q->where('slug', 'xuat-khau-lao-dong');
-            });
-
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $jobPostings = $query->get();
-
-        return view('employer.job-posting.export', compact('jobPostings'));
+    // Search filter
+    if ($request->filled('search')) {
+        $query->where('title', 'like', '%' . $request->search . '%');
     }
+
+    // Date range filter
+    if ($request->filled('date_from')) {
+        $query->where('created_at', '>=', $request->date_from);
+    }
+
+    if ($request->filled('date_to')) {
+        $query->where('created_at', '<=', $request->date_to . ' 23:59:59');
+    }
+
+    $jobPostings = $query->orderBy('created_at', 'desc')->get();
+
+    return view('employer.job-posting.index', compact('jobPostings'));
+}
+   public function indexExport(Request $request)
+{
+    $employer = Auth::guard('employer')->user();
+
+    $query = JobPosting::with(['genres', 'applications'])
+        ->where('employer_id', $employer->id)
+        ->whereHas('genres', function ($q) {
+            $q->where('slug', 'xuat-khau-lao-dong');
+        });
+
+    // Filter by status
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    // Search filter
+    if ($request->filled('search')) {
+        $query->where('title', 'like', '%' . $request->search . '%');
+    }
+
+    // Date range filter
+    if ($request->filled('date_from')) {
+        $query->where('created_at', '>=', $request->date_from);
+    }
+
+    if ($request->filled('date_to')) {
+        $query->where('created_at', '<=', $request->date_to . ' 23:59:59');
+    }
+
+    $jobPostings = $query->orderBy('created_at', 'desc')->get();
+
+    return view('employer.job-posting.export', compact('jobPostings'));
+}
 
     public function create()
     {
