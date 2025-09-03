@@ -91,8 +91,6 @@ class SiteController extends Controller
 
         // Tạo mảng để lưu trữ các jobs đã phân trang cho mỗi genre
         $paginatedJobsByGenre = [];
-
-        // Với mỗi genre, truy vấn và phân trang jobs riêng biệt
         foreach ($genres as $genre) {
             $paginatedJobs = JobPosting::with(['employer', 'countries'])
                 ->where('status', 'active')

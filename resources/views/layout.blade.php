@@ -3123,8 +3123,8 @@
 
     <script>
         function openZalo() {
-            // Thay đổi số điện thoại theo số Zalo của bạn
          const zaloNumber = "{{ $info_layout->phone ?? '0988123456' }}";
+
             const message = encodeURIComponent('Xin chào! Tôi muốn tìm hiểu về Layout App.');
 
             // Thử mở ứng dụng Zalo trước
@@ -3184,21 +3184,31 @@
                 src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
                 </script>
 
+<div class="social-links">
+    <a href="{{ $info_layout->url_facebook ?? '#' }}" class="social-link">
+        <i class="fab fa-facebook-f"></i>
+        <span>Follow Us on Facebook</span>
+    </a>
+    <a href="{{ $info_layout->url_youtube ?? '#' }}" class="social-link">
+        <i class="fab fa-youtube"></i>
+        <span>Youtube</span>
+    </a>
+    <a href="{{ $info_layout->url_partner ?? '#' }}" class="social-link">
+        <i class="fas fa-handshake"></i>
+        <span>Partners</span>
+    </a>
+    <a href="https://www.vieclamtainamchau.com/vieclamtainamchau.apk" class="social-link" download>
+        <i class="fas fa-mobile-alt"></i>
+        <span>Tải ứng dụng</span>
+    </a>
+    <a href="#" class="social-link" id="qr-link">
+        <i class="fas fa-qrcode"></i>
+        <span>QR Code tải App</span>
+    </a>
+</div>
 
-            <div class="social-links">
-                <a href="{{ $info_layout->url_facebook ?? '#' }}" class="social-link">
-                    <i class="fab fa-facebook-f"></i>
-                    <span>Follow Us on Facebook</span>
-                </a>
-                <a href="{{ $info_layout->url_youtube ?? '#' }}" class="social-link">
-                    <i class="fab fa-youtube"></i>
-                    <span>Youtube</span>
-                </a>
-                <a href="{{ $info_layout->url_partner ?? '#' }}" class="social-link">
-                    <i class="fas fa-handshake"></i>
-                    <span>Partners</span>
-                </a>
-            </div>
+
+
         </div>
     </footer>
 
@@ -3254,7 +3264,6 @@
     </script>
     <script src="{{ asset('backend_admin/ckeditor/ckeditor.js') }}"></script>
     <script>
-          CKEDITOR.config.versionCheck = false;
         CKEDITOR.replace('summary2');
         CKEDITOR.replace('summary3');
         CKEDITOR.replace('summary1');
@@ -3562,6 +3571,97 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
     </style>
+    <!-- QR Code Modal -->
+<div id="qr-modal" class="qr-modal" style="display: none;">
+    <div class="qr-modal-content">
+        <span class="qr-close">&times;</span>
+        <h3>Quét QR Code để tải ứng dụng</h3>
+        <div id="qr-code"></div>
+        <p>Hoặc <a href="https://www.vieclamtainamchau.com/vieclamtainamchau.apk" download>tải trực tiếp tại đây</a></p>
+    </div>
+</div>
+
+<script>
+// Tạo QR Code đơn giản bằng API
+function generateQRCode() {
+    const qrCodeDiv = document.getElementById('qr-code');
+    const url = 'https://www.vieclamtainamchau.com/vieclamtainamchau.apk';
+    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+
+    qrCodeDiv.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="border: 2px solid #ddd; border-radius: 5px;">`;
+}
+
+// Chạy khi DOM đã load
+document.addEventListener('DOMContentLoaded', function() {
+    // Tạo QR Code
+    generateQRCode();
+
+    // Modal functionality
+    const modal = document.getElementById('qr-modal');
+    const qrLink = document.getElementById('qr-link');
+    const closeBtn = document.querySelector('.qr-close');
+
+    if (qrLink && modal && closeBtn) {
+        qrLink.onclick = function(e) {
+            e.preventDefault();
+            modal.style.display = 'block';
+        }
+
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    }
+});
+</script>
+
+<style>
+.qr-modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.qr-modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+    position: relative;
+}
+
+.qr-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.qr-close:hover,
+.qr-close:focus {
+    color: #000;
+}
+
+#qr-code canvas {
+    border: 2px solid #ddd;
+    border-radius: 5px;
+}
+</style>
 
 </body>
 
