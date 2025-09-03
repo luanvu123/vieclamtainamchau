@@ -129,11 +129,12 @@
             transform: translateY(-3px);
         } */
 
-.category-card.hot-effect {
+        .category-card.hot-effect {
             border: 2px solid #ff6b6b;
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
 
         }
+
         /* .category-card.hot-effect::before {
             content: "Hot";
             position: absolute;
@@ -281,12 +282,14 @@
                 width: 400px;
                 margin-left: -150px;
             }
+
             .footer-company {
                 width: 280px;
-              margin-left: -70px;
+                margin-left: -70px;
             }
 
         }
+
         @media (max-width: 480px) {
             .category-buttons {
                 gap: 0.5rem;
@@ -1032,6 +1035,30 @@
             gap: 1rem;
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        /* Loại bỏ margin-left trên tất cả thiết bị trước */
+        .footer-links {
+            margin-left: 0 !important;
+        }
+
+        /* Chỉ áp dụng margin-left cho desktop (màn hình >= 1024px) */
+        @media (min-width: 1024px) {
+            .footer-links:nth-child(2) {
+                margin-left: -60px !important;
+            }
+
+            .footer-links:nth-child(3) {
+                margin-left: -120px !important;
+            }
+        }
+
+        /* Responsive cho mobile và tablet */
+        @media (max-width: 1023px) {
+            .footer-links {
+                display: block;
+                margin-bottom: 20px;
+            }
         }
 
         .language-select {
@@ -1841,7 +1868,8 @@
             border-radius: 4px;
             cursor: pointer;
         }
- .content-card {
+
+        .content-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
@@ -1976,9 +2004,11 @@
             0% {
                 box-shadow: 0 4px 20px rgba(0, 104, 255, 0.4);
             }
+
             50% {
                 box-shadow: 0 4px 30px rgba(0, 104, 255, 0.7);
             }
+
             100% {
                 box-shadow: 0 4px 20px rgba(0, 104, 255, 0.4);
             }
@@ -2005,6 +2035,7 @@
                 height: 28px;
             }
         }
+
         .page-btn.active {
             background: #ff0000;
             color: white;
@@ -2624,104 +2655,530 @@
             margin-left: 5px;
         }
 
-    .search-suggestions {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    max-height: 300px;
-    overflow-y: auto;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-top: none;
-    border-radius: 0 0 4px 4px;
-    z-index: 10000;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: none;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2)
-}
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            z-index: 10000;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2)
+        }
 
-/* Đảm bảo các item trong danh sách hiển thị rõ ràng */
-.search-suggestions li {
-    padding: 12px 15px;
-    cursor: pointer;
-    border-bottom: 1px solid #f0f0f0;
-    background: white; /* Đảm bảo nền trắng */
-    color: #333; /* Màu chữ rõ ràng */
-    font-size: 14px;
+        /* Đảm bảo các item trong danh sách hiển thị rõ ràng */
+        .search-suggestions li {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            background: white;
+            /* Đảm bảo nền trắng */
+            color: #333;
+            /* Màu chữ rõ ràng */
+            font-size: 14px;
 
-}
+        }
 
 
-/* Khi hover vào gợi ý */
-.search-suggestions li:hover,
-.search-suggestions li.active-suggestion {
-    background-color: #f0f7ff;
-}
+        /* Khi hover vào gợi ý */
+        .search-suggestions li:hover,
+        .search-suggestions li.active-suggestion {
+            background-color: #f0f7ff;
+        }
 
-/* Thêm CSS này vào file CSS của bạn hoặc tạo một section style trong blade */
+        /* Thêm CSS này vào file CSS của bạn hoặc tạo một section style trong blade */
 
-.pagination-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 15px;
-}
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
 
-.pagination {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    border-radius: 4px;
-}
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border-radius: 4px;
+        }
 
-.pagination li {
-    margin: 0 2px;
-}
+        .pagination li {
+            margin: 0 2px;
+        }
 
-.pagination li a, .pagination li span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 36px;
-    min-width: 36px;
-    padding: 0 10px;
-    border-radius: 4px;
-    text-decoration: none;
-    background-color: #fff;
-    color: #333;
-    border: 1px solid #ddd;
-    transition: all 0.3s ease;
-}
+        .pagination li a,
+        .pagination li span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 36px;
+            min-width: 36px;
+            padding: 0 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
 
-.pagination li.active span {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: #fff;
-}
+        .pagination li.active span {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+        }
 
-.pagination li a:hover {
-    background-color: #f5f5f5;
-}
+        .pagination li a:hover {
+            background-color: #f5f5f5;
+        }
 
-.pagination li.disabled span {
-    color: #aaa;
-    background-color: #f8f8f8;
-    cursor: not-allowed;
-}
+        .pagination li.disabled span {
+            color: #aaa;
+            background-color: #f8f8f8;
+            cursor: not-allowed;
+        }
 
-/* Điều chỉnh để phù hợp với giao diện di động */
-@media (max-width: 768px) {
-    .pagination li a, .pagination li span {
-        height: 32px;
-        min-width: 32px;
-        padding: 0 8px;
-        font-size: 14px;
-    }
-}
+        /* Điều chỉnh để phù hợp với giao diện di động */
+        @media (max-width: 768px) {
+
+            .pagination li a,
+            .pagination li span {
+                height: 32px;
+                min-width: 32px;
+                padding: 0 8px;
+                font-size: 14px;
+            }
+        }
+    </style>
+     <style>
+        /* Job Card Styles - Fixed for Mobile */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+            /* Desktop margins */
+            margin-left: 8rem;
+            margin-right: 8rem;
+        }
+
+        .job-card {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e5e5;
+            padding: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .job-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #d0d0d0;
+        }
+
+        /* Hot Job Effect */
+        .job-card.hot-job {
+            border-left: 4px solid #ff4757;
+            background: linear-gradient(135deg, #fff 0%, #fff5f5 100%);
+            position: relative;
+        }
+
+        .job-card.hot-job::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-top: 20px solid #ff4757;
+        }
+
+        .job-card.hot-job::after {
+            content: 'HOT';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            color: white;
+            font-size: 8px;
+            font-weight: bold;
+            transform: rotate(45deg);
+            transform-origin: center;
+        }
+
+        /* Job Header */
+        .job-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .company-logo {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e5e5e5;
+            background: white;
+        }
+
+        .company-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .job-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .job-title {
+            margin: 0 0 6px 0;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.3;
+            color: #333;
+        }
+
+        .job-title a {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .job-title a:hover {
+            color: #2563eb;
+        }
+
+        .hot-icon {
+            font-size: 14px;
+            margin-left: 6px;
+            animation: hotBounce 2s infinite;
+        }
+
+        .company-name {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            color: #666;
+            font-weight: 400;
+            word-wrap: break-word;
+        }
+
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .salary {
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .location {
+            color: #666;
+        }
+
+        /* Job Actions */
+        .job-actions {
+            flex-shrink: 0;
+        }
+
+        .save-job-btn {
+            background: none;
+            border: 1px solid #e5e5e5;
+            border-radius: 6px;
+            padding: 8px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.2s ease;
+        }
+
+        .save-job-btn:hover {
+            background: #f8fafc;
+            color: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .save-job-btn.saved {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        /* Job Details */
+        .job-details {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .job-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .job-tag {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .job-tag.job-type {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .job-tag.experience {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .job-tag.time-posted {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        /* Hot Badge for Genre Title */
+        .hot-badge {
+            background: linear-gradient(45deg, #ff6b6b, #ff4757);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 8px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            animation: hotPulse 2s infinite;
+        }
+
+        /* Animations */
+        @keyframes hotBounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-2px);
+            }
+            60% {
+                transform: translateY(-1px);
+            }
+        }
+
+        @keyframes hotPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* TABLET RESPONSIVE (768px - 1023px) */
+        @media (max-width: 1023px) and (min-width: 768px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                margin-left: 2rem;
+                margin-right: 2rem;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+
+            .job-card {
+                padding: 14px;
+            }
+
+            .company-logo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .job-title {
+                font-size: 15px;
+            }
+
+            .job-header {
+                gap: 10px;
+            }
+        }
+
+        /* MOBILE RESPONSIVE (max-width: 767px) */
+        @media (max-width: 767px) {
+            .category-grid {
+                /* FIX: Remove desktop margins and use proper mobile spacing */
+                grid-template-columns: 1fr;
+                gap: 12px;
+                margin: 15px 10px; /* Small side margins instead of 8rem */
+                /* Override desktop margins completely */
+                margin-left: 10px !important;
+                margin-right: 10px !important;
+            }
+
+            .job-card {
+                padding: 14px;
+                /* Ensure proper width usage */
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .job-header {
+                gap: 12px;
+                /* Keep horizontal layout on mobile for better space usage */
+                flex-direction: row;
+                align-items: flex-start;
+            }
+
+            .company-logo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .job-info {
+                flex: 1;
+                min-width: 0; /* Allow content to shrink properly */
+            }
+
+            .job-title {
+                font-size: 15px;
+                margin-bottom: 4px;
+            }
+
+            .job-title a {
+                /* Better text wrapping */
+                word-break: break-word;
+                hyphens: auto;
+            }
+
+            .company-name {
+                font-size: 13px;
+                margin-bottom: 6px;
+                word-break: break-word;
+            }
+
+            .job-meta {
+                flex-direction: column;
+                gap: 4px;
+                font-size: 13px;
+            }
+
+            .job-actions {
+                margin-left: 8px;
+            }
+
+            .save-job-btn {
+                padding: 6px;
+            }
+
+            .job-tags {
+                gap: 6px;
+                justify-content: flex-start;
+            }
+
+            .job-tag {
+                font-size: 11px;
+                padding: 3px 6px;
+            }
+        }
+
+        /* SMALL MOBILE (max-width: 480px) */
+        @media (max-width: 480px) {
+            .category-grid {
+                margin: 10px 5px;
+                margin-left: 5px !important;
+                margin-right: 5px !important;
+                gap: 10px;
+            }
+
+            .job-card {
+                padding: 12px;
+            }
+
+            .job-header {
+                gap: 10px;
+            }
+
+            .company-logo {
+                width: 45px;
+                height: 45px;
+            }
+
+            .job-title {
+                font-size: 14px;
+            }
+
+            .company-name {
+                font-size: 12px;
+            }
+
+            .job-meta {
+                font-size: 12px;
+            }
+
+            .job-tag {
+                font-size: 10px;
+                padding: 2px 5px;
+            }
+
+            /* For very narrow screens, stack content vertically */
+            @media (max-width: 350px) {
+                .job-header {
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                }
+
+                .job-actions {
+                    margin-left: 0;
+                    margin-top: 8px;
+                }
+
+                .company-logo {
+                    align-self: center;
+                }
+            }
+        }
+
+        /* No jobs message */
+        .no-jobs-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        /* Pagination container */
+        .pagination-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        @media (max-width: 767px) {
+            .pagination-container {
+                margin-top: 20px;
+                padding: 0 10px;
+            }
+        }
     </style>
 </head>
 
@@ -2827,7 +3284,7 @@
                     @endif
                 </li>
 
-                 <li><a href="{{ route('site.study-abroad') }}">Du học nghề</a></li>
+                <li><a href="{{ route('site.study-abroad') }}">Du học nghề</a></li>
                 <li><a href="{{ route('news.home') }}">Tin tức</a></li>
                 <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
             </ul>
@@ -3074,7 +3531,7 @@
 
     <footer class="footer">
         <div class="footer-grid">
-            <div class="footer-links" >
+            <div class="footer-links">
                 <h3>Trang chủ</h3>
                 <ul>
                     <li><a href="{{ route('about') }}">Về chúng tôi</a></li>
@@ -3116,58 +3573,58 @@
                 <h3>{{ $info_layout->newspaper ?? 'Trực thuộc (C) Công Ty Ltd' }}</h3>
                 {!! $info_layout->footer_company !!}
             </div>
-             <!-- Nút Zalo cố định -->
-    <div class="zalo-float-button" onclick="openZalo()" title="Liên hệ qua Zalo">
-        <img src="{{ asset('frontend/zalo.png') }}" alt="Zalo" style="width: 50px; height: 50px;">
-    </div>
+            <!-- Nút Zalo cố định -->
+            <div class="zalo-float-button" onclick="openZalo()" title="Liên hệ qua Zalo">
+                <img src="{{ asset('frontend/zalo.png') }}" alt="Zalo" style="width: 50px; height: 50px;">
+            </div>
 
-    <script>
-        function openZalo() {
-         const zaloNumber = "{{ $info_layout->phone ?? '0988123456' }}";
+            <script>
+                function openZalo() {
+                    const zaloNumber = "{{ $info_layout->phone ?? '0988123456' }}";
 
-            const message = encodeURIComponent('Xin chào! Tôi muốn tìm hiểu về Layout App.');
+                    const message = encodeURIComponent('Xin chào! Tôi muốn tìm hiểu về Layout App.');
 
-            // Thử mở ứng dụng Zalo trước
-            const zaloApp = `zalo://conversation?phone=${zaloNumber}&message=${message}`;
+                    // Thử mở ứng dụng Zalo trước
+                    const zaloApp = `zalo://conversation?phone=${zaloNumber}&message=${message}`;
 
-            // Fallback về Zalo Web nếu không có app
-            const zaloWeb = `https://zalo.me/${zaloNumber}`;
+                    // Fallback về Zalo Web nếu không có app
+                    const zaloWeb = `https://zalo.me/${zaloNumber}`;
 
-            // Tạo link tạm thời để thử mở app
-            const link = document.createElement('a');
-            link.href = zaloApp;
-            link.click();
+                    // Tạo link tạm thời để thử mở app
+                    const link = document.createElement('a');
+                    link.href = zaloApp;
+                    link.click();
 
-            // Sau 1 giây, nếu vẫn ở trang này thì mở Zalo Web
-            setTimeout(() => {
-                window.open(zaloWeb, '_blank');
-            }, 1000);
-        }
-
-        // Hiệu ứng hover cho các card
-        document.querySelectorAll('.content-card, .feature-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-5px)';
-            });
-
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-
-        // Hiệu ứng scroll smooth
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
+                    // Sau 1 giây, nếu vẫn ở trang này thì mở Zalo Web
+                    setTimeout(() => {
+                        window.open(zaloWeb, '_blank');
+                    }, 1000);
                 }
-            });
-        });
-    </script>
+
+                // Hiệu ứng hover cho các card
+                document.querySelectorAll('.content-card, .feature-card').forEach(card => {
+                    card.addEventListener('mouseenter', function () {
+                        this.style.transform = 'translateY(-5px)';
+                    });
+
+                    card.addEventListener('mouseleave', function () {
+                        this.style.transform = 'translateY(0)';
+                    });
+                });
+
+                // Hiệu ứng scroll smooth
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
+            </script>
         </div>
 
         <div class="footer-bottom">
@@ -3184,28 +3641,28 @@
                 src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
                 </script>
 
-<div class="social-links">
-    <a href="{{ $info_layout->url_facebook ?? '#' }}" class="social-link">
-        <i class="fab fa-facebook-f"></i>
-        <span>Follow Us on Facebook</span>
-    </a>
-    <a href="{{ $info_layout->url_youtube ?? '#' }}" class="social-link">
-        <i class="fab fa-youtube"></i>
-        <span>Youtube</span>
-    </a>
-    <a href="{{ $info_layout->url_partner ?? '#' }}" class="social-link">
-        <i class="fas fa-handshake"></i>
-        <span>Partners</span>
-    </a>
-    <a href="https://www.vieclamtainamchau.com/vieclamtainamchau.apk" class="social-link" download>
-        <i class="fas fa-mobile-alt"></i>
-        <span>Tải ứng dụng</span>
-    </a>
-    <a href="#" class="social-link" id="qr-link">
-        <i class="fas fa-qrcode"></i>
-        <span>QR Code tải App</span>
-    </a>
-</div>
+            <div class="social-links">
+                <a href="{{ $info_layout->url_facebook ?? '#' }}" class="social-link">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Follow Us on Facebook</span>
+                </a>
+                <a href="{{ $info_layout->url_youtube ?? '#' }}" class="social-link">
+                    <i class="fab fa-youtube"></i>
+                    <span>Youtube</span>
+                </a>
+                <a href="{{ $info_layout->url_partner ?? '#' }}" class="social-link">
+                    <i class="fas fa-handshake"></i>
+                    <span>Partners</span>
+                </a>
+                <a href="https://www.vieclamtainamchau.com/vieclamtainamchau.apk" class="social-link" download>
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Tải ứng dụng</span>
+                </a>
+                <a href="#" class="social-link" id="qr-link">
+                    <i class="fas fa-qrcode"></i>
+                    <span>QR Code tải App</span>
+                </a>
+            </div>
 
 
 
@@ -3417,115 +3874,115 @@
             }
         }
     </style>
- <script src="https://www.google.com/recaptcha/api.js" async defer></script>
- <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const suggestionsList = document.getElementById('search-suggestions');
-    let jobsList = [];
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            const suggestionsList = document.getElementById('search-suggestions');
+            let jobsList = [];
 
-    // Tải dữ liệu từ file jobs.json
-    fetch('/json/jobs.json')
-        .then(response => response.json())
-        .then(data => {
-            jobsList = data;
-        })
-        .catch(error => {
-            console.error('Error loading jobs.json:', error);
-        });
-
-    // Xử lý sự kiện nhập tìm kiếm
-    searchInput.addEventListener('input', function() {
-        const keyword = searchInput.value.trim().toLowerCase();
-
-        if (keyword.length < 2) {
-            suggestionsList.style.display = 'none';
-            return;
-        }
-
-        // Lọc các job title phù hợp với từ khóa
-        const matchedJobs = jobsList.filter(job =>
-            job.title.toLowerCase().includes(keyword)
-        ).slice(0, 10); // Giới hạn 10 kết quả
-
-        suggestionsList.innerHTML = '';
-
-        if (matchedJobs.length > 0) {
-            matchedJobs.forEach(job => {
-                const li = document.createElement('li');
-                li.textContent = job.title;
-                li.setAttribute('data-slug', job.slug);
-
-                li.addEventListener('click', function() {
-                    searchInput.value = job.title;
-                    suggestionsList.style.display = 'none';
-                    // window.location.href = `/jobs/${job.slug}`;
+            // Tải dữ liệu từ file jobs.json
+            fetch('/json/jobs.json')
+                .then(response => response.json())
+                .then(data => {
+                    jobsList = data;
+                })
+                .catch(error => {
+                    console.error('Error loading jobs.json:', error);
                 });
 
-                suggestionsList.appendChild(li);
+            // Xử lý sự kiện nhập tìm kiếm
+            searchInput.addEventListener('input', function () {
+                const keyword = searchInput.value.trim().toLowerCase();
+
+                if (keyword.length < 2) {
+                    suggestionsList.style.display = 'none';
+                    return;
+                }
+
+                // Lọc các job title phù hợp với từ khóa
+                const matchedJobs = jobsList.filter(job =>
+                    job.title.toLowerCase().includes(keyword)
+                ).slice(0, 10); // Giới hạn 10 kết quả
+
+                suggestionsList.innerHTML = '';
+
+                if (matchedJobs.length > 0) {
+                    matchedJobs.forEach(job => {
+                        const li = document.createElement('li');
+                        li.textContent = job.title;
+                        li.setAttribute('data-slug', job.slug);
+
+                        li.addEventListener('click', function () {
+                            searchInput.value = job.title;
+                            suggestionsList.style.display = 'none';
+                            // window.location.href = `/jobs/${job.slug}`;
+                        });
+
+                        suggestionsList.appendChild(li);
+                    });
+
+                    suggestionsList.style.display = 'block';
+                } else {
+                    suggestionsList.style.display = 'none';
+                }
             });
 
-            suggestionsList.style.display = 'block';
-        } else {
-            suggestionsList.style.display = 'none';
-        }
-    });
-
-    // Ẩn danh sách gợi ý khi click ra ngoài
-    document.addEventListener('click', function(event) {
-        if (!searchInput.contains(event.target) && !suggestionsList.contains(event.target)) {
-            suggestionsList.style.display = 'none';
-        }
-    });
-
-    // Xử lý phím mũi tên và Enter cho danh sách gợi ý
-    searchInput.addEventListener('keydown', function(e) {
-        const items = suggestionsList.querySelectorAll('li');
-
-        if (items.length === 0) return;
-
-        const key = e.key;
-        const activeClass = 'active-suggestion';
-        const activeItem = suggestionsList.querySelector('.' + activeClass);
-
-        if (key === 'ArrowDown' || key === 'ArrowUp') {
-            e.preventDefault();
-
-            if (!activeItem) {
-                // Không có item nào đang active
-                if (key === 'ArrowDown') {
-                    items[0].classList.add(activeClass);
-                } else {
-                    items[items.length - 1].classList.add(activeClass);
+            // Ẩn danh sách gợi ý khi click ra ngoài
+            document.addEventListener('click', function (event) {
+                if (!searchInput.contains(event.target) && !suggestionsList.contains(event.target)) {
+                    suggestionsList.style.display = 'none';
                 }
-            } else {
-                // Đã có item active
-                const currentIndex = Array.from(items).indexOf(activeItem);
-                activeItem.classList.remove(activeClass);
+            });
 
-                if (key === 'ArrowDown') {
-                    const nextIndex = (currentIndex + 1) % items.length;
-                    items[nextIndex].classList.add(activeClass);
-                } else {
-                    const prevIndex = (currentIndex - 1 + items.length) % items.length;
-                    items[prevIndex].classList.add(activeClass);
+            // Xử lý phím mũi tên và Enter cho danh sách gợi ý
+            searchInput.addEventListener('keydown', function (e) {
+                const items = suggestionsList.querySelectorAll('li');
+
+                if (items.length === 0) return;
+
+                const key = e.key;
+                const activeClass = 'active-suggestion';
+                const activeItem = suggestionsList.querySelector('.' + activeClass);
+
+                if (key === 'ArrowDown' || key === 'ArrowUp') {
+                    e.preventDefault();
+
+                    if (!activeItem) {
+                        // Không có item nào đang active
+                        if (key === 'ArrowDown') {
+                            items[0].classList.add(activeClass);
+                        } else {
+                            items[items.length - 1].classList.add(activeClass);
+                        }
+                    } else {
+                        // Đã có item active
+                        const currentIndex = Array.from(items).indexOf(activeItem);
+                        activeItem.classList.remove(activeClass);
+
+                        if (key === 'ArrowDown') {
+                            const nextIndex = (currentIndex + 1) % items.length;
+                            items[nextIndex].classList.add(activeClass);
+                        } else {
+                            const prevIndex = (currentIndex - 1 + items.length) % items.length;
+                            items[prevIndex].classList.add(activeClass);
+                        }
+                    }
+
+                    // Scroll đến item active để luôn nhìn thấy
+                    const newActiveItem = suggestionsList.querySelector('.' + activeClass);
+                    if (newActiveItem) {
+                        newActiveItem.scrollIntoView({ block: 'nearest' });
+                    }
+                } else if (key === 'Enter' && activeItem) {
+                    e.preventDefault();
+                    searchInput.value = activeItem.textContent;
+                    suggestionsList.style.display = 'none';
                 }
-            }
-
-            // Scroll đến item active để luôn nhìn thấy
-            const newActiveItem = suggestionsList.querySelector('.' + activeClass);
-            if (newActiveItem) {
-                newActiveItem.scrollIntoView({ block: 'nearest' });
-            }
-        } else if (key === 'Enter' && activeItem) {
-            e.preventDefault();
-            searchInput.value = activeItem.textContent;
-            suggestionsList.style.display = 'none';
-        }
-    });
-});
-</script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+            });
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
         @if (session('success'))
@@ -3569,99 +4026,99 @@ document.addEventListener('DOMContentLoaded', function() {
         .toast-message {
             color: white !important;
         }
-
     </style>
     <!-- QR Code Modal -->
-<div id="qr-modal" class="qr-modal" style="display: none;">
-    <div class="qr-modal-content">
-        <span class="qr-close">&times;</span>
-        <h3>Quét QR Code để tải ứng dụng</h3>
-        <div id="qr-code"></div>
-        <p>Hoặc <a href="https://www.vieclamtainamchau.com/vieclamtainamchau.apk" download>tải trực tiếp tại đây</a></p>
+    <div id="qr-modal" class="qr-modal" style="display: none;">
+        <div class="qr-modal-content">
+            <span class="qr-close">&times;</span>
+            <h3>Quét QR Code để tải ứng dụng</h3>
+            <div id="qr-code"></div>
+            <p>Hoặc <a href="https://www.vieclamtainamchau.com/vieclamtainamchau.apk" download>tải trực tiếp tại đây</a>
+            </p>
+        </div>
     </div>
-</div>
 
-<script>
-// Tạo QR Code đơn giản bằng API
-function generateQRCode() {
-    const qrCodeDiv = document.getElementById('qr-code');
-    const url = 'https://www.vieclamtainamchau.com/vieclamtainamchau.apk';
-    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+    <script>
+        // Tạo QR Code đơn giản bằng API
+        function generateQRCode() {
+            const qrCodeDiv = document.getElementById('qr-code');
+            const url = 'https://www.vieclamtainamchau.com/vieclamtainamchau.apk';
+            const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
 
-    qrCodeDiv.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="border: 2px solid #ddd; border-radius: 5px;">`;
-}
-
-// Chạy khi DOM đã load
-document.addEventListener('DOMContentLoaded', function() {
-    // Tạo QR Code
-    generateQRCode();
-
-    // Modal functionality
-    const modal = document.getElementById('qr-modal');
-    const qrLink = document.getElementById('qr-link');
-    const closeBtn = document.querySelector('.qr-close');
-
-    if (qrLink && modal && closeBtn) {
-        qrLink.onclick = function(e) {
-            e.preventDefault();
-            modal.style.display = 'block';
+            qrCodeDiv.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="border: 2px solid #ddd; border-radius: 5px;">`;
         }
 
-        closeBtn.onclick = function() {
-            modal.style.display = 'none';
-        }
+        // Chạy khi DOM đã load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Tạo QR Code
+            generateQRCode();
 
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = 'none';
+            // Modal functionality
+            const modal = document.getElementById('qr-modal');
+            const qrLink = document.getElementById('qr-link');
+            const closeBtn = document.querySelector('.qr-close');
+
+            if (qrLink && modal && closeBtn) {
+                qrLink.onclick = function (e) {
+                    e.preventDefault();
+                    modal.style.display = 'block';
+                }
+
+                closeBtn.onclick = function () {
+                    modal.style.display = 'none';
+                }
+
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = 'none';
+                    }
+                }
             }
+        });
+    </script>
+
+    <style>
+        .qr-modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
         }
-    }
-});
-</script>
 
-<style>
-.qr-modal {
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-}
+        .qr-modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            position: relative;
+        }
 
-.qr-modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border-radius: 10px;
-    width: 300px;
-    text-align: center;
-    position: relative;
-}
+        .qr-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            cursor: pointer;
+        }
 
-.qr-close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    position: absolute;
-    right: 15px;
-    top: 10px;
-    cursor: pointer;
-}
+        .qr-close:hover,
+        .qr-close:focus {
+            color: #000;
+        }
 
-.qr-close:hover,
-.qr-close:focus {
-    color: #000;
-}
-
-#qr-code canvas {
-    border: 2px solid #ddd;
-    border-radius: 5px;
-}
-</style>
+        #qr-code canvas {
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
 
 </body>
 

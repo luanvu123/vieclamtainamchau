@@ -125,13 +125,14 @@
     @endif
 </section>
 
-   <style>
-        /* Job Card Styles */
+  <style>
+        /* Job Card Styles - Fixed for Mobile */
         .category-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
             gap: 16px;
             margin: 20px 0;
+            /* Desktop margins */
             margin-left: 8rem;
             margin-right: 8rem;
         }
@@ -222,6 +223,8 @@
             color: inherit;
             text-decoration: none;
             display: block;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .job-title a:hover {
@@ -239,6 +242,7 @@
             font-size: 14px;
             color: #666;
             font-weight: 400;
+            word-wrap: break-word;
         }
 
         .job-meta {
@@ -336,41 +340,139 @@
 
         /* Animations */
         @keyframes hotBounce {
-
-            0%,
-            20%,
-            50%,
-            80%,
-            100% {
+            0%, 20%, 50%, 80%, 100% {
                 transform: translateY(0);
             }
-
             40% {
                 transform: translateY(-2px);
             }
-
             60% {
                 transform: translateY(-1px);
             }
         }
 
         @keyframes hotPulse {
-
-            0%,
-            100% {
+            0%, 100% {
                 transform: scale(1);
             }
-
             50% {
                 transform: scale(1.05);
             }
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
+        /* TABLET RESPONSIVE (768px - 1023px) */
+        @media (max-width: 1023px) and (min-width: 768px) {
             .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                margin-left: 2rem;
+                margin-right: 2rem;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+
+            .job-card {
+                padding: 14px;
+            }
+
+            .company-logo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .job-title {
+                font-size: 15px;
+            }
+
+            .job-header {
+                gap: 10px;
+            }
+        }
+
+        /* MOBILE RESPONSIVE (max-width: 767px) */
+        @media (max-width: 767px) {
+            .category-grid {
+                /* FIX: Remove desktop margins and use proper mobile spacing */
                 grid-template-columns: 1fr;
                 gap: 12px;
+                margin: 15px 10px; /* Small side margins instead of 8rem */
+                /* Override desktop margins completely */
+                margin-left: 10px !important;
+                margin-right: 10px !important;
+            }
+
+            .job-card {
+                padding: 14px;
+                /* Ensure proper width usage */
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .job-header {
+                gap: 12px;
+                /* Keep horizontal layout on mobile for better space usage */
+                flex-direction: row;
+                align-items: flex-start;
+            }
+
+            .company-logo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .job-info {
+                flex: 1;
+                min-width: 0; /* Allow content to shrink properly */
+            }
+
+            .job-title {
+                font-size: 15px;
+                margin-bottom: 4px;
+            }
+
+            .job-title a {
+                /* Better text wrapping */
+                word-break: break-word;
+                hyphens: auto;
+            }
+
+            .company-name {
+                font-size: 13px;
+                margin-bottom: 6px;
+                word-break: break-word;
+            }
+
+            .job-meta {
+                flex-direction: column;
+                gap: 4px;
+                font-size: 13px;
+            }
+
+            .job-actions {
+                margin-left: 8px;
+            }
+
+            .save-job-btn {
+                padding: 6px;
+            }
+
+            .job-tags {
+                gap: 6px;
+                justify-content: flex-start;
+            }
+
+            .job-tag {
+                font-size: 11px;
+                padding: 3px 6px;
+            }
+        }
+
+        /* SMALL MOBILE (max-width: 480px) */
+        @media (max-width: 480px) {
+            .category-grid {
+                margin: 10px 5px;
+                margin-left: 5px !important;
+                margin-right: 5px !important;
+                gap: 10px;
             }
 
             .job-card {
@@ -382,29 +484,65 @@
             }
 
             .company-logo {
-                width: 48px;
-                height: 48px;
+                width: 45px;
+                height: 45px;
             }
 
             .job-title {
-                font-size: 15px;
+                font-size: 14px;
+            }
+
+            .company-name {
+                font-size: 12px;
             }
 
             .job-meta {
-                flex-direction: column;
-                gap: 4px;
+                font-size: 12px;
+            }
+
+            .job-tag {
+                font-size: 10px;
+                padding: 2px 5px;
+            }
+
+            /* For very narrow screens, stack content vertically */
+            @media (max-width: 350px) {
+                .job-header {
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                }
+
+                .job-actions {
+                    margin-left: 0;
+                    margin-top: 8px;
+                }
+
+                .company-logo {
+                    align-self: center;
+                }
             }
         }
 
-        @media (max-width: 480px) {
-            .job-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
+        /* No jobs message */
+        .no-jobs-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            font-size: 16px;
+        }
 
-            .job-actions {
-                align-self: flex-end;
-                margin-top: -40px;
+        /* Pagination container */
+        .pagination-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        @media (max-width: 767px) {
+            .pagination-container {
+                margin-top: 20px;
+                padding: 0 10px;
             }
         }
     </style>
