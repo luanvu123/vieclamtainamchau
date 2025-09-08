@@ -69,158 +69,284 @@
                 </a>
             </h2>
 
-            <div class="category-grid">
-                @foreach ($jobs as $job)
-                    <div class="job-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-job' : '' }}">
-                        <div class="job-card-content">
-                            <!-- Logo và thông tin chính -->
-                            <div class="job-header">
-                                <div class="company-logo">
-                                    @if ($job->employer && $job->employer->avatar)
-                                        <a href="{{ route('candidate.job.show', $job->slug) }}">
-                                            <img src="{{ asset('storage/' . $job->employer->avatar) }}"
-                                                alt="{{ $job->employer->company_name }}"
-                                                onerror="this.src='{{ asset('frontend/company1.png') }}'">
-                                        </a>
-                                    @else
-                                        <a href="{{ route('candidate.job.show', $job->slug) }}">
-                                            <img src="{{ asset('frontend/company1.png') }}" alt="Default Company Logo">
-                                        </a>
-                                    @endif
-                                </div>
+          <!-- Job Cards Grid -->
+<div class="category-grid">
+    @foreach ($jobs as $job)
+        <div class="job-card {{ $job->service_type === 'Tin đặc biệt' ? 'hot-job' : '' }}">
+            <div class="job-card-content">
+                <!-- Logo và thông tin chính -->
+                <div class="job-header">
+                    <div class="company-logo">
+                        @if ($job->employer && $job->employer->avatar)
+                            <a href="{{ route('candidate.job.show', $job->slug) }}">
+                                <img src="{{ asset('storage/' . $job->employer->avatar) }}"
+                                    alt="{{ $job->employer->company_name }}"
+                                    onerror="this.src='{{ asset('frontend/company1.png') }}'">
+                            </a>
+                        @else
+                            <a href="{{ route('candidate.job.show', $job->slug) }}">
+                                <img src="{{ asset('frontend/company1.png') }}" alt="Default Company Logo">
+                            </a>
+                        @endif
+                    </div>
 
-                                <div class="job-info">
-                                    <h3 class="job-title">
-                                        <a href="{{ route('candidate.job.show', $job->slug) }}" title="{{ $job->title }}">
-                                            {{ Str::limit($job->title, 30) }}
-                                            @if ($job->service_type === 'Tin đặc biệt')
-                                                <span class="hot-icon">🔥</span>
-                                            @endif
-                                        </a>
-                                    </h3>
+                    <div class="job-info">
+                        <h3 class="job-title">
+                            <a href="{{ route('candidate.job.show', $job->slug) }}" title="{{ $job->title }}">
+                                {{ Str::limit($job->title, 30) }}
+                                @if ($job->service_type === 'Tin đặc biệt')
+                                    <span class="hot-icon">🔥</span>
+                                @endif
+                            </a>
+                        </h3>
 
-                                    <p class="company-name">
-                                        {{ $job->employer ? $job->employer->company_name : 'Công ty TNHH' }}
-                                    </p>
+                        <p class="company-name">
+                            {{ $job->employer ? $job->employer->company_name : 'Công ty TNHH' }}
+                        </p>
 
-                                    <div class="job-meta">
-                                        @if ($job->salary)
-                                            <span class="salary">{{ $job->salary }}</span>
-                                        @endif
+                        <div class="job-meta">
+                            @if ($job->salary)
+                                <span class="salary">{{ $job->salary }}</span>
+                            @endif
 
-                                        @if ($job->countries->isNotEmpty())
-                                            <span class="location">{{ $job->countries->pluck('name')->join(', ') }}</span>
-                                        @else
-                                            <span class="location">Không xác định quốc gia</span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="job-actions">
-                                    <button class="save-job-btn" data-job-id="{{ $job->id }}">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Thông tin bổ sung -->
-                            <div class="job-details">
-                                <div class="job-tags">
-                                    @if ($job->type)
-                                        <span class="job-tag job-type">{{ $job->type }}</span>
-                                    @endif
-
-                                    @if ($job->experience)
-                                        <span class="job-tag experience">{{ $job->experience }}</span>
-                                    @endif
-
-                                    <span class="job-tag time-posted">
-                                        {{ $job->created_at->diffForHumans() }}
-                                    </span>
-                                </div>
-                            </div>
+                            @if ($job->countries->isNotEmpty())
+                                <span class="location">{{ $job->countries->pluck('name')->join(', ') }}</span>
+                            @else
+                                <span class="location">Không xác định quốc gia</span>
+                            @endif
                         </div>
                     </div>
-                @endforeach
+
+                    <div class="job-actions">
+                        <button class="save-job-btn" data-job-id="{{ $job->id }}">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Thông tin bổ sung -->
+                <div class="job-details">
+                    <div class="job-tags">
+                        @if ($job->type)
+                            <span class="job-tag job-type">{{ $job->type }}</span>
+                        @endif
+
+                        @if ($job->experience)
+                            <span class="job-tag experience">{{ $job->experience }}</span>
+                        @endif
+
+                        <span class="job-tag time-posted">
+                            {{ $job->created_at->diffForHumans() }}
+                        </span>
+                    </div>
+                </div>
             </div>
+        </div>
+    @endforeach
+</div>
 
-            <!-- Custom Numbered Pagination with Auto-scroll -->
-            <div class="pagination-container" data-genre-id="{{ $genre->id }}">
-                @if ($jobs->hasPages())
-                    <nav class="pagination-nav">
-                        <!-- Auto-scroll controls -->
-                        <div class="auto-scroll-controls">
-                            <button class="auto-scroll-btn" data-genre="{{ $genre->id }}" data-action="toggle">
-                                <span class="play-icon">▶️</span>
-                                <span class="pause-icon" style="display: none;">⏸️</span>
-                                <span class="auto-text">Tự động lướt</span>
-                            </button>
-                            <select class="auto-speed" data-genre="{{ $genre->id }}">
-                                <option value="3000">Chậm (3s)</option>
-                                <option value="2000" selected>Bình thường (2s)</option>
-                                <option value="1000">Nhanh (1s)</option>
-                            </select>
-                        </div>
-
-                        <ul class="pagination" data-genre="{{ $genre->id }}">
-                            {{-- Previous Page Link --}}
-                            @if ($jobs->onFirstPage())
-                                <li class="disabled"><span>&laquo;</span></li>
-                            @else
-                                <li><a href="{{ $jobs->previousPageUrl() }}" rel="prev" class="pagination-link">&laquo;</a></li>
-                            @endif
-
-                            {{-- Pagination Elements --}}
-                            @php
-                                $currentPage = $jobs->currentPage();
-                                $lastPage = $jobs->lastPage();
-                                $start = max(1, $currentPage - 2);
-                                $end = min($lastPage, $currentPage + 2);
-                            @endphp
-
-                            {{-- First Page --}}
-                            @if ($start > 1)
-                                <li><a href="{{ $jobs->url(1) }}" class="pagination-link">1</a></li>
-                                @if ($start > 2)
-                                    <li class="disabled"><span>...</span></li>
-                                @endif
-                            @endif
-
-                            {{-- Page Numbers --}}
-                            @for ($page = $start; $page <= $end; $page++)
-                                @if ($page == $currentPage)
-                                    <li class="active"><span>{{ $page }}</span></li>
-                                @else
-                                    <li><a href="{{ $jobs->url($page) }}" class="pagination-link">{{ $page }}</a></li>
-                                @endif
-                            @endfor
-
-                            {{-- Last Page --}}
-                            @if ($end < $lastPage)
-                                @if ($end < $lastPage - 1)
-                                    <li class="disabled"><span>...</span></li>
-                                @endif
-                                <li><a href="{{ $jobs->url($lastPage) }}" class="pagination-link">{{ $lastPage }}</a></li>
-                            @endif
-
-                            {{-- Next Page Link --}}
-                            @if ($jobs->hasMorePages())
-                                <li><a href="{{ $jobs->nextPageUrl() }}" rel="next" class="pagination-link">&raquo;</a></li>
-                            @else
-                                <li class="disabled"><span>&raquo;</span></li>
-                            @endif
-                        </ul>
-
-                        <!-- Progress bar -->
-                        <div class="auto-progress" data-genre="{{ $genre->id }}" style="display: none;">
-                            <div class="progress-bar"></div>
-                        </div>
-                    </nav>
+<!-- Simple Numbered Pagination -->
+<div class="pagination-container">
+    @if ($jobs->hasPages())
+        <nav class="pagination-nav">
+            <ul class="pagination">
+                {{-- Previous Page Link --}}
+                @if ($jobs->onFirstPage())
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo;</span>
+                    </li>
+                @else
+                    <li class="page-item">
+                        <a href="{{ $jobs->previousPageUrl() }}" class="page-link" rel="prev">&laquo;</a>
+                    </li>
                 @endif
-            </div>
+
+                {{-- Pagination Elements --}}
+                @php
+                    $currentPage = $jobs->currentPage();
+                    $lastPage = $jobs->lastPage();
+                    $start = max(1, $currentPage - 2);
+                    $end = min($lastPage, $currentPage + 2);
+                @endphp
+
+                {{-- First Page --}}
+                @if ($start > 1)
+                    <li class="page-item">
+                        <a href="{{ $jobs->url(1) }}" class="page-link">1</a>
+                    </li>
+                    @if ($start > 2)
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    @endif
+                @endif
+
+                {{-- Page Numbers --}}
+                @for ($page = $start; $page <= $end; $page++)
+                    @if ($page == $currentPage)
+                        <li class="page-item active">
+                            <span class="page-link">{{ $page }}</span>
+                        </li>
+                    @else
+                        <li class="page-item">
+                            <a href="{{ $jobs->url($page) }}" class="page-link">{{ $page }}</a>
+                        </li>
+                    @endif
+                @endfor
+
+                {{-- Last Page --}}
+                @if ($end < $lastPage)
+                    @if ($end < $lastPage - 1)
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    @endif
+                    <li class="page-item">
+                        <a href="{{ $jobs->url($lastPage) }}" class="page-link">{{ $lastPage }}</a>
+                    </li>
+                @endif
+
+                {{-- Next Page Link --}}
+                @if ($jobs->hasMorePages())
+                    <li class="page-item">
+                        <a href="{{ $jobs->nextPageUrl() }}" class="page-link" rel="next">&raquo;</a>
+                    </li>
+                @else
+                    <li class="page-item disabled">
+                        <span class="page-link">&raquo;</span>
+                    </li>
+                @endif
+            </ul>
+        </nav>
+    @endif
+</div>
+
+<style>
+/* Simple Pagination Styles */
+.pagination-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.pagination-nav {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 5px;
+    align-items: center;
+}
+
+.page-item {
+    margin: 0;
+}
+
+.page-link {
+    display: block;
+    padding: 8px 12px;
+    margin: 0;
+    text-decoration: none;
+    color: #6c757d;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    min-width: 40px;
+    text-align: center;
+}
+
+.page-link:hover {
+    color: #0056b3;
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+    text-decoration: none;
+}
+
+.page-item.active .page-link {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #fff;
+    border-color: #dee2e6;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.page-item.disabled .page-link:hover {
+    color: #6c757d;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+/* Responsive pagination */
+@media (max-width: 767px) {
+    .pagination-container {
+        margin-top: 20px;
+        padding: 15px 10px;
+    }
+
+    .pagination {
+        gap: 3px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .page-link {
+        padding: 6px 10px;
+        font-size: 13px;
+        min-width: 35px;
+    }
+
+    /* Hide some page numbers on mobile for better spacing */
+    .pagination .page-item:not(.active):not(:first-child):not(:last-child):not(:nth-child(2)):not(:nth-last-child(2)) {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-link {
+        padding: 5px 8px;
+        font-size: 12px;
+        min-width: 32px;
+    }
+
+    /* Show only essential pagination elements on small mobile */
+    .pagination {
+        gap: 2px;
+    }
+}
+
+/* Page info text (optional) */
+.pagination-info {
+    text-align: center;
+    color: #6c757d;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+@media (max-width: 767px) {
+    .pagination-info {
+        font-size: 12px;
+        margin-top: 8px;
+    }
+}
+</style>
 
             @if ($jobs->total() > 12)
                 <div class="view-more">
