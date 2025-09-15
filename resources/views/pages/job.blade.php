@@ -9,7 +9,9 @@
             margin: 0;
             padding: 0;
         }
-
+.text-success {
+    color: #28a745 !important;
+}
         /* Job Card Container */
         .job-card {
             background: white;
@@ -553,17 +555,17 @@
 
 
 
-            <div class="buttons">
-                <div id="applicationStatus_{{ $jobPosting->id }}">
-                    <!-- Sẽ được JavaScript cập nhật -->
-                </div>
-                <button class="apply-btn" onclick="applyJob({{ $jobPosting->id }})">Nộp hồ sơ</button>
-
-
-                <button class="save-btn" onclick="toggleSaveJob({{ $jobPosting->id }})">
-                    ♡
-                </button>
-            </div>
+           <div class="buttons">
+    <div id="applicationStatus_{{ $jobPosting->id }}">
+        <!-- Sẽ được JavaScript cập nhật -->
+    </div>
+    <button class="apply-btn" onclick="applyJob({{ $jobPosting->id }})">
+        <i class="fas fa-paper-plane"></i>
+    </button>
+    <button class="save-btn" onclick="toggleSaveJob({{ $jobPosting->id }})">
+        <i class="far fa-heart"></i>
+    </button>
+</div>
 
             <script>
                 function toggleSaveJob(jobPostingId) {
@@ -604,29 +606,30 @@
                     checkApplicationStatus({{ $jobPosting->id }});
                 });
 
-                function checkApplicationStatus(jobId) {
-                    fetch(`/candidate/check-application/${jobId}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            const statusDiv = document.getElementById(`applicationStatus_${jobId}`);
-                            if (data.hasApplied) {
-                                const applicationDate = new Date(data.applicationDate).toLocaleDateString('vi-VN');
-                                const lastUpdateDate = data.lastUpdateDate ?
-                                    new Date(data.lastUpdateDate).toLocaleDateString('vi-VN') :
-                                    null;
+  function checkApplicationStatus(jobId) {
+        fetch(`/candidate/check-application/${jobId}`)
+            .then(response => response.json())
+            .then(data => {
+                const statusDiv = document.getElementById(`applicationStatus_${jobId}`);
+                if (data.hasApplied) {
+                    const applicationDate = new Date(data.applicationDate).toLocaleDateString('vi-VN');
+                    const lastUpdateDate = data.lastUpdateDate ?
+                        new Date(data.lastUpdateDate).toLocaleDateString('vi-VN') :
+                        null;
 
-                                statusDiv.innerHTML = `
-                                <div class="application-status">
-                                    Đã nộp hồ sơ - Ngày nộp: ${applicationDate}
-                                    ${lastUpdateDate ? `<br>Cập nhật lần cuối: ${lastUpdateDate}` : ''}
-                                </div>`;
+                    statusDiv.innerHTML = `
+                    <div class="application-status">
+                        <i class="fas fa-check-circle text-success"></i>
+                        <i class="far fa-calendar-alt"></i> ${applicationDate}
+                        ${lastUpdateDate ? `<br><i class="fas fa-sync-alt"></i>${lastUpdateDate}` : ''}
+                    </div>`;
 
-                                const applyBtn = document.querySelector('.apply-btn');
-                                applyBtn.textContent = 'Nộp lại hồ sơ';
-                            }
-                        })
-                        .catch(error => console.error('Error checking application status:', error));
+                    const applyBtn = document.querySelector('.apply-btn');
+                    applyBtn.innerHTML = '<i class="fas fa-redo"></i>';
                 }
+            })
+            .catch(error => console.error('Error checking application status:', error));
+    }
 
                 function applyJob(jobId) {
                     document.getElementById('jobPostingId').value = jobId;

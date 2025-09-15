@@ -23,24 +23,30 @@ class EmployerAuthController extends Controller
         $genres = Genre::where('status', 'active')->get();
          return view('employer.auth.register', compact('categories', 'genres'));
     }
-
-  public function register(Request $request)
+    public function register(Request $request)
 {
     $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:employers',
-        'password' => 'required|string|min:8|confirmed',
-        'phone' => 'required|string|max:20',
-        'company_name' => 'required|string|max:255',
-        'categories' => 'required|array',
-        'categories.*' => 'exists:categories,id',
-        'genres' => 'required|array',
-        'genres.*' => 'exists:genres,id',
-        'captcha' => 'required|captcha',
-    ], [
+    'name' => 'required|string|max:255',
+    'email' => 'required|string|email|max:255|unique:employers',
+    'password' => 'required|string|min:8|confirmed',
+    'phone' => 'required|string|max:20',
+    'company_name' => 'required|string|max:255',
+    'categories' => 'required|array',
+    'categories.*' => 'exists:categories,id',
+    'genres' => 'required|array',
+    'genres.*' => 'exists:genres,id',
+    'captcha' => [
+        'required',
+        function ($attribute, $value, $fail) {
+            if (strtolower($value) !== strtolower(session('captcha_code'))) {
+                $fail('Mã xác thực không đúng.');
+            }
+        },
+    ],
+], [
     'captcha.required' => 'Vui lòng nhập mã xác thực.',
-    'captcha.captcha' => 'Mã xác thực không đúng.',
 ]);
+
 
     $ip = $request->ip();
     if (!Employer::canRegisterWithIp($ip)) {
@@ -82,6 +88,66 @@ class EmployerAuthController extends Controller
         return back()->with('error', 'Đã xảy ra lỗi khi đăng ký. Vui lòng thử lại.')->withInput();
     }
 }
+
+
+//   public function register(Request $request)
+// {
+//     $request->validate([
+//         'name' => 'required|string|max:255',
+//         'email' => 'required|string|email|max:255|unique:employers',
+//         'password' => 'required|string|min:8|confirmed',
+//         'phone' => 'required|string|max:20',
+//         'company_name' => 'required|string|max:255',
+//         'categories' => 'required|array',
+//         'categories.*' => 'exists:categories,id',
+//         'genres' => 'required|array',
+//         'genres.*' => 'exists:genres,id',
+//         'captcha' => 'required|captcha',
+//     ], [
+//     'captcha.required' => 'Vui lòng nhập mã xác thực.',
+//     'captcha.captcha' => 'Mã xác thực không đúng.',
+// ]);
+
+//     $ip = $request->ip();
+//     if (!Employer::canRegisterWithIp($ip)) {
+//         return redirect()->back()->withInput($request->except('password', 'password_confirmation'))
+//             ->with('error', 'Bạn đã đạt giới hạn số lượng tài khoản chưa kích hoạt từ địa chỉ IP này.');
+//     }
+
+//     DB::beginTransaction();
+//     try {
+//         $verificationToken = Str::random(32);
+//         $employer = Employer::create([
+//             'name' => $request->name,
+//             'email' => $request->email,
+//             'password' => Hash::make($request->password),
+//             'phone' => $request->phone,
+//             'company_name' => $request->company_name,
+//             'slug' => Str::slug($request->company_name),
+//             'status' => 0,
+//             'isVerify' => 0,
+//             'isVerifyEmail' => 0,
+//             'verification_token' => $verificationToken,
+//             'ip_address' => $ip,
+//         ]);
+
+//         if ($request->has('categories')) {
+//             $employer->categories()->sync($request->categories);
+//         }
+
+//         if ($request->has('genres')) {
+//             $employer->genres()->sync($request->genres);
+//         }
+
+//         Mail::to($employer->email)->send(new EmployerVerificationMail($employer));
+
+//         DB::commit();
+//         return redirect()->route('employer.register')->with('success', 'Vui lòng kiểm tra email để xác thực tài khoản của bạn.');
+//     } catch (\Exception $e) {
+//         DB::rollBack();
+//         return back()->with('error', 'Đã xảy ra lỗi khi đăng ký. Vui lòng thử lại.')->withInput();
+//     }
+// }
 
 
     public function verify($token)

@@ -297,9 +297,10 @@
                 width: 400px;
                 margin-left: -150px;
             }
+
             .footer-company {
                 width: 280px;
-              margin-left: -70px;
+                margin-left: -70px;
             }
 
         }
@@ -807,7 +808,7 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1rem;
             margin-top: 2rem;
-             margin-left: 8rem;
+            margin-left: 8rem;
             margin-right: 8rem;
         }
 
@@ -1041,29 +1042,31 @@
         .footer-links a:hover {
             opacity: 0.8;
         }
-/* Loại bỏ margin-left trên tất cả thiết bị trước */
-.footer-links {
-    margin-left: 0 !important;
-}
 
-/* Chỉ áp dụng margin-left cho desktop (màn hình >= 1024px) */
-@media (min-width: 1024px) {
-    .footer-links:nth-child(2) {
-        margin-left: -60px !important;
-    }
+        /* Loại bỏ margin-left trên tất cả thiết bị trước */
+        .footer-links {
+            margin-left: 0 !important;
+        }
 
-    .footer-links:nth-child(3) {
-        margin-left: -120px !important;
-    }
-}
+        /* Chỉ áp dụng margin-left cho desktop (màn hình >= 1024px) */
+        @media (min-width: 1024px) {
+            .footer-links:nth-child(2) {
+                margin-left: -60px !important;
+            }
 
-/* Responsive cho mobile và tablet */
-@media (max-width: 1023px) {
-    .footer-links {
-        display: block;
-        margin-bottom: 20px;
-    }
-}
+            .footer-links:nth-child(3) {
+                margin-left: -120px !important;
+            }
+        }
+
+        /* Responsive cho mobile và tablet */
+        @media (max-width: 1023px) {
+            .footer-links {
+                display: block;
+                margin-bottom: 20px;
+            }
+        }
+
         .footer-contact i {
             margin-right: 0.5rem;
             width: 20px;
@@ -2513,7 +2516,7 @@
             margin-left: 5px;
         }
     </style>
-     <style>
+    <style>
         /* Job Card Styles - Fixed for Mobile */
         .category-grid {
             display: grid;
@@ -2728,21 +2731,31 @@
 
         /* Animations */
         @keyframes hotBounce {
-            0%, 20%, 50%, 80%, 100% {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
                 transform: translateY(0);
             }
+
             40% {
                 transform: translateY(-2px);
             }
+
             60% {
                 transform: translateY(-1px);
             }
         }
 
         @keyframes hotPulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1);
             }
+
             50% {
                 transform: scale(1.05);
             }
@@ -2782,7 +2795,8 @@
                 /* FIX: Remove desktop margins and use proper mobile spacing */
                 grid-template-columns: 1fr;
                 gap: 12px;
-                margin: 15px 10px; /* Small side margins instead of 8rem */
+                margin: 15px 10px;
+                /* Small side margins instead of 8rem */
                 /* Override desktop margins completely */
                 margin-left: 10px !important;
                 margin-right: 10px !important;
@@ -2809,7 +2823,8 @@
 
             .job-info {
                 flex: 1;
-                min-width: 0; /* Allow content to shrink properly */
+                min-width: 0;
+                /* Allow content to shrink properly */
             }
 
             .job-title {
@@ -3040,7 +3055,7 @@
                         </div>
                     @endif
                 </li>
-                  <li><a href="{{ route('site.study-abroad') }}">Du học nghề</a></li>
+                <li><a href="{{ route('site.study-abroad') }}">Du học nghề</a></li>
                 <li><a href="{{ route('news.home') }}">Tin tức</a></li>
                 <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
             </ul>
@@ -3323,89 +3338,115 @@
 
         <section class="hotlines-section">
 
-            <div class="sidebar">
-                <div class="menu-section">
-                    <div class="menu-title">Quản lý đăng tuyển dụng</div>
-                     <a href="{{ route('employer.profile.edit') }}"
-        class="menu-item {{ request()->routeIs('employer.profile.edit') ? 'active' : '' }}">
-        <i>🏢</i>
-        <span>Cập nhật hồ sơ</span>
-    </a>
-                    <a href="{{ route('employer.job-posting.create') }}"
-                        class="menu-item {{ request()->routeIs('employer.job-posting.create') ? 'active' : '' }}">
-                        <i>+</i>
-                        <span>Tạo tin tuyển dụng</span>
-                    </a>
-                    <a href="{{ route('employer.job-posting.index') }}"
-                        class="menu-item {{ request()->routeIs('employer.job-posting.index') ? 'active' : '' }}">
-                        <i>📋</i>
-                        <span>Việc làm</span>
-                    </a>
-                    <a href="{{ route('employer.job-posting.export') }}"
-                        class="menu-item {{ request()->routeIs('employer.job-posting.export') ? 'active' : '' }}">
-                        <i>🌍</i>
-                        <span>Xuất khẩu lao động</span>
-                    </a>
+           <div class="sidebar" id="sidebar">
+            <div class="menu-section">
+                <div class="menu-title">Quản lý đăng tuyển dụng</div>
 
-                    <a href="{{ route('employer.services') }}"
-                        class="menu-item {{ request()->routeIs('employer.services') ? 'active' : '' }}">
-                        <i>📊</i>
-                        <span>Mua dịch vụ</span>
-                    </a>
-                    <a href="{{ route('employer.service-active') }}"
-                        class="menu-item {{ request()->routeIs('employer.service-active') ? 'active' : '' }}">
-                        <i>❤️</i>
-                        <span>Dịch vụ đã mua</span>
-                    </a>
-                    <a href="{{ route('employer.orders.index') }}"
-                        class="menu-item {{ request()->routeIs('employer.orders.index') ? 'active' : '' }}">
-                        <i>🧾</i>
-                        <span>Lịch sử đơn hàng</span>
-                    </a>
+                <a href="{{ route('employer.profile.edit') }}"
+                   class="menu-item {{ request()->routeIs('employer.profile.edit') ? 'active' : '' }}"
+                   data-tooltip="Cập nhật hồ sơ">
+                    <i class="fas fa-building"></i>
+                    <span>Cập nhật hồ sơ</span>
+                </a>
 
-                    <a href="{{ route('employer.languagetrainings.index') }}"
-                        class="menu-item {{ request()->is('employer/languagetrainings*') ? 'active' : '' }}">
-                        <i>🌐</i>
-                        <span>Đào tạo ngoại ngữ</span>
-                    </a>
-                    <a href="{{ route('employer.study-abroads.index') }}"
-                        class="menu-item {{ request()->is('employer/study-abroads*') ? 'active' : '' }}">
-                        <i>🎓</i>
-                        <span>Du học nghề</span>
-                    </a>
-                    <a href="{{ route('employer.news.index') }}"
-                        class="menu-item {{ request()->is('employer/news*') ? 'active' : '' }}">
-                        <i>📰</i>
-                        <span>Tin tức</span>
-                    </a>
-                    <a href="{{ route('employer.advertises.index') }}"
-                        class="menu-item {{ request()->is('employer/advertises*') ? 'active' : '' }}">
-                        <i>📢</i>
-                        <span>Quảng cáo</span>
-                    </a>
-                    <a href="{{ route('employer.banks.index') }}"
-                        class="menu-item {{ request()->is('employer/banks*') ? 'active' : '' }}">
-                        <i>🏦</i>
-                        <span>Tài khoản ngân hàng</span>
-                    </a>
-                </div>
+                <a href="{{ route('employer.job-posting.create') }}"
+                   class="menu-item {{ request()->routeIs('employer.job-posting.create') ? 'active' : '' }}"
+                   data-tooltip="Tạo tin tuyển dụng">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Tạo tin tuyển dụng</span>
+                </a>
 
+                <a href="{{ route('employer.job-posting.index') }}"
+                   class="menu-item {{ request()->routeIs('employer.job-posting.index') ? 'active' : '' }}"
+                   data-tooltip="Việc làm">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Việc làm</span>
+                </a>
 
-                <div class="menu-section">
-                    <div class="menu-title">Quản lý ứng viên</div>
-                    <a href="{{ route('employer.saved-applications') }}"
-                        class="menu-item {{ request()->routeIs('employer.saved-applications') ? 'active' : '' }}">
-                        <i>👥</i>
-                        <span>Hồ sơ ứng tuyển</span>
-                    </a>
-                    <a href="{{ route('employer.job-posting.find-candidate') }}"
-                        class="menu-item {{ request()->routeIs('employer.job-posting.find-candidate') ? 'active' : '' }}">
-                        <i>🔍</i>
-                        <span>Tìm ứng viên mới</span>
-                    </a>
-                </div>
+                <a href="{{ route('employer.job-posting.export') }}"
+                   class="menu-item {{ request()->routeIs('employer.job-posting.export') ? 'active' : '' }}"
+                   data-tooltip="Xuất khẩu lao động">
+                    <i class="fas fa-globe-americas"></i>
+                    <span>Xuất khẩu lao động</span>
+                </a>
 
+                <a href="{{ route('employer.services') }}"
+                   class="menu-item {{ request()->routeIs('employer.services') ? 'active' : '' }}"
+                   data-tooltip="Mua dịch vụ">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Mua dịch vụ</span>
+                </a>
+
+                <a href="{{ route('employer.service-active') }}"
+                   class="menu-item {{ request()->routeIs('employer.service-active') ? 'active' : '' }}"
+                   data-tooltip="Dịch vụ đã mua">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Dịch vụ đã mua</span>
+                </a>
+
+                <a href="{{ route('employer.orders.index') }}"
+                   class="menu-item {{ request()->routeIs('employer.orders.index') ? 'active' : '' }}"
+                   data-tooltip="Lịch sử đơn hàng">
+                    <i class="fas fa-receipt"></i>
+                    <span>Lịch sử đơn hàng</span>
+                </a>
+
+                <a href="{{ route('employer.languagetrainings.index') }}"
+                   class="menu-item {{ request()->is('employer/languagetrainings*') ? 'active' : '' }}"
+                   data-tooltip="Đào tạo ngoại ngữ">
+                    <i class="fas fa-language"></i>
+                    <span>Đào tạo ngoại ngữ</span>
+                </a>
+
+                <a href="{{ route('employer.study-abroads.index') }}"
+                   class="menu-item {{ request()->is('employer/study-abroads*') ? 'active' : '' }}"
+                   data-tooltip="Du học nghề">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Du học nghề</span>
+                </a>
+
+                <a href="{{ route('employer.news.index') }}"
+                   class="menu-item {{ request()->is('employer/news*') ? 'active' : '' }}"
+                   data-tooltip="Tin tức">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Tin tức</span>
+                </a>
+
+                <a href="{{ route('employer.advertises.index') }}"
+                   class="menu-item {{ request()->is('employer/advertises*') ? 'active' : '' }}"
+                   data-tooltip="Quảng cáo">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>Quảng cáo</span>
+                </a>
+
+                <a href="{{ route('employer.banks.index') }}"
+                   class="menu-item {{ request()->is('employer/banks*') ? 'active' : '' }}"
+                   data-tooltip="Tài khoản ngân hàng">
+                    <i class="fas fa-university"></i>
+                    <span>Tài khoản ngân hàng</span>
+                </a>
             </div>
+
+            <div class="menu-section">
+                <div class="menu-title">Quản lý ứng viên</div>
+
+                <a href="{{ route('employer.saved-applications') }}"
+                   class="menu-item {{ request()->routeIs('employer.saved-applications') ? 'active' : '' }}"
+                   data-tooltip="Hồ sơ ứng tuyển">
+                    <i class="fas fa-users"></i>
+                    <span>Hồ sơ ứng tuyển</span>
+                    <span class="badge">5</span>
+                </a>
+
+                <a href="{{ route('employer.job-posting.find-candidate') }}"
+                   class="menu-item {{ request()->routeIs('employer.job-posting.find-candidate') ? 'active' : '' }}"
+                   data-tooltip="Tìm ứng viên mới">
+                    <i class="fas fa-search"></i>
+                    <span>Tìm ứng viên mới</span>
+                </a>
+            </div>
+        </div>
+
             @yield('content')
 
         </section>
@@ -3541,7 +3582,7 @@
     </script>
     <script src="{{ asset('backend_admin/ckeditor/ckeditor.js') }}"></script>
     <script>
-         CKEDITOR.config.versionCheck = false;
+        CKEDITOR.config.versionCheck = false;
         CKEDITOR.replace('summary2');
         CKEDITOR.replace('summary3');
         CKEDITOR.replace('summary1');

@@ -2,85 +2,158 @@
 
 @section('content')
 <style>
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 12px;
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .page-header .count-badge {
+        background: rgba(255,255,255,0.2);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
     .table-container {
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         overflow: hidden;
-        margin: 20px 0;
+        margin-bottom: 2rem;
     }
 
     .study-abroad-table {
         width: 100%;
         border-collapse: collapse;
-        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .study-abroad-table thead {
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
     }
 
     .study-abroad-table th {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 15px 12px;
-        text-align: left;
+        padding: 1rem;
         font-weight: 600;
-        font-size: 14px;
-        border: none;
+        color: #374151;
+        text-align: left;
+        border-bottom: 2px solid #e5e7eb;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .study-abroad-table th:first-child {
+        width: 60px;
+        text-align: center;
     }
 
     .study-abroad-table td {
-        padding: 15px 12px;
-        border-bottom: 1px solid #eee;
+        padding: 1.2rem 1rem;
+        border-bottom: 1px solid #f3f4f6;
         vertical-align: middle;
-        font-size: 14px;
     }
 
-    .study-abroad-table tr:hover {
-        background-color: #f8f9fa;
+    .study-abroad-table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .study-abroad-table tbody tr:hover {
+        background: #f8fafc;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .row-number {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin: 0 auto;
     }
 
     .study-image {
         width: 80px;
         height: 60px;
         object-fit: cover;
-        border-radius: 6px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
     }
 
-    .study-name {
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 5px;
-        line-height: 1.4;
+    .study-image:hover {
+        transform: scale(1.05);
     }
 
     .study-name a {
-        color: #333;
+        color: #1f2937;
         text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
         transition: color 0.3s ease;
     }
 
     .study-name a:hover {
-        color: #667eea;
+        color: #3b82f6;
     }
 
     .study-detail {
-        color: #666;
-        font-size: 13px;
-        line-height: 1.4;
+        color: #6b7280;
+        font-size: 0.9rem;
+        line-height: 1.5;
         max-width: 300px;
     }
 
     .country-flags {
         display: flex;
-        gap: 5px;
+        gap: 6px;
         flex-wrap: wrap;
     }
 
     .country-flag {
-        width: 24px;
-        height: 16px;
+        width: 30px;
+        height: 20px;
         object-fit: cover;
-        border-radius: 2px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease;
+    }
+
+    .country-flag:hover {
+        transform: scale(1.1);
+    }
+
+    .date-saved {
+        color: #6b7280;
+        font-size: 0.9rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .date-saved::before {
+        content: "📅";
+        font-size: 1rem;
     }
 
     .action-buttons {
@@ -90,88 +163,109 @@
     }
 
     .action-btn {
-        background: transparent;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 8px 10px;
+        width: 36px;
+        height: 36px;
+        border: none;
+        border-radius: 8px;
         cursor: pointer;
-        transition: all 0.3s ease;
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: all 0.3s ease;
         text-decoration: none;
-        min-width: 36px;
-        height: 36px;
+        font-size: 0.9rem;
     }
 
-    .action-btn i {
-        font-size: 16px;
+    .btn-register {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
     }
 
     .btn-register:hover {
-        background-color: #4CAF50;
-        color: white;
-        border-color: #4CAF50;
+        background: linear-gradient(135deg, #059669, #047857);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
     }
 
-    .btn-detail:hover {
-        background-color: #2196F3;
+    .btn-save {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
         color: white;
-        border-color: #2196F3;
     }
 
     .btn-save:hover {
-        background-color: #ff5252;
-        color: white;
-        border-color: #ff5252;
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
     }
 
     .btn-save.saved {
-        background-color: #ff5252;
-        color: white;
-        border-color: #ff5252;
+        background: linear-gradient(135deg, #ef4444, #dc2626);
     }
 
-    .date-saved {
-        color: #666;
-        font-size: 13px;
-        white-space: nowrap;
+    .btn-detail {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white;
+    }
+
+    .btn-detail:hover {
+        background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
     }
 
     .empty-state {
         text-align: center;
-        padding: 60px 20px;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin: 20px 0;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     }
 
     .empty-state i {
-        color: #ddd;
-        margin-bottom: 20px;
+        color: #d1d5db;
+        margin-bottom: 1.5rem;
     }
 
     .empty-state h3 {
-        color: #666;
-        margin-bottom: 10px;
+        color: #374151;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state p {
+        color: #6b7280;
+        font-size: 1.1rem;
+        max-width: 500px;
+        margin: 0 auto;
+        line-height: 1.6;
     }
 
     .pagination-container {
         display: flex;
         justify-content: center;
-        margin: 20px 0;
+        margin-top: 2rem;
     }
 
-    /* Responsive */
+    /* Responsive Design */
     @media (max-width: 768px) {
-        .study-abroad-table {
-            font-size: 12px;
+        .page-header {
+            padding: 1.5rem 1rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 0 -1rem 2rem -1rem;
+            border-radius: 0;
         }
 
         .study-abroad-table th,
         .study-abroad-table td {
-            padding: 10px 8px;
+            padding: 0.8rem 0.5rem;
+            font-size: 0.85rem;
         }
 
         .study-image {
@@ -179,24 +273,37 @@
             height: 45px;
         }
 
-        .action-buttons {
-            flex-direction: column;
-            gap: 5px;
+        .country-flag {
+            width: 25px;
+            height: 16px;
         }
 
         .action-btn {
-            min-width: 30px;
-            height: 30px;
-            padding: 5px;
+            width: 32px;
+            height: 32px;
+            font-size: 0.8rem;
+        }
+
+        .empty-state {
+            padding: 3rem 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .study-abroad-table th:nth-child(3),
+        .study-abroad-table td:nth-child(3) {
+            display: none;
         }
     }
 </style>
+
 
 @if ($savedStudyAbroad->count() > 0)
     <div class="table-container">
         <table class="study-abroad-table">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>Hình ảnh</th>
                     <th>Tên chương trình</th>
                     <th>Mô tả ngắn</th>
@@ -206,12 +313,16 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($savedStudyAbroad as $study)
+                @foreach ($savedStudyAbroad as $index => $study)
                     <tr>
                         <td>
-                            <img src="{{ asset('storage/' . $study->image) }}"
-                                 alt="{{ $study->name }}"
-                                 class="study-image">
+                            <div class="row-number">
+                                {{ ($savedStudyAbroad->currentPage() - 1) * $savedStudyAbroad->perPage() + $index + 1 }}
+                            </div>
+                        </td>
+                        <td>
+                            <img src="{{ asset('storage/' . $study->image) }}" alt="{{ $study->name }}"
+                                class="study-image">
                         </td>
                         <td>
                             <div class="study-name">
@@ -228,10 +339,8 @@
                         <td>
                             <div class="country-flags">
                                 @foreach ($study->countries as $country)
-                                    <img src="{{ asset('storage/' . $country->image) }}"
-                                         alt="{{ $country->name }}"
-                                         title="{{ $country->name }}"
-                                         class="country-flag">
+                                    <img src="{{ asset('storage/' . $country->image) }}" alt="{{ $country->name }}"
+                                        title="{{ $country->name }}" class="country-flag">
                                 @endforeach
                             </div>
                         </td>
@@ -242,21 +351,16 @@
                         </td>
                         <td>
                             <div class="action-buttons">
-                                <button class="action-btn btn-register"
-                                        onclick="showRegisterPopup({{ $study->id }})"
-                                        title="Đăng ký"
-                                        data-id="{{ $study->id }}">
+                                <button class="action-btn btn-register" onclick="showRegisterPopup({{ $study->id }})"
+                                    title="Đăng ký tư vấn" data-id="{{ $study->id }}">
                                     <i class="fas fa-user-plus"></i>
                                 </button>
-                                <button class="action-btn btn-save saved"
-                                        onclick="toggleSaveStudyAbroad({{ $study->id }})"
-                                        title="Đã lưu"
-                                        data-id="{{ $study->id }}">
+                                <button class="action-btn btn-save saved" onclick="toggleSaveStudyAbroad({{ $study->id }})"
+                                    title="Bỏ lưu" data-id="{{ $study->id }}">
                                     <i class="fas fa-heart"></i>
                                 </button>
-                                <a href="{{ route('study-abroad.show', $study->slug) }}"
-                                   class="action-btn btn-detail"
-                                   title="Xem chi tiết">
+                                <a href="{{ route('study-abroad.show', $study->slug) }}" class="action-btn btn-detail"
+                                    title="Xem chi tiết">
                                     <i class="fas fa-info-circle"></i>
                                 </a>
                             </div>
@@ -273,8 +377,14 @@
 @else
     <div class="empty-state">
         <i class="far fa-heart fa-4x"></i>
-        <h3>Bạn chưa lưu du học nghề nào</h3>
-        <p>Hãy duyệt qua các chương trình du học và lưu lại những chương trình bạn quan tâm.</p>
+        <h3>Bạn chưa lưu chương trình du học nghề nào</h3>
+        <p>Hãy duyệt qua các chương trình du học nghề và lưu lại những chương trình bạn quan tâm để theo dõi dễ dàng hơn.</p>
+        <div style="margin-top: 2rem;">
+            <a href="{{ route('study-abroad.index') }}" class="action-btn btn-detail" style="width: auto; padding: 12px 24px; text-decoration: none;">
+                <i class="fas fa-search"></i>
+                <span style="margin-left: 8px;">Khám phá ngay</span>
+            </a>
+        </div>
     </div>
 @endif
 
@@ -287,24 +397,24 @@
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const saveBtn = document.querySelector(`.btn-save[data-id="${studyAbroadId}"]`);
-                if (data.saved) {
-                    saveBtn.innerHTML = '<i class="fas fa-heart"></i>';
-                    saveBtn.classList.add('saved');
-                    saveBtn.title = 'Đã lưu';
-                } else {
-                    // Nếu bỏ lưu, có thể reload trang hoặc ẩn row
-                    location.reload();
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const saveBtn = document.querySelector(`.btn-save[data-id="${studyAbroadId}"]`);
+                    if (data.saved) {
+                        saveBtn.innerHTML = '<i class="fas fa-heart"></i>';
+                        saveBtn.classList.add('saved');
+                        saveBtn.title = 'Đã lưu';
+                    } else {
+                        // Nếu bỏ lưu, có thể reload trang hoặc ẩn row
+                        location.reload();
+                    }
                 }
-            }
-        })
-        .catch(error => {
-            console.error('Lỗi:', error);
-            alert('Có lỗi xảy ra khi lưu chương trình du học.');
-        });
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+                alert('Có lỗi xảy ra khi lưu chương trình du học.');
+            });
     };
 
     function showRegisterPopup(studyAbroadId) {

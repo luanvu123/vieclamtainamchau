@@ -529,13 +529,21 @@
                 width: 801px;
             }
 
-            .pricing-image {
-                width: 200px;
-                height: 150px;
-                margin-right: 20px;
-                border-radius: 5px;
-                overflow: hidden;
-            }
+          pricing-image {
+    width: 200px;
+    height: 150px;
+    margin-right: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Thêm CSS này để ảnh thu nhỏ vừa container */
+.pricing-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Giữ tỷ lệ ảnh và cắt bớt nếu cần */
+    object-position: center; /* Căn giữa ảnh */
+}
 
             .pricing-info {
                 flex: 1;

@@ -49,9 +49,7 @@
                             @endif
                         </td>
                         <td>
-                            <div class="introduction-text" title="{{ $application->introduction }}">
-                                {{ \Illuminate\Support\Str::limit($application->introduction, 100) }}
-                            </div>
+
                         </td>
                         <td>{{ $application->approve_application }}</td>
                         <td>

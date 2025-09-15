@@ -299,7 +299,7 @@
                         }
                     });
                 </script>
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="captcha">Mã xác thực *</label>
                     <div class="d-flex align-items-center mb-2">
                       <span id="captcha-image">{!! captcha_img('flat') !!}</span>
@@ -320,8 +320,30 @@
         });
 });
 
-                </script>
+                </script> --}}
+<div class="form-group">
+    <label for="captcha">Mã xác thực *</label>
+    <div class="d-flex align-items-center mb-2">
+        <span id="captcha-image">
+            <img src="{{ url('reload-captcha') }}" onload="this.src='{{ url('reload-captcha') }}'" />
+        </span>
+        <button type="button" class="btn btn-refresh ml-2" id="reload">↻</button>
+    </div>
+    <input type="text" id="captcha" name="captcha" class="form-control" placeholder="Nhập mã xác thực...">
+    @error('captcha')
+        <span class="error">{{ $message }}</span>
+    @enderror
+</div>
 
+<script>
+    document.getElementById('reload').addEventListener('click', function () {
+        fetch('{{ url('reload-captcha') }}')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('captcha-image').innerHTML = data.captcha;
+            });
+    });
+</script>
                 <button type="submit" class="btn-submit">Đăng kí</button>
             </form>
 

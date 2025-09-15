@@ -1,9 +1,7 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container-fluid">
     <h1 class="h3 mb-4 text-gray-800">Quản lý đơn hàng</h1>
-
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Danh sách đơn hàng</h6>
@@ -14,18 +12,16 @@
                     {{ session('success') }}
                 </div>
             @endif
-
             @if (session('error'))
                 <div class="alert alert-danger">
                     {{ session('error') }}
                 </div>
             @endif
-
             <div class="table-responsive">
                 <table class="table table-bordered" id="ordersTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>#</th>
                             <th>Mã đơn hàng</th>
                             <th>Email tuyển dụng</th>
                             <th>Tổng tiền</th>
@@ -35,9 +31,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($orders as $order)
+                        @foreach ($orders as $index => $order)
                             <tr>
-                                <td>{{ $order->id }}</td>
+                                <td>{{ ($orders->currentPage() - 1) * $orders->perPage() + $index + 1 }}</td>
                                 <td>{{ $order->order_key }} @if ($order->created_at >= now()->subHours(2))
         <span class="badge badge-danger ml-1">New</span>
     @endif</td>
@@ -61,21 +57,22 @@
                     </tbody>
                 </table>
             </div>
-
             <div class="d-flex justify-content-center mt-4">
                 {{ $orders->links() }}
             </div>
         </div>
     </div>
 </div>
-
 <script>
     $(document).ready(function() {
         $('#ordersTable').DataTable({
             "paging": false,
             "ordering": true,
             "info": false,
-            "searching": true
+            "searching": true,
+            "columnDefs": [
+                { "orderable": false, "targets": [0, 6] } // Tắt sort cho cột # và Hành động
+            ]
         });
     });
 </script>

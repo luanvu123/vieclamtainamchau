@@ -15,7 +15,7 @@
     <!-- Bootstrap JS -->
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Vieclamtainamchau</title>
     <style>
         * {
@@ -145,6 +145,7 @@
             color: #fff;
             font-weight: bold;
         }
+
         .category-card.hot-effect {
             border: 2px solid #ff6b6b;
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
@@ -302,9 +303,10 @@
                 width: 400px;
                 margin-left: -150px;
             }
+
             .footer-company {
                 width: 280px;
-              margin-left: -70px;
+                margin-left: -70px;
             }
 
         }
@@ -812,7 +814,7 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1rem;
             margin-top: 2rem;
-             margin-left: 8rem;
+            margin-left: 8rem;
             margin-right: 8rem;
         }
 
@@ -1976,6 +1978,7 @@
         .hotline-title.employers {
             color: #ffc107;
         }
+
         .hotline-info {
             margin-bottom: 1rem;
         }
@@ -2600,7 +2603,7 @@
                         </div>
                     @endif
                 </li>
-                  <li><a href="{{ route('site.study-abroad') }}">Du học nghề</a></li>
+                <li><a href="{{ route('site.study-abroad') }}">Du học nghề</a></li>
                 <li><a href="{{ route('news.home') }}">Tin tức</a></li>
                 <li><a href="{{ route('hotline') }}">Liên hệ</a></li>
             </ul>
@@ -2833,63 +2836,87 @@
 
     <main>
         <section class="hotlines-section">
-
-            <div class="sidebar">
-                <div class="menu-title">Quản lý CV</div>
+            <div class="sidebar" id="sidebar">
                 <div class="menu-section">
+                    <div class="menu-title">CV Templates</div>
 
-                    <a href="{{ route('candidate.cv.white') }}" class="menu-item">
-                        <i>📄</i>
-                        <span>Mẫu CV cổ điển</span>
+                    <a href="{{ route('candidate.cv.white') }}"
+                        class="menu-item {{ request()->routeIs('candidate.cv.white') ? 'active' : '' }}"
+                        data-tooltip="CV Template Trắng">
+                        <i class="fas fa-file-alt"></i>
+                        <span>CV Template Trắng</span>
                     </a>
-                    <a href="{{ route('candidate.cv.black') }}" class="menu-item">
-                        <i>📄</i>
-                        <span>Mẫu CV hiện đại</span>
+
+                    <a href="{{ route('candidate.cv.black') }}"
+                        class="menu-item {{ request()->routeIs('candidate.cv.black') ? 'active' : '' }}"
+                        data-tooltip="CV Template Đen">
+                        <i class="fas fa-file"></i>
+                        <span>CV Template Đen</span>
                     </a>
-                    <a href="{{ route('candidate.cv.logistic') }}" class="menu-item">
-                        <i>📄</i>
-                        <span>Mẫu CV Xuất khẩu LD</span>
+
+                    <a href="{{ route('candidate.cv.logistic') }}"
+                        class="menu-item {{ request()->routeIs('candidate.cv.logistic') ? 'active' : '' }}"
+                        data-tooltip="CV Logistics">
+                        <i class="fas fa-truck"></i>
+                        <span>CV Logistics</span>
                     </a>
                 </div>
 
                 <div class="menu-section">
-    <div class="menu-title">Quản lý ứng tuyển</div>
+                    <div class="menu-title">Quản lý ứng tuyển</div>
 
-    <a href="{{ route('candidate.profile.edit') }}"
-       class="menu-item {{ request()->routeIs('candidate.profile.edit') ? 'active' : '' }}">
-        <i>📊</i>
-        <span>Cập nhật hồ sơ & CV</span>
-    </a>
+                    <a href="{{ route('candidate.applications') }}"
+                        class="menu-item {{ request()->routeIs('candidate.applications') ? 'active' : '' }}"
+                        data-tooltip="Hồ sơ đã nộp">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Hồ sơ đã nộp</span>
+                        <span class="badge">3</span>
+                    </a>
 
-    <a href="{{ route('candidate.applications') }}"
-       class="menu-item {{ request()->routeIs('candidate.applications') ? 'active' : '' }}">
-        <i>👥</i>
-        <span>Hồ sơ đã nộp</span>
-    </a>
+                    <a href="{{ route('candidate.saved.jobs') }}"
+                        class="menu-item {{ request()->routeIs('candidate.saved.jobs') ? 'active' : '' }}"
+                        data-tooltip="Việc làm đã lưu">
+                        <i class="fas fa-heart"></i>
+                        <span>Việc làm đã lưu</span>
+                    </a>
 
-    <a href="{{ route('candidate.saved.jobs') }}"
-       class="menu-item {{ request()->routeIs('candidate.saved.jobs') ? 'active' : '' }}">
-        <i>❤️</i>
-        <span>Hồ sơ đã lưu</span>
-    </a>
+                    <a href="{{ route('candidate.notifications') }}"
+                        class="menu-item {{ request()->routeIs('candidate.notifications') ? 'active' : '' }}"
+                        data-tooltip="Thông báo">
+                        <i class="fas fa-bell"></i>
+                        <span>Thông báo</span>
+                        <span class="badge">12</span>
+                    </a>
 
-    <a href="{{ route('candidate.notifications') }}"
-       class="menu-item {{ request()->routeIs('candidate.notifications') ? 'active' : '' }}">
-        <i>📋</i>
-        <span>Thông báo</span>
-    </a>
+                    <a href="{{ route('candidate.saved.study.abroad') }}"
+                        class="menu-item {{ request()->routeIs('candidate.saved.study.abroad') ? 'active' : '' }}"
+                        data-tooltip="Du học nghề đã lưu">
+                        <i class="fas fa-bookmark"></i>
+                        <span>Du học nghề đã lưu</span>
+                    </a>
+                </div>
+                <div class="menu-section">
+                    <div class="menu-title">Tài khoản</div>
 
-    <a href="{{ route('candidate.saved.study.abroad') }}"
-       class="menu-item {{ request()->routeIs('candidate.saved.study.abroad') ? 'active' : '' }}">
-        <i>❤️</i>
-        <span>Du học nghề đã lưu</span>
-    </a>
-</div>
+                    <a href="{{ route('candidate.profile.edit') }}"
+                        class="menu-item {{ request()->routeIs('candidate.profile.edit') ? 'active' : '' }}"
+                        data-tooltip="Cập nhật hồ sơ">
+                        <i class="fas fa-user-edit"></i>
+                        <span>Cập nhật hồ sơ</span>
+                    </a>
 
+                    <form action="{{ route('candidate.logout') }}" method="POST" style="margin: 0;">
+                        @csrf
+                        <button type="submit" class="menu-item"
+                            style="width: 100%; background: none; border: none; color: inherit; text-align: left; cursor: pointer;"
+                            data-tooltip="Đăng xuất">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Đăng xuất</span>
+                        </button>
+                    </form>
+                </div>
 
             </div>
-
-
             @yield('content')
 
         </section>
@@ -2973,7 +3000,7 @@
         </div>
     </footer>
 
-  <style>
+    <style>
         /* Job Card Styles */
         .category-grid {
             display: grid;
@@ -3308,12 +3335,12 @@
     <script>
         new MultiSelectTag('skills') // id
     </script>
-     <script>
+    <script>
         new MultiSelectTag('soft_skills') // id
     </script>
     <script src="{{ asset('backend_admin/ckeditor/ckeditor.js') }}"></script>
     <script>
-         CKEDITOR.config.versionCheck = false;
+        CKEDITOR.config.versionCheck = false;
         CKEDITOR.replace('summary2');
         CKEDITOR.replace('summary3');
         CKEDITOR.replace('summary1');

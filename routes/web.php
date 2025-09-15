@@ -17,6 +17,8 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\AdvertiseController;
 use App\Http\Controllers\AdvertisesManageController;
 use App\Http\Controllers\CompanyPartnerController;
+
+use App\Http\Controllers\CaptchaController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\Employer\EmployerProfileController;
 use App\Http\Controllers\ExperienceController;
@@ -72,11 +74,11 @@ Route::get('/study-abroad', [SiteController::class, 'studyIndex'])->name('site.s
 Route::get('/study-abroad/{slug}', [SiteController::class, 'studyShow'])->name('study-abroad.show');
 Route::get('/language-training/{slug}', [SiteController::class, 'detailLanguageTrainings'])->name('site.language-training.detail');
 Route::get('/language-training/type/{type:slug}', [SiteController::class, 'filterByType'])->name('site.language-training');
-Route::get('/reload-captcha', function () {
-    return response()->json(['captcha' => captcha_img(request('type', 'default'))]);
-});
+// Route::get('/reload-captcha', function () {
+//     return response()->json(['captcha' => captcha_img(request('type', 'default'))]);
+// });
 
-
+Route::get('/reload-captcha', [CaptchaController::class, 'generate']);
 
 Auth::routes();
 
